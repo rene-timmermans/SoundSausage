@@ -1,0 +1,512 @@
+PROGRAM wavepcm.flt
+LANGUAGE x86:LE:32:default
+IMAGE_BASE 10000000
+Static decompiler inference; no target execution.
+
+STRING 10008260 FilterUnderstandsFormat
+  XREF 10008160 <data>
+STRING 100082be QueryCoolFilter
+  XREF 10008174 <data>
+
+=== FUNCTION QueryCoolFilter @ 10001010 ===
+
+undefined4 QueryCoolFilter(LPSTR param_1)
+
+{
+  LPSTR pCVar1;
+  
+                    /* 0x1010  2  QueryCoolFilter */
+  lstrcpyA(param_1,s_Windows_PCM_10009050);
+  lstrcpyA(param_1 + 0x18,s_Windows_PCM_WAV_format_10009038);
+  pCVar1 = lstrcpyA(param_1 + 0x88,&DAT_10009034);
+  param_1[0x8c] = '0';
+  param_1[0x8d] = 'u';
+  param_1[0x8e] = '\0';
+  param_1[0x8f] = '\0';
+  param_1[0x84] = -0x59;
+  param_1[0x85] = '\x19';
+  param_1[0x86] = '\0';
+  param_1[0x87] = '\0';
+  param_1[0x6e] = -1;
+  param_1[0x6f] = '\0';
+  param_1[0x72] = -1;
+  param_1[0x73] = '\0';
+  param_1[0x74] = '\0';
+  param_1[0x75] = '\0';
+  param_1[0x76] = -1;
+  param_1[0x77] = '\0';
+  param_1[0x78] = -1;
+  param_1[0x79] = '\0';
+  param_1[0x7c] = -1;
+  param_1[0x7d] = '\0';
+  param_1[0x7e] = '\0';
+  param_1[0x7f] = '\0';
+  param_1[0x80] = -1;
+  param_1[0x81] = '\0';
+  param_1[0x68] = '\0';
+  param_1[0x69] = '\0';
+  param_1[0x6a] = '\0';
+  param_1[0x6b] = '\0';
+  param_1[0x6c] = '\0';
+  param_1[0x6d] = '\0';
+  return CONCAT22((short)((uint)pCVar1 >> 0x10),0x482);
+}
+
+
+
+=== FUNCTION FilterUnderstandsFormat @ 100010c0 ===
+
+undefined4 FilterUnderstandsFormat(LPCSTR param_1)
+
+{
+  HFILE HVar1;
+  UINT UVar2;
+  int iVar3;
+  int hFile;
+  short local_42;
+  LONG local_40;
+  undefined4 local_3c;
+  undefined1 local_38 [4];
+  CHAR local_34 [4];
+  undefined1 local_30;
+  
+                    /* 0x10c0  9  FilterUnderstandsFormat */
+  local_3c = 0;
+  HVar1 = _lopen(param_1,0);
+  if ((short)HVar1 != -1) {
+    hFile = (int)(short)HVar1;
+    UVar2 = _lread(hFile,local_34,4);
+    if (UVar2 == 4) {
+      local_30 = 0;
+      iVar3 = lstrcmpA(local_34,&DAT_1000906c);
+      if (((iVar3 == 0) && (UVar2 = _lread(hFile,local_38,4), UVar2 == 4)) &&
+         (UVar2 = _lread(hFile,local_34,4), UVar2 == 4)) {
+        while (iVar3 = lstrcmpA(local_34,&DAT_10009064), iVar3 != 0) {
+          UVar2 = _lread(hFile,&local_40,4);
+          if (UVar2 != 4) {
+            _lclose(hFile);
+            return 0;
+          }
+          _llseek(hFile,local_40,1);
+          UVar2 = _lread(hFile,local_34,4);
+          if (UVar2 != 4) {
+            _lclose(hFile);
+            return 0;
+          }
+        }
+        UVar2 = _lread(hFile,local_34,4);
+        if (UVar2 == 4) {
+          while (iVar3 = lstrcmpA(local_34,&DAT_1000905c), iVar3 != 0) {
+            UVar2 = _lread(hFile,&local_40,4);
+            if (UVar2 != 4) {
+              _lclose(hFile);
+              return 0;
+            }
+            _llseek(hFile,local_40,1);
+            UVar2 = _lread(hFile,local_34,4);
+            if (UVar2 != 4) {
+              _lclose(hFile);
+              return 0;
+            }
+          }
+          _lread(hFile,&local_40,4);
+          _lread(hFile,&local_42,2);
+          if ((local_42 == 1) || (local_42 == 3)) {
+            local_3c = 1;
+          }
+        }
+      }
+    }
+    _lclose(hFile);
+  }
+  return local_3c;
+}
+
+
+
+=== FUNCTION OpenFilterOutput @ 10002910 ===
+
+/* WARNING: Type propagation algorithm not settling */
+
+HGLOBAL OpenFilterOutput(LPCSTR param_1,int param_2,ushort param_3,ushort param_4,int param_5,
+                        SIZE_T *param_6,int param_7)
+
+{
+  uint uVar1;
+  uint uVar2;
+  uint uVar3;
+  HGLOBAL hMem;
+  undefined4 *puVar4;
+  HGLOBAL hMem_00;
+  LPVOID pvVar5;
+  HANDLE hFile;
+  DWORD DVar6;
+  ushort uStack_12;
+  DWORD local_10;
+  DWORD local_c [3];
+  
+                    /* 0x2910  3  OpenFilterOutput */
+  uStack_12 = param_3;
+  if ((param_3 == 0x20) && (param_7 == 2)) {
+    uStack_12 = 0x18;
+  }
+  uVar1 = (uint)param_3;
+  uVar2 = (uint)param_4;
+  uVar3 = (int)(uVar1 * uVar2 + ((int)(uVar1 * uVar2) >> 0x1f & 7U)) >> 3;
+  hMem = GlobalAlloc(0x2002,0x164);
+  if (hMem != (HGLOBAL)0x0) {
+    local_c[1] = 0;
+    puVar4 = GlobalLock(hMem);
+    puVar4[1] = param_5;
+    *(ushort *)(puVar4 + 6) = param_3;
+    *(ushort *)(puVar4 + 2) = param_4;
+    *(ushort *)(puVar4 + 4) = param_3;
+    puVar4[3] = param_2;
+    *(short *)((int)puVar4 + 0x12) = (short)uVar3;
+    puVar4[8] = 0;
+    *(ushort *)((int)puVar4 + 0x5e) = uStack_12;
+    *(undefined2 *)(puVar4 + 0x14) = 3;
+    if (param_7 != 3) {
+      *(undefined2 *)(puVar4 + 0x14) = 1;
+    }
+    *(ushort *)((int)puVar4 + 0x52) = param_4;
+    puVar4[0x15] = param_2;
+    puVar4[0x16] = param_2 * uVar2 * uVar1 >> 3;
+    *(short *)(puVar4 + 0x17) =
+         (short)((int)(uVar2 * uVar1 + ((int)(uVar2 * uVar1) >> 0x1f & 7U)) >> 3);
+    *(undefined2 *)(puVar4 + 0x18) = 0;
+    *param_6 = 30000;
+    puVar4[10] = 0;
+    puVar4[9] = 0;
+    if ((uStack_12 == 0x18) || (*(short *)(puVar4 + 0x14) == 3)) {
+      hMem_00 = GlobalAlloc(0x42,*param_6);
+      puVar4[10] = hMem_00;
+      pvVar5 = GlobalLock(hMem_00);
+      puVar4[9] = pvVar5;
+    }
+    hFile = CreateFileA(param_1,0xc0000000,0,(LPSECURITY_ATTRIBUTES)0x0,2,0x80,(HANDLE)0x0);
+    *puVar4 = hFile;
+    if (hFile == (HANDLE)0xffffffff) {
+      GlobalUnlock(hMem);
+      GlobalFree(hMem);
+      return (HGLOBAL)0x0;
+    }
+    WriteFile(hFile,&DAT_1000906c,4,&local_10,(LPOVERLAPPED)0x0);
+    WriteFile((HANDLE)*puVar4,local_c + 1,4,&local_10,(LPOVERLAPPED)0x0);
+    WriteFile((HANDLE)*puVar4,&DAT_10009064,4,&local_10,(LPOVERLAPPED)0x0);
+    WriteFile((HANDLE)*puVar4,&DAT_1000905c,4,&local_10,(LPOVERLAPPED)0x0);
+    local_c[0] = 0x10;
+    WriteFile((HANDLE)*puVar4,local_c,4,&local_10,(LPOVERLAPPED)0x0);
+    DVar6 = SetFilePointer((HANDLE)*puVar4,0,(PLONG)0x0,1);
+    puVar4[0x13] = DVar6;
+    WriteFile((HANDLE)*puVar4,puVar4 + 0x14,local_c[0],&local_10,(LPOVERLAPPED)0x0);
+    WriteFile((HANDLE)*puVar4,&DAT_1000907c,4,&local_10,(LPOVERLAPPED)0x0);
+    WriteFile((HANDLE)*puVar4,local_c + 1,4,&local_10,(LPOVERLAPPED)0x0);
+    DVar6 = SetFilePointer((HANDLE)*puVar4,0,(PLONG)0x0,1);
+    puVar4[0x12] = DVar6;
+    lstrcpyA((LPSTR)(puVar4 + 0xb),&DAT_100090bc);
+    puVar4[0xd] = 0xc;
+    lstrcpyA((LPSTR)(puVar4 + 0xe),(LPCSTR)&DAT_1000907c);
+    puVar4[0x10] = puVar4[0x12];
+    puVar4[0x11] = puVar4[0x12];
+    puVar4[5] = param_5 / (int)(uVar3 & 0xffff);
+    GlobalUnlock(hMem);
+  }
+  return hMem;
+}
+
+
+
+=== FUNCTION OpenFilterInput @ 10002db0 ===
+
+HGLOBAL OpenFilterInput(LPCSTR param_1,undefined4 *param_2,short *param_3,undefined2 *param_4,
+                       undefined4 param_5,undefined4 *param_6)
+
+{
+  short sVar1;
+  ushort uVar2;
+  HANDLE hFile;
+  int iVar3;
+  undefined4 *puVar4;
+  DWORD DVar5;
+  uint nNumberOfBytesToRead;
+  DWORD local_1c;
+  uint local_18;
+  HGLOBAL local_14;
+  undefined4 local_10;
+  undefined1 local_c;
+  undefined4 local_8;
+  DWORD local_4;
+  
+                    /* 0x2db0  6  OpenFilterInput */
+  local_10 = DAT_100090c0;
+  local_c = DAT_100090c4;
+  local_8 = 0;
+  hFile = CreateFileA(param_1,0x80000000,1,(LPSECURITY_ATTRIBUTES)0x0,3,0x8000080,(HANDLE)0x0);
+  if (hFile == (HANDLE)0xffffffff) {
+    return (HGLOBAL)0x0;
+  }
+  ReadFile(hFile,&local_10,4,&local_1c,(LPOVERLAPPED)0x0);
+  iVar3 = lstrcmpA((LPCSTR)&local_10,&DAT_1000906c);
+  if (iVar3 != 0) {
+    CloseHandle(hFile);
+    return (HGLOBAL)0x0;
+  }
+  ReadFile(hFile,&local_8,4,&local_1c,(LPOVERLAPPED)0x0);
+  ReadFile(hFile,&local_10,4,&local_1c,(LPOVERLAPPED)0x0);
+  iVar3 = lstrcmpA((LPCSTR)&local_10,&DAT_10009064);
+  if (iVar3 != 0) {
+    CloseHandle(hFile);
+    return (HGLOBAL)0x0;
+  }
+  local_14 = GlobalAlloc(0x2002,0x1ac);
+  if (local_14 == (HGLOBAL)0x0) {
+    CloseHandle(hFile);
+    return (HGLOBAL)0x0;
+  }
+  local_4 = GetFileSize(hFile,(LPDWORD)0x0);
+  puVar4 = GlobalLock(local_14);
+  puVar4[3] = local_8;
+  *puVar4 = hFile;
+  DVar5 = SetFilePointer(hFile,0,(PLONG)0x0,1);
+  puVar4[1] = DVar5;
+  puVar4[0xc] = DVar5;
+  while( true ) {
+    ReadFile(hFile,&local_10,4,&local_1c,(LPOVERLAPPED)0x0);
+    if (local_1c == 0) break;
+    ReadFile(hFile,&local_18,4,&local_1c,(LPOVERLAPPED)0x0);
+    if (local_1c == 0) break;
+    puVar4[1] = puVar4[1] + 8;
+    iVar3 = lstrcmpA((LPCSTR)&local_10,&DAT_1000905c);
+    if (iVar3 == 0) {
+      nNumberOfBytesToRead = local_18;
+      if (0x11 < local_18) {
+        nNumberOfBytesToRead = 0x12;
+      }
+      *(undefined2 *)(puVar4 + 0x2a) = 0;
+      ReadFile(hFile,puVar4 + 0x26,nNumberOfBytesToRead,&local_1c,(LPOVERLAPPED)0x0);
+      uVar2 = *(ushort *)(puVar4 + 0x2a);
+      if (0xff < uVar2) {
+        uVar2 = 0x100;
+      }
+      if (uVar2 != 0) {
+        ReadFile(hFile,(LPVOID)((int)puVar4 + 0xaa),(uint)uVar2,&local_1c,(LPOVERLAPPED)0x0);
+      }
+      iVar3 = puVar4[1];
+      puVar4[1] = iVar3 + local_18;
+      SetFilePointer(hFile,iVar3 + local_18,(PLONG)0x0,0);
+      if ((*(short *)(puVar4 + 0x26) != 1) && (*(short *)(puVar4 + 0x26) != 3)) {
+        CloseHandle(hFile);
+        GlobalUnlock(local_14);
+        GlobalFree(local_14);
+        return (HGLOBAL)0x0;
+      }
+    }
+    else {
+      iVar3 = lstrcmpA((LPCSTR)&local_10,(LPCSTR)&DAT_1000907c);
+      if (iVar3 == 0) {
+        DVar5 = SetFilePointer(hFile,0,(PLONG)0x0,1);
+        puVar4[10] = DVar5;
+        puVar4[0xb] = local_18;
+        SetFilePointer(hFile,puVar4[10] + local_18,(PLONG)0x0,0);
+        puVar4[1] = puVar4[1] + local_18;
+      }
+      else {
+        iVar3 = lstrcmpA((LPCSTR)&local_10,&DAT_100090c8);
+        if (iVar3 == 0) {
+          ReadFile(hFile,puVar4 + 7,4,&local_1c,(LPOVERLAPPED)0x0);
+          iVar3 = puVar4[1];
+          puVar4[1] = iVar3 + local_18;
+          if (local_18 != 4) {
+            SetFilePointer(hFile,iVar3 + local_18,(PLONG)0x0,0);
+          }
+        }
+        else {
+          iVar3 = puVar4[1];
+          puVar4[1] = iVar3 + local_18;
+          SetFilePointer(hFile,iVar3 + local_18,(PLONG)0x0,0);
+          if (((puVar4[3] + 8 <= (uint)puVar4[1]) || (local_4 < (uint)puVar4[1])) || (local_18 == 0)
+             ) break;
+        }
+      }
+    }
+  }
+  if (local_4 < (uint)puVar4[10]) {
+    CloseHandle(hFile);
+    GlobalUnlock(local_14);
+    GlobalFree(local_14);
+    return (HGLOBAL)0x0;
+  }
+  *(undefined2 *)(puVar4 + 4) = *(undefined2 *)((int)puVar4 + 0x9a);
+  puVar4[5] = puVar4[0x27];
+  *(ushort *)(puVar4 + 6) = *(ushort *)((int)puVar4 + 0xa6);
+  iVar3 = (uint)*(ushort *)(puVar4 + 4) * (uint)*(ushort *)((int)puVar4 + 0xa6);
+  *(short *)((int)puVar4 + 0x1a) = (short)((int)(iVar3 + (iVar3 >> 0x1f & 7U)) >> 3);
+  puVar4[7] = 0;
+  puVar4[2] = puVar4[0xb];
+  puVar4[0x25] = 0;
+  *param_6 = 30000;
+  *param_2 = puVar4[5];
+  sVar1 = *(short *)(puVar4 + 6);
+  *param_3 = sVar1;
+  if (sVar1 == 0x18) {
+    *param_3 = 0x20;
+    puVar4[9] = 2;
+  }
+  else if (sVar1 == 0x20) {
+    if (*(short *)(puVar4 + 0x26) == 3) {
+      puVar4[9] = 3;
+    }
+    else {
+      puVar4[9] = 1;
+    }
+  }
+  else {
+    puVar4[9] = 0;
+  }
+  *param_4 = *(undefined2 *)(puVar4 + 4);
+  SetFilePointer(hFile,puVar4[10],(PLONG)0x0,0);
+  puVar4[1] = puVar4[10];
+  GlobalUnlock(local_14);
+  return local_14;
+}
+
+
+
+=== FUNCTION ReadFilterInput @ 100031f0 ===
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+DWORD ReadFilterInput(HGLOBAL param_1,float *param_2,DWORD param_3)
+
+{
+  undefined4 *puVar1;
+  int iVar2;
+  DWORD local_4;
+  
+                    /* 0x31f0  8  ReadFilterInput */
+  local_4 = 0;
+  if (param_1 != (HGLOBAL)0x0) {
+    puVar1 = GlobalLock(param_1);
+    ReadFile((HANDLE)*puVar1,param_2,param_3,&local_4,(LPOVERLAPPED)0x0);
+    if (puVar1[9] == 2) {
+      iVar2 = (int)(param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2;
+      if (iVar2 != 0) {
+        while( true ) {
+          iVar2 = iVar2 + -1;
+          if (iVar2 == 0) break;
+          *param_2 = *param_2 * _DAT_10008000;
+          param_2 = param_2 + 1;
+        }
+        *param_2 = *param_2 * _DAT_10008000;
+      }
+    }
+    else if ((puVar1[9] == 3) &&
+            (iVar2 = (int)(param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2, iVar2 != 0)) {
+      while( true ) {
+        iVar2 = iVar2 + -1;
+        if (iVar2 == 0) break;
+        *param_2 = *param_2 * _DAT_10008004;
+        param_2 = param_2 + 1;
+      }
+      *param_2 = *param_2 * _DAT_10008004;
+    }
+    puVar1[1] = puVar1[1] + local_4;
+    GlobalUnlock(param_1);
+  }
+  return local_4;
+}
+
+
+
+=== FUNCTION SeekFilterInput @ 100032c0 ===
+
+int SeekFilterInput(HGLOBAL param_1,int param_2)
+
+{
+  undefined4 *puVar1;
+  DWORD DVar2;
+  int iVar3;
+  int local_4;
+  
+                    /* 0x32c0  30  SeekFilterInput */
+  if (param_1 != (HGLOBAL)0x0) {
+    puVar1 = GlobalLock(param_1);
+    iVar3 = puVar1[10];
+    DVar2 = SetFilePointer((HANDLE)*puVar1,param_2 + iVar3,(PLONG)0x0,0);
+    iVar3 = DVar2 - iVar3;
+    puVar1[1] = iVar3;
+    return iVar3;
+  }
+  return local_4;
+}
+
+
+
+=== FUNCTION WriteFilterOutput @ 10003310 ===
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+DWORD WriteFilterOutput(HGLOBAL param_1,float *param_2,DWORD param_3)
+
+{
+  float fVar1;
+  undefined4 *puVar2;
+  int iVar3;
+  float *pfVar4;
+  HANDLE hFile;
+  DWORD local_4;
+  
+                    /* 0x3310  5  WriteFilterOutput */
+  local_4 = 0;
+  if (param_1 != (HGLOBAL)0x0) {
+    puVar2 = GlobalLock(param_1);
+    iVar3 = lstrcmpA((LPCSTR)(puVar2 + 0xe),(LPCSTR)&DAT_1000907c);
+    if (iVar3 == 0) {
+      if (((*(short *)(puVar2 + 0x14) == 1) && (*(short *)((int)puVar2 + 0x5e) == 0x18)) &&
+         (pfVar4 = (float *)puVar2[9], pfVar4 != (float *)0x0)) {
+        iVar3 = (int)(param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2;
+        if (iVar3 != 0) {
+          while( true ) {
+            iVar3 = iVar3 + -1;
+            fVar1 = *param_2;
+            param_2 = param_2 + 1;
+            if (iVar3 == 0) break;
+            *pfVar4 = fVar1 * _DAT_10008008;
+            pfVar4 = pfVar4 + 1;
+          }
+          *pfVar4 = fVar1 * _DAT_10008008;
+        }
+        hFile = (HANDLE)*puVar2;
+        param_2 = (float *)puVar2[9];
+      }
+      else if (((*(short *)(puVar2 + 0x14) == 3) && (*(short *)((int)puVar2 + 0x5e) == 0x20)) &&
+              (pfVar4 = (float *)puVar2[9], pfVar4 != (float *)0x0)) {
+        iVar3 = (int)(param_3 + ((int)param_3 >> 0x1f & 3U)) >> 2;
+        if (iVar3 != 0) {
+          while( true ) {
+            iVar3 = iVar3 + -1;
+            fVar1 = *param_2;
+            param_2 = param_2 + 1;
+            if (iVar3 == 0) break;
+            *pfVar4 = fVar1 * _DAT_1000800c;
+            pfVar4 = pfVar4 + 1;
+          }
+          *pfVar4 = fVar1 * _DAT_1000800c;
+        }
+        hFile = (HANDLE)*puVar2;
+        param_2 = (float *)puVar2[9];
+      }
+      else {
+        hFile = (HANDLE)*puVar2;
+      }
+      WriteFile(hFile,param_2,param_3,&local_4,(LPOVERLAPPED)0x0);
+      puVar2[8] = puVar2[8] + local_4;
+      puVar2[0x11] = puVar2[0x11] + local_4;
+    }
+    GlobalUnlock(param_1);
+  }
+  return local_4;
+}
+
+

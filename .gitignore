@@ -1,0 +1,11 @@
+build/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.env
+.env.*
+.agents/
+.codex/
+.aws/
+/*.celp

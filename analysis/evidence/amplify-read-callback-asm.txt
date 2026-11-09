@@ -1,0 +1,22 @@
+
+/home/deck/.wine/drive_c/coolpro/Amplify.xfm:     file format pei-i386
+
+
+Disassembly of section .text:
+
+10001280 <.text+0x280>:
+10001280:	8b 4c 24 04          	mov    ecx,DWORD PTR [esp+0x4]
+10001284:	66 8b 91 50 01 00 00 	mov    dx,WORD PTR [ecx+0x150]
+1000128b:	66 0b 54 24 14       	or     dx,WORD PTR [esp+0x14]
+10001290:	0f b7 c2             	movzx  eax,dx
+10001293:	8b 54 24 10          	mov    edx,DWORD PTR [esp+0x10]
+10001297:	50                   	push   eax
+10001298:	8b 44 24 10          	mov    eax,DWORD PTR [esp+0x10]
+1000129c:	52                   	push   edx
+1000129d:	8b 54 24 10          	mov    edx,DWORD PTR [esp+0x10]
+100012a1:	50                   	push   eax
+100012a2:	52                   	push   edx
+100012a3:	8b 81 54 01 00 00    	mov    eax,DWORD PTR [ecx+0x154]
+100012a9:	50                   	push   eax
+100012aa:	ff 91 48 01 00 00    	call   DWORD PTR [ecx+0x148]
+100012b0:	c3                   	ret

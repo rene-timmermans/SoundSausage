@@ -1,0 +1,326 @@
+{
+  "path": "/home/deck/.wine/drive_c/coolpro/cooltips.exe",
+  "size": 26112,
+  "sha256": "3b6b677e0b40bb6ba4a01e520456c20828c43b558185a48310d5d96a391ef733",
+  "machine": "0x14c",
+  "pe_timestamp_utc": "1997-07-16T16:42:38+00:00",
+  "image_base": "0x400000",
+  "entry_va": "0x4011b8",
+  "linker": "4.20",
+  "clr_directory": [
+    0,
+    0
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 19860,
+      "rva": 4096,
+      "size": 19968,
+      "offset": 1024
+    },
+    {
+      "name": ".data",
+      "virtual_size": 2672,
+      "rva": 24576,
+      "size": 512,
+      "offset": 20992
+    },
+    {
+      "name": ".idata",
+      "virtual_size": 1220,
+      "rva": 28672,
+      "size": 1536,
+      "offset": 21504
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 1904,
+      "rva": 32768,
+      "size": 2048,
+      "offset": 23040
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 884,
+      "rva": 36864,
+      "size": 1024,
+      "offset": 25088
+    }
+  ],
+  "imports": {
+    "MSVBVM50.DLL": [
+      {
+        "name": "_CIcos",
+        "iat_va": "0x4070fc"
+      },
+      {
+        "name": "_adj_fptan",
+        "iat_va": "0x407100"
+      },
+      {
+        "name": "__vbaFreeVar",
+        "iat_va": "0x407104"
+      },
+      {
+        "name": "__vbaLineInputStr",
+        "iat_va": "0x407108"
+      },
+      {
+        "name": "__vbaFreeVarList",
+        "iat_va": "0x40710c"
+      },
+      {
+        "name": "_adj_fdiv_m64",
+        "iat_va": "0x407110"
+      },
+      {
+        "name": "__vbaFreeObjList",
+        "iat_va": "0x407114"
+      },
+      {
+        "name": "_adj_fprem1",
+        "iat_va": "0x407118"
+      },
+      {
+        "name": "__vbaStrCat",
+        "iat_va": "0x40711c"
+      },
+      {
+        "name": "__vbaHresultCheckObj",
+        "iat_va": "0x407120"
+      },
+      {
+        "name": "_adj_fdiv_m32",
+        "iat_va": "0x407124"
+      },
+      {
+        "name": "ordinal:593",
+        "iat_va": "0x407128"
+      },
+      {
+        "name": "ordinal:594",
+        "iat_va": "0x40712c"
+      },
+      {
+        "name": "__vbaObjSet",
+        "iat_va": "0x407130"
+      },
+      {
+        "name": "_adj_fdiv_m16i",
+        "iat_va": "0x407134"
+      },
+      {
+        "name": "__vbaObjSetAddref",
+        "iat_va": "0x407138"
+      },
+      {
+        "name": "_adj_fdivr_m16i",
+        "iat_va": "0x40713c"
+      },
+      {
+        "name": "_CIsin",
+        "iat_va": "0x407140"
+      },
+      {
+        "name": "__vbaChkstk",
+        "iat_va": "0x407144"
+      },
+      {
+        "name": "__vbaFileClose",
+        "iat_va": "0x407148"
+      },
+      {
+        "name": "EVENT_SINK_AddRef",
+        "iat_va": "0x40714c"
+      },
+      {
+        "name": "__vbaStrCmp",
+        "iat_va": "0x407150"
+      },
+      {
+        "name": "_adj_fpatan",
+        "iat_va": "0x407154"
+      },
+      {
+        "name": "EVENT_SINK_Release",
+        "iat_va": "0x407158"
+      },
+      {
+        "name": "_CIsqrt",
+        "iat_va": "0x40715c"
+      },
+      {
+        "name": "EVENT_SINK_QueryInterface",
+        "iat_va": "0x407160"
+      },
+      {
+        "name": "__vbaExceptHandler",
+        "iat_va": "0x407164"
+      },
+      {
+        "name": "_adj_fprem",
+        "iat_va": "0x407168"
+      },
+      {
+        "name": "_adj_fdivr_m64",
+        "iat_va": "0x40716c"
+      },
+      {
+        "name": "__vbaFPException",
+        "iat_va": "0x407170"
+      },
+      {
+        "name": "__vbaStrVarVal",
+        "iat_va": "0x407174"
+      },
+      {
+        "name": "ordinal:645",
+        "iat_va": "0x407178"
+      },
+      {
+        "name": "_CIlog",
+        "iat_va": "0x40717c"
+      },
+      {
+        "name": "__vbaFileOpen",
+        "iat_va": "0x407180"
+      },
+      {
+        "name": "ordinal:648",
+        "iat_va": "0x407184"
+      },
+      {
+        "name": "__vbaNew2",
+        "iat_va": "0x407188"
+      },
+      {
+        "name": "ordinal:571",
+        "iat_va": "0x40718c"
+      },
+      {
+        "name": "_adj_fdiv_m32i",
+        "iat_va": "0x407190"
+      },
+      {
+        "name": "_adj_fdivr_m32i",
+        "iat_va": "0x407194"
+      },
+      {
+        "name": "__vbaFreeStrList",
+        "iat_va": "0x407198"
+      },
+      {
+        "name": "_adj_fdivr_m32",
+        "iat_va": "0x40719c"
+      },
+      {
+        "name": "_adj_fdiv_r",
+        "iat_va": "0x4071a0"
+      },
+      {
+        "name": "ordinal:100",
+        "iat_va": "0x4071a4"
+      },
+      {
+        "name": "_CIatan",
+        "iat_va": "0x4071a8"
+      },
+      {
+        "name": "__vbaStrMove",
+        "iat_va": "0x4071ac"
+      },
+      {
+        "name": "__vbaCastObj",
+        "iat_va": "0x4071b0"
+      },
+      {
+        "name": "__vbaR8IntI4",
+        "iat_va": "0x4071b4"
+      },
+      {
+        "name": "_allmul",
+        "iat_va": "0x4071b8"
+      },
+      {
+        "name": "_CItan",
+        "iat_va": "0x4071bc"
+      },
+      {
+        "name": "_CIexp",
+        "iat_va": "0x4071c0"
+      },
+      {
+        "name": "__vbaFreeStr",
+        "iat_va": "0x4071c4"
+      },
+      {
+        "name": "__vbaFreeObj",
+        "iat_va": "0x4071c8"
+      }
+    ]
+  },
+  "exports": [],
+  "resources": [
+    {
+      "path": [
+        3,
+        30001,
+        0
+      ],
+      "offset": "0x5e88",
+      "size": 744
+    },
+    {
+      "path": [
+        3,
+        30002,
+        0
+      ],
+      "offset": "0x5d60",
+      "size": 296
+    },
+    {
+      "path": [
+        14,
+        1,
+        0
+      ],
+      "offset": "0x5d3c",
+      "size": 36
+    },
+    {
+      "path": [
+        16,
+        1,
+        1033
+      ],
+      "offset": "0x5b20",
+      "size": 540,
+      "text": [
+        "VS_VERSION_INFO",
+        "VarFileInfo",
+        "Translation",
+        "StringFileInfo",
+        "040904B0",
+        "CompanyName",
+        "Syntrillium",
+        "ProductName",
+        "CoolTips",
+        "FileVersion",
+        "1.00",
+        "ProductVersion",
+        "1.00",
+        "InternalName",
+        "CoolTips",
+        "OriginalFilename",
+        "CoolTips.exe"
+      ]
+    }
+  ],
+  "resource_type_counts": {
+    "3": 2,
+    "14": 1,
+    "16": 1
+  }
+}

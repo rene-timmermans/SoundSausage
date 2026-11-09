@@ -1,0 +1,378 @@
+{
+  "path": "/home/deck/.wine/drive_c/coolpro/Vbase.flt",
+  "size": 25600,
+  "sha256": "9fc2e9a69e74fb2affef08adace3ba074692863d628abbf60570efd8a75aa590",
+  "machine": "0x14c",
+  "pe_timestamp_utc": "1996-10-10T21:07:38+00:00",
+  "image_base": "0x10000000",
+  "entry_va": "0x10002980",
+  "linker": "3.0",
+  "clr_directory": [
+    0,
+    0
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 15003,
+      "rva": 4096,
+      "size": 15360,
+      "offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 664,
+      "rva": 20480,
+      "size": 1024,
+      "offset": 16384
+    },
+    {
+      "name": ".data",
+      "virtual_size": 8984,
+      "rva": 24576,
+      "size": 4608,
+      "offset": 17408
+    },
+    {
+      "name": ".idata",
+      "virtual_size": 1374,
+      "rva": 36864,
+      "size": 1536,
+      "offset": 22016
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 1618,
+      "rva": 40960,
+      "size": 2048,
+      "offset": 23552
+    }
+  ],
+  "imports": {
+    "KERNEL32.dll": [
+      {
+        "name": "HeapDestroy",
+        "iat_va": "0x10009118"
+      },
+      {
+        "name": "GlobalUnlock",
+        "iat_va": "0x1000911c"
+      },
+      {
+        "name": "GlobalLock",
+        "iat_va": "0x10009120"
+      },
+      {
+        "name": "_lclose",
+        "iat_va": "0x10009124"
+      },
+      {
+        "name": "_llseek",
+        "iat_va": "0x10009128"
+      },
+      {
+        "name": "_lread",
+        "iat_va": "0x1000912c"
+      },
+      {
+        "name": "_lopen",
+        "iat_va": "0x10009130"
+      },
+      {
+        "name": "lstrlenA",
+        "iat_va": "0x10009134"
+      },
+      {
+        "name": "GlobalAlloc",
+        "iat_va": "0x10009138"
+      },
+      {
+        "name": "lstrcmpA",
+        "iat_va": "0x1000913c"
+      },
+      {
+        "name": "_lcreat",
+        "iat_va": "0x10009140"
+      },
+      {
+        "name": "GlobalFree",
+        "iat_va": "0x10009144"
+      },
+      {
+        "name": "_lwrite",
+        "iat_va": "0x10009148"
+      },
+      {
+        "name": "GetCPInfo",
+        "iat_va": "0x1000914c"
+      },
+      {
+        "name": "GetModuleFileNameA",
+        "iat_va": "0x10009150"
+      },
+      {
+        "name": "GetCommandLineA",
+        "iat_va": "0x10009154"
+      },
+      {
+        "name": "GetProcAddress",
+        "iat_va": "0x10009158"
+      },
+      {
+        "name": "GetModuleHandleA",
+        "iat_va": "0x1000915c"
+      },
+      {
+        "name": "GetVersion",
+        "iat_va": "0x10009160"
+      },
+      {
+        "name": "ExitProcess",
+        "iat_va": "0x10009164"
+      },
+      {
+        "name": "GetCurrentThreadId",
+        "iat_va": "0x10009168"
+      },
+      {
+        "name": "TlsSetValue",
+        "iat_va": "0x1000916c"
+      },
+      {
+        "name": "TlsAlloc",
+        "iat_va": "0x10009170"
+      },
+      {
+        "name": "TlsFree",
+        "iat_va": "0x10009174"
+      },
+      {
+        "name": "SetLastError",
+        "iat_va": "0x10009178"
+      },
+      {
+        "name": "TlsGetValue",
+        "iat_va": "0x1000917c"
+      },
+      {
+        "name": "GetLastError",
+        "iat_va": "0x10009180"
+      },
+      {
+        "name": "HeapCreate",
+        "iat_va": "0x10009184"
+      },
+      {
+        "name": "lstrcpyA",
+        "iat_va": "0x10009188"
+      },
+      {
+        "name": "SetHandleCount",
+        "iat_va": "0x1000918c"
+      },
+      {
+        "name": "GetFileType",
+        "iat_va": "0x10009190"
+      },
+      {
+        "name": "GetStdHandle",
+        "iat_va": "0x10009194"
+      },
+      {
+        "name": "GetStartupInfoA",
+        "iat_va": "0x10009198"
+      },
+      {
+        "name": "DeleteCriticalSection",
+        "iat_va": "0x1000919c"
+      },
+      {
+        "name": "SetStdHandle",
+        "iat_va": "0x100091a0"
+      },
+      {
+        "name": "SetFilePointer",
+        "iat_va": "0x100091a4"
+      },
+      {
+        "name": "GetACP",
+        "iat_va": "0x100091a8"
+      },
+      {
+        "name": "GetOEMCP",
+        "iat_va": "0x100091ac"
+      },
+      {
+        "name": "FreeEnvironmentStringsA",
+        "iat_va": "0x100091b0"
+      },
+      {
+        "name": "GetEnvironmentStrings",
+        "iat_va": "0x100091b4"
+      },
+      {
+        "name": "FreeEnvironmentStringsW",
+        "iat_va": "0x100091b8"
+      },
+      {
+        "name": "GetEnvironmentStringsW",
+        "iat_va": "0x100091bc"
+      },
+      {
+        "name": "WideCharToMultiByte",
+        "iat_va": "0x100091c0"
+      },
+      {
+        "name": "WriteFile",
+        "iat_va": "0x100091c4"
+      },
+      {
+        "name": "InitializeCriticalSection",
+        "iat_va": "0x100091c8"
+      },
+      {
+        "name": "EnterCriticalSection",
+        "iat_va": "0x100091cc"
+      },
+      {
+        "name": "LeaveCriticalSection",
+        "iat_va": "0x100091d0"
+      },
+      {
+        "name": "HeapAlloc",
+        "iat_va": "0x100091d4"
+      },
+      {
+        "name": "HeapFree",
+        "iat_va": "0x100091d8"
+      },
+      {
+        "name": "LoadLibraryA",
+        "iat_va": "0x100091dc"
+      },
+      {
+        "name": "FlushFileBuffers",
+        "iat_va": "0x100091e0"
+      },
+      {
+        "name": "CloseHandle",
+        "iat_va": "0x100091e4"
+      }
+    ],
+    "USER32.dll": [
+      {
+        "name": "wsprintfA",
+        "iat_va": "0x100091ec"
+      }
+    ]
+  },
+  "exports": [
+    {
+      "name": "CloseFilterInput",
+      "ordinal": 7,
+      "rva": "0x2440",
+      "va": "0x10002440",
+      "file_offset": "0x1840"
+    },
+    {
+      "name": "CloseFilterOutput",
+      "ordinal": 4,
+      "rva": "0x19d0",
+      "va": "0x100019d0",
+      "file_offset": "0xdd0"
+    },
+    {
+      "name": "FilterGetFileSize",
+      "ordinal": 15,
+      "rva": "0x10b0",
+      "va": "0x100010b0",
+      "file_offset": "0x4b0"
+    },
+    {
+      "name": "FilterGetFirstSpecialData",
+      "ordinal": 31,
+      "rva": "0x1880",
+      "va": "0x10001880",
+      "file_offset": "0xc80"
+    },
+    {
+      "name": "FilterGetNextSpecialData",
+      "ordinal": 32,
+      "rva": "0x14b0",
+      "va": "0x100014b0",
+      "file_offset": "0x8b0"
+    },
+    {
+      "name": "FilterOptionsString",
+      "ordinal": 14,
+      "rva": "0x1090",
+      "va": "0x10001090",
+      "file_offset": "0x490"
+    },
+    {
+      "name": "FilterUnderstandsFormat",
+      "ordinal": 9,
+      "rva": "0x10e0",
+      "va": "0x100010e0",
+      "file_offset": "0x4e0"
+    },
+    {
+      "name": "FilterWriteSpecialData",
+      "ordinal": 33,
+      "rva": "0x1190",
+      "va": "0x10001190",
+      "file_offset": "0x590"
+    },
+    {
+      "name": "GetSuggestedSampleType",
+      "ordinal": 16,
+      "rva": "0x18c0",
+      "va": "0x100018c0",
+      "file_offset": "0xcc0"
+    },
+    {
+      "name": "OpenFilterInput",
+      "ordinal": 6,
+      "rva": "0x2000",
+      "va": "0x10002000",
+      "file_offset": "0x1400"
+    },
+    {
+      "name": "OpenFilterOutput",
+      "ordinal": 3,
+      "rva": "0x18e0",
+      "va": "0x100018e0",
+      "file_offset": "0xce0"
+    },
+    {
+      "name": "QueryCoolFilter",
+      "ordinal": 2,
+      "rva": "0x1010",
+      "va": "0x10001010",
+      "file_offset": "0x410"
+    },
+    {
+      "name": "ReadFilterInput",
+      "ordinal": 8,
+      "rva": "0x25b0",
+      "va": "0x100025b0",
+      "file_offset": "0x19b0"
+    },
+    {
+      "name": "SeekFilterInput",
+      "ordinal": 30,
+      "rva": "0x2680",
+      "va": "0x10002680",
+      "file_offset": "0x1a80"
+    },
+    {
+      "name": "WriteFilterOutput",
+      "ordinal": 5,
+      "rva": "0x1dc0",
+      "va": "0x10001dc0",
+      "file_offset": "0x11c0"
+    }
+  ],
+  "resources": [],
+  "resource_type_counts": {}
+}

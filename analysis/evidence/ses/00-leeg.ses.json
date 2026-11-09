@@ -1,0 +1,89 @@
+{
+  "path": "/home/deck/Documenten/Codex/CoolEdit/reference/vm-session-test/00-leeg.ses",
+  "sha256": "fe2fc1b0f0e02ceb798668f442a07801904d479a461995645af1e16001032878",
+  "size": 194,
+  "version": "Cool Edit Pro 1.0",
+  "sample_rate": 44100,
+  "sample_bits": 16,
+  "header_flags": 1,
+  "header_unknown": 0,
+  "header_count_hint": 0,
+  "header_left": 1.0,
+  "header_right": 1.0,
+  "header_offset": 0.0,
+  "chunks": [
+    {
+      "kind": "hdr ",
+      "offset": 12,
+      "payload_offset": 20,
+      "declared_size": 40,
+      "actual_size": 40,
+      "recovered_empty": false
+    },
+    {
+      "kind": "vers",
+      "offset": 60,
+      "payload_offset": 68,
+      "declared_size": 18,
+      "actual_size": 18,
+      "recovered_empty": false
+    },
+    {
+      "kind": "stat",
+      "offset": 86,
+      "payload_offset": 94,
+      "declared_size": 40,
+      "actual_size": 40,
+      "recovered_empty": false
+    },
+    {
+      "kind": "trks",
+      "offset": 134,
+      "payload_offset": 142,
+      "declared_size": 4294948940,
+      "actual_size": 4,
+      "recovered_empty": true
+    },
+    {
+      "kind": "LISTFILE",
+      "offset": 146,
+      "payload_offset": 158,
+      "declared_size": 0,
+      "actual_size": 0,
+      "recovered_empty": false
+    },
+    {
+      "kind": "blk ",
+      "offset": 158,
+      "payload_offset": 166,
+      "declared_size": 4,
+      "actual_size": 4,
+      "recovered_empty": false
+    },
+    {
+      "kind": "envp",
+      "offset": 170,
+      "payload_offset": 178,
+      "declared_size": 4,
+      "actual_size": 4,
+      "recovered_empty": false
+    },
+    {
+      "kind": "cues",
+      "offset": 182,
+      "payload_offset": 190,
+      "declared_size": 4,
+      "actual_size": 4,
+      "recovered_empty": false
+    }
+  ],
+  "tracks": [],
+  "files": [],
+  "blocks": [],
+  "envelopes": [],
+  "cue_count": 0,
+  "cue_bytes": 4,
+  "warnings": [
+    "Empty SES track-length/count fields are invalid; no track records were present."
+  ]
+}

@@ -1,0 +1,334 @@
+{
+  "recorded_utc": "2026-11-09T17:26:02.532033+00:00",
+  "mode": "static only; target code never launched",
+  "rea_mcp_tools_available": false,
+  "tools": {
+    "python3": [
+      "Python 3.14.6"
+    ],
+    "objdump": [
+      "GNU objdump (GNU Binutils) 2.46.1",
+      "Copyright (C) 2026 Free Software Foundation, Inc.",
+      "This program is free software; you may redistribute it under the terms of"
+    ],
+    "winedump": [
+      "Usage: winedump [-h | sym <sym> | spec <dll> | dump <file>]",
+      "Mode options (can be put as the mode (sym/spec/dump...) is declared):",
+      "   When used in --help mode"
+    ],
+    "wine": [
+      "wine-11.13"
+    ],
+    "java": [
+      "openjdk version \"26.0.2\" 2026-07-21",
+      "OpenJDK Runtime Environment (build 26.0.2)",
+      "OpenJDK 64-Bit Server VM (build 26.0.2, mixed mode, sharing)"
+    ],
+    "ghidra": "12.1.2 DEV; application build 2026-Jun-29"
+  },
+  "source_inputs": [
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Amplify.xfm",
+      "sha256": "c08c753b035627de1a9bbef32371e5c6ae9adcbb9fdaa6a6afcb6f150dd839a0"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Chamber.xfm",
+      "sha256": "152874645f30ec7576c60b5906c87c213a8f638774df219a88abf25b88e32cca"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Chanmix.xfm",
+      "sha256": "5cb84d48c4e351664e445e64ba451a97381eba76ccb45fe24cf8c5c6280a889f"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Chorus.xfm",
+      "sha256": "87d339b08298607fb2eb94061a7371c1c7d170ef4495087068d25f10167b9386"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Convolve.xfm",
+      "sha256": "e923992551729b051e1b4941d9d62b04e58b7e9fb2088084830865f4bb7b567f"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Delay.xfm",
+      "sha256": "e1f8f467ceceaee53cc111c5a1cf330a458cf62b7e48bfa8d13b7745dda25c50"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Distort.xfm",
+      "sha256": "2a243431e887fa15a5bb5e25bbf76c26947f29c61bbf7a47662d783af7fcade5"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Dtmf.xfm",
+      "sha256": "e186b0585822f27f9360d8921202b8853dab89496a905beb39fb7c7bebf3e687"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Dtmffilt.xfm",
+      "sha256": "036fa8bedc435f74af86baffd64a2d0ea95fc59913f7af548e4c0ff2429037ce"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Dwd96.flt",
+      "sha256": "f8f29133f69774bfec0d66f36c90b05c853e70158d7ef395368c346989161275"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Dynamics.xfm",
+      "sha256": "29392387bf917dcee4e68acae44e4d745772a5a63a596e2a688812323f7ed438"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Echo.xfm",
+      "sha256": "17f816308f508f550f0f9af96877f279b5437ed50efaa6de823c7727a49c5d58"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Envelope.xfm",
+      "sha256": "b8e63e4d4e0434fe8928606707c3cdad13b77168391740826ba6280f64b24cef"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Filter.xfm",
+      "sha256": "c52b669da0b29deac33444a0cddc13f18a03b6bd52b194612a3af7e7439783c4"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Flange.xfm",
+      "sha256": "42546a31f1b74ae37662c2f0b864249036d3ee5b8d0865f9e01ba30cbae30d7f"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Neweq.xfm",
+      "sha256": "d401c035904770a324abfb19f8d49afca47f3cc05d1d613e1ced65962ac31c04"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Noclick.xfm",
+      "sha256": "243b4bc07db193f1fd2337f70af92852bf0f64d9cb41a3556869abecd795dcb8"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Nohiss.xfm",
+      "sha256": "006155b37df052e5df6d743dce25999623303134b841c08ac4fb8f9461a3e81f"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Noise.xfm",
+      "sha256": "69a23e10ce1edd1252bb52b6ef1f9c80ce997486d09c5505f0ca120ffe4ecd33"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Nonoise.xfm",
+      "sha256": "a98a3a33fdb8b055581eb2a61d2a3385753c543f2fad7589cdc0ca206ab767bc"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Normal.xfm",
+      "sha256": "5b4755d51ca9f4cd2271f5c6a6df92f87da6ea423837b7fc29142cf829d6ff15"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Pika8000.flt",
+      "sha256": "aac3bc085035e025ee010b9ea96d60707f265930f3d1e25a28218926b9c2490a"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Qfilt.xfm",
+      "sha256": "79c51251fede4dce2b7a611b072123680a09d5caeb16cddf890733273aae8c2a"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Ra3.flt",
+      "sha256": "3fe2e88f6e8f3fae46488f2ac6bb62128995f52a8cd1e6847e05ca83de170228"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Resample.xfm",
+      "sha256": "673c0b5d8b4b4040d8242910c42550fb109499235ecd38a1710a894cc15b2bdb"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Reverb.xfm",
+      "sha256": "6de508456047a2442e079d8f76f078a0ba56b7d16124b2604056a88dd0e4eebd"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Scifilt.xfm",
+      "sha256": "eef77fef11cf906f54c4f57273f689033c1d33f15fa858cad8514b139ef2e13e"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Stats.xfm",
+      "sha256": "c345b67bd235a6fe9428c7ec5f114808450df9345c43b842d68e3869406badab"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Stretch.xfm",
+      "sha256": "f6320aec79e2d26ee7cc9c6582cee7c57f5279770991a6f69f8c99a3fa36f4d9"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Tones.xfm",
+      "sha256": "6af19b0744efee3c6a4de37cdbda67423791b3cf867e99db64c69d76a15b7628"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Vbase.flt",
+      "sha256": "9fc2e9a69e74fb2affef08adace3ba074692863d628abbf60570efd8a75aa590"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Vox.flt",
+      "sha256": "7ef35285cd4fe0df3dac1469ef26bd35a7cdd9a7198287b27d75d2a5525ee957"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/Wavesync.xfm",
+      "sha256": "e88a8eaf3b3e951af2d0a42728a90a622c19d520d9f88404ac2d1277f930cc43"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/adpcm.flt",
+      "sha256": "e31d5f7b496868b1eb31c4a1ca0234862a056163babb7bfacfc5b1756135dfbc"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/aif.flt",
+      "sha256": "6313d28cf2c3e8d0c1b932ebc4f83fc58043b995d2671ce713eb38caa8067ffa"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/ami.xfm",
+      "sha256": "5e19990400568b5cce67b4049177b8bc5c976f90eae767605776aa4a645cfedb"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/amirender.ax",
+      "sha256": "dc8a0dfb5e8888115761f61b3c87693eafff544b4f4ae6b85e374c5900b7c875"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/amisource.ax",
+      "sha256": "6f122f2b9ca2e288982dfe2019edb12303606a8ca261acf01ea8e797dd92a9e9"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/au.flt",
+      "sha256": "4d3d70d49cb42687d3d2af20466c551e5b1ff9b7a401256c1772f20cdd7cc89a"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/coolacm.flt",
+      "sha256": "28ef493fa0a83c54a0e0d03f427d85047dc3772ecf9e570f0b402731d46e5a9e"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/coolpro.exe",
+      "sha256": "0488b693ca72743b0bac5963fcb15da3875ce3ceee887527867fa7b19cf133cd"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/cooltext.flt",
+      "sha256": "f0b3a887631914f5f6db2c65f2d830fedb6c47727c0b4fc6dbf2b4f83d43d955"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/cooltips.exe",
+      "sha256": "3b6b677e0b40bb6ba4a01e520456c20828c43b558185a48310d5d96a391ef733"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/dvi.flt",
+      "sha256": "21b0e68c80e9e0519fd4c995acca8d858a8f1443fac3454e65b38495a474323c"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/iff.flt",
+      "sha256": "df0ab4bbbd92944568a4088fdac7567900ac15837dc75171c7d8dcb750fefd8e"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/msvbvm50.dll",
+      "sha256": "45f92f1c2e3839ec2e83045773a84c9bf3bdcdc6388b211826048c86b4962d60"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/multitap.xfm",
+      "sha256": "edc174aedf93abe9be4b38d8925d57d475e645b09572b9c4872599e6e4b6a949"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/para.xfm",
+      "sha256": "80ced5f9ccda0b4627c1655efcac358d6b48c2cc9d4aca194c39242d761c8f38"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/pcm.flt",
+      "sha256": "dda3075db7a1372f9cd17bdec04c7dd5f8177712a23ca2768493ec02b7cbaf34"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/sam.flt",
+      "sha256": "dd6542336ccf49612a661e727ea9e79f4e69a63f521d702342849dda69f6d42a"
+    },
+    {
+      "path": "/home/deck/CoolEdit/setup.exe",
+      "sha256": "61cb91ecddd2a1e3ed6f11d1cb2dcd139fe5ddd9ad883e76815e96b0233927d8"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/smp.flt",
+      "sha256": "ea27c67b06fdb14c9a9df1f30b8b3f7e576ccb500dad71848cc139643202d3e4"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/sweeper.xfm",
+      "sha256": "8fec66bc7b9e8efbdf3f8c5f6ea979e1a79b4fcfa50f37e8ab5568a6edf559a5"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/vce.flt",
+      "sha256": "f6c1abbedfa927cb99b614e53e28fe494f98f7ad8c336401d5c86a15cae59408"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/voc.flt",
+      "sha256": "c84ea50f398d76799e20de4f0d40a9f26886dc5afee3cb088ff66f0c13148436"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/waveau.flt",
+      "sha256": "f2d595be5eccc638301a20e13ce867b249919aff21fc2dd5f73578fca2c4579a"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/wavepcm.flt",
+      "sha256": "861cd2363a71134866b99803d94c976aef199b42474d5d86e49e0e65b9df136a"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/coolpro.hlp",
+      "size": 1296184,
+      "sha256": "a8274135fd73b1658fcdaa68e79caaa99f53e936572c278ae82e7701c749a869"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/coolpro.cnt",
+      "size": 4015,
+      "sha256": "9756e216b3f00c221ea2132ab9b2e25f99b56a22e3cf12a8cc15cedc2b4b3e0f"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/scripts/cfade.scp",
+      "size": 1919,
+      "sha256": "9a3219f317d52af110cce56605af08aad479029d951c45c2fda161f31b0885eb"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/scripts/fxns2.scp",
+      "size": 4080,
+      "sha256": "e572d10d434adfd1d9df7b8c4209b06e856e9589d17cc65c5cf1adf08ec910f1"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/scripts/sndefx2.scp",
+      "size": 6207,
+      "sha256": "2d9805f3e99c27cf60315f85d00e2f807de6cadb69aacd9d2f980d7eba776dc7"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/scripts/batconv.scp",
+      "size": 351,
+      "sha256": "a6c9a9ec2a2726cbad9bad8fae5aa5de67ee4582c83c4dbbae044e97107b2626"
+    },
+    {
+      "path": "/home/deck/.wine/drive_c/coolpro/scripts/mindsnc2.scp",
+      "size": 17234,
+      "sha256": "ced86472886938088acfa99326517173727f037cfd392bdc7671e287373e98e4"
+    }
+  ],
+  "independent_export_checks": [
+    {
+      "module": "coolpro.exe",
+      "named_exports": 137,
+      "match": true
+    },
+    {
+      "module": "Amplify.xfm",
+      "named_exports": 7,
+      "match": true
+    },
+    {
+      "module": "wavepcm.flt",
+      "named_exports": 18,
+      "match": true
+    }
+  ],
+  "ui": {
+    "static_distinct_menu_commands": 193,
+    "accelerator_entries": 123,
+    "dialog_templates": 121,
+    "application_dialog_templates": 117,
+    "dialog_parse_errors": 0
+  },
+  "analysis_limits": [
+    "coolpro.exe automatic analysis timeout set to 120s; Ghidra reported partial analysis",
+    "WndProc at VA 0x004964d0 decompilation timed out at 25s",
+    "Native Windows import libraries were not imported; API type archive windows_vs12_32 used",
+    "Installer and WinHelp could not be listed by 7-Zip; no extraction attempted",
+    "No runtime, audio fidelity, session round-trip or device latency tests performed"
+  ],
+  "requested_workspace": "/home/deck/Documenten/Codex/CoolEdit",
+  "actual_workspace": "/tmp/cooledit-analysis",
+  "workspace_block": "mkdir in requested workspace failed: Read-only file system",
+  "build_tools": {
+    "c++": "/usr/bin/c++",
+    "cmake": null,
+    "ninja": null,
+    "pkg-config": "/usr/bin/pkg-config"
+  }
+}

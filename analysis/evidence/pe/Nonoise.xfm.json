@@ -1,0 +1,1264 @@
+{
+  "path": "/home/deck/.wine/drive_c/coolpro/Nonoise.xfm",
+  "size": 71680,
+  "sha256": "a98a3a33fdb8b055581eb2a61d2a3385753c543f2fad7589cdc0ca206ab767bc",
+  "machine": "0x14c",
+  "pe_timestamp_utc": "1997-07-07T06:21:32+00:00",
+  "image_base": "0x10000000",
+  "entry_va": "0x10007aa0",
+  "linker": "3.0",
+  "clr_directory": [
+    0,
+    0
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 50972,
+      "rva": 4096,
+      "size": 51200,
+      "offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 1105,
+      "rva": 57344,
+      "size": 1536,
+      "offset": 52224
+    },
+    {
+      "name": ".data",
+      "virtual_size": 11412,
+      "rva": 61440,
+      "size": 6656,
+      "offset": 53760
+    },
+    {
+      "name": ".idata",
+      "virtual_size": 2788,
+      "rva": 73728,
+      "size": 3072,
+      "offset": 60416
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 4132,
+      "rva": 77824,
+      "size": 4608,
+      "offset": 63488
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 3292,
+      "rva": 86016,
+      "size": 3584,
+      "offset": 68096
+    }
+  ],
+  "imports": {
+    "KERNEL32.dll": [
+      {
+        "name": "_lclose",
+        "iat_va": "0x10012254"
+      },
+      {
+        "name": "lstrcmpA",
+        "iat_va": "0x10012258"
+      },
+      {
+        "name": "_lcreat",
+        "iat_va": "0x1001225c"
+      },
+      {
+        "name": "_lopen",
+        "iat_va": "0x10012260"
+      },
+      {
+        "name": "_lread",
+        "iat_va": "0x10012264"
+      },
+      {
+        "name": "_hread",
+        "iat_va": "0x10012268"
+      },
+      {
+        "name": "GlobalAlloc",
+        "iat_va": "0x1001226c"
+      },
+      {
+        "name": "GetPrivateProfileStringA",
+        "iat_va": "0x10012270"
+      },
+      {
+        "name": "WritePrivateProfileStringA",
+        "iat_va": "0x10012274"
+      },
+      {
+        "name": "GlobalLock",
+        "iat_va": "0x10012278"
+      },
+      {
+        "name": "GetProcAddress",
+        "iat_va": "0x1001227c"
+      },
+      {
+        "name": "GlobalFree",
+        "iat_va": "0x10012280"
+      },
+      {
+        "name": "_hwrite",
+        "iat_va": "0x10012284"
+      },
+      {
+        "name": "_lwrite",
+        "iat_va": "0x10012288"
+      },
+      {
+        "name": "lstrcpyA",
+        "iat_va": "0x1001228c"
+      },
+      {
+        "name": "TlsFree",
+        "iat_va": "0x10012290"
+      },
+      {
+        "name": "TlsSetValue",
+        "iat_va": "0x10012294"
+      },
+      {
+        "name": "TlsAlloc",
+        "iat_va": "0x10012298"
+      },
+      {
+        "name": "SetFilePointer",
+        "iat_va": "0x1001229c"
+      },
+      {
+        "name": "SetStdHandle",
+        "iat_va": "0x100122a0"
+      },
+      {
+        "name": "CloseHandle",
+        "iat_va": "0x100122a4"
+      },
+      {
+        "name": "FlushFileBuffers",
+        "iat_va": "0x100122a8"
+      },
+      {
+        "name": "RaiseException",
+        "iat_va": "0x100122ac"
+      },
+      {
+        "name": "LCMapStringW",
+        "iat_va": "0x100122b0"
+      },
+      {
+        "name": "LCMapStringA",
+        "iat_va": "0x100122b4"
+      },
+      {
+        "name": "HeapFree",
+        "iat_va": "0x100122b8"
+      },
+      {
+        "name": "HeapAlloc",
+        "iat_va": "0x100122bc"
+      },
+      {
+        "name": "LeaveCriticalSection",
+        "iat_va": "0x100122c0"
+      },
+      {
+        "name": "EnterCriticalSection",
+        "iat_va": "0x100122c4"
+      },
+      {
+        "name": "InitializeCriticalSection",
+        "iat_va": "0x100122c8"
+      },
+      {
+        "name": "GetStringTypeW",
+        "iat_va": "0x100122cc"
+      },
+      {
+        "name": "GetStringTypeA",
+        "iat_va": "0x100122d0"
+      },
+      {
+        "name": "WriteFile",
+        "iat_va": "0x100122d4"
+      },
+      {
+        "name": "WideCharToMultiByte",
+        "iat_va": "0x100122d8"
+      },
+      {
+        "name": "GetEnvironmentStringsW",
+        "iat_va": "0x100122dc"
+      },
+      {
+        "name": "FreeEnvironmentStringsW",
+        "iat_va": "0x100122e0"
+      },
+      {
+        "name": "GetEnvironmentStrings",
+        "iat_va": "0x100122e4"
+      },
+      {
+        "name": "MultiByteToWideChar",
+        "iat_va": "0x100122e8"
+      },
+      {
+        "name": "FreeEnvironmentStringsA",
+        "iat_va": "0x100122ec"
+      },
+      {
+        "name": "GetOEMCP",
+        "iat_va": "0x100122f0"
+      },
+      {
+        "name": "lstrlenA",
+        "iat_va": "0x100122f4"
+      },
+      {
+        "name": "GlobalUnlock",
+        "iat_va": "0x100122f8"
+      },
+      {
+        "name": "GetACP",
+        "iat_va": "0x100122fc"
+      },
+      {
+        "name": "GetModuleFileNameA",
+        "iat_va": "0x10012300"
+      },
+      {
+        "name": "GetDriveTypeA",
+        "iat_va": "0x10012304"
+      },
+      {
+        "name": "GetFullPathNameA",
+        "iat_va": "0x10012308"
+      },
+      {
+        "name": "GetCurrentDirectoryA",
+        "iat_va": "0x1001230c"
+      },
+      {
+        "name": "GetCommandLineA",
+        "iat_va": "0x10012310"
+      },
+      {
+        "name": "GetModuleHandleA",
+        "iat_va": "0x10012314"
+      },
+      {
+        "name": "GetVersion",
+        "iat_va": "0x10012318"
+      },
+      {
+        "name": "LoadLibraryA",
+        "iat_va": "0x1001231c"
+      },
+      {
+        "name": "ExitProcess",
+        "iat_va": "0x10012320"
+      },
+      {
+        "name": "GetCurrentThreadId",
+        "iat_va": "0x10012324"
+      },
+      {
+        "name": "GetCPInfo",
+        "iat_va": "0x10012328"
+      },
+      {
+        "name": "DeleteCriticalSection",
+        "iat_va": "0x1001232c"
+      },
+      {
+        "name": "HeapCreate",
+        "iat_va": "0x10012330"
+      },
+      {
+        "name": "SetLastError",
+        "iat_va": "0x10012334"
+      },
+      {
+        "name": "TlsGetValue",
+        "iat_va": "0x10012338"
+      },
+      {
+        "name": "GetLastError",
+        "iat_va": "0x1001233c"
+      },
+      {
+        "name": "HeapDestroy",
+        "iat_va": "0x10012340"
+      },
+      {
+        "name": "SetHandleCount",
+        "iat_va": "0x10012344"
+      },
+      {
+        "name": "GetFileType",
+        "iat_va": "0x10012348"
+      },
+      {
+        "name": "GetStdHandle",
+        "iat_va": "0x1001234c"
+      },
+      {
+        "name": "GetStartupInfoA",
+        "iat_va": "0x10012350"
+      }
+    ],
+    "USER32.dll": [
+      {
+        "name": "DialogBoxParamA",
+        "iat_va": "0x10012358"
+      },
+      {
+        "name": "SetDlgItemTextA",
+        "iat_va": "0x1001235c"
+      },
+      {
+        "name": "GetDC",
+        "iat_va": "0x10012360"
+      },
+      {
+        "name": "SetScrollPos",
+        "iat_va": "0x10012364"
+      },
+      {
+        "name": "GetScrollRange",
+        "iat_va": "0x10012368"
+      },
+      {
+        "name": "GetScrollPos",
+        "iat_va": "0x1001236c"
+      },
+      {
+        "name": "EnableWindow",
+        "iat_va": "0x10012370"
+      },
+      {
+        "name": "GetDlgItem",
+        "iat_va": "0x10012374"
+      },
+      {
+        "name": "wsprintfA",
+        "iat_va": "0x10012378"
+      },
+      {
+        "name": "SendDlgItemMessageA",
+        "iat_va": "0x1001237c"
+      },
+      {
+        "name": "IsDlgButtonChecked",
+        "iat_va": "0x10012380"
+      },
+      {
+        "name": "GetDlgItemTextA",
+        "iat_va": "0x10012384"
+      },
+      {
+        "name": "BeginPaint",
+        "iat_va": "0x10012388"
+      },
+      {
+        "name": "MapWindowPoints",
+        "iat_va": "0x1001238c"
+      },
+      {
+        "name": "EndPaint",
+        "iat_va": "0x10012390"
+      },
+      {
+        "name": "GetWindowRect",
+        "iat_va": "0x10012394"
+      },
+      {
+        "name": "ScreenToClient",
+        "iat_va": "0x10012398"
+      },
+      {
+        "name": "SetWindowLongA",
+        "iat_va": "0x1001239c"
+      },
+      {
+        "name": "PostMessageA",
+        "iat_va": "0x100123a0"
+      },
+      {
+        "name": "SetFocus",
+        "iat_va": "0x100123a4"
+      },
+      {
+        "name": "EndDialog",
+        "iat_va": "0x100123a8"
+      },
+      {
+        "name": "WinHelpA",
+        "iat_va": "0x100123ac"
+      },
+      {
+        "name": "MessageBoxA",
+        "iat_va": "0x100123b0"
+      },
+      {
+        "name": "GetDlgCtrlID",
+        "iat_va": "0x100123b4"
+      },
+      {
+        "name": "InvalidateRect",
+        "iat_va": "0x100123b8"
+      },
+      {
+        "name": "GetWindowLongA",
+        "iat_va": "0x100123bc"
+      },
+      {
+        "name": "CheckDlgButton",
+        "iat_va": "0x100123c0"
+      },
+      {
+        "name": "SetScrollRange",
+        "iat_va": "0x100123c4"
+      },
+      {
+        "name": "ReleaseDC",
+        "iat_va": "0x100123c8"
+      }
+    ],
+    "GDI32.dll": [
+      {
+        "name": "LineTo",
+        "iat_va": "0x10012220"
+      },
+      {
+        "name": "CreatePen",
+        "iat_va": "0x10012224"
+      },
+      {
+        "name": "DeleteDC",
+        "iat_va": "0x10012228"
+      },
+      {
+        "name": "SelectObject",
+        "iat_va": "0x1001222c"
+      },
+      {
+        "name": "CreateCompatibleBitmap",
+        "iat_va": "0x10012230"
+      },
+      {
+        "name": "SetPixel",
+        "iat_va": "0x10012234"
+      },
+      {
+        "name": "Rectangle",
+        "iat_va": "0x10012238"
+      },
+      {
+        "name": "BitBlt",
+        "iat_va": "0x1001223c"
+      },
+      {
+        "name": "CreateCompatibleDC",
+        "iat_va": "0x10012240"
+      },
+      {
+        "name": "DeleteObject",
+        "iat_va": "0x10012244"
+      },
+      {
+        "name": "GetStockObject",
+        "iat_va": "0x10012248"
+      },
+      {
+        "name": "MoveToEx",
+        "iat_va": "0x1001224c"
+      }
+    ],
+    "comdlg32.dll": [
+      {
+        "name": "GetSaveFileNameA",
+        "iat_va": "0x100123d0"
+      },
+      {
+        "name": "GetOpenFileNameA",
+        "iat_va": "0x100123d4"
+      }
+    ]
+  },
+  "exports": [
+    {
+      "name": "DIALOGMsgProc",
+      "ordinal": 100,
+      "rva": "0x5220",
+      "va": "0x10005220",
+      "file_offset": "0x4620"
+    },
+    {
+      "name": "QueryXfm",
+      "ordinal": 2,
+      "rva": "0x1200",
+      "va": "0x10001200",
+      "file_offset": "0x600"
+    },
+    {
+      "name": "XfmDestroy",
+      "ordinal": 6,
+      "rva": "0x1550",
+      "va": "0x10001550",
+      "file_offset": "0x950"
+    },
+    {
+      "name": "XfmDo",
+      "ordinal": 5,
+      "rva": "0x2a90",
+      "va": "0x10002a90",
+      "file_offset": "0x1e90"
+    },
+    {
+      "name": "XfmInit",
+      "ordinal": 3,
+      "rva": "0x12e0",
+      "va": "0x100012e0",
+      "file_offset": "0x6e0"
+    },
+    {
+      "name": "XfmSetup",
+      "ordinal": 4,
+      "rva": "0x15e0",
+      "va": "0x100015e0",
+      "file_offset": "0x9e0"
+    },
+    {
+      "name": "_LSetStereoFFT32bit@20",
+      "ordinal": 7,
+      "rva": "0x1650",
+      "va": "0x10001650",
+      "file_offset": "0xa50"
+    }
+  ],
+  "resources": [
+    {
+      "path": [
+        2,
+        "TOOLBARICON",
+        1033
+      ],
+      "offset": "0x10098",
+      "size": 1864
+    },
+    {
+      "path": [
+        5,
+        500,
+        1033
+      ],
+      "offset": "0xf900",
+      "size": 1944,
+      "text": [
+        "*I&",
+        "Noise Reduction",
+        "MS Sans Serif",
+        "Noise Profile: (must Load or Get profile first)",
+        "Flat",
+        "text",
+        "Log Scale",
+        "Noise Reduction Settings",
+        "FFT &Size",
+        "Remove Noise",
+        "Keep Only Noise",
+        "&Precision Factor",
+        "S&moothing Amount",
+        "&Transition Width",
+        "Profiles",
+        "L&oad Profile",
+        "S&ave Profile",
+        "&Get Profile from Selection",
+        "S&napshots in profile",
+        "Close",
+        "Cancel",
+        "&Help",
+        "&Noise Reduction Level",
+        "points",
+        "Low",
+        "High",
+        "NR Entire View",
+        "More",
+        "Less",
+        "Left",
+        "Right",
+        "View:",
+        "Live Update"
+      ],
+      "dialog": {
+        "extended": false,
+        "style": "0x90c800c0",
+        "exstyle": "0x0",
+        "rect_dlu": [
+          73,
+          38,
+          351,
+          258
+        ],
+        "menu": "",
+        "window_class": "",
+        "title": "Noise Reduction",
+        "font_point_size": 8,
+        "font": "MS Sans Serif",
+        "controls": [
+          {
+            "id": 1055,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              4,
+              141,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Noise Profile: (must Load or Get profile first)"
+          },
+          {
+            "id": 308,
+            "style": "0x50001008",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              15,
+              233,
+              69
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 1028,
+            "style": "0x50001007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              84,
+              233,
+              61
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 1030,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              110,
+              147,
+              26,
+              12
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Flat"
+          },
+          {
+            "id": 1029,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              142,
+              149,
+              91,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "text"
+          },
+          {
+            "id": 1031,
+            "style": "0x50010003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              148,
+              48,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Log Scale"
+          },
+          {
+            "id": 119,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              172,
+              206,
+              11
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 120,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              213,
+              172,
+              25,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50000007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              198,
+              235,
+              56
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Noise Reduction Settings"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              9,
+              214,
+              29,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "FFT &Size"
+          },
+          {
+            "id": 1024,
+            "style": "0x50210003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              42,
+              211,
+              49,
+              91
+            ],
+            "window_class": {
+              "ordinal": 133
+            },
+            "title": ""
+          },
+          {
+            "id": 1025,
+            "style": "0x50030009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              8,
+              227,
+              63,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Remove Noise"
+          },
+          {
+            "id": 1026,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              8,
+              238,
+              69,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Keep Only Noise"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              135,
+              209,
+              58,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "&Precision Factor"
+          },
+          {
+            "id": 111,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              195,
+              206,
+              23,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              129,
+              223,
+              62,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "S&moothing Amount"
+          },
+          {
+            "id": 113,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              195,
+              222,
+              23,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              135,
+              238,
+              56,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "&Transition Width"
+          },
+          {
+            "id": 112,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              195,
+              236,
+              23,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50000007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              243,
+              2,
+              104,
+              82
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Profiles"
+          },
+          {
+            "id": 1125,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              250,
+              14,
+              90,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "L&oad Profile"
+          },
+          {
+            "id": 1126,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              250,
+              31,
+              90,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "S&ave Profile"
+          },
+          {
+            "id": 1088,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              250,
+              48,
+              90,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "&Get Profile from Selection"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              252,
+              68,
+              62,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "S&napshots in profile"
+          },
+          {
+            "id": 110,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              317,
+              66,
+              23,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 1,
+            "style": "0x50030001",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              307,
+              189,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "OK"
+          },
+          {
+            "id": 8,
+            "style": "0x50030000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              307,
+              206,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Close"
+          },
+          {
+            "id": 2,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              307,
+              223,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Cancel"
+          },
+          {
+            "id": 300,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              307,
+              240,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "&Help"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              161,
+              75,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "&Noise Reduction Level"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              94,
+              214,
+              23,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "points"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              185,
+              18,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Low"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              186,
+              185,
+              23,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "High"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              221,
+              238,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "dB"
+          },
+          {
+            "id": 1027,
+            "style": "0x40010003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              265,
+              52,
+              64,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "NR Entire View"
+          },
+          {
+            "id": 65535,
+            "style": "0x50001008",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              139,
+              146,
+              98,
+              14
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              240,
+              87,
+              17,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "More"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              240,
+              135,
+              16,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Less"
+          },
+          {
+            "id": 1032,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              175,
+              4,
+              28,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Left"
+          },
+          {
+            "id": 1033,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              206,
+              4,
+              33,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Right"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              156,
+              4,
+              18,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "View:"
+          },
+          {
+            "id": 1034,
+            "style": "0x50010003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              53,
+              148,
+              55,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Live Update"
+          }
+        ]
+      }
+    },
+    {
+      "path": [
+        240,
+        500,
+        1033
+      ],
+      "offset": "0x107e0",
+      "size": 66
+    }
+  ],
+  "resource_type_counts": {
+    "2": 1,
+    "5": 1,
+    "240": 1
+  }
+}

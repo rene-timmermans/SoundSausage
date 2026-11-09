@@ -1,0 +1,1332 @@
+{
+  "path": "/home/deck/.wine/drive_c/coolpro/multitap.xfm",
+  "size": 64000,
+  "sha256": "edc174aedf93abe9be4b38d8925d57d475e645b09572b9c4872599e6e4b6a949",
+  "machine": "0x14c",
+  "pe_timestamp_utc": "1997-07-15T23:21:40+00:00",
+  "image_base": "0x10000000",
+  "entry_va": "0x10005860",
+  "linker": "3.0",
+  "clr_directory": [
+    0,
+    0
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 42085,
+      "rva": 4096,
+      "size": 42496,
+      "offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 1029,
+      "rva": 49152,
+      "size": 1536,
+      "offset": 43520
+    },
+    {
+      "name": ".data",
+      "virtual_size": 12980,
+      "rva": 53248,
+      "size": 8704,
+      "offset": 45056
+    },
+    {
+      "name": ".idata",
+      "virtual_size": 2370,
+      "rva": 69632,
+      "size": 2560,
+      "offset": 53760
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 4104,
+      "rva": 73728,
+      "size": 4608,
+      "offset": 56320
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 3066,
+      "rva": 81920,
+      "size": 3072,
+      "offset": 60928
+    }
+  ],
+  "imports": {
+    "KERNEL32.dll": [
+      {
+        "name": "WritePrivateProfileStringA",
+        "iat_va": "0x100111f8"
+      },
+      {
+        "name": "GlobalAlloc",
+        "iat_va": "0x100111fc"
+      },
+      {
+        "name": "GlobalFree",
+        "iat_va": "0x10011200"
+      },
+      {
+        "name": "GetProcAddress",
+        "iat_va": "0x10011204"
+      },
+      {
+        "name": "GlobalLock",
+        "iat_va": "0x10011208"
+      },
+      {
+        "name": "GlobalUnlock",
+        "iat_va": "0x1001120c"
+      },
+      {
+        "name": "GetCommandLineA",
+        "iat_va": "0x10011210"
+      },
+      {
+        "name": "TlsGetValue",
+        "iat_va": "0x10011214"
+      },
+      {
+        "name": "SetLastError",
+        "iat_va": "0x10011218"
+      },
+      {
+        "name": "SetFilePointer",
+        "iat_va": "0x1001121c"
+      },
+      {
+        "name": "SetStdHandle",
+        "iat_va": "0x10011220"
+      },
+      {
+        "name": "CloseHandle",
+        "iat_va": "0x10011224"
+      },
+      {
+        "name": "FlushFileBuffers",
+        "iat_va": "0x10011228"
+      },
+      {
+        "name": "RaiseException",
+        "iat_va": "0x1001122c"
+      },
+      {
+        "name": "LCMapStringW",
+        "iat_va": "0x10011230"
+      },
+      {
+        "name": "LCMapStringA",
+        "iat_va": "0x10011234"
+      },
+      {
+        "name": "HeapFree",
+        "iat_va": "0x10011238"
+      },
+      {
+        "name": "HeapAlloc",
+        "iat_va": "0x1001123c"
+      },
+      {
+        "name": "LeaveCriticalSection",
+        "iat_va": "0x10011240"
+      },
+      {
+        "name": "EnterCriticalSection",
+        "iat_va": "0x10011244"
+      },
+      {
+        "name": "InitializeCriticalSection",
+        "iat_va": "0x10011248"
+      },
+      {
+        "name": "GetStringTypeW",
+        "iat_va": "0x1001124c"
+      },
+      {
+        "name": "GetStringTypeA",
+        "iat_va": "0x10011250"
+      },
+      {
+        "name": "WriteFile",
+        "iat_va": "0x10011254"
+      },
+      {
+        "name": "WideCharToMultiByte",
+        "iat_va": "0x10011258"
+      },
+      {
+        "name": "GetEnvironmentStringsW",
+        "iat_va": "0x1001125c"
+      },
+      {
+        "name": "FreeEnvironmentStringsW",
+        "iat_va": "0x10011260"
+      },
+      {
+        "name": "GetEnvironmentStrings",
+        "iat_va": "0x10011264"
+      },
+      {
+        "name": "MultiByteToWideChar",
+        "iat_va": "0x10011268"
+      },
+      {
+        "name": "FreeEnvironmentStringsA",
+        "iat_va": "0x1001126c"
+      },
+      {
+        "name": "GetOEMCP",
+        "iat_va": "0x10011270"
+      },
+      {
+        "name": "lstrlenA",
+        "iat_va": "0x10011274"
+      },
+      {
+        "name": "lstrcpyA",
+        "iat_va": "0x10011278"
+      },
+      {
+        "name": "GetModuleHandleA",
+        "iat_va": "0x1001127c"
+      },
+      {
+        "name": "GetVersion",
+        "iat_va": "0x10011280"
+      },
+      {
+        "name": "LoadLibraryA",
+        "iat_va": "0x10011284"
+      },
+      {
+        "name": "ExitProcess",
+        "iat_va": "0x10011288"
+      },
+      {
+        "name": "GetCurrentThreadId",
+        "iat_va": "0x1001128c"
+      },
+      {
+        "name": "TlsSetValue",
+        "iat_va": "0x10011290"
+      },
+      {
+        "name": "TlsAlloc",
+        "iat_va": "0x10011294"
+      },
+      {
+        "name": "TlsFree",
+        "iat_va": "0x10011298"
+      },
+      {
+        "name": "GetACP",
+        "iat_va": "0x1001129c"
+      },
+      {
+        "name": "GetFileType",
+        "iat_va": "0x100112a0"
+      },
+      {
+        "name": "GetLastError",
+        "iat_va": "0x100112a4"
+      },
+      {
+        "name": "HeapCreate",
+        "iat_va": "0x100112a8"
+      },
+      {
+        "name": "HeapDestroy",
+        "iat_va": "0x100112ac"
+      },
+      {
+        "name": "SetHandleCount",
+        "iat_va": "0x100112b0"
+      },
+      {
+        "name": "GetStdHandle",
+        "iat_va": "0x100112b4"
+      },
+      {
+        "name": "GetStartupInfoA",
+        "iat_va": "0x100112b8"
+      },
+      {
+        "name": "DeleteCriticalSection",
+        "iat_va": "0x100112bc"
+      },
+      {
+        "name": "GetModuleFileNameA",
+        "iat_va": "0x100112c0"
+      },
+      {
+        "name": "GetCPInfo",
+        "iat_va": "0x100112c4"
+      }
+    ],
+    "USER32.dll": [
+      {
+        "name": "DialogBoxParamA",
+        "iat_va": "0x100112cc"
+      },
+      {
+        "name": "SetDlgItemTextA",
+        "iat_va": "0x100112d0"
+      },
+      {
+        "name": "SetScrollPos",
+        "iat_va": "0x100112d4"
+      },
+      {
+        "name": "GetScrollRange",
+        "iat_va": "0x100112d8"
+      },
+      {
+        "name": "GetScrollPos",
+        "iat_va": "0x100112dc"
+      },
+      {
+        "name": "SendDlgItemMessageA",
+        "iat_va": "0x100112e0"
+      },
+      {
+        "name": "wsprintfA",
+        "iat_va": "0x100112e4"
+      },
+      {
+        "name": "GetDlgItemTextA",
+        "iat_va": "0x100112e8"
+      },
+      {
+        "name": "IsDlgButtonChecked",
+        "iat_va": "0x100112ec"
+      },
+      {
+        "name": "CheckDlgButton",
+        "iat_va": "0x100112f0"
+      },
+      {
+        "name": "EnableWindow",
+        "iat_va": "0x100112f4"
+      },
+      {
+        "name": "GetDlgItem",
+        "iat_va": "0x100112f8"
+      },
+      {
+        "name": "GetWindowLongA",
+        "iat_va": "0x100112fc"
+      },
+      {
+        "name": "BeginPaint",
+        "iat_va": "0x10011300"
+      },
+      {
+        "name": "EndPaint",
+        "iat_va": "0x10011304"
+      },
+      {
+        "name": "SetWindowLongA",
+        "iat_va": "0x10011308"
+      },
+      {
+        "name": "SetScrollRange",
+        "iat_va": "0x1001130c"
+      },
+      {
+        "name": "ShowWindow",
+        "iat_va": "0x10011310"
+      },
+      {
+        "name": "PostMessageA",
+        "iat_va": "0x10011314"
+      },
+      {
+        "name": "DestroyWindow",
+        "iat_va": "0x10011318"
+      },
+      {
+        "name": "EndDialog",
+        "iat_va": "0x1001131c"
+      },
+      {
+        "name": "WinHelpA",
+        "iat_va": "0x10011320"
+      },
+      {
+        "name": "GetWindowRect",
+        "iat_va": "0x10011324"
+      },
+      {
+        "name": "ScreenToClient",
+        "iat_va": "0x10011328"
+      },
+      {
+        "name": "InvalidateRect",
+        "iat_va": "0x1001132c"
+      },
+      {
+        "name": "GetDlgCtrlID",
+        "iat_va": "0x10011330"
+      }
+    ],
+    "GDI32.dll": [
+      {
+        "name": "CreateSolidBrush",
+        "iat_va": "0x100111c4"
+      },
+      {
+        "name": "SetBkColor",
+        "iat_va": "0x100111c8"
+      },
+      {
+        "name": "DeleteObject",
+        "iat_va": "0x100111cc"
+      },
+      {
+        "name": "CreateFontA",
+        "iat_va": "0x100111d0"
+      },
+      {
+        "name": "SelectObject",
+        "iat_va": "0x100111d4"
+      },
+      {
+        "name": "ExtTextOutA",
+        "iat_va": "0x100111d8"
+      },
+      {
+        "name": "MoveToEx",
+        "iat_va": "0x100111dc"
+      },
+      {
+        "name": "CreatePen",
+        "iat_va": "0x100111e0"
+      },
+      {
+        "name": "GetTextExtentPoint32A",
+        "iat_va": "0x100111e4"
+      },
+      {
+        "name": "Rectangle",
+        "iat_va": "0x100111e8"
+      },
+      {
+        "name": "GetStockObject",
+        "iat_va": "0x100111ec"
+      },
+      {
+        "name": "LineTo",
+        "iat_va": "0x100111f0"
+      }
+    ]
+  },
+  "exports": [
+    {
+      "name": "DIALOGMsgProc",
+      "ordinal": 100,
+      "rva": "0x32e0",
+      "va": "0x100032e0",
+      "file_offset": "0x26e0"
+    },
+    {
+      "name": "QueryXfm",
+      "ordinal": 2,
+      "rva": "0x1010",
+      "va": "0x10001010",
+      "file_offset": "0x410"
+    },
+    {
+      "name": "XfmDestroy",
+      "ordinal": 6,
+      "rva": "0x1140",
+      "va": "0x10001140",
+      "file_offset": "0x540"
+    },
+    {
+      "name": "XfmDo",
+      "ordinal": 5,
+      "rva": "0x1890",
+      "va": "0x10001890",
+      "file_offset": "0xc90"
+    },
+    {
+      "name": "XfmInit",
+      "ordinal": 3,
+      "rva": "0x10b0",
+      "va": "0x100010b0",
+      "file_offset": "0x4b0"
+    },
+    {
+      "name": "XfmSetup",
+      "ordinal": 4,
+      "rva": "0x1790",
+      "va": "0x10001790",
+      "file_offset": "0xb90"
+    },
+    {
+      "name": "XfmUpdate",
+      "ordinal": 20,
+      "rva": "0x17c0",
+      "va": "0x100017c0",
+      "file_offset": "0xbc0"
+    }
+  ],
+  "resources": [
+    {
+      "path": [
+        2,
+        "TOOLBARICON",
+        1033
+      ],
+      "offset": "0xe4c0",
+      "size": 1864
+    },
+    {
+      "path": [
+        5,
+        500,
+        1033
+      ],
+      "offset": "0xdcc0",
+      "size": 2046,
+      "text": [
+        "4I&",
+        "Multitap Delay",
+        "MS Sans Serif",
+        "Cancel",
+        "Close",
+        "&Help",
+        "&Preview",
+        "Delay Units",
+        "SuU",
+        "|S(",
+        "Add New",
+        "Remove",
+        "Offset",
+        "Delay",
+        "Feedback",
+        "Allpass Feedback",
+        "Left Channel",
+        "Right Channel",
+        "Both Channels",
+        "Cutoff",
+        "No Modulation",
+        "Random Modulation",
+        "Cyclic Modulation",
+        "Modulation Amount",
+        "Modulation",
+        "Low-Cut Filter",
+        "Delay",
+        "High-Cut Filter",
+        "Cutoff",
+        "Boost",
+        "Boost"
+      ],
+      "dialog": {
+        "extended": false,
+        "style": "0x90c800c0",
+        "exstyle": "0x0",
+        "rect_dlu": [
+          73,
+          38,
+          410,
+          263
+        ],
+        "menu": "",
+        "window_class": "",
+        "title": "Multitap Delay",
+        "font_point_size": 8,
+        "font": "MS Sans Serif",
+        "controls": [
+          {
+            "id": 1,
+            "style": "0x50030000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              366,
+              194,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "OK"
+          },
+          {
+            "id": 2,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              366,
+              211,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Cancel"
+          },
+          {
+            "id": 8,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              366,
+              228,
+              40,
+              15
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Close"
+          },
+          {
+            "id": 300,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              366,
+              245,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "&Help"
+          },
+          {
+            "id": 3,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              320,
+              245,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "&Preview"
+          },
+          {
+            "id": 1025,
+            "style": "0x40020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              18,
+              14,
+              8,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 1052,
+            "style": "0x50001008",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              4,
+              402,
+              65
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              73,
+              37,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Delay Units"
+          },
+          {
+            "id": 1055,
+            "style": "0x50a10181",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              83,
+              117,
+              85
+            ],
+            "window_class": {
+              "ordinal": 131
+            },
+            "title": ""
+          },
+          {
+            "id": 1029,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              124,
+              83,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Add New"
+          },
+          {
+            "id": 1030,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              124,
+              153,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Remove"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              190,
+              87,
+              23,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Offset"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              188,
+              103,
+              25,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Delay"
+          },
+          {
+            "id": 110,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              359,
+              85,
+              28,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              389,
+              87,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "ms"
+          },
+          {
+            "id": 111,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              360,
+              100,
+              28,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              390,
+              102,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "ms"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              178,
+              119,
+              36,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Feedback"
+          },
+          {
+            "id": 112,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              360,
+              115,
+              28,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              390,
+              117,
+              8,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "%"
+          },
+          {
+            "id": 115,
+            "style": "0x50010003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              179,
+              132,
+              72,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Allpass Feedback"
+          },
+          {
+            "id": 1045,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              173,
+              189,
+              56,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Left Channel"
+          },
+          {
+            "id": 1046,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              173,
+              199,
+              61,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Right Channel"
+          },
+          {
+            "id": 1047,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              173,
+              209,
+              62,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Both Channels"
+          },
+          {
+            "id": 1054,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              178,
+              166,
+              34,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              213,
+              168,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Hz"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              298,
+              157,
+              20,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Cutoff"
+          },
+          {
+            "id": 1056,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              297,
+              166,
+              34,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              332,
+              168,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Hz"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              252,
+              168,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "dB"
+          },
+          {
+            "id": 1057,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              232,
+              166,
+              19,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              372,
+              168,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "dB"
+          },
+          {
+            "id": 1058,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              352,
+              166,
+              19,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 1059,
+            "style": "0x40000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              175,
+              231,
+              62,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "No Modulation"
+          },
+          {
+            "id": 1060,
+            "style": "0x40000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              175,
+              238,
+              79,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Random Modulation"
+          },
+          {
+            "id": 1061,
+            "style": "0x40000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              175,
+              242,
+              71,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Cyclic Modulation"
+          },
+          {
+            "id": 65535,
+            "style": "0x40020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              193,
+              247,
+              62,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Modulation Amount"
+          },
+          {
+            "id": 114,
+            "style": "0x40810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              257,
+              246,
+              28,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x40020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              289,
+              247,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "ms"
+          },
+          {
+            "id": 1062,
+            "style": "0x40810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              252,
+              230,
+              28,
+              13
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x40020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              284,
+              233,
+              10,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Hz"
+          },
+          {
+            "id": 65535,
+            "style": "0x40000007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              171,
+              219,
+              141,
+              40
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Modulation"
+          },
+          {
+            "id": 65535,
+            "style": "0x50000007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              173,
+              147,
+              114,
+              38
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Low-Cut Filter"
+          },
+          {
+            "id": 65535,
+            "style": "0x50000007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              173,
+              74,
+              233,
+              71
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Delay"
+          },
+          {
+            "id": 1063,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              217,
+              85,
+              139,
+              11
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 1064,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              217,
+              101,
+              139,
+              11
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 1065,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              217,
+              116,
+              139,
+              11
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50000007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              292,
+              147,
+              114,
+              38
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "High-Cut Filter"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              179,
+              157,
+              20,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Cutoff"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              233,
+              157,
+              19,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Boost"
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              353,
+              157,
+              19,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Boost"
+          },
+          {
+            "id": 1066,
+            "style": "0x50001008",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              172,
+              161,
+              87
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          }
+        ]
+      }
+    }
+  ],
+  "resource_type_counts": {
+    "2": 1,
+    "5": 1
+  }
+}

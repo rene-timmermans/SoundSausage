@@ -1,0 +1,128 @@
+{
+  "recorded_utc": "2026-11-09T20:26:31.993327+00:00",
+  "prototype": "0.3.0",
+  "tests": 111,
+  "test_result": "passed",
+  "test_log": "build/test-results-envelopes.log",
+  "screenshots": [
+    "build/prototype.png",
+    "build/multitrack-v02.png",
+    "build/imported-ses-v02.png",
+    "build/theme-previews/dark-teal-empty.png",
+    "build/theme-previews/dark-teal-waveform.png",
+    "build/theme-previews/dark-teal-multitrack.png",
+    "build/theme-previews/light-purple-empty.png",
+    "build/theme-previews/light-purple-waveform.png",
+    "build/theme-previews/light-purple-multitrack.png",
+    "build/demo-volume-line-v03.png",
+    "build/demo-pan-line-v03.png"
+  ],
+  "native_library": "build/libcooledit_dsp.so",
+  "native_library_sha256": "daa544692aaaeaba6a0d23370ff77a369adc53c6f66665ad1e2a410464c12794",
+  "project_format": "CELP version 2 with source-frame volume/pan envelopes and embedded float32 WAV; version 1 remains readable",
+  "legacy_import": "Limited observed Cool Edit Pro 1.0 layout; six retained SES fixtures imported; baseline, volume and pan PCM16 session exports match all shared audio bytes; each original has one extra silent frame",
+  "playback_validation": "ffplay with SDL dummy audio/video; user confirmed physical audio for 0.1, multitrack hardware playback not independently verified",
+  "original_windows_targets_executed_by_agent": false,
+  "packages_installed": false,
+  "source_sha256": {
+    "native/dsp.cpp": "4ac3a0f69c74e96f6b3501b964f584dece4dc5ae5eb0dca3851fbe5ea2aec338",
+    "src/cooledit/__init__.py": "7085657154233b794a3c9c745c7d2ec8c9450148e6bafd0c3e68f6e2c619b6e3",
+    "src/cooledit/__main__.py": "5dbcfed8c244a444a64c4550543f1510ab2bd1c7f3a958d4cda8b8a0a8c8acbd",
+    "src/cooledit/audio.py": "823ac8a48e94869d24eac8b59885bd839a27df7fabc1c70f33e7ef0d84e9a967",
+    "src/cooledit/document.py": "4cb01980a248ef862092c7ce4ea3697bc3ada1d996b0ced718447cd50dc2ef22",
+    "src/cooledit/dsp.py": "0ad044f0e96e73aa6c2f7c69c5ee982eda514738e68736297221679bbcff3ce9",
+    "src/cooledit/legacy.py": "3e7332a9f5782aebe38889860996f61d4206475b918766eb2f0cb20f2f090f0a",
+    "src/cooledit/multitrack.py": "fc5b8b2ea6583387285ddadedfbbf9f8c9d40f85f45b51d1f870ac8f1fe9aefa",
+    "src/cooledit/playback.py": "cb3febb882701ae41a747e28584382134649123db06b5cc881a8b809d2ba9ed0",
+    "src/cooledit/project.py": "7902b9d78405e4124691b4d310cd6dbe51c60aa7c596774581920cc58248659e",
+    "src/cooledit/session.py": "8aa3f3bb146fff8e80b0447f951d20a135dfad8acd4eebbcee622520cb3e104f",
+    "src/cooledit/session_actions.py": "3de284c22a8530b11958e2efaa3684e2287cd5aa598311acca2a4e9f0273c343",
+    "src/cooledit/spectrum.py": "d9459d6878b077c34ebf514dc79b214af7b43da428ea8c5bbc1b9979b8ecefd1",
+    "src/cooledit/waveform.py": "31858b49ed7d3f832eb0683982b08284491e64a221a09d179cea148cfa4a1112",
+    "src/cooledit/window.py": "ee16ba439182526326f4022c800f7290daa970c1aa4db9519f6ef637c18e5b82",
+    "tests/test_audio.py": "e64ed2dae0dc8e2839d7f06f476aed8ecd39c487c69a0126c8c3fa2d1eba0e10",
+    "tests/test_document.py": "d655eeef9f81237150ca8aeed462e3bf67c7208e5170a4360fd66684027d004d",
+    "tests/test_gui.py": "45f18cda6734e7e59fbcf0a0fad51534a21c22b0264c8a1b801877bd3ee39850",
+    "tests/test_legacy.py": "520af29b39b9e784aee37092aa91e7e1afe9f0e555aaa2445af65726ba6cbe35",
+    "tests/test_multitrack_gui.py": "1f0715e6d6567a803c361a3c3e2fad8e266589ec7cdedc2b951dab36609cc8b0",
+    "tests/test_session.py": "21ec2926e4656f59f52728b3cd38cc99575f3f62c11fdb26bdaec8e6912c73b4",
+    "tools/inspect_ses.py": "32eb0676344d08ec021a7e65bfb4ffbc8ff802ee1646d614fea976ff43b36c25",
+    "tools/make_demo.py": "364deafdf0807667a59d238e70a93066f57ff3581030a46ada6d8e29b00cc002",
+    "tools/compare_ses_mix.py": "71d299c84e686bf65a6dd67779a362c450ea2d28fbc4393b878a36195365bd52",
+    "src/cooledit/icons.py": "88d1ac648bd7f5ce164ca9f6c136db325c662cb60d9a43870f243e5d514efe7a",
+    "src/cooledit/theme.py": "722b13cde1fa5accd933e0adf69085e67e3db0e4d993af2b0f0bd5b1a70b27ea",
+    "tests/test_theme.py": "17dc11c8035ff7b9306c2511e869568f6efe12a97f099f52171594b77f3509c0",
+    "tools/render_theme_previews.py": "3f40e2f4af9dc671e4280751ffda897ba499edb47a1d30891db9a33d58f65fa9",
+    "src/cooledit/envelope_ui.py": "d5d4848092071ef494c0ed8f360dd20ffa6d49702dcd96d176fd4d7930fae2fc",
+    "src/cooledit/envelopes.py": "bafa57ae55677b759bdd40318d3b849caffb8db17d8025b2588c0e91b0d65d8e",
+    "tests/test_envelopes.py": "6451572b3fadf7e3657e10c14a5943558d1809b0e9d3eab2b55717bfc884a478",
+    "tools/make_envelope_demo.py": "9394f33f93507150d309ab7a3b1e03453533381545622fd3ec3e7ae267c8ed82"
+  },
+  "references": [
+    {
+      "name": "00-leeg.ses",
+      "sha256": "fe2fc1b0f0e02ceb798668f442a07801904d479a461995645af1e16001032878",
+      "retained_copy": "reference/vm-session-test/00-leeg.ses",
+      "external_source_status": "external source no longer present or changed; retained analyzed copy unchanged"
+    },
+    {
+      "name": "01-een-clip.ses",
+      "sha256": "635c14b672263e5c06b015fe068b289e7bb3058689a573d3428a8b9d0313f92f",
+      "retained_copy": "reference/vm-session-test/01-een-clip.ses",
+      "external_source_status": "external source no longer present or changed; retained analyzed copy unchanged"
+    },
+    {
+      "name": "02-basis.ses",
+      "sha256": "5afbd0e5e03e758948e355b5a0b3567aa11a17db9f237f55d54732d6beedb452",
+      "retained_copy": "reference/vm-session-test/02-basis.ses",
+      "external_source_status": "external source no longer present or changed; retained analyzed copy unchanged"
+    },
+    {
+      "name": "03-verplaatst.ses",
+      "sha256": "9909c1a484b947f54552155a6f0e5f650bd276200e8ddaaeb9e61a65fce4cc71",
+      "retained_copy": "reference/vm-session-test/03-verplaatst.ses",
+      "external_source_status": "external source no longer present or changed; retained analyzed copy unchanged"
+    },
+    {
+      "name": "04-volume.ses",
+      "sha256": "bf917e185612187d99fb3abe1d1aefd236a0f5d70165fe6d46514c7c77fa2ccb",
+      "retained_copy": "reference/vm-session-test/04-volume.ses",
+      "external_source_status": "external source no longer present or changed; retained analyzed copy unchanged"
+    },
+    {
+      "name": "05-pan.ses",
+      "sha256": "29b707b79f758a5f767363f31620826e38b3fc41ffe7557b81c3993369ba7a3e",
+      "retained_copy": "reference/vm-session-test/05-pan.ses",
+      "external_source_status": "external source no longer present or changed; retained analyzed copy unchanged"
+    },
+    {
+      "name": "02-basis-mix.wav",
+      "sha256": "15cc02f1130862a54855629bf48cfcb44aa29643319344b2569c9468bb92505f",
+      "retained_copy": "reference/vm-session-test/02-basis-mix.wav",
+      "external_source_status": "external original unchanged; retained copy verified byte for byte"
+    },
+    {
+      "name": "04-volume-mix.wav",
+      "sha256": "37a6ab40331059727bae8efd911bf8fdf405fbb66305f1d2e157c1b3d9cca01a",
+      "retained_copy": "reference/vm-session-test/04-volume-mix.wav",
+      "external_source_status": "external original unchanged; retained copy verified byte for byte"
+    },
+    {
+      "name": "05-mix-down.wav",
+      "sha256": "872a7cea66e9e132c1b7e9d21674a9ec6c97b8b9294e78577c2a70370bcbdb33",
+      "retained_copy": "reference/vm-session-test/05-mix-down.wav",
+      "external_source_status": "external original unchanged; retained copy verified byte for byte"
+    }
+  ],
+  "final_ui_smoke": "Automation demo generated, saved/reopened, mixed and rendered as real Qt Volume/Pan previews at 1180x720; all gesture, project, playback-routing and existing original-reference tests pass.",
+  "original_mix_comparison": "analysis/evidence/ses/mixdown-comparison.json",
+  "original_mix_comparisons": [
+    "analysis/evidence/ses/mixdown-comparison.json",
+    "analysis/evidence/ses/04-volume-mix-comparison.json",
+    "analysis/evidence/ses/05-pan-mix-comparison.json"
+  ],
+  "session_pcm16_policy": "Symmetric saturation at -32767/+32767 for session exports; ordinary WAV saves keep full PCM range; float render and export keep headroom",
+  "theme_validation": "analysis/evidence/ui-theme.json",
+  "native_abi": 3,
+  "envelope_validation": "analysis/evidence/envelopes-v03.json"
+}

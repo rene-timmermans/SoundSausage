@@ -1,0 +1,35 @@
+Contents of /home/deck/.wine/drive_c/coolpro/wavepcm.flt: 40960 bytes
+
+
+  Name:            Cool32*WAV.flt
+  Characteristics: 00000000
+  TimeDateStamp:   3368F863 Thu May  1 22:09:07 1997
+  Version:         0.00
+  Ordinal base:    2
+  # of functions:  33
+  # of Names:      18
+  Functions RVA:   000080B8
+  Ordinals RVA:    00008184
+  Names RVA:       0000813C
+
+  Entry Pt  Ordn  Name
+  00001010     2  QueryCoolFilter
+  00002910     3  OpenFilterOutput
+  00002BB0     4  CloseFilterOutput
+  00003310     5  WriteFilterOutput
+  00002DB0     6  OpenFilterInput
+  000031B0     7  CloseFilterInput
+  000031F0     8  ReadFilterInput
+  000010C0     9  FilterUnderstandsFormat
+  00002800    14  FilterGetOptions
+  00002850    15  FilterOptions
+  00001090    16  FilterGetFileSize
+  00002D10    17  GetDataOffset
+  000026B0    20  DIALOGMsgProc
+  000032C0    30  SeekFilterInput
+  000025F0    31  FilterGetFirstSpecialData
+  00001870    32  FilterGetNextSpecialData
+  00001320    33  FilterWriteSpecialData
+  00002880    34  FilterOptionsString
+
+Done dumping /home/deck/.wine/drive_c/coolpro/wavepcm.flt

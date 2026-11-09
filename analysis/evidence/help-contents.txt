@@ -1,0 +1,99 @@
+:Base coolpro.hlp>menulg
+:Title Cool Edit Pro
+1 Welcome to Cool Edit Pro=welcome_topic>welcome
+1 Getting Started
+2 Overview=features_topic>startlg
+2 Registering Cool Edit Pro=reg_topic>startlg
+2 Getting Started=started_topic>startlg
+2 Contacting Syntrillium Software=contacting_topic>startsm
+2 Cool Edit Pro's Working Philosophy=paradigm_topic>large
+2 Quick Reference=quickref_topic>startsm
+1 Navigating Cool Edit Pro
+2 Navigating in Cool Edit Pro=navigating_topic>navsh
+2 Playing and Recording=playrec_topic>navsh
+2 Keyboard and Mouse Shortcuts=shortcut_topic>navsh
+2 Editing Individual Channels=editleft_topic>navshsm
+2 Selecting Data=select_topic>navsh
+2 Scrolling Through a Waveform=scroll_nav>navshsm
+2 Waveform and Spectral Views=wavespec_nav>navshsm
+2 Track Volume Control=trackvol_nav>navsh
+2 Track Pan Control=trackpan_nav>navsh
+2 Edit Waveform View
+3 Edit Waveform View main screen=editview_nav>navbig
+3 Menus=menus_nav>element
+3 Toolbars=toolbars_nav>element
+3 Display Range Bar=drb_nav>element
+3 Time Window=timew_nav>element
+3 Waveform Display=waveform_nav>elembg
+3 Amplitude Ruler=amplitude_nav>element
+3 Time Ruler=timer_nav>element
+3 Transport=transport_nav>element
+3 Horizontal Zoom=horizontal_nav>element
+3 Vertical Zoom=vertical_nav>element
+3 Time Display Fields=timed_nav>element
+3 CD Controls=cd_nav>element
+3 Level Meters=levelm_nav>element
+3 Staus Bar=status_nav>element
+2 Multitrack View elements
+3 Multitrack View main screen=multview_nav>navbig
+3 Menus=mmenus_nav>element
+3 Toolbars=toolbars_nav>element
+3 Display Range Bar=drb_nav>element
+3 Waveform Display=mwaveform_nav>elembg
+3 Track Ruler=trackd_nav>element
+3 Time Ruler=timer_nav>element
+3 Track Console=trackc_nav>element
+3 Mix Gauge=mix_nav>element
+3 Transport=transport_nav>element
+3 Horizontal Zoom=horizontal_nav>element
+3 Vertical Zoom=mvertical_nav>element
+3 Time Window=timew_nav>element
+3 Time Display Fields=timed_nav>element
+3 CD Controls=cd_nav>element
+3 Level Meters=levelm_nav>element
+3 Status Bar=status_nav>element
+1 Menu Reference
+2 Edit Waveform View=emenu_temp_topic>menucont
+2 Multitrack View=mmenu_temp_topic>menucont
+1 How To...
+2 Add ambiance to a mono signal=echoch_how>process
+2 Adjust Record and Playback Levels=adjusting_levels_topic>proclg
+2 Assign Record and Playback Devices to Tracks=trackdevice_how>process
+2 Batch Process Files=batch_how>process
+2 Capture a Loop=loop_how>process
+2 Create a script=script_how>proclg
+2 Create non-destructive effects in multitrack=mtfx_how>proclg
+2 Create time delay effects=loopfx_how>proclg
+2 Convert/Batch-Convert Between File Formats=convert_how>process
+2 Do mono to stereo conversion=monoconv_how>proclg
+2 Do multi-band compression=multi_how>process
+2 Export to RealAudio=ra_how>process
+2 Record from a CD=cdrecord_how>process
+2 Set up MIDI and Wave devices=setdevice_how>process
+2 Spatially Locate a Sound=spatial_how>proclg
+2 Use Noise Reduction=reducenz_how>process
+2 Use Punch In=punch_how>process
+1 Troubleshooting
+2 Answers to Common Questions=commonq_topic>techxlg
+2 Specific Hardware Configurations=hardware_configurations>techsm
+2 Technical Support=techsupp_topic>techlg
+1 MIDI/SMPTE
+2 What are MIDI and SMPTE?=what_is_midi_topic>eduwin
+2 MIDI Triggering=midi_triggering_topic>eduwin
+2 SMPTE Syncronization=smpte_topic>eduwin
+1 Appendix
+2 Sound File Formats=sound_file_formats_topic>types
+2 Glossary=glossary_topic>gloswin
+2 Shortcuts=shortcut_topic>navsh
+2 Multitrack Editing=multiedit_topic>startlg
+2 ActiveMovie/DirectX Plug-Ins=am_topic>startsm
+2 Function Presets=preset_topic>eduwin
+2 Preview=preview_topic>eduwin
+2 Installing and Removing Cool Edit Pro=setup_topic>startsm
+2 Technical Notes=tech_topic>notes
+2 Technical Bibliography=bibliography_topic>bib
+2 Cool Edit Pro APIs=api_topic>startsm
+2 Using Cool Edit Pro with Cakewalk Pro Audio=using_with_Cakewalk>startsm
+2 Using the Microsoft ACM=using_acm>startlg
+2 contents=conttest
+2 find=findtest

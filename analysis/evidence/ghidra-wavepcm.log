@@ -1,0 +1,120 @@
+2026-11-09 18:20:42 INFO  (LoggingInitialization) Using log config file: jar:file:/opt/ghidra/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml  
+2026-11-09 18:20:42 INFO  (LoggingInitialization) Using log file: /tmp/cooledit-analysis/evidence/ghidra-wavepcm.log  
+2026-11-09 18:20:42 DEBUG (GhidraObjectInputFilter) Including serial input filter: FileSystem/data/client.rmi.serial.filter  
+2026-11-09 18:20:42 INFO  (Preferences) Loading user preferences: /tmp/cooledit-ghidra-home/config/ghidra/ghidra_12.1.2_DEV/preferences  
+2026-11-09 18:20:42 INFO  (ClassSearcher) Searching for classes...  
+2026-11-09 18:20:44 INFO  (ClassSearcher) Class search complete (1427 ms)  
+2026-11-09 18:20:44 INFO  (DefaultSSLContextInitializer) Initializing SSL Context  
+2026-11-09 18:20:44 INFO  (SecureRandomFactory) Initializing Random Number Generator...  
+2026-11-09 18:20:44 INFO  (SecureRandomFactory) Random Number Generator initialization complete: NativePRNGNonBlocking  
+2026-11-09 18:20:44 INFO  (DefaultTrustManagerFactory) Trust manager disabled, cacerts have not been set  
+2026-11-09 18:20:45 INFO  (AnalyzeHeadless) Headless startup complete (3164 ms)  
+2026-11-09 18:20:45 INFO  (ClassSearcher) Class searcher loaded 59 extension points (20 false positives)  
+2026-11-09 18:20:45 INFO  (HeadlessAnalyzer) HEADLESS Script Paths:
+    /opt/ghidra/Ghidra/Features/SystemEmulation/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/GnuDemangler/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/WildcardAssembler/ghidra_scripts
+    /opt/ghidra/Ghidra/Processors/DATA/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/DecompilerDependent/ghidra_scripts
+    /opt/ghidra/Ghidra/Processors/JVM/ghidra_scripts
+    /opt/ghidra/Ghidra/Debug/Debugger-rmi-trace/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/MicrosoftCodeAnalyzer/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/VersionTracking/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/PyGhidra/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/SwiftDemangler/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/Base/ghidra_scripts
+    /opt/ghidra/Ghidra/Processors/Atmel/ghidra_scripts
+    /opt/ghidra/Ghidra/Debug/Debugger/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/Decompiler/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/FunctionID/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/PDB/ghidra_scripts
+    /opt/ghidra/Ghidra/Processors/8051/ghidra_scripts
+    /opt/ghidra/Ghidra/Processors/PIC/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/FileFormats/ghidra_scripts
+    /opt/ghidra/Ghidra/Features/BSim/ghidra_scripts
+    /tmp/cooledit-analysis/tools
+    /opt/ghidra/Ghidra/Features/BytePatterns/ghidra_scripts  
+2026-11-09 18:20:45 INFO  (HeadlessAnalyzer) HEADLESS: execution starts  
+2026-11-09 18:20:45 INFO  (HeadlessAnalyzer) Creating temporary project: /tmp/cooledit-ghidra-project/wavepcm  
+2026-11-09 18:20:45 INFO  (DefaultProject) Creating project: /tmp/cooledit-ghidra-project/wavepcm  
+2026-11-09 18:20:45 INFO  (HeadlessAnalyzer) REPORT: Processing input files:   
+2026-11-09 18:20:45 INFO  (HeadlessAnalyzer)      project: /tmp/cooledit-ghidra-project/wavepcm  
+2026-11-09 18:20:45 INFO  (HeadlessAnalyzer) IMPORTING: file:///home/deck/.wine/drive_c/coolpro/wavepcm.flt  
+2026-11-09 18:20:46 INFO  (ProgramLoader) Using Loader: Portable Executable (PE)  
+2026-11-09 18:20:46 INFO  (ProgramLoader) Using Language/Compiler: x86:LE:32:default:windows  
+2026-11-09 18:20:46 INFO  (ProgramLoader) Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib64]  
+2026-11-09 18:20:47 WARN  (ExportDataDirectory) Invalid or missing function at 100080d8  
+2026-11-09 18:20:47 INFO  (ProgramLoader) Additional info:
+Loading file:///home/deck/.wine/drive_c/coolpro/wavepcm.flt?MD5=d063a0cf2d0a9c35e0fc41456145f4c7...
+------------------------------------------------
+
+Searching 7 paths for library KERNEL32.DLL...
+Library not found.
+------------------------------------------------
+
+Searching 7 paths for library USER32.DLL...
+Library not found.
+------------------------------------------------
+
+Linking the External Programs of 'wavepcm.flt' to imported libraries...
+  [KERNEL32.DLL] -> not found in project
+  [USER32.DLL] -> not found in project
+------------------------------------------------
+
+  
+2026-11-09 18:20:47 INFO  (HeadlessAnalyzer) IMPORTING: Loaded 0 additional files  
+2026-11-09 18:20:48 INFO  (HeadlessAnalyzer) ANALYZING all memory and code: file:///home/deck/.wine/drive_c/coolpro/wavepcm.flt  
+2026-11-09 18:20:48 WARN  (NoReturnFunctionAnalyzer) Ignoring leading '_' chars on no-return name '___raise_securityfailure' specified in file: /opt/ghidra/Ghidra/Features/Base/data/PEFunctionsThatDoNotReturn  
+2026-11-09 18:20:48 WARN  (NoReturnFunctionAnalyzer) Ignoring leading '_' chars on no-return name '___report_rangecheckfailure' specified in file: /opt/ghidra/Ghidra/Features/Base/data/PEFunctionsThatDoNotReturn  
+2026-11-09 18:20:48 INFO  (PdbUniversalAnalyzer) Skipping PDB processing: missing PDB information in program metadata  
+2026-11-09 18:20:51 INFO  (PackedDatabaseCache) Packed database cache: /tmp/cooledit-ghidra-home/cache/ghidra/packed-db-cache  
+2026-11-09 18:20:51 DEBUG (PackedDatabaseCache) Using cached packed database: /opt/ghidra/Ghidra/Features/Base/data/typeinfo/win32/windows_vs12_32.gdt  
+2026-11-09 18:20:52 INFO  (ApplyDataArchiveAnalyzer) Applied data type archive: windows_vs12_32  
+2026-11-09 18:20:52 INFO  (ApplyDataArchiveAnalyzer) Applied data type archive: windows_vs12_32  
+2026-11-09 18:20:55 DEBUG (NewFunctionStackAnalysisCmd) Failed to create variable (instruction at 10004db9, stack-offset=-2, size=4): Data type does not fit within stack frame constraints (stack offset=-2, size=4  
+2026-11-09 18:20:56 INFO  (AutoAnalysisManager) -----------------------------------------------------
+    ASCII Strings                              0.403 secs
+    Apply Data Archives                        0.949 secs
+    Call Convention ID                         0.711 secs
+    Call-Fixup Installer                       0.021 secs
+    Create Address Tables                      0.020 secs
+    Create Address Tables - One Time           0.017 secs
+    Create Function                            0.126 secs
+    Data Reference                             0.026 secs
+    Decompiler Parameter ID                    1.486 secs
+    Decompiler Switch Analysis                 1.420 secs
+    Demangler Microsoft                        0.017 secs
+    Disassemble                                0.171 secs
+    Disassemble Entry Points                   0.550 secs
+    Embedded Media                             0.009 secs
+    External Entry References                  0.001 secs
+    Function ID                                0.280 secs
+    Function Start Pre Search                  0.009 secs
+    Function Start Search                      0.058 secs
+    Function Start Search After Code           0.008 secs
+    Function Start Search After Data           0.022 secs
+    Non-Returning Functions - Discovered       0.039 secs
+    Non-Returning Functions - Known            0.012 secs
+    PDB Universal                              0.002 secs
+    Reference                                  0.054 secs
+    Scalar Operand References                  0.142 secs
+    Shared Return Calls                        0.036 secs
+    Stack                                      0.651 secs
+    Subroutine References                      0.040 secs
+    Subroutine References - One Time           0.015 secs
+    WindowsResourceReference                   0.360 secs
+    X86 Function Callee Purge                  0.022 secs
+    x86 Constant Reference Analyzer            0.721 secs
+-----------------------------------------------------
+     Total Time   8 secs
+-----------------------------------------------------
+  
+2026-11-09 18:20:56 INFO  (HeadlessAnalyzer) REPORT: Analysis succeeded for file: file:///home/deck/.wine/drive_c/coolpro/wavepcm.flt  
+2026-11-09 18:20:56 INFO  (HeadlessAnalyzer) REPORT: Execute script: FocusExport.java '/tmp/cooledit-analysis/evidence/wavepcm-decompiled.txt' '^(QueryCoolFilter|FilterUnderstandsFormat|OpenFilterInput|ReadFilterInput|SeekFilterInput|OpenFilterOutput|WriteFilterOutput)$'   
+2026-11-09 18:20:56 INFO  (HeadlessAnalyzer) SCRIPT: /tmp/cooledit-analysis/tools/FocusExport.java  
+2026-11-09 18:20:57 INFO  (GhidraScript) FocusExport.java> Exported 7 functions to /tmp/cooledit-analysis/evidence/wavepcm-decompiled.txt  
+2026-11-09 18:20:57 INFO  (HeadlessAnalyzer) ANALYZING changes made by post scripts: file:///home/deck/.wine/drive_c/coolpro/wavepcm.flt  
+2026-11-09 18:20:57 INFO  (HeadlessAnalyzer) REPORT: Post-analysis succeeded for file: file:///home/deck/.wine/drive_c/coolpro/wavepcm.flt  
+2026-11-09 18:20:57 INFO  (LocalFileSystem) /wavepcm.flt: file created (deck)  
+2026-11-09 18:20:57 INFO  (HeadlessAnalyzer) REPORT: Save succeeded for: /wavepcm.flt (wavepcm:/wavepcm.flt)  
+2026-11-09 18:20:57 INFO  (HeadlessAnalyzer) REPORT: Import succeeded  

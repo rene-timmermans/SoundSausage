@@ -1,0 +1,1042 @@
+{
+  "path": "/home/deck/.wine/drive_c/coolpro/Wavesync.xfm",
+  "size": 49152,
+  "sha256": "e88a8eaf3b3e951af2d0a42728a90a622c19d520d9f88404ac2d1277f930cc43",
+  "machine": "0x14c",
+  "pe_timestamp_utc": "1997-06-25T02:45:41+00:00",
+  "image_base": "0x10000000",
+  "entry_va": "0x100047c0",
+  "linker": "3.0",
+  "clr_directory": [
+    0,
+    0
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 32373,
+      "rva": 4096,
+      "size": 32768,
+      "offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 949,
+      "rva": 36864,
+      "size": 1024,
+      "offset": 33792
+    },
+    {
+      "name": ".data",
+      "virtual_size": 10212,
+      "rva": 40960,
+      "size": 5632,
+      "offset": 34816
+    },
+    {
+      "name": ".idata",
+      "virtual_size": 1822,
+      "rva": 53248,
+      "size": 2048,
+      "offset": 40448
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 3620,
+      "rva": 57344,
+      "size": 4096,
+      "offset": 42496
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 2414,
+      "rva": 61440,
+      "size": 2560,
+      "offset": 46592
+    }
+  ],
+  "imports": {
+    "KERNEL32.dll": [
+      {
+        "name": "SetLastError",
+        "iat_va": "0x1000d15c"
+      },
+      {
+        "name": "lstrcpyA",
+        "iat_va": "0x1000d160"
+      },
+      {
+        "name": "GlobalUnlock",
+        "iat_va": "0x1000d164"
+      },
+      {
+        "name": "GlobalLock",
+        "iat_va": "0x1000d168"
+      },
+      {
+        "name": "GetProcAddress",
+        "iat_va": "0x1000d16c"
+      },
+      {
+        "name": "GlobalFree",
+        "iat_va": "0x1000d170"
+      },
+      {
+        "name": "GlobalAlloc",
+        "iat_va": "0x1000d174"
+      },
+      {
+        "name": "HeapCreate",
+        "iat_va": "0x1000d178"
+      },
+      {
+        "name": "SetFilePointer",
+        "iat_va": "0x1000d17c"
+      },
+      {
+        "name": "SetStdHandle",
+        "iat_va": "0x1000d180"
+      },
+      {
+        "name": "CloseHandle",
+        "iat_va": "0x1000d184"
+      },
+      {
+        "name": "FlushFileBuffers",
+        "iat_va": "0x1000d188"
+      },
+      {
+        "name": "LCMapStringW",
+        "iat_va": "0x1000d18c"
+      },
+      {
+        "name": "LCMapStringA",
+        "iat_va": "0x1000d190"
+      },
+      {
+        "name": "HeapFree",
+        "iat_va": "0x1000d194"
+      },
+      {
+        "name": "HeapAlloc",
+        "iat_va": "0x1000d198"
+      },
+      {
+        "name": "LeaveCriticalSection",
+        "iat_va": "0x1000d19c"
+      },
+      {
+        "name": "EnterCriticalSection",
+        "iat_va": "0x1000d1a0"
+      },
+      {
+        "name": "InitializeCriticalSection",
+        "iat_va": "0x1000d1a4"
+      },
+      {
+        "name": "GetStringTypeW",
+        "iat_va": "0x1000d1a8"
+      },
+      {
+        "name": "GetStringTypeA",
+        "iat_va": "0x1000d1ac"
+      },
+      {
+        "name": "WriteFile",
+        "iat_va": "0x1000d1b0"
+      },
+      {
+        "name": "WideCharToMultiByte",
+        "iat_va": "0x1000d1b4"
+      },
+      {
+        "name": "GetEnvironmentStringsW",
+        "iat_va": "0x1000d1b8"
+      },
+      {
+        "name": "GetCommandLineA",
+        "iat_va": "0x1000d1bc"
+      },
+      {
+        "name": "GetModuleHandleA",
+        "iat_va": "0x1000d1c0"
+      },
+      {
+        "name": "GetVersion",
+        "iat_va": "0x1000d1c4"
+      },
+      {
+        "name": "LoadLibraryA",
+        "iat_va": "0x1000d1c8"
+      },
+      {
+        "name": "ExitProcess",
+        "iat_va": "0x1000d1cc"
+      },
+      {
+        "name": "GetCurrentThreadId",
+        "iat_va": "0x1000d1d0"
+      },
+      {
+        "name": "TlsSetValue",
+        "iat_va": "0x1000d1d4"
+      },
+      {
+        "name": "TlsAlloc",
+        "iat_va": "0x1000d1d8"
+      },
+      {
+        "name": "TlsFree",
+        "iat_va": "0x1000d1dc"
+      },
+      {
+        "name": "lstrlenA",
+        "iat_va": "0x1000d1e0"
+      },
+      {
+        "name": "TlsGetValue",
+        "iat_va": "0x1000d1e4"
+      },
+      {
+        "name": "GetLastError",
+        "iat_va": "0x1000d1e8"
+      },
+      {
+        "name": "FreeEnvironmentStringsW",
+        "iat_va": "0x1000d1ec"
+      },
+      {
+        "name": "GetModuleFileNameA",
+        "iat_va": "0x1000d1f0"
+      },
+      {
+        "name": "HeapDestroy",
+        "iat_va": "0x1000d1f4"
+      },
+      {
+        "name": "SetHandleCount",
+        "iat_va": "0x1000d1f8"
+      },
+      {
+        "name": "GetFileType",
+        "iat_va": "0x1000d1fc"
+      },
+      {
+        "name": "GetStdHandle",
+        "iat_va": "0x1000d200"
+      },
+      {
+        "name": "GetStartupInfoA",
+        "iat_va": "0x1000d204"
+      },
+      {
+        "name": "DeleteCriticalSection",
+        "iat_va": "0x1000d208"
+      },
+      {
+        "name": "GetCPInfo",
+        "iat_va": "0x1000d20c"
+      },
+      {
+        "name": "GetACP",
+        "iat_va": "0x1000d210"
+      },
+      {
+        "name": "GetOEMCP",
+        "iat_va": "0x1000d214"
+      },
+      {
+        "name": "FreeEnvironmentStringsA",
+        "iat_va": "0x1000d218"
+      },
+      {
+        "name": "MultiByteToWideChar",
+        "iat_va": "0x1000d21c"
+      },
+      {
+        "name": "GetEnvironmentStrings",
+        "iat_va": "0x1000d220"
+      }
+    ],
+    "USER32.dll": [
+      {
+        "name": "BeginPaint",
+        "iat_va": "0x1000d228"
+      },
+      {
+        "name": "EndPaint",
+        "iat_va": "0x1000d22c"
+      },
+      {
+        "name": "SendMessageA",
+        "iat_va": "0x1000d230"
+      },
+      {
+        "name": "PostMessageA",
+        "iat_va": "0x1000d234"
+      },
+      {
+        "name": "EndDialog",
+        "iat_va": "0x1000d238"
+      },
+      {
+        "name": "WinHelpA",
+        "iat_va": "0x1000d23c"
+      },
+      {
+        "name": "GetDlgCtrlID",
+        "iat_va": "0x1000d240"
+      },
+      {
+        "name": "GetDC",
+        "iat_va": "0x1000d244"
+      },
+      {
+        "name": "ReleaseDC",
+        "iat_va": "0x1000d248"
+      },
+      {
+        "name": "CheckDlgButton",
+        "iat_va": "0x1000d24c"
+      },
+      {
+        "name": "GetDlgItem",
+        "iat_va": "0x1000d250"
+      },
+      {
+        "name": "SetScrollRange",
+        "iat_va": "0x1000d254"
+      },
+      {
+        "name": "GetDlgItemTextA",
+        "iat_va": "0x1000d258"
+      },
+      {
+        "name": "IsDlgButtonChecked",
+        "iat_va": "0x1000d25c"
+      },
+      {
+        "name": "wsprintfA",
+        "iat_va": "0x1000d260"
+      },
+      {
+        "name": "GetScrollPos",
+        "iat_va": "0x1000d264"
+      },
+      {
+        "name": "GetScrollRange",
+        "iat_va": "0x1000d268"
+      },
+      {
+        "name": "SetScrollPos",
+        "iat_va": "0x1000d26c"
+      },
+      {
+        "name": "SetDlgItemTextA",
+        "iat_va": "0x1000d270"
+      },
+      {
+        "name": "DialogBoxParamA",
+        "iat_va": "0x1000d274"
+      }
+    ]
+  },
+  "exports": [
+    {
+      "name": "DIALOGMsgProc",
+      "ordinal": 100,
+      "rva": "0x2890",
+      "va": "0x10002890",
+      "file_offset": "0x1c90"
+    },
+    {
+      "name": "QueryXfm",
+      "ordinal": 2,
+      "rva": "0x11d0",
+      "va": "0x100011d0",
+      "file_offset": "0x5d0"
+    },
+    {
+      "name": "XfmDestroy",
+      "ordinal": 6,
+      "rva": "0x1310",
+      "va": "0x10001310",
+      "file_offset": "0x710"
+    },
+    {
+      "name": "XfmDo",
+      "ordinal": 5,
+      "rva": "0x2220",
+      "va": "0x10002220",
+      "file_offset": "0x1620"
+    },
+    {
+      "name": "XfmInit",
+      "ordinal": 3,
+      "rva": "0x1270",
+      "va": "0x10001270",
+      "file_offset": "0x670"
+    },
+    {
+      "name": "XfmSetup",
+      "ordinal": 4,
+      "rva": "0x1360",
+      "va": "0x10001360",
+      "file_offset": "0x760"
+    }
+  ],
+  "resources": [
+    {
+      "path": [
+        2,
+        "TOOLBARICON",
+        1033
+      ],
+      "offset": "0xacdc",
+      "size": 1864
+    },
+    {
+      "path": [
+        5,
+        500,
+        1033
+      ],
+      "offset": "0xa6c0",
+      "size": 1564,
+      "text": [
+        "'I&",
+        "Brainwave Synchronizer",
+        "MS Sans Serif",
+        "&Frequency (Hz)",
+        "&Intensity",
+        "&Centering",
+        "F&requency (Hz)",
+        "I&ntensity",
+        "C&entering",
+        "Musical &Source",
+        "S&mooth Waves",
+        "Cancel",
+        "&Help",
+        "Flat",
+        "Pattern",
+        "Pattern",
+        "Left",
+        "Right",
+        "Frequency",
+        "Left",
+        "Right",
+        "Low Settings",
+        "High Settings",
+        "Spline Curves",
+        "Close"
+      ],
+      "dialog": {
+        "extended": false,
+        "style": "0x90c800c0",
+        "exstyle": "0x0",
+        "rect_dlu": [
+          73,
+          38,
+          364,
+          234
+        ],
+        "menu": "",
+        "window_class": "",
+        "title": "Brainwave Synchronizer",
+        "font_point_size": 8,
+        "font": "MS Sans Serif",
+        "controls": [
+          {
+            "id": 204,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              10,
+              158,
+              55,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "&Frequency (Hz)"
+          },
+          {
+            "id": 203,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              10,
+              167,
+              110,
+              10
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 205,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              122,
+              166,
+              32,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              10,
+              179,
+              33,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "&Intensity"
+          },
+          {
+            "id": 115,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              10,
+              190,
+              110,
+              10
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 116,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              122,
+              188,
+              32,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 212,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              44,
+              201,
+              38,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "&Centering"
+          },
+          {
+            "id": 210,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              10,
+              211,
+              110,
+              10
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 211,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              122,
+              210,
+              32,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              168,
+              158,
+              55,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "F&requency (Hz)"
+          },
+          {
+            "id": 112,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              168,
+              167,
+              110,
+              10
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 106,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              280,
+              166,
+              32,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              168,
+              179,
+              32,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "I&ntensity"
+          },
+          {
+            "id": 113,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              168,
+              190,
+              110,
+              10
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 114,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              280,
+              188,
+              32,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 202,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              200,
+              201,
+              38,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "C&entering"
+          },
+          {
+            "id": 201,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              168,
+              211,
+              110,
+              10
+            ],
+            "window_class": {
+              "ordinal": 132
+            },
+            "title": ""
+          },
+          {
+            "id": 206,
+            "style": "0x50810080",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              280,
+              210,
+              32,
+              12
+            ],
+            "window_class": {
+              "ordinal": 129
+            },
+            "title": ""
+          },
+          {
+            "id": 253,
+            "style": "0x50030003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              127,
+              69,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Musical &Source"
+          },
+          {
+            "id": 1087,
+            "style": "0x50010003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              76,
+              127,
+              69,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "S&mooth Waves"
+          },
+          {
+            "id": 1,
+            "style": "0x50030001",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              320,
+              164,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "OK"
+          },
+          {
+            "id": 2,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              320,
+              198,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Cancel"
+          },
+          {
+            "id": 300,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              320,
+              215,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "&Help"
+          },
+          {
+            "id": 1028,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              229,
+              126,
+              19,
+              13
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Flat"
+          },
+          {
+            "id": 126,
+            "style": "0x50000002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              248,
+              153,
+              61,
+              11
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Pattern"
+          },
+          {
+            "id": 207,
+            "style": "0x50000002",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              100,
+              153,
+              51,
+              11
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Pattern"
+          },
+          {
+            "id": 208,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              168,
+              201,
+              20,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Left"
+          },
+          {
+            "id": 209,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              256,
+              201,
+              24,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Right"
+          },
+          {
+            "id": 308,
+            "style": "0x50001007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              14,
+              356,
+              109
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 105,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              6,
+              4,
+              38,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Frequency"
+          },
+          {
+            "id": 1017,
+            "style": "0x50020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              257,
+              128,
+              96,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": " "
+          },
+          {
+            "id": 65535,
+            "style": "0x50001008",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              255,
+              126,
+              105,
+              13
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 213,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              10,
+              201,
+              17,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Left"
+          },
+          {
+            "id": 214,
+            "style": "0x50000000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              102,
+              201,
+              24,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": "Right"
+          },
+          {
+            "id": 1025,
+            "style": "0x40020000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              183,
+              74,
+              8,
+              8
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 65535,
+            "style": "0x50000007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              4,
+              146,
+              154,
+              84
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Low Settings"
+          },
+          {
+            "id": 65535,
+            "style": "0x50000007",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              162,
+              145,
+              154,
+              84
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "High Settings"
+          },
+          {
+            "id": 111,
+            "style": "0x50010003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              151,
+              127,
+              59,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Spline Curves"
+          },
+          {
+            "id": 8,
+            "style": "0x50030000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              320,
+              181,
+              40,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Close"
+          }
+        ]
+      }
+    }
+  ],
+  "resource_type_counts": {
+    "2": 1,
+    "5": 1
+  }
+}

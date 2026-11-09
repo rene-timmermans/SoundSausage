@@ -1,0 +1,37 @@
+{
+  "recorded_utc": "2026-11-09T18:07:45.081002+00:00",
+  "prototype": "0.1.0",
+  "tests": 38,
+  "test_result": "passed",
+  "test_log": "build/test-results.log",
+  "screenshot": "build/prototype.png",
+  "native_library": "build/libcooledit_dsp.so",
+  "native_library_sha256": "3ed829c7656a68c11ec39533550bb002325efd2eed74fecc0611be8e6ab69089",
+  "playback_validation": "actual ffplay child, SDL dummy audio/video; physical audio unverified",
+  "original_windows_targets_executed": false,
+  "packages_installed": false,
+  "source_sha256": {
+    "native/dsp.cpp": "fffadc136d358d206706ed68973ca3013b3db4103d8d2d6b98e95a2963d6e057",
+    "src/cooledit/__init__.py": "611494ad9dc1f59120f6b7f6535feba1cf7ab284672d3e09182b13ce553cf366",
+    "src/cooledit/__main__.py": "6b0e53017e814bd7c30d53dc0f0f3c0023354f0f775d67c914641245aebcd744",
+    "src/cooledit/audio.py": "be12f0497ff71554356ed605824302c87b48da901bdae2d615a0867fd7a977e8",
+    "src/cooledit/document.py": "4cb01980a248ef862092c7ce4ea3697bc3ada1d996b0ced718447cd50dc2ef22",
+    "src/cooledit/dsp.py": "568737c5fa841824daba3abfcc1702f3d16ae6f8b9b02b8402be2a57f8fc409d",
+    "src/cooledit/playback.py": "3fd417ddbd6068bd67bc23ae2f3fe2cfbe84c3694b6b4daf8fb1ae6295085e5f",
+    "src/cooledit/spectrum.py": "365483a0923d1ff11a59397cb325961a16c923dcfff4cd3073189e1d760dd254",
+    "src/cooledit/waveform.py": "7cb58970222e0a855b3e7d765dae0eba9a7b2299128950bfc7203a8d731ce9f5",
+    "src/cooledit/window.py": "b9b58f021e53576a8113e64bbab39b74aa660dcdb5d8eebc2c5c60a7d8d31bf2",
+    "tests/test_audio.py": "e64ed2dae0dc8e2839d7f06f476aed8ecd39c487c69a0126c8c3fa2d1eba0e10",
+    "tests/test_document.py": "d655eeef9f81237150ca8aeed462e3bf67c7208e5170a4360fd66684027d004d",
+    "tests/test_gui.py": "45f18cda6734e7e59fbcf0a0fad51534a21c22b0264c8a1b801877bd3ee39850",
+    "tools/make_demo.py": "1277c64d99d1f8f10fa06f38283926ce6bef15f0fb233971fd2009f4a3555d50"
+  },
+  "user_reported_checks": [
+    {
+      "date": "2026-11-09",
+      "check": "physical audio playback",
+      "result": "works",
+      "source": "User reported: geluid werkt overigens!"
+    }
+  ]
+}

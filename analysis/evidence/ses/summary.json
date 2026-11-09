@@ -1,0 +1,147 @@
+[
+  {
+    "file": "00-leeg.ses",
+    "version": "Cool Edit Pro 1.0",
+    "sample_rate": 44100,
+    "tracks": 0,
+    "warnings": [
+      "Empty SES track-length/count fields are invalid; no track records were present."
+    ],
+    "clips": []
+  },
+  {
+    "file": "01-een-clip.ses",
+    "version": "Cool Edit Pro 1.0",
+    "sample_rate": 44100,
+    "tracks": 1,
+    "warnings": [],
+    "clips": [
+      {
+        "source": "A-mono.wav",
+        "start_frame": 0,
+        "start_seconds": 0.0,
+        "frames": 88200,
+        "left": 1.0,
+        "right": 1.0,
+        "left_db": 0.0,
+        "right_db": 0.0
+      }
+    ]
+  },
+  {
+    "file": "02-basis.ses",
+    "version": "Cool Edit Pro 1.0",
+    "sample_rate": 44100,
+    "tracks": 2,
+    "warnings": [],
+    "clips": [
+      {
+        "source": "A-mono.wav",
+        "start_frame": 0,
+        "start_seconds": 0.0,
+        "frames": 88200,
+        "left": 1.0,
+        "right": 1.0,
+        "left_db": 0.0,
+        "right_db": 0.0
+      },
+      {
+        "source": "B-stereo.wav",
+        "start_frame": 50809,
+        "start_seconds": 1.1521315192743764,
+        "frames": 132300,
+        "left": 1.0,
+        "right": 1.0,
+        "left_db": 0.0,
+        "right_db": 0.0
+      }
+    ]
+  },
+  {
+    "file": "03-verplaatst.ses",
+    "version": "Cool Edit Pro 1.0",
+    "sample_rate": 44100,
+    "tracks": 2,
+    "warnings": [],
+    "clips": [
+      {
+        "source": "A-mono.wav",
+        "start_frame": 0,
+        "start_seconds": 0.0,
+        "frames": 88200,
+        "left": 1.0,
+        "right": 1.0,
+        "left_db": 0.0,
+        "right_db": 0.0
+      },
+      {
+        "source": "B-stereo.wav",
+        "start_frame": 88200,
+        "start_seconds": 2.0,
+        "frames": 132300,
+        "left": 1.0,
+        "right": 1.0,
+        "left_db": 0.0,
+        "right_db": 0.0
+      }
+    ]
+  },
+  {
+    "file": "04-volume.ses",
+    "version": "Cool Edit Pro 1.0",
+    "sample_rate": 44100,
+    "tracks": 2,
+    "warnings": [],
+    "clips": [
+      {
+        "source": "A-mono.wav",
+        "start_frame": 0,
+        "start_seconds": 0.0,
+        "frames": 88200,
+        "left": 4.971643737252429,
+        "right": 4.971643737252429,
+        "left_db": 13.93,
+        "right_db": 13.93
+      },
+      {
+        "source": "B-stereo.wav",
+        "start_frame": 88200,
+        "start_seconds": 2.0,
+        "frames": 132300,
+        "left": 1.0,
+        "right": 1.0,
+        "left_db": 0.0,
+        "right_db": 0.0
+      }
+    ]
+  },
+  {
+    "file": "05-pan.ses",
+    "version": "Cool Edit Pro 1.0",
+    "sample_rate": 44100,
+    "tracks": 2,
+    "warnings": [],
+    "clips": [
+      {
+        "source": "A-mono.wav",
+        "start_frame": 0,
+        "start_seconds": 0.0,
+        "frames": 88200,
+        "left": 4.971643737252429,
+        "right": 4.971643737252429,
+        "left_db": 13.93,
+        "right_db": 13.93
+      },
+      {
+        "source": "B-stereo.wav",
+        "start_frame": 88200,
+        "start_seconds": 2.0,
+        "frames": 132300,
+        "left": 9.999999999999979e-06,
+        "right": 1.0,
+        "left_db": -100.00000000000001,
+        "right_db": 0.0
+      }
+    ]
+  }
+]

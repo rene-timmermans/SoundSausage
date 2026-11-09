@@ -1,0 +1,326 @@
+{
+  "path": "/home/deck/.wine/drive_c/coolpro/amirender.ax",
+  "size": 38912,
+  "sha256": "dc8a0dfb5e8888115761f61b3c87693eafff544b4f4ae6b85e374c5900b7c875",
+  "machine": "0x14c",
+  "pe_timestamp_utc": "1997-07-07T16:35:05+00:00",
+  "image_base": "0x1d000000",
+  "entry_va": "0x1d001a43",
+  "linker": "5.0",
+  "clr_directory": [
+    0,
+    0
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 19973,
+      "rva": 4096,
+      "size": 20480,
+      "offset": 4096
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 5237,
+      "rva": 24576,
+      "size": 5632,
+      "offset": 24576
+    },
+    {
+      "name": ".data",
+      "virtual_size": 560,
+      "rva": 32768,
+      "size": 512,
+      "offset": 30208
+    },
+    {
+      "name": ".idata",
+      "virtual_size": 1346,
+      "rva": 36864,
+      "size": 1536,
+      "offset": 30720
+    },
+    {
+      "name": ".CRT",
+      "virtual_size": 40,
+      "rva": 40960,
+      "size": 512,
+      "offset": 32256
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 1100,
+      "rva": 45056,
+      "size": 1536,
+      "offset": 32768
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 4346,
+      "rva": 49152,
+      "size": 4608,
+      "offset": 34304
+    }
+  ],
+  "imports": {
+    "MSVCRT.dll": [
+      {
+        "name": "??3@YAXPAX@Z",
+        "iat_va": "0x1d0091c4"
+      },
+      {
+        "name": "??2@YAPAXI@Z",
+        "iat_va": "0x1d0091c8"
+      },
+      {
+        "name": "_except_handler3",
+        "iat_va": "0x1d0091cc"
+      },
+      {
+        "name": "_purecall",
+        "iat_va": "0x1d0091d0"
+      }
+    ],
+    "WINMM.dll": [],
+    "KERNEL32.dll": [
+      {
+        "name": "LoadLibraryA",
+        "iat_va": "0x1d009168"
+      },
+      {
+        "name": "InitializeCriticalSection",
+        "iat_va": "0x1d00916c"
+      },
+      {
+        "name": "DeleteCriticalSection",
+        "iat_va": "0x1d009170"
+      },
+      {
+        "name": "LeaveCriticalSection",
+        "iat_va": "0x1d009174"
+      },
+      {
+        "name": "EnterCriticalSection",
+        "iat_va": "0x1d009178"
+      },
+      {
+        "name": "GetVersionExA",
+        "iat_va": "0x1d00917c"
+      },
+      {
+        "name": "DisableThreadLibraryCalls",
+        "iat_va": "0x1d009180"
+      },
+      {
+        "name": "lstrlenA",
+        "iat_va": "0x1d009184"
+      },
+      {
+        "name": "MultiByteToWideChar",
+        "iat_va": "0x1d009188"
+      },
+      {
+        "name": "GetLastError",
+        "iat_va": "0x1d00918c"
+      },
+      {
+        "name": "GetModuleFileNameA",
+        "iat_va": "0x1d009190"
+      },
+      {
+        "name": "InterlockedIncrement",
+        "iat_va": "0x1d009194"
+      },
+      {
+        "name": "InterlockedDecrement",
+        "iat_va": "0x1d009198"
+      },
+      {
+        "name": "CreateSemaphoreA",
+        "iat_va": "0x1d00919c"
+      },
+      {
+        "name": "CloseHandle",
+        "iat_va": "0x1d0091a0"
+      },
+      {
+        "name": "WaitForSingleObject",
+        "iat_va": "0x1d0091a4"
+      },
+      {
+        "name": "ReleaseSemaphore",
+        "iat_va": "0x1d0091a8"
+      },
+      {
+        "name": "GetSystemInfo",
+        "iat_va": "0x1d0091ac"
+      },
+      {
+        "name": "VirtualAlloc",
+        "iat_va": "0x1d0091b0"
+      },
+      {
+        "name": "VirtualFree",
+        "iat_va": "0x1d0091b4"
+      },
+      {
+        "name": "GetProcAddress",
+        "iat_va": "0x1d0091b8"
+      },
+      {
+        "name": "GetModuleHandleA",
+        "iat_va": "0x1d0091bc"
+      }
+    ],
+    "ADVAPI32.dll": [
+      {
+        "name": "RegCreateKeyA",
+        "iat_va": "0x1d009148"
+      },
+      {
+        "name": "RegSetValueA",
+        "iat_va": "0x1d00914c"
+      },
+      {
+        "name": "RegSetValueExA",
+        "iat_va": "0x1d009150"
+      },
+      {
+        "name": "RegOpenKeyExA",
+        "iat_va": "0x1d009154"
+      },
+      {
+        "name": "RegEnumKeyExA",
+        "iat_va": "0x1d009158"
+      },
+      {
+        "name": "RegCloseKey",
+        "iat_va": "0x1d00915c"
+      },
+      {
+        "name": "RegDeleteKeyA",
+        "iat_va": "0x1d009160"
+      }
+    ],
+    "USER32.dll": [
+      {
+        "name": "wsprintfA",
+        "iat_va": "0x1d0091d8"
+      }
+    ],
+    "ole32.dll": [
+      {
+        "name": "StringFromGUID2",
+        "iat_va": "0x1d0091e4"
+      },
+      {
+        "name": "CoCreateInstance",
+        "iat_va": "0x1d0091e8"
+      },
+      {
+        "name": "CoUninitialize",
+        "iat_va": "0x1d0091ec"
+      },
+      {
+        "name": "CoFreeUnusedLibraries",
+        "iat_va": "0x1d0091f0"
+      },
+      {
+        "name": "CoInitialize",
+        "iat_va": "0x1d0091f4"
+      },
+      {
+        "name": "CoTaskMemAlloc",
+        "iat_va": "0x1d0091f8"
+      },
+      {
+        "name": "CoTaskMemFree",
+        "iat_va": "0x1d0091fc"
+      }
+    ]
+  },
+  "exports": [
+    {
+      "name": "DllCanUnloadNow",
+      "ordinal": 1,
+      "rva": "0x1a26",
+      "va": "0x1d001a26",
+      "file_offset": "0x1a26"
+    },
+    {
+      "name": "DllGetClassObject",
+      "ordinal": 2,
+      "rva": "0x1953",
+      "va": "0x1d001953",
+      "file_offset": "0x1953"
+    },
+    {
+      "name": "DllRegisterServer",
+      "ordinal": 3,
+      "rva": "0x1014",
+      "va": "0x1d001014",
+      "file_offset": "0x1014"
+    },
+    {
+      "name": "DllUnregisterServer",
+      "ordinal": 4,
+      "rva": "0x1019",
+      "va": "0x1d001019",
+      "file_offset": "0x1019"
+    }
+  ],
+  "resources": [
+    {
+      "path": [
+        6,
+        7,
+        1033
+      ],
+      "offset": "0x8418",
+      "size": 50,
+      "text": [
+        "AMIRender"
+      ]
+    },
+    {
+      "path": [
+        16,
+        1,
+        1033
+      ],
+      "offset": "0x80a0",
+      "size": 888,
+      "text": [
+        "VS_VERSION_INFO",
+        "StringFileInfo",
+        "040904E4",
+        "CompanyName",
+        "Microsoft Corporation",
+        "FileDescription",
+        "ActiveMovie Interface Render",
+        "FileVersion",
+        "4.0",
+        "InternalName",
+        "AMIRender.ax",
+        "LegalCopyright",
+        "Copyright (C) 1992-1996 Microsoft Corp.",
+        "OriginalFilename",
+        "AMIRender.ax",
+        "ProductName",
+        "ActiveMovie",
+        "ProductVersion",
+        "4.0",
+        "ActiveMovie",
+        "Filter dll",
+        "OLESelfRegister",
+        "AM10",
+        "VarFileInfo",
+        "Translation"
+      ]
+    }
+  ],
+  "resource_type_counts": {
+    "6": 1,
+    "16": 1
+  }
+}

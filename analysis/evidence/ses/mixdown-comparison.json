@@ -1,0 +1,243 @@
+{
+  "session": {
+    "path": "reference/vm-session-test/02-basis.ses",
+    "bytes": 810,
+    "sha256": "5afbd0e5e03e758948e355b5a0b3567aa11a17db9f237f55d54732d6beedb452"
+  },
+  "reference": {
+    "path": "reference/vm-session-test/02-basis-mix.wav",
+    "bytes": 732484,
+    "sha256": "15cc02f1130862a54855629bf48cfcb44aa29643319344b2569c9468bb92505f"
+  },
+  "sources": [
+    {
+      "path": "reference/vm-session-test/A-mono.wav",
+      "bytes": 176444,
+      "sha256": "902679f53d546102071e0194f8ca8e8e5544ab2fe96cfb5f63a7ac280fd66765"
+    },
+    {
+      "path": "reference/vm-session-test/B-stereo.wav",
+      "bytes": 529244,
+      "sha256": "4cc5173d01c12839ae7b3936b8c914e352eb8695909fb16487c9c8f0f3681657"
+    }
+  ],
+  "sample_rate": 44100,
+  "channels": 2,
+  "reference_encoding": "pcm16",
+  "native_frames": 183109,
+  "reference_frames": 183110,
+  "shared_frames": 183109,
+  "reference_minus_native_frames": 1,
+  "reference_minus_native_seconds": 2.2675736961451248e-05,
+  "equal_length": false,
+  "exact_shared_samples": true,
+  "exact_full_samples": false,
+  "exact_shared_pcm16_bytes": true,
+  "session_pcm16_export": {
+    "limits": [
+      -32767,
+      32767
+    ],
+    "exact_shared_audio_bytes": true,
+    "maximum_error_lsb_per_channel": [
+      0,
+      0
+    ],
+    "rms_error_lsb_per_channel": [
+      0.0,
+      0.0
+    ],
+    "differing_samples_per_channel": [
+      0,
+      0
+    ]
+  },
+  "standard_pcm16_export": {
+    "limits": [
+      -32768,
+      32767
+    ],
+    "exact_shared_audio_bytes": true,
+    "maximum_error_lsb_per_channel": [
+      0,
+      0
+    ],
+    "rms_error_lsb_per_channel": [
+      0.0,
+      0.0
+    ],
+    "differing_samples_per_channel": [
+      0,
+      0
+    ]
+  },
+  "raw_float_comparison": "Unclipped render against quantized reference; nonzero errors can be due to PCM conversion.",
+  "segments": [
+    {
+      "start_frame": 0,
+      "end_frame_exclusive": 50809,
+      "active_sources": [
+        "A-mono.wav"
+      ],
+      "native_peak_per_channel": [
+        0.25,
+        0.25
+      ],
+      "reference_peak_per_channel": [
+        0.25,
+        0.25
+      ],
+      "session_pcm16_export": {
+        "exact_shared_audio_bytes": true,
+        "maximum_error_lsb_per_channel": [
+          0,
+          0
+        ],
+        "rms_error_lsb_per_channel": [
+          0.0,
+          0.0
+        ],
+        "differing_samples_per_channel": [
+          0,
+          0
+        ]
+      },
+      "standard_pcm16_export": {
+        "exact_shared_audio_bytes": true,
+        "maximum_error_lsb_per_channel": [
+          0,
+          0
+        ],
+        "rms_error_lsb_per_channel": [
+          0.0,
+          0.0
+        ],
+        "differing_samples_per_channel": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "start_frame": 50809,
+      "end_frame_exclusive": 88200,
+      "active_sources": [
+        "A-mono.wav",
+        "B-stereo.wav"
+      ],
+      "native_peak_per_channel": [
+        0.449310302734375,
+        0.348968505859375
+      ],
+      "reference_peak_per_channel": [
+        0.449310302734375,
+        0.348968505859375
+      ],
+      "session_pcm16_export": {
+        "exact_shared_audio_bytes": true,
+        "maximum_error_lsb_per_channel": [
+          0,
+          0
+        ],
+        "rms_error_lsb_per_channel": [
+          0.0,
+          0.0
+        ],
+        "differing_samples_per_channel": [
+          0,
+          0
+        ]
+      },
+      "standard_pcm16_export": {
+        "exact_shared_audio_bytes": true,
+        "maximum_error_lsb_per_channel": [
+          0,
+          0
+        ],
+        "rms_error_lsb_per_channel": [
+          0.0,
+          0.0
+        ],
+        "differing_samples_per_channel": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "start_frame": 88200,
+      "end_frame_exclusive": 183109,
+      "active_sources": [
+        "B-stereo.wav"
+      ],
+      "native_peak_per_channel": [
+        0.20001220703125,
+        0.100006103515625
+      ],
+      "reference_peak_per_channel": [
+        0.20001220703125,
+        0.100006103515625
+      ],
+      "session_pcm16_export": {
+        "exact_shared_audio_bytes": true,
+        "maximum_error_lsb_per_channel": [
+          0,
+          0
+        ],
+        "rms_error_lsb_per_channel": [
+          0.0,
+          0.0
+        ],
+        "differing_samples_per_channel": [
+          0,
+          0
+        ]
+      },
+      "standard_pcm16_export": {
+        "exact_shared_audio_bytes": true,
+        "maximum_error_lsb_per_channel": [
+          0,
+          0
+        ],
+        "rms_error_lsb_per_channel": [
+          0.0,
+          0.0
+        ],
+        "differing_samples_per_channel": [
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "maximum_absolute_error_per_channel": [
+    0.0,
+    0.0
+  ],
+  "rms_error_per_channel": [
+    0.0,
+    0.0
+  ],
+  "differing_samples_per_channel": [
+    0,
+    0
+  ],
+  "reference_tail": {
+    "frames": 1,
+    "silent": true,
+    "peak_per_channel": [
+      0.0,
+      0.0
+    ]
+  },
+  "native_tail": {
+    "frames": 0,
+    "silent": true,
+    "peak_per_channel": [
+      0.0,
+      0.0
+    ]
+  },
+  "comparison": "Frame zero aligned; no shift, resampling, gain adjustment or tolerance.",
+  "coverage": "This supplied mix and encoding only; intermediate pan positions, other gains, fades and effects remain untested."
+}

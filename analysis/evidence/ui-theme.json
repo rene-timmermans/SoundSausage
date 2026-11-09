@@ -1,0 +1,116 @@
+{
+  "recorded_utc": "2026-11-09T20:03:40.661985+00:00",
+  "prototype": "0.2.2",
+  "user_request": "Keep the Cool Edit layout; follow desktop theme and use accent-coloured important buttons like PixelPickle; correct reported unreadable controls.",
+  "reference": {
+    "github_url": "https://github.com/rene-timmermans/pixelpickle",
+    "web_coverage": "Repository root and README available; individual source pages unavailable through web tool.",
+    "installed_package": "pixelpickle 1.0.4-1",
+    "installed_source_coverage": "Read __main__.py, toolbar portion of mainwindow.py, and icon colour/rendering portions of icons.py; not verified identical to current GitHub main.",
+    "sources": [
+      {
+        "path": "/usr/share/pixelpickle/pixelpickle/__main__.py",
+        "sha256": "673c622efdbd68cd1dc39b686a05d7f8cfc8fd11079159837f97aeee6deaf720"
+      },
+      {
+        "path": "/usr/share/pixelpickle/pixelpickle/mainwindow.py",
+        "sha256": "2a00b0e18b63a0b3d3f2adbbeb52d9e9fa0c87261f44482c106420f70b9f4f2f"
+      },
+      {
+        "path": "/usr/share/pixelpickle/pixelpickle/icons.py",
+        "sha256": "40e152b45aaee10ef7ee3bdc36510967fafbf108d9af042678250edb1698bdf8"
+      }
+    ]
+  },
+  "implementation": {
+    "palette": "Qt active desktop palette, Accent role; Fusion widget style",
+    "updates": "QApplication.paletteChanged; no stored custom desktop colours",
+    "signal_graphics": "Dark plot and green waveform; themed axes and accent selections",
+    "icons": "Own vector icons; separate menu and filled-button variants, refreshed on QAction changes",
+    "audio_dsp_changed": false,
+    "project_format_changed": false,
+    "desktop_settings_changed": false
+  },
+  "verification": {
+    "tests": 90,
+    "result": "passed without skips",
+    "log": "build/test-results-theme.log",
+    "gui_tests": "Rendered light/purple, dark/teal, light/yellow palette changes in one window; button text and icon contrast after action updates and on hover; disabled actions, menu icons, labelled mode switching.",
+    "minimum_checked_text_contrast": 4.5,
+    "minimum_checked_disabled_label_and_menu_icon_contrast": 3.0,
+    "complete_accessibility_audit": false,
+    "previews": [
+      {
+        "path": "build/theme-previews/dark-teal-empty.png",
+        "simulated_palette": "dark-teal",
+        "accent": "#36c5ac",
+        "size": [
+          1180,
+          720
+        ],
+        "state": "empty",
+        "sha256": "ea3eb2d970ccdeb9bf4c14783ba6423c373fec98ad529acfb33af3f35fe629aa"
+      },
+      {
+        "path": "build/theme-previews/dark-teal-waveform.png",
+        "simulated_palette": "dark-teal",
+        "accent": "#36c5ac",
+        "size": [
+          1180,
+          720
+        ],
+        "state": "waveform",
+        "sha256": "10ae3576ccacdf7999504cfbf03f72503e7ff96ee674ac9cc87d9b5246bdad7a"
+      },
+      {
+        "path": "build/theme-previews/dark-teal-multitrack.png",
+        "simulated_palette": "dark-teal",
+        "accent": "#36c5ac",
+        "size": [
+          1180,
+          720
+        ],
+        "state": "multitrack",
+        "sha256": "960b5c4fbe7ebf70c322f9e7e9efa77e23d45c7e0ece173ce5ae26c0dfe5125d"
+      },
+      {
+        "path": "build/theme-previews/light-purple-empty.png",
+        "simulated_palette": "light-purple",
+        "accent": "#794bc4",
+        "size": [
+          1180,
+          720
+        ],
+        "state": "empty",
+        "sha256": "0032ceea761eaf97001800032f4a9240527409cffabdcf6ea48771b65ab41bc7"
+      },
+      {
+        "path": "build/theme-previews/light-purple-waveform.png",
+        "simulated_palette": "light-purple",
+        "accent": "#794bc4",
+        "size": [
+          1180,
+          720
+        ],
+        "state": "waveform",
+        "sha256": "fcac1b8e6ea174db2c77f12d248b9fd1ab938759c1fa18255b6cab3c435cf224"
+      },
+      {
+        "path": "build/theme-previews/light-purple-multitrack.png",
+        "simulated_palette": "light-purple",
+        "accent": "#794bc4",
+        "size": [
+          1180,
+          720
+        ],
+        "state": "multitrack",
+        "sha256": "dcac0f55bc4ea8b537ade373c719b3d293c44a4b7ef6e9a376e91ba626915cb8"
+      }
+    ],
+    "preview_note": "Actual offscreen Qt windows with simulated palettes, 1180x720; no host theme settings changed. User desktop appearance still to be viewed after restarting."
+  },
+  "limitations": [
+    "GitHub current source branch not fully retrieved; installed reference version identified separately.",
+    "Physical display and host theme transitions are not simulated desktop palette tests."
+  ]
+}

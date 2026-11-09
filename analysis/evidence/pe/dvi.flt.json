@@ -1,0 +1,577 @@
+{
+  "path": "/home/deck/.wine/drive_c/coolpro/dvi.flt",
+  "size": 37888,
+  "sha256": "21b0e68c80e9e0519fd4c995acca8d858a8f1443fac3454e65b38495a474323c",
+  "machine": "0x14c",
+  "pe_timestamp_utc": "1997-05-01T20:22:23+00:00",
+  "image_base": "0x10000000",
+  "entry_va": "0x10005200",
+  "linker": "3.0",
+  "clr_directory": [
+    0,
+    0
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 25371,
+      "rva": 4096,
+      "size": 25600,
+      "offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 1250,
+      "rva": 32768,
+      "size": 1536,
+      "offset": 26624
+    },
+    {
+      "name": ".data",
+      "virtual_size": 8872,
+      "rva": 36864,
+      "size": 4608,
+      "offset": 28160
+    },
+    {
+      "name": ".idata",
+      "virtual_size": 1530,
+      "rva": 49152,
+      "size": 1536,
+      "offset": 32768
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 668,
+      "rva": 53248,
+      "size": 1024,
+      "offset": 34304
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 2204,
+      "rva": 57344,
+      "size": 2560,
+      "offset": 35328
+    }
+  ],
+  "imports": {
+    "KERNEL32.dll": [
+      {
+        "name": "TlsAlloc",
+        "iat_va": "0x1000c130"
+      },
+      {
+        "name": "GlobalUnlock",
+        "iat_va": "0x1000c134"
+      },
+      {
+        "name": "GlobalLock",
+        "iat_va": "0x1000c138"
+      },
+      {
+        "name": "_lclose",
+        "iat_va": "0x1000c13c"
+      },
+      {
+        "name": "_llseek",
+        "iat_va": "0x1000c140"
+      },
+      {
+        "name": "lstrcmpA",
+        "iat_va": "0x1000c144"
+      },
+      {
+        "name": "_lread",
+        "iat_va": "0x1000c148"
+      },
+      {
+        "name": "_lopen",
+        "iat_va": "0x1000c14c"
+      },
+      {
+        "name": "SetFilePointer",
+        "iat_va": "0x1000c150"
+      },
+      {
+        "name": "WriteFile",
+        "iat_va": "0x1000c154"
+      },
+      {
+        "name": "lstrlenA",
+        "iat_va": "0x1000c158"
+      },
+      {
+        "name": "GlobalFree",
+        "iat_va": "0x1000c15c"
+      },
+      {
+        "name": "ReadFile",
+        "iat_va": "0x1000c160"
+      },
+      {
+        "name": "GlobalAlloc",
+        "iat_va": "0x1000c164"
+      },
+      {
+        "name": "GetProcAddress",
+        "iat_va": "0x1000c168"
+      },
+      {
+        "name": "CreateFileA",
+        "iat_va": "0x1000c16c"
+      },
+      {
+        "name": "CloseHandle",
+        "iat_va": "0x1000c170"
+      },
+      {
+        "name": "FlushFileBuffers",
+        "iat_va": "0x1000c174"
+      },
+      {
+        "name": "GetFileSize",
+        "iat_va": "0x1000c178"
+      },
+      {
+        "name": "GetStdHandle",
+        "iat_va": "0x1000c17c"
+      },
+      {
+        "name": "GetFileType",
+        "iat_va": "0x1000c180"
+      },
+      {
+        "name": "SetStdHandle",
+        "iat_va": "0x1000c184"
+      },
+      {
+        "name": "LoadLibraryA",
+        "iat_va": "0x1000c188"
+      },
+      {
+        "name": "HeapFree",
+        "iat_va": "0x1000c18c"
+      },
+      {
+        "name": "GetCommandLineA",
+        "iat_va": "0x1000c190"
+      },
+      {
+        "name": "GetModuleHandleA",
+        "iat_va": "0x1000c194"
+      },
+      {
+        "name": "GetVersion",
+        "iat_va": "0x1000c198"
+      },
+      {
+        "name": "ExitProcess",
+        "iat_va": "0x1000c19c"
+      },
+      {
+        "name": "GetCurrentThreadId",
+        "iat_va": "0x1000c1a0"
+      },
+      {
+        "name": "TlsSetValue",
+        "iat_va": "0x1000c1a4"
+      },
+      {
+        "name": "lstrcpyA",
+        "iat_va": "0x1000c1a8"
+      },
+      {
+        "name": "TlsFree",
+        "iat_va": "0x1000c1ac"
+      },
+      {
+        "name": "SetLastError",
+        "iat_va": "0x1000c1b0"
+      },
+      {
+        "name": "TlsGetValue",
+        "iat_va": "0x1000c1b4"
+      },
+      {
+        "name": "GetLastError",
+        "iat_va": "0x1000c1b8"
+      },
+      {
+        "name": "HeapCreate",
+        "iat_va": "0x1000c1bc"
+      },
+      {
+        "name": "HeapDestroy",
+        "iat_va": "0x1000c1c0"
+      },
+      {
+        "name": "SetHandleCount",
+        "iat_va": "0x1000c1c4"
+      },
+      {
+        "name": "HeapAlloc",
+        "iat_va": "0x1000c1c8"
+      },
+      {
+        "name": "GetStartupInfoA",
+        "iat_va": "0x1000c1cc"
+      },
+      {
+        "name": "DeleteCriticalSection",
+        "iat_va": "0x1000c1d0"
+      },
+      {
+        "name": "GetModuleFileNameA",
+        "iat_va": "0x1000c1d4"
+      },
+      {
+        "name": "GetCPInfo",
+        "iat_va": "0x1000c1d8"
+      },
+      {
+        "name": "GetACP",
+        "iat_va": "0x1000c1dc"
+      },
+      {
+        "name": "GetOEMCP",
+        "iat_va": "0x1000c1e0"
+      },
+      {
+        "name": "FreeEnvironmentStringsA",
+        "iat_va": "0x1000c1e4"
+      },
+      {
+        "name": "WideCharToMultiByte",
+        "iat_va": "0x1000c1e8"
+      },
+      {
+        "name": "GetEnvironmentStrings",
+        "iat_va": "0x1000c1ec"
+      },
+      {
+        "name": "FreeEnvironmentStringsW",
+        "iat_va": "0x1000c1f0"
+      },
+      {
+        "name": "GetEnvironmentStringsW",
+        "iat_va": "0x1000c1f4"
+      },
+      {
+        "name": "InitializeCriticalSection",
+        "iat_va": "0x1000c1f8"
+      },
+      {
+        "name": "EnterCriticalSection",
+        "iat_va": "0x1000c1fc"
+      },
+      {
+        "name": "LeaveCriticalSection",
+        "iat_va": "0x1000c200"
+      }
+    ],
+    "USER32.dll": [
+      {
+        "name": "MessageBoxA",
+        "iat_va": "0x1000c208"
+      },
+      {
+        "name": "PostMessageA",
+        "iat_va": "0x1000c20c"
+      },
+      {
+        "name": "CheckDlgButton",
+        "iat_va": "0x1000c210"
+      },
+      {
+        "name": "IsDlgButtonChecked",
+        "iat_va": "0x1000c214"
+      },
+      {
+        "name": "EndDialog",
+        "iat_va": "0x1000c218"
+      },
+      {
+        "name": "DialogBoxParamA",
+        "iat_va": "0x1000c21c"
+      }
+    ]
+  },
+  "exports": [
+    {
+      "name": "CloseFilterInput",
+      "ordinal": 7,
+      "rva": "0x3390",
+      "va": "0x10003390",
+      "file_offset": "0x2790"
+    },
+    {
+      "name": "CloseFilterOutput",
+      "ordinal": 4,
+      "rva": "0x2cd0",
+      "va": "0x10002cd0",
+      "file_offset": "0x20d0"
+    },
+    {
+      "name": "DIALOGMsgProc",
+      "ordinal": 20,
+      "rva": "0x2b40",
+      "va": "0x10002b40",
+      "file_offset": "0x1f40"
+    },
+    {
+      "name": "FilterGetFileSize",
+      "ordinal": 16,
+      "rva": "0x1090",
+      "va": "0x10001090",
+      "file_offset": "0x490"
+    },
+    {
+      "name": "FilterGetFirstSpecialData",
+      "ordinal": 31,
+      "rva": "0x2650",
+      "va": "0x10002650",
+      "file_offset": "0x1a50"
+    },
+    {
+      "name": "FilterGetNextSpecialData",
+      "ordinal": 32,
+      "rva": "0x18d0",
+      "va": "0x100018d0",
+      "file_offset": "0xcd0"
+    },
+    {
+      "name": "FilterGetOptions",
+      "ordinal": 14,
+      "rva": "0x2700",
+      "va": "0x10002700",
+      "file_offset": "0x1b00"
+    },
+    {
+      "name": "FilterOptions",
+      "ordinal": 15,
+      "rva": "0x2750",
+      "va": "0x10002750",
+      "file_offset": "0x1b50"
+    },
+    {
+      "name": "FilterOptionsString",
+      "ordinal": 17,
+      "rva": "0x2780",
+      "va": "0x10002780",
+      "file_offset": "0x1b80"
+    },
+    {
+      "name": "FilterUnderstandsFormat",
+      "ordinal": 9,
+      "rva": "0x10c0",
+      "va": "0x100010c0",
+      "file_offset": "0x4c0"
+    },
+    {
+      "name": "FilterWriteSpecialData",
+      "ordinal": 33,
+      "rva": "0x1310",
+      "va": "0x10001310",
+      "file_offset": "0x710"
+    },
+    {
+      "name": "OpenFilterInput",
+      "ordinal": 6,
+      "rva": "0x2e90",
+      "va": "0x10002e90",
+      "file_offset": "0x2290"
+    },
+    {
+      "name": "OpenFilterOutput",
+      "ordinal": 3,
+      "rva": "0x27f0",
+      "va": "0x100027f0",
+      "file_offset": "0x1bf0"
+    },
+    {
+      "name": "QueryCoolFilter",
+      "ordinal": 2,
+      "rva": "0x1010",
+      "va": "0x10001010",
+      "file_offset": "0x410"
+    },
+    {
+      "name": "ReadFilterInput",
+      "ordinal": 8,
+      "rva": "0x5000",
+      "va": "0x10005000",
+      "file_offset": "0x4400"
+    },
+    {
+      "name": "WriteFilterOutput",
+      "ordinal": 5,
+      "rva": "0x5050",
+      "va": "0x10005050",
+      "file_offset": "0x4450"
+    }
+  ],
+  "resources": [
+    {
+      "path": [
+        5,
+        101,
+        1033
+      ],
+      "offset": "0x8660",
+      "size": 572,
+      "text": [
+        "DVI ADPCM Compression",
+        "MS Sans Serif",
+        "Cancel",
+        "3 bits/sample,  5.3:1",
+        "4 bits/sample,  4:1",
+        "2 bits/sample,  8:1     (Non Standard)",
+        "v$\"",
+        "1 bit ?",
+        "5 bits/sample,  3.2:1  (Non Standard)"
+      ],
+      "dialog": {
+        "extended": false,
+        "style": "0x90c800c0",
+        "exstyle": "0x0",
+        "rect_dlu": [
+          0,
+          0,
+          194,
+          68
+        ],
+        "menu": "",
+        "window_class": "",
+        "title": "DVI ADPCM Compression",
+        "font_point_size": 8,
+        "font": "MS Sans Serif",
+        "controls": [
+          {
+            "id": 1,
+            "style": "0x50010001",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              155,
+              6,
+              36,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "OK"
+          },
+          {
+            "id": 2,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              155,
+              24,
+              36,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Cancel"
+          },
+          {
+            "id": 1003,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              11,
+              25,
+              84,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "3 bits/sample,  5.3:1"
+          },
+          {
+            "id": 1002,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              11,
+              37,
+              80,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "4 bits/sample,  4:1"
+          },
+          {
+            "id": 65535,
+            "style": "0x50001008",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              3,
+              7,
+              148,
+              57
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 1001,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              11,
+              13,
+              136,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "2 bits/sample,  8:1     (Non Standard)"
+          },
+          {
+            "id": 1000,
+            "style": "0x40000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              118,
+              36,
+              34,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "1 bit ?"
+          },
+          {
+            "id": 1004,
+            "style": "0x50000009",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              11,
+              49,
+              136,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "5 bits/sample,  3.2:1  (Non Standard)"
+          }
+        ]
+      }
+    }
+  ],
+  "resource_type_counts": {
+    "5": 1
+  }
+}

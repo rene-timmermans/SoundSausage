@@ -1,0 +1,159 @@
+{
+  "path": "/home/deck/Documenten/Codex/CoolEdit/reference/vm-session-test/01-een-clip.ses",
+  "sha256": "635c14b672263e5c06b015fe068b289e7bb3058689a573d3428a8b9d0313f92f",
+  "size": 501,
+  "version": "Cool Edit Pro 1.0",
+  "sample_rate": 44100,
+  "sample_bits": 16,
+  "header_flags": 1,
+  "header_unknown": 1613737,
+  "header_count_hint": 1,
+  "header_left": 1.0,
+  "header_right": 1.0,
+  "header_offset": 0.0,
+  "chunks": [
+    {
+      "kind": "hdr ",
+      "offset": 12,
+      "payload_offset": 20,
+      "declared_size": 40,
+      "actual_size": 40,
+      "recovered_empty": false
+    },
+    {
+      "kind": "vers",
+      "offset": 60,
+      "payload_offset": 68,
+      "declared_size": 18,
+      "actual_size": 18,
+      "recovered_empty": false
+    },
+    {
+      "kind": "stat",
+      "offset": 86,
+      "payload_offset": 94,
+      "declared_size": 40,
+      "actual_size": 40,
+      "recovered_empty": false
+    },
+    {
+      "kind": "trks",
+      "offset": 134,
+      "payload_offset": 142,
+      "declared_size": 76,
+      "actual_size": 76,
+      "recovered_empty": false
+    },
+    {
+      "kind": "LISTFILE",
+      "offset": 218,
+      "payload_offset": 230,
+      "declared_size": 51,
+      "actual_size": 51,
+      "recovered_empty": false
+    },
+    {
+      "kind": "blk ",
+      "offset": 281,
+      "payload_offset": 289,
+      "declared_size": 76,
+      "actual_size": 76,
+      "recovered_empty": false
+    },
+    {
+      "kind": "envp",
+      "offset": 365,
+      "payload_offset": 373,
+      "declared_size": 116,
+      "actual_size": 116,
+      "recovered_empty": false
+    },
+    {
+      "kind": "cues",
+      "offset": 489,
+      "payload_offset": 497,
+      "declared_size": 4,
+      "actual_size": 4,
+      "recovered_empty": false
+    }
+  ],
+  "tracks": [
+    {
+      "index": 0,
+      "left": 1.0,
+      "right": 1.0,
+      "flags": 0,
+      "name": "Track 1",
+      "tail": [
+        1,
+        1,
+        1,
+        -1
+      ]
+    }
+  ],
+  "files": [
+    {
+      "id": 3,
+      "flags": 17,
+      "path": "C:\\Users\\René\\Downloads\\A-mono.wav",
+      "basename": "A-mono.wav"
+    }
+  ],
+  "blocks": [
+    {
+      "index": 0,
+      "left": 1.0,
+      "right": 1.0,
+      "flags": 0,
+      "start": 0,
+      "frames": 88200,
+      "track": 0,
+      "source_start": 0,
+      "source_id": 3,
+      "clip_id": 1,
+      "tail": [
+        0,
+        1,
+        0,
+        4294967295
+      ]
+    }
+  ],
+  "envelopes": [
+    {
+      "block": 0,
+      "volume": [
+        {
+          "frame": 0,
+          "flags": 0,
+          "value": 1.0,
+          "curve": 0.0
+        },
+        {
+          "frame": 88199,
+          "flags": 0,
+          "value": 1.0,
+          "curve": 0.0
+        }
+      ],
+      "pan": [
+        {
+          "frame": 0,
+          "flags": 0,
+          "value": 0.5,
+          "curve": 0.0
+        },
+        {
+          "frame": 88199,
+          "flags": 0,
+          "value": 0.5,
+          "curve": 0.0
+        }
+      ]
+    }
+  ],
+  "cue_count": 0,
+  "cue_bytes": 4,
+  "warnings": []
+}

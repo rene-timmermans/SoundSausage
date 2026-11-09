@@ -1,0 +1,555 @@
+{
+  "path": "/home/deck/.wine/drive_c/coolpro/cooltext.flt",
+  "size": 39424,
+  "sha256": "f0b3a887631914f5f6db2c65f2d830fedb6c47727c0b4fc6dbf2b4f83d43d955",
+  "machine": "0x14c",
+  "pe_timestamp_utc": "1997-05-01T20:26:47+00:00",
+  "image_base": "0x10000000",
+  "entry_va": "0x10002410",
+  "linker": "3.0",
+  "clr_directory": [
+    0,
+    0
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 27451,
+      "rva": 4096,
+      "size": 27648,
+      "offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 696,
+      "rva": 32768,
+      "size": 1024,
+      "offset": 28672
+    },
+    {
+      "name": ".data",
+      "virtual_size": 9732,
+      "rva": 36864,
+      "size": 5120,
+      "offset": 29696
+    },
+    {
+      "name": ".idata",
+      "virtual_size": 1656,
+      "rva": 49152,
+      "size": 2048,
+      "offset": 34816
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 408,
+      "rva": 53248,
+      "size": 512,
+      "offset": 36864
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 1948,
+      "rva": 57344,
+      "size": 2048,
+      "offset": 37376
+    }
+  ],
+  "imports": {
+    "KERNEL32.dll": [
+      {
+        "name": "GlobalUnlock",
+        "iat_va": "0x1000c144"
+      },
+      {
+        "name": "GlobalLock",
+        "iat_va": "0x1000c148"
+      },
+      {
+        "name": "_lclose",
+        "iat_va": "0x1000c14c"
+      },
+      {
+        "name": "_lread",
+        "iat_va": "0x1000c150"
+      },
+      {
+        "name": "_lopen",
+        "iat_va": "0x1000c154"
+      },
+      {
+        "name": "GetProcAddress",
+        "iat_va": "0x1000c158"
+      },
+      {
+        "name": "lstrlenA",
+        "iat_va": "0x1000c15c"
+      },
+      {
+        "name": "_lwrite",
+        "iat_va": "0x1000c160"
+      },
+      {
+        "name": "GlobalAlloc",
+        "iat_va": "0x1000c164"
+      },
+      {
+        "name": "_lcreat",
+        "iat_va": "0x1000c168"
+      },
+      {
+        "name": "GlobalFree",
+        "iat_va": "0x1000c16c"
+      },
+      {
+        "name": "_llseek",
+        "iat_va": "0x1000c170"
+      },
+      {
+        "name": "DeleteCriticalSection",
+        "iat_va": "0x1000c174"
+      },
+      {
+        "name": "GetStartupInfoA",
+        "iat_va": "0x1000c178"
+      },
+      {
+        "name": "CloseHandle",
+        "iat_va": "0x1000c17c"
+      },
+      {
+        "name": "FlushFileBuffers",
+        "iat_va": "0x1000c180"
+      },
+      {
+        "name": "LCMapStringW",
+        "iat_va": "0x1000c184"
+      },
+      {
+        "name": "LCMapStringA",
+        "iat_va": "0x1000c188"
+      },
+      {
+        "name": "SetStdHandle",
+        "iat_va": "0x1000c18c"
+      },
+      {
+        "name": "HeapFree",
+        "iat_va": "0x1000c190"
+      },
+      {
+        "name": "GetCommandLineA",
+        "iat_va": "0x1000c194"
+      },
+      {
+        "name": "GetModuleHandleA",
+        "iat_va": "0x1000c198"
+      },
+      {
+        "name": "GetVersion",
+        "iat_va": "0x1000c19c"
+      },
+      {
+        "name": "LoadLibraryA",
+        "iat_va": "0x1000c1a0"
+      },
+      {
+        "name": "ExitProcess",
+        "iat_va": "0x1000c1a4"
+      },
+      {
+        "name": "GetCurrentThreadId",
+        "iat_va": "0x1000c1a8"
+      },
+      {
+        "name": "TlsSetValue",
+        "iat_va": "0x1000c1ac"
+      },
+      {
+        "name": "TlsAlloc",
+        "iat_va": "0x1000c1b0"
+      },
+      {
+        "name": "TlsFree",
+        "iat_va": "0x1000c1b4"
+      },
+      {
+        "name": "SetLastError",
+        "iat_va": "0x1000c1b8"
+      },
+      {
+        "name": "TlsGetValue",
+        "iat_va": "0x1000c1bc"
+      },
+      {
+        "name": "GetLastError",
+        "iat_va": "0x1000c1c0"
+      },
+      {
+        "name": "lstrcpyA",
+        "iat_va": "0x1000c1c4"
+      },
+      {
+        "name": "HeapCreate",
+        "iat_va": "0x1000c1c8"
+      },
+      {
+        "name": "HeapDestroy",
+        "iat_va": "0x1000c1cc"
+      },
+      {
+        "name": "SetHandleCount",
+        "iat_va": "0x1000c1d0"
+      },
+      {
+        "name": "GetFileType",
+        "iat_va": "0x1000c1d4"
+      },
+      {
+        "name": "GetStdHandle",
+        "iat_va": "0x1000c1d8"
+      },
+      {
+        "name": "WideCharToMultiByte",
+        "iat_va": "0x1000c1dc"
+      },
+      {
+        "name": "GetModuleFileNameA",
+        "iat_va": "0x1000c1e0"
+      },
+      {
+        "name": "GetCPInfo",
+        "iat_va": "0x1000c1e4"
+      },
+      {
+        "name": "GetACP",
+        "iat_va": "0x1000c1e8"
+      },
+      {
+        "name": "GetOEMCP",
+        "iat_va": "0x1000c1ec"
+      },
+      {
+        "name": "FreeEnvironmentStringsA",
+        "iat_va": "0x1000c1f0"
+      },
+      {
+        "name": "MultiByteToWideChar",
+        "iat_va": "0x1000c1f4"
+      },
+      {
+        "name": "GetEnvironmentStrings",
+        "iat_va": "0x1000c1f8"
+      },
+      {
+        "name": "FreeEnvironmentStringsW",
+        "iat_va": "0x1000c1fc"
+      },
+      {
+        "name": "GetEnvironmentStringsW",
+        "iat_va": "0x1000c200"
+      },
+      {
+        "name": "InitializeCriticalSection",
+        "iat_va": "0x1000c204"
+      },
+      {
+        "name": "WriteFile",
+        "iat_va": "0x1000c208"
+      },
+      {
+        "name": "SetFilePointer",
+        "iat_va": "0x1000c20c"
+      },
+      {
+        "name": "GetStringTypeA",
+        "iat_va": "0x1000c210"
+      },
+      {
+        "name": "GetStringTypeW",
+        "iat_va": "0x1000c214"
+      },
+      {
+        "name": "EnterCriticalSection",
+        "iat_va": "0x1000c218"
+      },
+      {
+        "name": "LeaveCriticalSection",
+        "iat_va": "0x1000c21c"
+      },
+      {
+        "name": "HeapAlloc",
+        "iat_va": "0x1000c220"
+      }
+    ],
+    "USER32.dll": [
+      {
+        "name": "wsprintfA",
+        "iat_va": "0x1000c228"
+      },
+      {
+        "name": "PostMessageA",
+        "iat_va": "0x1000c22c"
+      },
+      {
+        "name": "CheckDlgButton",
+        "iat_va": "0x1000c230"
+      },
+      {
+        "name": "EndDialog",
+        "iat_va": "0x1000c234"
+      },
+      {
+        "name": "IsDlgButtonChecked",
+        "iat_va": "0x1000c238"
+      },
+      {
+        "name": "GetDlgItem",
+        "iat_va": "0x1000c23c"
+      },
+      {
+        "name": "EnableWindow",
+        "iat_va": "0x1000c240"
+      },
+      {
+        "name": "DialogBoxParamA",
+        "iat_va": "0x1000c244"
+      }
+    ]
+  },
+  "exports": [
+    {
+      "name": "CloseFilterInput",
+      "ordinal": 7,
+      "rva": "0x1f10",
+      "va": "0x10001f10",
+      "file_offset": "0x1310"
+    },
+    {
+      "name": "CloseFilterOutput",
+      "ordinal": 4,
+      "rva": "0x1590",
+      "va": "0x10001590",
+      "file_offset": "0x990"
+    },
+    {
+      "name": "DIALOGMsgProc",
+      "ordinal": 20,
+      "rva": "0x1220",
+      "va": "0x10001220",
+      "file_offset": "0x620"
+    },
+    {
+      "name": "FilterCanReadSpecial",
+      "ordinal": 11,
+      "rva": "0x13a0",
+      "va": "0x100013a0",
+      "file_offset": "0x7a0"
+    },
+    {
+      "name": "FilterCanWriteSpecial",
+      "ordinal": 10,
+      "rva": "0x1390",
+      "va": "0x10001390",
+      "file_offset": "0x790"
+    },
+    {
+      "name": "FilterGetFileSize",
+      "ordinal": 17,
+      "rva": "0x1090",
+      "va": "0x10001090",
+      "file_offset": "0x490"
+    },
+    {
+      "name": "FilterGetOptions",
+      "ordinal": 14,
+      "rva": "0x11a0",
+      "va": "0x100011a0",
+      "file_offset": "0x5a0"
+    },
+    {
+      "name": "FilterOptions",
+      "ordinal": 15,
+      "rva": "0x11f0",
+      "va": "0x100011f0",
+      "file_offset": "0x5f0"
+    },
+    {
+      "name": "FilterReadSpecial",
+      "ordinal": 13,
+      "rva": "0x13c0",
+      "va": "0x100013c0",
+      "file_offset": "0x7c0"
+    },
+    {
+      "name": "FilterSetOptions",
+      "ordinal": 16,
+      "rva": "0x1ee0",
+      "va": "0x10001ee0",
+      "file_offset": "0x12e0"
+    },
+    {
+      "name": "FilterUnderstandsFormat",
+      "ordinal": 9,
+      "rva": "0x10c0",
+      "va": "0x100010c0",
+      "file_offset": "0x4c0"
+    },
+    {
+      "name": "FilterWriteSpecial",
+      "ordinal": 12,
+      "rva": "0x13b0",
+      "va": "0x100013b0",
+      "file_offset": "0x7b0"
+    },
+    {
+      "name": "OpenFilterInput",
+      "ordinal": 6,
+      "rva": "0x1b80",
+      "va": "0x10001b80",
+      "file_offset": "0xf80"
+    },
+    {
+      "name": "OpenFilterOutput",
+      "ordinal": 3,
+      "rva": "0x13d0",
+      "va": "0x100013d0",
+      "file_offset": "0x7d0"
+    },
+    {
+      "name": "QueryCoolFilter",
+      "ordinal": 2,
+      "rva": "0x1010",
+      "va": "0x10001010",
+      "file_offset": "0x410"
+    },
+    {
+      "name": "ReadFilterInput",
+      "ordinal": 8,
+      "rva": "0x1f50",
+      "va": "0x10001f50",
+      "file_offset": "0x1350"
+    },
+    {
+      "name": "WriteFilterOutput",
+      "ordinal": 5,
+      "rva": "0x15d0",
+      "va": "0x100015d0",
+      "file_offset": "0x9d0"
+    }
+  ],
+  "resources": [
+    {
+      "path": [
+        5,
+        101,
+        1033
+      ],
+      "offset": "0x9060",
+      "size": 312,
+      "text": [
+        "ASCII Text Format",
+        "MS Sans Serif",
+        "Cancel",
+        "Include Format Header",
+        "Normalized Data"
+      ],
+      "dialog": {
+        "extended": false,
+        "style": "0x90c800c0",
+        "exstyle": "0x0",
+        "rect_dlu": [
+          0,
+          0,
+          179,
+          42
+        ],
+        "menu": "",
+        "window_class": "",
+        "title": "ASCII Text Format",
+        "font_point_size": 8,
+        "font": "MS Sans Serif",
+        "controls": [
+          {
+            "id": 1,
+            "style": "0x50010001",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              139,
+              6,
+              36,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "OK"
+          },
+          {
+            "id": 2,
+            "style": "0x50010000",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              139,
+              24,
+              36,
+              14
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Cancel"
+          },
+          {
+            "id": 65535,
+            "style": "0x50001008",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              3,
+              7,
+              129,
+              32
+            ],
+            "window_class": {
+              "ordinal": 130
+            },
+            "title": ""
+          },
+          {
+            "id": 1003,
+            "style": "0x50010003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              6,
+              11,
+              92,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Include Format Header"
+          },
+          {
+            "id": 1004,
+            "style": "0x50010003",
+            "exstyle": "0x0",
+            "rect_dlu": [
+              17,
+              23,
+              72,
+              10
+            ],
+            "window_class": {
+              "ordinal": 128
+            },
+            "title": "Normalized Data"
+          }
+        ]
+      }
+    }
+  ],
+  "resource_type_counts": {
+    "5": 1
+  }
+}
