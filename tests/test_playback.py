@@ -136,6 +136,7 @@ class PlaybackTests(unittest.TestCase):
         self.player.loop = True
         self.player.play(self.data[:4], 8000, 20)
         sink = self.player.sink
+        sink._error = QtAudio.Error.UnderrunError
         sink.drain(); self.app.processEvents()
         self.assertEqual(self.player.state, "Playing")
         self.assertEqual(self.positions[-1], 20)

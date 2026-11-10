@@ -195,7 +195,11 @@ class Playback(QObject):
     def _restart(self, generation):
         if generation == self._generation and self.sink is not None:
             self._loop_pending = False
-            self.sink.reset()
+            self._starting = True
+            try:
+                self.sink.reset()
+            finally:
+                self._starting = False
             self._start_sink()
 
     def _outputs_changed(self):
