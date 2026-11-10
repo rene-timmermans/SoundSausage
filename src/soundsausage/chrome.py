@@ -54,7 +54,7 @@ def create_menus(window):
             target.addSeparator() if key is None else target.addAction(window.actions[key])
 
     file = menu("file", "&File")
-    add(file, ("new", "open", "save", "save_as", "save_selection", None,
+    add(file, ("new", "open", "close_file", None, "save", "save_as", "save_selection", None,
                "new_session", "open_session", "save_session", "save_session_as", None,
                "import_audio", "mixdown", None, "exit"))
     edit = menu("edit", "&Edit")

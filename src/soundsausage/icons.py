@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt, QPointF, QRectF
 from PySide6.QtGui import QGuiApplication, QIcon, QPainter, QPainterPath, QPen, QPixmap, QPolygonF
 
 
-ICON_ACTIONS = {"new", "open", "save", "save_session", "save_session_as", "undo", "redo",
+ICON_ACTIONS = {"new", "open", "close_file", "save", "save_session", "save_session_as", "undo", "redo",
                 "cut", "copy", "paste", "trim", "zoom_in", "zoom_out", "zoom_full", "zoom_selection",
                 "play", "pause", "stop", "loop", "mode_wave", "mode_multi", "import_audio", "mixdown",
                 "amplify", "normalize", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency",
@@ -65,6 +65,9 @@ def draw(p, name, color):
         rect(5, 3, 14, 18)
         line(9, 12, 15, 12)
         line(12, 9, 12, 15)
+    elif name == "close_file":
+        line(5, 5, 19, 19)
+        line(19, 5, 5, 19)
     elif name in ("undo", "redo"):
         if name == "redo":
             p.translate(24, 0)

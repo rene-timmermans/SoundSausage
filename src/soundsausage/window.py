@@ -207,6 +207,7 @@ class MainWindow(SessionActions, QMainWindow):
         standard = QStyle.StandardPixmap
         self.action("new", "&New…", self.new_document, "Ctrl+N", standard.SP_FileIcon)
         self.action("open", "&Open…", self.open_dialog, "Ctrl+O", standard.SP_DirOpenIcon)
+        self.action("close_file", "&Close", self.close_current, "Ctrl+W")
         self.action("save", "&Save", self.save, "Ctrl+S", standard.SP_DialogSaveButton)
         self.action("save_as", "Save &As…", lambda: self.save(True), "Ctrl+Shift+S")
         self.action("save_selection", "Save S&election…", self.save_selection)
@@ -325,6 +326,8 @@ class MainWindow(SessionActions, QMainWindow):
         self.actions["paste"].setEnabled(self.clipboard is not None)
         self.actions["mix_paste"].setEnabled(self.clipboard is not None)
         self.actions["save"].setEnabled(doc.dirty or doc.path is None)
+        self.actions["close_file"].setEnabled(self.mode == "multitrack" or bool(
+            doc.frames or doc.path is not None or doc.dirty or doc.undo_stack or doc.redo_stack or self.editing_clip_id))
         self.actions["pause"].setEnabled(self.player.state in ("Playing", "Paused"))
         self.actions["stop"].setEnabled(self.player.state != "Stopped")
         self.update_session_actions()
@@ -460,6 +463,18 @@ class MainWindow(SessionActions, QMainWindow):
         if result == QMessageBox.StandardButton.Save:
             return self.save_waveform()
         return result == QMessageBox.StandardButton.Discard
+
+    def close_current(self):
+        if self.mode == "multitrack":
+            return self.close_session()
+        if not self._confirm_discard():
+            return False
+        self.player.stop()
+        previous = self.document
+        self.document = Document(sample_rate=previous.sample_rate, channels=previous.channels, dsp=previous.dsp)
+        self.editing_clip_id = None
+        self.refresh(fit=True)
+        return True
 
     def new_document(self):
         if self.mode == "multitrack":

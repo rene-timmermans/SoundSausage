@@ -73,6 +73,7 @@ class SessionActions:
         self.actions["open"].setText("&Open Session…" if multi else "&Open…")
         self.actions["save"].setText("&Save Session" if multi else "&Save")
         self.actions["save_as"].setText("Save Session &As…" if multi else "Save &As…")
+        self.actions["close_file"].setText("&Close Session" if multi else "&Close")
         if multi:
             for key in ("cut", "copy", "paste", "mix_paste", "trim", "zero", "amplify", "normalize",
                 "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "tone",
@@ -136,6 +137,16 @@ class SessionActions:
             self.editing_clip_id = None
             self.multitrack.set_session(self.session, fit=True)
             self.set_mode("multitrack")
+
+    def close_session(self):
+        if not self.confirm_session_discard():
+            return False
+        self.player.stop()
+        self.session = Session(self.session.sample_rate, dsp=self.document.dsp)
+        self.editing_clip_id = None
+        self.multitrack.set_session(self.session, fit=True)
+        self.set_mode("waveform")
+        return True
 
     def open_session_dialog(self):
         if not self.confirm_session_discard():

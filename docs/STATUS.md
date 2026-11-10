@@ -1,10 +1,11 @@
-# SoundSausage 0.4.0
+# SoundSausage 0.4.1
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
 ## Beschikbaar
 
 - WAV openen en opslaan: mono/stereo, PCM 8/16/24/32-bit en float32.
+- De huidige golfvorm of sessie sluiten via File → Close of Ctrl+W, met een keuze voor niet-opgeslagen wijzigingen.
 - Golfvormbewerking met selecties, knippen, plakken, Mix Paste, trimmen en undo/redo.
 - Versterking, fades, normaliseren, omkeren, polariteit omkeren, tonen en stilte.
 - Multitrack met maximaal 32 sporen, clips verplaatsen, trimmen en dupliceren.

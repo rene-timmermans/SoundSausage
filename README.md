@@ -8,7 +8,7 @@ Linux-thema en accentkleur.
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-SoundSausage is in ontwikkeling. De huidige versie is prototype **0.4.0**.
+SoundSausage is in ontwikkeling. De huidige versie is prototype **0.4.1**.
 
 ## Wat het kan
 
@@ -46,6 +46,7 @@ Het startscript bouwt de audiokern automatisch. Een voorbeeldproject openen:
 ## Bediening
 
 Wissel met **Tab** tussen golfvorm en multitrack. **Spatie** start en stopt het afspelen.
+**Ctrl+W** sluit de huidige golfvorm of sessie; het programma blijft open. Bij niet-opgeslagen wijzigingen kun je opslaan, verwerpen of annuleren.
 In multitrack sleep je WAV-bestanden op een spoor en verplaats of trim je clips met de muis.
 Met **Volume Line** en **Pan Line** teken je de lijnen op een clip.
 
@@ -56,6 +57,8 @@ Met **Options → Show Toolbar Labels** toon je namen naast de werkbalkiconen. *
 Meer uitleg: [volume- en panlijnen](docs/ENVELOPES.md) en [thema](docs/THEMA.md).
 
 ## Wat er nieuw is
+
+**0.4.1** File → Close en Ctrl+W sluiten de huidige golfvorm of sessie, met een keuze voor niet-opgeslagen wijzigingen.
 
 **0.4.0** Compacte werkbalken en gegroepeerde menu's, een groot werkvlak en een vaste onderrand met transport, klok, selectie-/weergavetijden en een stereometer met dB-schaal en clipindicatie.
 
