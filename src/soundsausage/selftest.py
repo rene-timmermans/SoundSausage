@@ -12,6 +12,7 @@ from .project import save_project, load_project
 from .amplitude_ui import ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .icons import application_icon, mascot_icon
 from .resample import resample
+from .manual import ManualDialog
 
 
 def run(window):
@@ -45,7 +46,14 @@ def run(window):
         finally:
             dialog.reject()
             dialog.deleteLater()
-    print(f"SoundSausage {__version__}: selftest OK (DSP, WAV, CELP, icons, amplitude dialogs)")
+    manual = ManualDialog(window)
+    try:
+        assert "Channel Mixer" in manual.browser.toPlainText()
+        assert "Audio Hardware" in manual.browser.toPlainText()
+    finally:
+        manual.close()
+        manual.deleteLater()
+    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, icons, effects, manual)")
 
 
 def run_audio(window):

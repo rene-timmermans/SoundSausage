@@ -3,8 +3,9 @@
 De huidige ontwikkelvolgorde versterkt eerst de audiobasis en werkt daarna de
 resterende effecten en tools per groep af. Iedere afgeronde versie krijgt
 releasepunten en geteste installatiepakketten.
+De [afgesproken route en open punten](ONTWIKKELPLAN.md) blijven de leidraad.
 
-## 1. Audiobasis — in verificatie (0.6.0)
+## 1. Audiobasis — automatisch gecontroleerd (0.6.0)
 
 - [x] Geïntegreerd afspelen zonder een extern afspeelproces.
 - [x] Keuze en onthouden van het uitvoerapparaat.
@@ -12,17 +13,27 @@ releasepunten en geteste installatiepakketten.
 - [x] Pauzeren, stoppen, lussen en apparaatverlies afhandelen.
 - [x] Verschillende samplerates omzetten bij import en afspelen.
 - [x] Samplerate van een golfvorm wijzigen met Undo/Redo.
-- [ ] Automatische controles met een virtueel audioapparaat.
+- [x] Automatische controles met een virtueel audioapparaat.
 - [ ] Hoorbare controle op een fysiek geluidsapparaat.
 
-Lokaal slagen 181 controles; twee audiobackendcontroles vereisen een privaat
-virtueel audioapparaat en worden in de distributiecontainers uitgevoerd.
+In Debian, Fedora en Arch slagen alle 183 controles, inclusief de twee echte
+audiobackendcontroles. De geïnstalleerde pakketten doorstaan de gewone en stille
+audiocontrole ook op Ubuntu 26.04 en Ubuntu Rolling.
 De geheugenlimiet en verwerking van volledige buffers blijven onderdeel van fase 2.
 
-## 2. Langere bestanden en betrouwbare bewerkingen — gepland
+## Handleiding en presentatie — 0.6.1
+
+De handleiding beschrijft alle beschikbare functies en effecten, met voorbeelden.
+Ze is via Help → Handleiding en F1 bereikbaar, doorzoekbaar en zonder internet
+te lezen. De presentatie volgt PixelPickle; GitHub-releases bevatten korte
+toegevoegde functies en work in progress. Nieuwe functies krijgen steeds een
+bijgewerkte uitleg in de handleiding.
+
+## 2. Langere bestanden en betrouwbare bewerkingen — eerstvolgend
 
 Verwerking en opslag in blokken, voortgang en annuleren, crashherstel en behoud
 van bestandsmetadata. De huidige geheugenlimiet blijft tot deze fase van kracht.
+Deze fase volgt op het afronden van de handleiding en release 0.6.1.
 
 ## 3. Dagelijkse werkwijze — gepland
 

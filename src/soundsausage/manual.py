@@ -1,0 +1,81 @@
+"""Searchable, nonmodal manual, bundled for offline use in installed packages."""
+from pathlib import Path
+
+from PySide6.QtCore import QUrl
+from PySide6.QtGui import QDesktopServices, QKeySequence, QShortcut, QTextCursor, QTextDocument, QPalette
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton, QLabel, QTextBrowser, QDialogButtonBox
+
+from .icons import application_icon
+from .theme import colors, readable
+
+
+def manual_path():
+    return Path(__file__).resolve().parents[2] / "docs/HANDLEIDING.md"
+
+
+class ManualDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Handleiding — SoundSausage")
+        self.setWindowIcon(application_icon())
+        self.resize(850, 680)
+        self.setMinimumSize(550, 400)
+        layout = QVBoxLayout(self)
+        search = QHBoxLayout()
+        self.search = QLineEdit()
+        self.search.setPlaceholderText("Zoeken in de handleiding…")
+        self.search.setAccessibleName("Zoeken in de handleiding")
+        previous, following = QPushButton("Vorige"), QPushButton("Volgende")
+        previous.setAutoDefault(False)
+        following.setAutoDefault(False)
+        search.addWidget(self.search, 1)
+        search.addWidget(previous)
+        search.addWidget(following)
+        layout.addLayout(search)
+        self.browser = QTextBrowser()
+        self.browser.setOpenLinks(False)
+        self.browser.setOpenExternalLinks(False)
+        c = colors()
+        palette = self.browser.palette()
+        palette.setColor(QPalette.ColorRole.Link, readable(c.accent, c.base))
+        self.browser.setPalette(palette)
+        self.browser.setMarkdown(manual_path().read_text(encoding="utf-8"))
+        self.browser.anchorClicked.connect(self.open_link)
+        layout.addWidget(self.browser, 1)
+        self.search_status = QLabel("Ctrl+F: zoeken · F3: volgende · Shift+F3: vorige")
+        layout.addWidget(self.search_status)
+        box = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        box.button(QDialogButtonBox.StandardButton.Close).setText("Sluiten")
+        box.button(QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
+        box.rejected.connect(self.close)
+        layout.addWidget(box)
+        self.search.returnPressed.connect(self.find)
+        following.clicked.connect(lambda: self.find())
+        previous.clicked.connect(lambda: self.find(True))
+        self._shortcuts = []
+        for keys, callback in (("Ctrl+F", self.focus_search), ("F3", self.find), ("Shift+F3", lambda: self.find(True))):
+            shortcut = QShortcut(QKeySequence(keys), self)
+            shortcut.activated.connect(callback)
+            self._shortcuts.append(shortcut)
+
+    def focus_search(self):
+        self.search.setFocus()
+        self.search.selectAll()
+
+    def find(self, backwards=False):
+        term = self.search.text().strip()
+        if not term:
+            self.focus_search()
+            return
+        flags = QTextDocument.FindFlag.FindBackward if backwards else QTextDocument.FindFlag(0)
+        found = self.browser.find(term, flags)
+        if not found:
+            self.browser.moveCursor(QTextCursor.MoveOperation.End if backwards else QTextCursor.MoveOperation.Start)
+            found = self.browser.find(term, flags)
+        self.search_status.setText("Gevonden: " + term if found else "Niet gevonden: " + term)
+
+    def open_link(self, url):
+        if url.isRelative() and url.fragment():
+            self.browser.scrollToAnchor(url.fragment())
+        elif url.scheme() in ("https", "http"):
+            QDesktopServices.openUrl(url)

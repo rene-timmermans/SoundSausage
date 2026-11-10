@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.6.0**.
+De huidige versie is **0.6.1**.
 
 ## Wat het kan
 
@@ -18,8 +18,8 @@ De huidige versie is **0.6.0**.
 - Stereokanalen mengen, dynamiek bewerken en een volumeverloop tekenen, met luistervoorbeelden.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
-- Projecten opslaan als `.celp`, met alle gebruikte audio ingebed; een sessie exporteren als WAV.
-- Eenvoudige oudere sessies (`.ses`) importeren.
+- Projecten opslaan met alle gebruikte audio en een complete mix exporteren.
+- Eenvoudige oudere sessies importeren.
 - Inzoomen op de golfvorm, afspelen in een lus en frequenties analyseren.
 
 Opnemen, geavanceerde effecten en volledige ondersteuning voor oude sessies volgen later.
@@ -44,11 +44,7 @@ python3 -m pip install -r requirements.txt
 ./run.sh
 ```
 
-Het startscript bouwt de audiokern automatisch. Een voorbeeldproject openen:
-
-```bash
-./run.sh examples/demo-envelopes.celp
-```
+Het startscript bouwt de audiokern automatisch. Voorbeeldprojecten staan in [examples](examples/).
 
 ## Bediening
 
@@ -68,8 +64,12 @@ worden bij import en plakken omgezet; **Edit → Convert Sample Rate** zet een g
 Zie [audio-instellingen](docs/AUDIO.md) en de [ontwikkelvoortgang](docs/VOORTGANG.md).
 
 Meer uitleg: [volume- en panlijnen](docs/ENVELOPES.md) en [thema](docs/THEMA.md).
+De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handleiding**
+en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.6.1** Een volledige Nederlandstalige handleiding in het helpmenu, met F1 en zoeken, ook zonder internet.
 
 **0.6.0** Geïntegreerd afspelen met apparaatkeuze en een audioklok voor cursor en meters. Samplerateconversie bij import, plakken en golfvormbewerking. Zie de [releasepunten](docs/releases/0.6.0.md).
 
@@ -78,12 +78,5 @@ Meer uitleg: [volume- en panlijnen](docs/ENVELOPES.md) en [thema](docs/THEMA.md)
 **0.4.1** File → Close en Ctrl+W sluiten de huidige golfvorm of sessie, met een keuze voor niet-opgeslagen wijzigingen.
 
 **0.4.0** Compacte werkbalken en gegroepeerde menu's, een groot werkvlak en een vaste onderrand met transport, klok, selectie-/weergavetijden en een stereometer met dB-schaal en clipindicatie.
-
-## Techniek
-
-Python met Qt 6/PySide6 voor de desktopinterface, NumPy voor audioverwerking en een eigen
-C++20-kern voor effecten en het mengen van sporen. Qt Multimedia verzorgt het afspelen;
-libsamplerate verzorgt de samplerateconversie.
-Projecten gebruiken een eigen [CELP-formaat](docs/PROJECTFORMAAT.md).
 
 SoundSausage is beschikbaar onder [GPL-3.0-or-later](LICENSE): GNU GPL versie 3 of, naar keuze, een latere versie.

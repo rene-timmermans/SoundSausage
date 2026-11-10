@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 from .about import AboutDialog
+from .manual import ManualDialog
 from .audio import AudioError, AmbiguousWavError, read_wav, write_wav, tone
 from .document import Document
 from .playback import Playback
@@ -147,6 +148,7 @@ class MainWindow(SessionActions, QMainWindow):
         self.document = document or Document()
         self.init_session()
         self.clipboard = None
+        self._manual_dialog = None
         self.no_audio = no_audio
         self.audio_devices = AudioDevices(self)
         self.player = Playback(self, devices=self.audio_devices)
@@ -258,6 +260,7 @@ class MainWindow(SessionActions, QMainWindow):
         self.actions["loop"].setCheckable(True)
         self.actions["loop"].toggled.connect(lambda value: setattr(self.player, "loop", value))
         self.action("about", "&About…", self.about)
+        self.action("manual", "&Handleiding", self.open_manual, "F1")
         self.create_session_actions()
         chrome.create_actions(self)
 
@@ -738,8 +741,25 @@ class MainWindow(SessionActions, QMainWindow):
         dialog.exec()
         dialog.deleteLater()
 
+    def open_manual(self):
+        if self._manual_dialog is None:
+            try:
+                self._manual_dialog = ManualDialog(self)
+                screen = self.screen()
+                if screen is not None:
+                    area = screen.availableGeometry()
+                    self._manual_dialog.resize(min(850, max(550, area.width() - 40)), min(680, max(400, area.height() - 50)))
+            except OSError:
+                self.error("Handleiding", "De handleiding ontbreekt in deze installatie. Installeer SoundSausage opnieuw.")
+                return
+        self._manual_dialog.show()
+        self._manual_dialog.raise_()
+        self._manual_dialog.activateWindow()
+
     def closeEvent(self, event):
         if self._confirm_discard() and self.confirm_session_discard():
+            if self._manual_dialog is not None:
+                self._manual_dialog.close()
             self.player.shutdown()
             event.accept()
         else:

@@ -97,7 +97,7 @@ def create_menus(window):
     windows = menu("window", "&Window")
     add(windows, ("mode_wave", "mode_multi", None, "insert_wave", "apply_clip", None, "fullscreen"))
     help_menu = menu("help", "&Help")
-    add(help_menu, ("about",))
+    add(help_menu, ("manual", None, "about"))
 
 
 def create_toolbars(window):
