@@ -1,6 +1,6 @@
 # Cool Edit Pro: onderzoek voor een Linux-versie
 
-Onderzocht op 9 november 2026. Uitgangspunt van de gebruiker: zo veel mogelijk oorspronkelijke functies en bediening behouden.
+Het doel is zo veel mogelijk oorspronkelijke functies en bediening te behouden.
 
 Een native Linux-herimplementatie lijkt technisch haalbaar. De aangeleverde installatie bevat een duidelijke scheiding tussen het hoofdprogramma, effecten en bestandsfilters. Er is genoeg informatie om de bediening en belangrijke interfaces te specificeren. Dit onderzoek bewijst nog geen identieke geluidsverwerking of compatibiliteit met bestaande projecten.
 

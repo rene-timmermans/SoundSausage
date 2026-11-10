@@ -48,7 +48,7 @@ Dupliceren deelt de bron, maar elke clip kan zijn eigen lijnen krijgen. Bij **Ap
 
 Elke lijn ondersteunt maximaal 512 punten. Punten moeten geordend, uniek en binnen de volledige bronaudio liggen. Waarden buiten het ondersteunde bereik, ongeldige frames en niet-eindige getallen worden afgewezen. De projectbeschrijving blijft begrensd tot 2 MiB.
 
-Nieuwe bestanden gebruiken **CELP versie 2**. Projecten van versie 1, waaronder het bestaande `Untitled.celp` van de gebruiker, blijven te openen met neutrale lijnen. Oudere prototypes die alleen versie 1 kennen weigeren een versie-2-bestand bij openen. Zie [PROJECTFORMAAT.md](PROJECTFORMAAT.md).
+Nieuwe bestanden gebruiken **CELP versie 2**. Projecten van versie 1 blijven te openen met neutrale lijnen. Oudere prototypes die alleen versie 1 kennen weigeren een versie-2-bestand bij openen. Zie [PROJECTFORMAAT.md](PROJECTFORMAAT.md).
 
 ## Controle en grenzen
 

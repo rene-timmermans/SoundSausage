@@ -1,8 +1,8 @@
 # Bouwplan voor een native Linux-variant
 
-Dit plan is opgesteld op basis van het [statische onderzoek](ANALYSE.md), vóór de prototypebouw. De gebruiker wil zo veel mogelijk oorspronkelijke functies en bediening behouden. Inmiddels bestaat een eerste golfvormeditor; zie [de actuele status](../docs/STATUS.md). De volledige effectinventaris en bediening blijven de doelomvang; de fasering hieronder beschrijft de bouwvolgorde.
+Dit plan is opgesteld op basis van het [statische onderzoek](ANALYSE.md), vóór de prototypebouw. Het doel is zo veel mogelijk oorspronkelijke functies en bediening te behouden. Inmiddels bestaat een eerste golfvormeditor; zie [de actuele status](../docs/STATUS.md). De volledige effectinventaris en bediening blijven de doelomvang; de fasering hieronder beschrijft de bouwvolgorde.
 
-Uitgangspunt na verduidelijking door de gebruiker: het oorspronkelijke Cool Edit Pro werkt niet op de Steam Deck. Een werkend origineel blijft geen voorwaarde voor de Linux-versie. De gebruiker heeft inmiddels wel een Windows 7-VM en zes referentiesessies beschikbaar gemaakt. Prototype 0.2 bevat multitrack en een begrensde import van die sessies; zie [het SES-onderzoek](../docs/SES-ONDERZOEK.md). Volledige compatibiliteit en klankgelijkheid blijven afzonderlijk te valideren.
+SoundSausage werkt zelfstandig op Linux. Zes referentiesessies uit een Windows 7-VM vormen de basis voor de beperkte SES-import; zie [het SES-onderzoek](../docs/SES-ONDERZOEK.md). Volledige compatibiliteit en klankgelijkheid blijven vervolgstappen.
 
 **Werkplek**
 
@@ -47,7 +47,7 @@ Begin met dezelfde twee modi: Edit Waveform en Multitrack. Gebruik `ui-spec.json
 
 Behoud herkenbare namen, de volgorde van veelgebruikte commando's, selectiegedrag, transport, meters, cuebeheer, zoom en de overgang tussen clip en golfvorm. Bevestig het muisgedrag en de werkelijke standaardwaarden aan de hand van de oorspronkelijke toepassing. De oude dialoogcoördinaten zijn dialoogeenheden; schaal tekst en controls passend voor het Linux-scherm.
 
-Aanvulling van de gebruiker op 9 november 2026: de vormgeving moet het Linux-thema volgen, met belangrijke knoppen in de accentkleur, zoals in PixelPickle. Dit is toegepast in prototype 0.2.2; zie [thema en leesbaarheid](../docs/THEMA.md). De oorspronkelijke indeling en groene golfvormen blijven herkenbaar, terwijl vaste lichte werkbalkkleuren zijn vervangen door het Qt-desktoppalet.
+De vormgeving volgt het Linux-thema, met belangrijke knoppen in de accentkleur, zoals in PixelPickle. Zie [thema en leesbaarheid](../docs/THEMA.md). De oorspronkelijke indeling en groene golfvormen blijven herkenbaar.
 
 Een menuoptie telt pas als ondersteund wanneer het bijbehorende gedrag werkt. Niet-geïmplementeerde functies mogen geen geslaagde bewerking suggereren. Houd de volledige functieinventaris als voortgangslijst bij.
 
@@ -70,6 +70,6 @@ De eerste bruikbare editor is een tussenresultaat. Functiepariteit omvat ook de 
 
 **Gerichte vervolgstap**
 
-De werkmap en onderzoeksbundel staan op de gewenste locatie. Een eerste native golfvormeditor is gebouwd en de gebruiker heeft afspelen op het apparaat bevestigd. De volgende bouwstappen kunnen voortgaan met synthetische audio, de aanwezige programmabestanden en de GUI-referentie. Hiervoor hoeft de gebruiker geen `.ses` aan te leveren.
+De golfvormeditor vormt de basis voor verdere ontwikkeling met synthetische audio en de beschikbare referenties.
 
 Multitrack bevat inmiddels clips, tracks, volume/pan, mute/solo, fades, mixdown en een eigen versieerbaar projectformaat met roundtriptests. Een eerste subset van de oude `.ses`-indeling is uit de aangeleverde bestanden afgeleid. Verdere compatibiliteit en identieke effectuitvoer worden pas als bevestigd gerapporteerd als daar voldoende bewijs voor is.

@@ -52,10 +52,10 @@ Het interne klembord accepteert momenteel alleen audio met dezelfde samplerate e
 
 De FFT gebruikt maximaal 262.144 frames uit het midden van de gekozen selectie; bij geen selectie geldt de hele golfvorm als gekozen bereik. De analyse toont de werkelijk gebruikte vensterlengte. Zero-crossingselectie gebruikt het eerste kanaal. Deze bewerkingsregels zijn expliciet prototypegedrag; ze zijn nog niet allemaal vergeleken met de oorspronkelijke applicatie.
 
-De gebruiker heeft op 9 november 2026 bevestigd dat geluid op het eigen apparaat werkt. Dat is een praktijktest van de gebruiker. De geautomatiseerde afspeeltest gebruikte alleen een dummy-apparaat, omdat de sandbox geen verbinding met de hostaudioserver toeliet. Microfoonopname en geluidsmatige gelijkheid met het origineel zijn nog niet bevestigd.
+Afspelen op het apparaat is bevestigd. Microfoonopname en geluidsmatige gelijkheid met het origineel waren in deze versie nog niet bevestigd.
 
 **Vervolg**
 
-De gebruiker heeft verduidelijkt dat het oorspronkelijke Cool Edit Pro op de Steam Deck niet werkt. Dat is de aanleiding voor deze Linux-versie. De bouw mag daarom geen werkende Windows-installatie of door de gebruiker aangemaakte `.ses` vereisen. Er wordt niet van uitgegaan dat de gebruiker het origineel kan starten of referentie-uitvoer kan genereren.
+De Linux-versie wordt zelfstandig ontwikkeld en vereist geen werkende Windows-installatie of oorspronkelijke sessiebestanden.
 
 We bouwen verder met de reeds beschikbare statische analyse, de aangeleverde GUI-afbeelding en zelf gegenereerde audio voor functionele tests. Multitrack en het opslaan van nieuwe Linux-projecten kunnen een eigen versieerbaar projectformaat gebruiken. Import van oude `.ses`-projecten is een afzonderlijke compatibiliteitsfunctie; een origineel voorbeeld zou daarvoor later nuttig zijn, maar is geen voorwaarde voor verdere ontwikkeling. De volledige doelomvang uit het [bouwplan](../analysis/BOUWPLAN.md) blijft behouden. Exacte gelijkheid met het oorspronkelijke gedrag blijft onbevestigd waar uitvoervergelijkingen ontbreken.

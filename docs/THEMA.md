@@ -1,6 +1,6 @@
 # Thema en leesbaarheid — prototype 0.2.2
 
-De gebruiker wil de vertrouwde Cool Edit-indeling combineren met het eigen Linux-thema, met belangrijke knoppen in de accentkleur, zoals in [PixelPickle](https://github.com/rene-timmermans/pixelpickle).
+De interface combineert de vertrouwde Cool Edit-indeling met het eigen Linux-thema, met belangrijke knoppen in de accentkleur, zoals in [PixelPickle](https://github.com/rene-timmermans/pixelpickle).
 
 De gemelde schermafbeelding toonde lichte werkbalken met lichte tekst, slecht leesbare selectielabels en vaste blauwgrijze panelen binnen een donker bureaublad. De oorzaak in het prototype was een vaste lichte stylesheet naast een overgenomen donker Qt-palet.
 

@@ -1,8 +1,8 @@
 # Onderzoek van de zes aangeleverde SES-bestanden
 
-Bronnen: `00-leeg.ses` t/m `05-pan.ses`, door de gebruiker op 9 november 2026 gemaakt in Cool Edit Pro in een Windows 7-VM en onder `/home/deck/` geplaatst. Ongewijzigde kopieën staan in `reference/vm-session-test/`. De oorspronkelijke bestanden zijn niet gewijzigd of uitgevoerd. De interpreter gebruikt lokale byteanalyse en vergelijking; er is geen REA-MCP-server verbonden.
+Bronnen: `00-leeg.ses` t/m `05-pan.ses`, op 9 november 2026 gemaakt in Cool Edit Pro in een Windows 7-VM en onder `/home/deck/` geplaatst. Ongewijzigde kopieën staan in `reference/vm-session-test/`. De oorspronkelijke bestanden zijn niet gewijzigd of uitgevoerd. De interpreter gebruikt lokale byteanalyse en vergelijking; er is geen REA-MCP-server verbonden.
 
-De bestanden identificeren zichzelf als **Cool Edit Pro 1.0**, met samplerate **44100 Hz** en een 16-bit sessie-instelling. De oorspronkelijke applicatie werkt volgens de gebruiker niet rechtstreeks op de Steam Deck; de VM levert nu afzonderlijke referentiegevallen. Onze Linux-versie heeft de VM niet nodig om te werken.
+De bestanden identificeren zichzelf als **Cool Edit Pro 1.0**, met samplerate **44100 Hz** en een 16-bit sessie-instelling. De VM levert afzonderlijke referentiegevallen. Onze Linux-versie heeft de VM niet nodig om te werken.
 
 **Rechtstreekse waarnemingen**
 
@@ -23,7 +23,7 @@ De kleine linkerfactor in 05 komt overeen met ongeveer **−100 dB**. Helemaal r
 
 **Vergelijking met de originele mixdown**
 
-De gebruiker heeft vervolgens `02-basis-mix.wav` uit de Windows-VM aangeleverd, gevonden onder `/home/deck/`. De ongewijzigde kopie staat naast de sessies. Het is stereo PCM16 op 44100 Hz, 732484 bytes, met SHA-256 `15cc02f1130862a54855629bf48cfcb44aa29643319344b2569c9468bb92505f`.
+`02-basis-mix.wav` is een referentie-export uit de Windows-VM. De ongewijzigde kopie staat naast de sessies. Het is stereo PCM16 op 44100 Hz, 732484 bytes, met SHA-256 `15cc02f1130862a54855629bf48cfcb44aa29643319344b2569c9468bb92505f`.
 
 | Meting | Resultaat |
 | --- | --- |
@@ -49,7 +49,7 @@ PYTHONPATH=src python3 tools/compare_ses_mix.py \
 
 **Volume, pan en oversturing: prototype 0.2.1**
 
-De gebruiker heeft daarna `04-volume-mix.wav` en `05-mix-down.wav` uit de VM geleverd. Beide zijn ongewijzigd gekopieerd vanuit `/home/deck/`. De tweede bestandsnaam wijkt af van het voorgestelde `05-pan-mix.wav`; de uitvoer is vergeleken met `05-pan.ses`.
+`04-volume-mix.wav` en `05-mix-down.wav` zijn aanvullende referentie-exports uit de VM. Beide zijn ongewijzigd gekopieerd vanuit `/home/deck/`. De tweede bestandsnaam wijkt af van het voorgestelde `05-pan-mix.wav`; de uitvoer is vergeleken met `05-pan.ses`.
 
 | Referentie | Originele frames | Linux-frames | PCM16-audio na aanpassing |
 | --- | --- | --- | --- |
