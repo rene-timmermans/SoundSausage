@@ -29,7 +29,7 @@ def cache_root():
     if configured:
         return Path(configured).resolve()
     data = Path(os.environ.get("XDG_DATA_HOME", str(Path.home() / ".local/share")))
-    return data / "SoundSausage/work"
+    return (data / "SoundSausage/work").resolve()
 
 
 class BufferLease:

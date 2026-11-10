@@ -3,7 +3,8 @@
 De lokale volledige suite doorstaat 208 controles, waarvan twee echte
 Qt-audiobackendcontroles in de beperkte hostomgeving worden overgeslagen.
 De aanvullende opslagcontroles toetsen ook de weigering van te grote metadata;
-de complete distributiesuite bevat daardoor 209 controles.
+de complete distributiesuite bevat, met een controle van een gekoppelde werkmap,
+210 controles.
 
 Gecontroleerd:
 

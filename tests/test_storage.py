@@ -62,6 +62,16 @@ class StorageTests(unittest.TestCase):
         doc.convert_sample_rate(1000)
         self.assertEqual(positions(doc.metadata),[12]);self.assertEqual(doc.frames,13)
 
+    def test_work_folder_on_a_symlinked_data_drive_can_be_recovered(self):
+        with tempfile.TemporaryDirectory(dir=ROOT/'build') as folder:
+            folder=Path(folder);target=folder/'disk';target.mkdir()
+            link=folder/'data';link.symlink_to(target,target_is_directory=True)
+            with patch.dict(os.environ,{'SOUNDSAUSAGE_CACHE_DIR':'','XDG_DATA_HOME':str(link)}):
+                self.assertEqual(storage.cache_root(),(target/'SoundSausage/work').resolve())
+                samples=storage.seal(storage.copy_array(np.ones((20,1),np.float32),force_disk=True))
+                root,record=storage.persist_array(samples)
+                np.testing.assert_array_equal(storage.open_buffer(storage.cache_root()/record['file'],root.shape),samples)
+
     def test_shared_maps_live_until_all_owners_release_them(self):
         original=storage.seal(storage.copy_array(np.full((1000,2),.125,np.float32),force_disk=True))
         path=storage.lease_of(original).path
