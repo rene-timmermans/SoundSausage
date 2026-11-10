@@ -2,7 +2,7 @@
 from pathlib import Path
 
 from PySide6.QtCore import Qt, QPointF, QRectF
-from PySide6.QtGui import QIcon, QPainter, QPainterPath, QPen, QPixmap, QPolygonF
+from PySide6.QtGui import QGuiApplication, QIcon, QPainter, QPainterPath, QPen, QPixmap, QPolygonF
 
 
 ICON_ACTIONS = {"new", "open", "save", "save_session", "save_session_as", "undo", "redo",
@@ -10,10 +10,40 @@ ICON_ACTIONS = {"new", "open", "save", "save_session", "save_session_as", "undo"
                 "play", "pause", "stop", "loop", "mode_wave", "mode_multi", "import_audio", "mixdown"}
 PRIMARY_ACTIONS = {"open", "save", "play", "import_audio", "mixdown"}
 _CACHE = {}
+_APPLICATION_ICONS = {}
+_ASSETS = Path(__file__).with_name("assets")
 
 
-def application_icon():
-    return QIcon(str(Path(__file__).with_name("assets") / "soundsausage.png"))
+def mascot_icon():
+    """The isolated mascot for in-program artwork at any size."""
+    return QIcon(str(_ASSETS / "soundsausage-mascot.png"))
+
+
+def taskbar_icon():
+    """The purple tile with transparent outer corners for taskbars and launchers."""
+    return QIcon(str(_ASSETS / "soundsausage.png"))
+
+
+def application_icon(*, device_pixel_ratio=None):
+    """Supply small caption icons and larger taskbar icons in one native set.
+
+    Linux window managers use the same window icon property for captions and
+    taskbars. Publish both variants at their respective pixel sizes instead of
+    overriding the window with a single image that also replaces its task icon.
+    """
+    if device_pixel_ratio is None:
+        screen = QGuiApplication.primaryScreen()
+        device_pixel_ratio = screen.devicePixelRatio() if screen else 1.0
+    ratio = float(device_pixel_ratio)
+    if ratio not in _APPLICATION_ICONS:
+        small, large = mascot_icon(), taskbar_icon()
+        icon = QIcon()
+        for size in (16, 20, 22, 24, 32, 40, 48, 64, 128, 256):
+            pixels = max(1, round(size * ratio))
+            source = small if size <= 24 else large
+            icon.addPixmap(source.pixmap(pixels, pixels))
+        _APPLICATION_ICONS[ratio] = icon
+    return QIcon(_APPLICATION_ICONS[ratio])
 
 
 def draw(p, name, color):
