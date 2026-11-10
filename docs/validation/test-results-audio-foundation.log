@@ -183,6 +183,6 @@ test_optional_toolbar_labels_keep_the_selected_mode_and_theme (test_theme.ThemeG
 test_rendered_controls_follow_live_light_dark_and_pale_accent_changes (test_theme.ThemeGuiTests.test_rendered_controls_follow_live_light_dark_and_pale_accent_changes) ... ok
 
 ----------------------------------------------------------------------
-Ran 182 tests in 17.804s
+Ran 182 tests in 16.939s
 
 OK (skipped=2)

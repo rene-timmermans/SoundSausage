@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
     QInputDialog, QStackedWidget,
 )
 
-from . import __version__
+from .about import AboutDialog
 from .audio import AudioError, AmbiguousWavError, read_wav, write_wav, tone
 from .document import Document
 from .playback import Playback
@@ -24,7 +24,7 @@ from . import chrome
 from .transport import TransportPanel
 from .amplitude_ui import EffectDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .theme import install_theme, colors
-from .icons import ICON_ACTIONS, PRIMARY_ACTIONS, make_icon, application_icon, mascot_icon
+from .icons import ICON_ACTIONS, PRIMARY_ACTIONS, make_icon, application_icon
 
 
 FORMAT_LABELS = {
@@ -734,12 +734,9 @@ class MainWindow(SessionActions, QMainWindow):
         self.selection_changed(frame, frame)
 
     def about(self):
-        dialog = QMessageBox(self)
-        dialog.setWindowTitle("SoundSausage")
-        dialog.setIconPixmap(mascot_icon().pixmap(96, 96))
-        dialog.setText(f"SoundSausage · Prototype {__version__}")
-        dialog.setInformativeText("Waveform editing and non-destructive multitrack sessions.\n\nC++ audio processing · Qt desktop interface\n\nSessions use self-contained .celp projects. A limited Cool Edit Pro 1.0 session importer is included. Recording and advanced effects are not included yet.")
+        dialog = AboutDialog(self)
         dialog.exec()
+        dialog.deleteLater()
 
     def closeEvent(self, event):
         if self._confirm_discard() and self.confirm_session_discard():

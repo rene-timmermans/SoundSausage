@@ -4,13 +4,13 @@ from unittest.mock import patch
 
 import numpy as np
 from PySide6.QtCore import QObject, Signal
-from PySide6.QtMultimedia import QAudioFormat, QtAudio
+from PySide6.QtMultimedia import QAudioFormat
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication
 
 from soundsausage.audio import AudioError
 from soundsausage.audio_devices import AudioDevices, AudioHardwareDialog
-from soundsausage.playback import Playback, output_format, encode_output
+from soundsausage.playback import Playback, output_format, encode_output, QtAudio
 
 
 class MemorySettings:

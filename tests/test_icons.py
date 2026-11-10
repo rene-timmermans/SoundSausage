@@ -2,10 +2,11 @@
 import unittest
 
 from PySide6.QtCore import QSize, QTimer
-from PySide6.QtWidgets import QApplication, QMessageBox
+from PySide6.QtWidgets import QApplication
 
 from soundsausage.icons import application_icon, mascot_icon, taskbar_icon
 from soundsausage.window import MainWindow
+from soundsausage.about import AboutDialog
 
 
 class ApplicationIconTests(unittest.TestCase):
@@ -48,8 +49,11 @@ class ApplicationIconTests(unittest.TestCase):
 
         def inspect():
             for widget in self.app.topLevelWidgets():
-                if isinstance(widget, QMessageBox) and widget.parent() is window:
-                    captured.append(widget.iconPixmap().toImage())
+                if isinstance(widget, AboutDialog) and widget.parent() is window:
+                    captured.append(widget.mascot.pixmap().toImage())
+                    self.assertIn("René Timmermans", widget.description.text())
+                    self.assertIn("General Public License", widget.description.text())
+                    self.assertIn("https://github.com/rene-timmermans/SoundSausage", widget.description.text())
                     widget.accept()
 
         try:

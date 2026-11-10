@@ -3,7 +3,11 @@ import sys
 
 import numpy as np
 from PySide6.QtCore import QObject, QTimer, Signal
-from PySide6.QtMultimedia import QAudioSink, QAudioFormat, QtAudio
+from PySide6.QtMultimedia import QAudioSink, QAudioFormat
+try:
+    from PySide6.QtMultimedia import QtAudio
+except ImportError:  # PySide6 6.8 retains the QAudio namespace name.
+    from PySide6.QtMultimedia import QAudio as QtAudio
 
 from .audio import AudioError, validate_audio
 from .audio_devices import AudioDevices
@@ -73,6 +77,7 @@ class Playback(QObject):
         self._feeding = False
         self._generation = 0
         self._loop_pending = False
+        self._pause_requested = False
         self._output_id = ""
         self.output_description = ""
         self.format = None
@@ -112,6 +117,7 @@ class Playback(QObject):
 
     def _start_sink(self):
         self._starting = True
+        self._pause_requested = False
         self._sent = 0
         self._last_frame = self._start_frame
         try:
@@ -163,8 +169,12 @@ class Playback(QObject):
         if self.state == "Playing":
             self._tick()
             if self.sink is not None:
+                self._pause_requested = True
+                self._timer.stop()
+                self._set_state("Paused")
                 self.sink.suspend()
         elif self.state == "Paused":
+            self._pause_requested = False
             self.sink.resume()
 
     def _sink_state(self, sink, state):
@@ -172,10 +182,14 @@ class Playback(QObject):
             return
         if state == QtAudio.State.SuspendedState:
             self._timer.stop()
-            self._set_state("Paused")
+            if self._pause_requested:
+                self._set_state("Paused")
+            else:
+                sink.resume()
         elif state == QtAudio.State.ActiveState:
-            self._timer.start()
-            self._set_state("Playing")
+            if not self._pause_requested:
+                self._timer.start()
+                self._set_state("Playing")
         elif state == QtAudio.State.IdleState:
             if self._sent < len(self._payload):
                 self._feed()
@@ -226,6 +240,7 @@ class Playback(QObject):
         self._payload = b""
         self._sent = 0
         self._loop_pending = False
+        self._pause_requested = False
         if sink is not None:
             sink.reset()
             sink.deleteLater()
