@@ -37,7 +37,7 @@ def frame_count(frames, source_rate, target_rate):
 
 
 def resample(samples, source_rate, target_rate):
-    """Keep duration within half a target frame; never modify the source array.
+    """Round duration to target frames, keeping at least one for nonempty audio.
 
     This is an offline, full-buffer conversion. A future streaming reader must
     retain converter state rather than calling src_simple for separate chunks.

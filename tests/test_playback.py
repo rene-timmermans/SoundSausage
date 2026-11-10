@@ -132,6 +132,17 @@ class PlaybackTests(unittest.TestCase):
         self.assertEqual(bytes(sink.received), self.data[:100].tobytes())
         self.assertEqual(self.player.state, "Stopped")
 
+    def test_resume_refills_an_idle_backend_instead_of_waiting_for_active_state(self):
+        self.player.play(self.data, 8000)
+        sink = self.player.sink
+        self.player.toggle_pause()
+        sink.queued = 0
+        sink.resume = lambda: sink.transition(QtAudio.State.IdleState)
+        self.player.toggle_pause()
+        self.assertEqual(self.player.state, "Playing")
+        self.assertGreater(sink.queued, 0)
+        self.assertTrue(self.player._timer.isActive())
+
     def test_loop_restarts_after_drain_and_stop_cancels_a_pending_restart(self):
         self.player.loop = True
         self.player.play(self.data[:4], 8000, 20)

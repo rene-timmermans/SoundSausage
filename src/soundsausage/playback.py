@@ -175,7 +175,10 @@ class Playback(QObject):
                 self.sink.suspend()
         elif self.state == "Paused":
             self._pause_requested = False
+            self._set_state("Playing")
+            self._timer.start()
             self.sink.resume()
+            self._feed()
 
     def _sink_state(self, sink, state):
         if sink is not self.sink or self._starting:

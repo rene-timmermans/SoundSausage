@@ -15,11 +15,11 @@ class AudioBackendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls): cls.app = QApplication.instance() or QApplication([])
 
-    def wait_for(self, predicate, seconds=7):
+    def wait_for(self, predicate, seconds=7, diagnostic=None):
         deadline = time.monotonic() + seconds
         while not predicate() and time.monotonic() < deadline:
             QTest.qWait(10)
-        self.assertTrue(predicate(), "Audio backend did not reach the expected state")
+        self.assertTrue(predicate(), "Audio backend did not reach the expected state: " + str(diagnostic() if diagnostic else ""))
 
     def test_real_output_clock_pause_resume_and_completion_at_two_rates(self):
         for rate, channels in ((44100, 2), (48000, 1)):
@@ -38,7 +38,9 @@ class AudioBackendTests(unittest.TestCase):
                     QTest.qWait(80)
                     self.assertEqual(positions[-1], frozen)
                     player.toggle_pause()
-                    self.wait_for(lambda: positions[-1] > frozen)
+                    self.wait_for(lambda: positions[-1] > frozen, diagnostic=lambda: dict(
+                        state=player.state, sink=player.sink.state() if player.sink else None,
+                        timer=player._timer.isActive(), sent=player._sent, payload=len(player._payload), errors=errors))
                     self.assertEqual(player.state, "Playing")
                     self.wait_for(lambda: player.state == "Stopped")
                     self.assertFalse(errors, errors)

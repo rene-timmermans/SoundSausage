@@ -34,7 +34,8 @@ klembord blijven daarbij ongewijzigd. Een bewerkte clipkopie met een andere
 rate wordt bij toepassen naar de sessierate teruggezet.
 
 **Edit → Convert Sample Rate** zet een volledige golfvorm om. De toonhoogte en
-speelduur blijven behouden, met afronding op maximaal een halve uitvoerframe.
+speelduur blijven behouden, met afronding op een uitvoerframe (minimaal één
+frame voor een niet-leeg fragment).
 Selectie en cursor blijven op dezelfde tijden staan. Undo/Redo herstelt zowel
 de samplerate als de audiodata. Ondersteunde rates lopen van 1.000 tot 384.000 Hz.
 
