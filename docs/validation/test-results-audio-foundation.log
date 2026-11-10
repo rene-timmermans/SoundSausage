@@ -140,6 +140,7 @@ test_loop_restarts_after_drain_and_stop_cancels_a_pending_restart (test_playback
 test_missing_chosen_device_is_not_silently_rerouted (test_playback.PlaybackTests.test_missing_chosen_device_is_not_silently_rerouted) ... ok
 test_missing_output_disconnect_and_backend_error_are_recoverable (test_playback.PlaybackTests.test_missing_output_disconnect_and_backend_error_are_recoverable) ... ok
 test_partial_writes_preserve_every_pcm_byte_and_wait_for_drain (test_playback.PlaybackTests.test_partial_writes_preserve_every_pcm_byte_and_wait_for_drain) ... ok
+test_resume_refills_an_idle_backend_instead_of_waiting_for_active_state (test_playback.PlaybackTests.test_resume_refills_an_idle_backend_instead_of_waiting_for_active_state) ... ok
 test_stale_events_from_a_stopped_sink_cannot_stop_new_playback (test_playback.PlaybackTests.test_stale_events_from_a_stopped_sink_cannot_stop_new_playback) ... ok
 test_document_conversion_noop_and_failure_keep_history_intact (test_resample.ResampleTests.test_document_conversion_noop_and_failure_keep_history_intact) ... ok
 test_document_conversion_preserves_times_and_undo_restores_rate_and_samples (test_resample.ResampleTests.test_document_conversion_preserves_times_and_undo_restores_rate_and_samples) ... ok
@@ -183,6 +184,6 @@ test_optional_toolbar_labels_keep_the_selected_mode_and_theme (test_theme.ThemeG
 test_rendered_controls_follow_live_light_dark_and_pale_accent_changes (test_theme.ThemeGuiTests.test_rendered_controls_follow_live_light_dark_and_pale_accent_changes) ... ok
 
 ----------------------------------------------------------------------
-Ran 182 tests in 16.939s
+Ran 183 tests in 17.181s
 
 OK (skipped=2)

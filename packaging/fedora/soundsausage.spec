@@ -1,7 +1,7 @@
 Name:           soundsausage
 Version:        %{ss_version}
 Release:        1%{?dist}
-Summary:        Waveform and multitrack audio editor
+Summary:        Intuïtieve audio-editor met vertrouwde gereedschappen
 License:        GPL-3.0-or-later
 URL:            https://github.com/rene-timmermans/SoundSausage
 Source0:        soundsausage-%{version}.tar.gz
@@ -16,8 +16,8 @@ Requires:       libsamplerate
 %global __requires_exclude_from ^/usr/lib/soundsausage/src/.*$
 
 %description
-Edit WAV recordings, mix audio tracks and apply amplitude effects.
-Includes channel mixing, dynamics processing and editable volume envelopes.
+Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek
+waar je ze verwacht.
 
 %prep
 %setup -q

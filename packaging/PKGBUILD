@@ -1,7 +1,7 @@
 pkgname=soundsausage
 pkgver=0.6.0
 pkgrel=1
-pkgdesc='Waveform and multitrack audio editor'
+pkgdesc='Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht'
 arch=('x86_64')
 url='https://github.com/rene-timmermans/SoundSausage'
 license=('GPL-3.0-or-later')

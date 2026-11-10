@@ -76,7 +76,7 @@ def from_palette(palette):
 
 def stylesheet(c):
     # Explicit foreground/background pairs avoid mixing a dark desktop palette
-    # with the fixed light toolbar backgrounds from the first prototype.
+    # with fixed light toolbar backgrounds.
     n = lambda color: color.name()
     hover = blend(c.button, c.accent, 0.13)
     away_from_text = max((QColor("#000000"), QColor("#ffffff")),

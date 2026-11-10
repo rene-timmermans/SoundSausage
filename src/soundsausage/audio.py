@@ -33,11 +33,11 @@ class AudioFile:
 
 def validate_audio(samples, sample_rate):
     if not isinstance(samples, np.ndarray) or samples.ndim != 2 or samples.shape[1] not in (1, 2):
-        raise AudioError("This prototype supports mono and stereo audio.")
+        raise AudioError("SoundSausage supports mono and stereo audio.")
     if not 1000 <= sample_rate <= 384000:
         raise AudioError("The sample rate must be between 1,000 and 384,000 Hz.")
     if samples.shape[0] * samples.shape[1] * 4 > MAX_AUDIO_BYTES:
-        raise AudioError("This prototype supports at most 128 MiB of decoded audio per document.")
+        raise AudioError("SoundSausage supports at most 128 MiB of decoded audio per document.")
     if not np.isfinite(samples).all():
         raise AudioError("The audio contains non-finite sample values.")
 
@@ -87,11 +87,11 @@ def read_wav(path, pcm32_mode=None):
             if valid_bits not in (0, bits):
                 raise AudioError("WAV containers with a different valid-bit count are not supported yet.")
         if channels not in (1, 2) or not 1000 <= rate <= 384000:
-            raise AudioError("This prototype supports mono/stereo audio at 1,000–384,000 Hz.")
+            raise AudioError("SoundSausage supports mono/stereo audio at 1,000–384,000 Hz.")
         if code not in (1, 3) or bits not in (8, 16, 24, 32) or (code == 3 and bits != 32):
             raise AudioError("Supported WAV formats: PCM 8/16/24/32 and normalized float32.")
         if alignment != channels * (bits // 8):
-            raise AudioError("The WAV container layout is unsupported; this may be a historical Cool Edit float variant.")
+            raise AudioError("The WAV container layout is unsupported; this may be a historical float variant.")
         if byte_rate != rate * alignment:
             raise AudioError("The WAV byte rate is inconsistent with its format.")
         length = data_location[1]
@@ -99,9 +99,9 @@ def read_wav(path, pcm32_mode=None):
             raise AudioError("The WAV data ends in a partial audio frame.")
         frames = length // alignment
         if frames * channels * 4 > MAX_AUDIO_BYTES:
-            raise AudioError("This prototype supports at most 128 MiB of decoded audio per document.")
+            raise AudioError("SoundSausage supports at most 128 MiB of decoded audio per document.")
         if code == 1 and bits == 32 and not extensible and pcm32_mode not in ("integer", "cool-edit-float"):
-            raise AmbiguousWavError("32-bit type-1 WAV may contain signed PCM integers or Cool Edit's historical floats.")
+            raise AmbiguousWavError("32-bit type-1 WAV may contain signed PCM integers or legacy floats.")
         source.seek(data_location[0])
         raw = source.read(length)
     if code == 3:
@@ -132,7 +132,7 @@ def read_wav(path, pcm32_mode=None):
 
 
 def write_wav(path, samples, sample_rate, encoding="pcm16", *, pcm16_symmetric=False):
-    """Write WAV; session mixdowns can use the observed Cool Edit PCM16 limits."""
+    """Write WAV with selectable symmetric PCM16 bounds for session mixdowns."""
     validate_audio(samples, sample_rate)
     if encoding not in FORMATS:
         raise AudioError("Unknown output format.")

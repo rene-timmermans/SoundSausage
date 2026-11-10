@@ -54,7 +54,10 @@ class AudioBackendTests(unittest.TestCase):
         player.loop = True
         try:
             player.play(np.zeros((2400, 2), np.float32), 48000, 23)
-            self.wait_for(lambda: sum(p == 23 for p in positions) >= 3)
+            self.wait_for(lambda: sum(p == 23 for p in positions) >= 3, diagnostic=lambda: dict(
+                state=player.state, sink=player.sink.state() if player.sink else None,
+                processed=player.sink.processedUSecs() if player.sink else None,
+                sent=player._sent, payload=len(player._payload), positions=positions[-10:], errors=errors))
             player.stop()
             QTest.qWait(100)
             self.assertEqual(player.state, "Stopped")

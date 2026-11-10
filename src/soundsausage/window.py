@@ -323,7 +323,7 @@ class MainWindow(SessionActions, QMainWindow):
         elif fit:
             self.multitrack.set_session(self.session, fit=True)
         name = doc.path.name if doc.path else getattr(doc, "display_name", None) or ("Untitled Session" if self.mode == "multitrack" else "Untitled")
-        self.setWindowTitle(f"{'* ' if doc.dirty else ''}{name} — SoundSausage · Prototype")
+        self.setWindowTitle(f"{'* ' if doc.dirty else ''}{name} — SoundSausage")
         self.format_label.setText(f" {doc.sample_rate} Hz · {doc.encoding} · {'Stereo' if doc.channels == 2 else 'Mono'} ")
         self.detail_label.setText(f" {clock_text(doc.duration)} · {doc.frames:,} frames ")
         self.selection_changed(*doc.selection)
@@ -557,7 +557,7 @@ class MainWindow(SessionActions, QMainWindow):
             choice, accepted = QInputDialog.getItem(self, "32-bit WAV Interpretation",
                 "This header is ambiguous. How was its audio stored?",
                 ["Signed 32-bit PCM integers (float32 editing precision)",
-                 "Cool Edit type-1 floats (convert to normalized float32)"], 0, False)
+                 "Legacy type-1 floats (convert to normalized float32)"], 0, False)
             if not accepted:
                 return None
             return read_wav(path, "integer" if choice.startswith("Signed") else "cool-edit-float")
@@ -597,7 +597,7 @@ class MainWindow(SessionActions, QMainWindow):
             return True
         names = ", ".join(self.document.extra_chunks)
         result = QMessageBox.question(self, "Audio-only WAV Export",
-            f"This prototype saves audio samples and format information. These additional WAV chunks will be omitted: {names}.\n\nContinue?",
+            f"SoundSausage saves audio samples and format information. These additional WAV chunks will be omitted: {names}.\n\nContinue?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
         return result == QMessageBox.StandardButton.Yes
 

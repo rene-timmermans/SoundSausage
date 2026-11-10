@@ -86,7 +86,7 @@ def _load_project(path, dsp):
         if archive.getinfo("project.json").file_size > MAX_MANIFEST_BYTES:
             raise AudioError("The project description is too large.")
         if sum(item.file_size for item in members) > MAX_AUDIO_BYTES + MAX_MANIFEST_BYTES + MAX_MEDIA * 128:
-            raise AudioError("The project exceeds the prototype's source-audio limit.")
+            raise AudioError("The project exceeds SoundSausage's source-audio limit.")
         manifest = json.loads(archive.read("project.json").decode("utf-8"), parse_constant=_reject_constant)
         if not isinstance(manifest, dict) or manifest.get("format") != PROJECT_FORMAT:
             raise AudioError("This is not a SoundSausage project.")

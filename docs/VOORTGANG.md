@@ -15,7 +15,7 @@ releasepunten en geteste installatiepakketten.
 - [ ] Automatische controles met een virtueel audioapparaat.
 - [ ] Hoorbare controle op een fysiek geluidsapparaat.
 
-Lokaal slagen 180 controles; twee audiobackendcontroles vereisen een privaat
+Lokaal slagen 181 controles; twee audiobackendcontroles vereisen een privaat
 virtueel audioapparaat en worden in de distributiecontainers uitgevoerd.
 De geheugenlimiet en verwerking van volledige buffers blijven onderdeel van fase 2.
 

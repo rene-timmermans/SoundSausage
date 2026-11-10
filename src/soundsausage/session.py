@@ -228,7 +228,7 @@ class Session:
 
     def add_track(self, name=None):
         if len(self.tracks) >= MAX_TRACKS:
-            raise AudioError(f"This prototype supports at most {MAX_TRACKS} tracks.")
+            raise AudioError(f"SoundSausage supports at most {MAX_TRACKS} tracks.")
         track = Track(identifier(), text(name or f"Track {len(self.tracks) + 1}"))
         self._commit((*self.tracks, track), "Add Track", selected_track=track.id)
         return track.id
@@ -285,7 +285,7 @@ class Session:
                 raise AudioError("A clip cannot extend past the 24-hour timeline limit.")
             total += frames * samples.shape[1] * 4
         if total > MAX_AUDIO_BYTES or len(self.media) + len(items) > MAX_MEDIA:
-            raise AudioError("This prototype holds at most 128 MiB of source audio and 128 media items per session, including undo history.")
+            raise AudioError("SoundSausage holds at most 128 MiB of source audio and 128 media items per session, including undo history.")
         if sum(len(track.clips) for track in self.tracks) + len(items) > MAX_CLIPS:
             raise AudioError("There are too many clips in this session.")
         prepared = [self._prepare_media(resample(samples, item_rate, rate) if item_rate != rate else samples, rate, name)
@@ -400,7 +400,7 @@ class Session:
         if end < start or end > self.sample_rate * MAX_SECONDS:
             raise AudioError("Invalid mixdown range.")
         if (end - start) * 8 > MAX_AUDIO_BYTES:
-            raise AudioError("This prototype renders at most 128 MiB per mix. Select a shorter time range.")
+            raise AudioError("SoundSausage renders at most 128 MiB per mix. Select a shorter time range.")
         output = np.zeros((end - start, 2), np.float32)
         solo = any(track.solo for track in self.tracks)
         for track in self.tracks:

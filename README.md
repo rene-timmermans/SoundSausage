@@ -2,13 +2,13 @@
 
 <img src="src/soundsausage/assets/soundsausage.png" width="64" alt="SoundSausage-icoon">
 
-Audiobewerker voor Linux met een vertrouwde golfvorm- en multitrackweergave.
-Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen
-Linux-thema en accentkleur.
+Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
+
+Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen Linux-thema en accentkleur.
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-SoundSausage is in ontwikkeling. De huidige versie is prototype **0.6.0**.
+De huidige versie is **0.6.0**.
 
 ## Wat het kan
 

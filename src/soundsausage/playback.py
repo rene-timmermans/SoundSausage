@@ -107,8 +107,8 @@ class Playback(QObject):
             self.output_description = device.description()
             self.sink = self._sink_factory(device, self.format, self)
             sink = self.sink
-            sink.setBufferSize(max(self.format.bytesPerFrame(),
-                                   self.format.bytesForDuration(self.devices.buffer_ms * 1000)))
+            sink.setBufferSize(max(self.format.bytesPerFrame(), min(len(self._payload),
+                                   self.format.bytesForDuration(self.devices.buffer_ms * 1000))))
             sink.stateChanged.connect(lambda state: self._sink_state(sink, state))
             self._set_state("Starting")
             self._start_sink()

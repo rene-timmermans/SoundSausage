@@ -26,7 +26,7 @@ class AboutDialog(QDialog):
         palette = colors()
         self.description = QLabel(
             f"<h2 style='margin:0'>SoundSausage {__version__}</h2>"
-            "<p>Een vertrouwde audiobewerker voor golfvormen en meerdere sporen.</p>"
+            "<p>Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.</p>"
             "<p><b>Gemaakt door</b><br>René Timmermans<br>met Codex (OpenAI)</p>"
             "<p><b>Licentie</b><br>Vrije software onder de GNU General Public License, versie 3 of later.</p>"
             f"<p><b>Website</b><br><a style='color:{palette.icon.name()}' href='{url}'>{url}</a></p>"

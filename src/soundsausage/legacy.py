@@ -1,4 +1,4 @@
-"""Read-only, deliberately limited Cool Edit Pro 1.0 SES inspection and import.
+"""Read-only inspection and import of a limited legacy SES format.
 
 Field meanings are inferred from the six user-generated reference sessions.
 Unsupported envelopes, flags and chunks are rejected rather than flattened.
@@ -35,7 +35,7 @@ def inspect_ses(path):
         raise AudioError("This SES inspector supports at most 8 MiB of project metadata.")
     data = path.read_bytes()
     if len(data) < 12 or data[:8] != b"COOLNESS" or struct.unpack_from("<I", data, 8)[0] != len(data) - 12:
-        raise AudioError("This is not a supported COOLNESS session, or its length is invalid.")
+        raise AudioError("This is not a supported SES session, or its length is invalid.")
     chunks, payloads, warnings = [], {}, []
     cursor = 12
     while cursor < len(data):
@@ -156,7 +156,7 @@ def load_legacy_project(path, dsp=None, media_dirs=()):
     if kinds != {"hdr ", "vers", "stat", "trks", "LISTFILE", "blk ", "envp", "cues"}:
         raise AudioError("This SES contains chunks the limited importer does not support.")
     if report["version"] != "Cool Edit Pro 1.0" or report["sample_bits"] != 16 or report["header_flags"] != 1:
-        raise AudioError("This importer currently supports the tested Cool Edit Pro 1.0 / 16-bit session layout.")
+        raise AudioError("This importer supports the tested legacy SES layout with 16-bit source audio.")
     if report["header_left"] != 1 or report["header_right"] != 1 or report["header_offset"] != 0:
         raise AudioError("Non-default SES master settings are not supported yet.")
     if len(report["tracks"]) > 32 or len(report["files"]) > 128:
@@ -195,7 +195,7 @@ def load_legacy_project(path, dsp=None, media_dirs=()):
             raise AudioError("The SES source audio has a different sample rate.")
         total += audio.samples.nbytes
         if total > MAX_AUDIO_BYTES:
-            raise AudioError("The SES source audio exceeds the prototype's 128 MiB limit.")
+            raise AudioError("The SES source audio exceeds SoundSausage's 128 MiB limit.")
         item = session._prepare_media(audio.samples, audio.sample_rate, record["basename"])
         bank[item.id] = item
         media_map[record["id"]] = item.id

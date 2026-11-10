@@ -9,3 +9,8 @@ __pycache__/
 .codex/
 .aws/
 /*.celp
+
+# Local reference research is kept outside the product publication.
+/analysis/
+/docs/SES-ONDERZOEK.md
+/docs/STATUS-0.1.md

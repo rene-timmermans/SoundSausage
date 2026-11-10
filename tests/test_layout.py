@@ -36,6 +36,7 @@ class LayoutTests(unittest.TestCase):
         self.app.processEvents()
 
     def test_empty_workspace_and_two_compact_toolbar_rows_leave_room_for_audio(self):
+        self.assertTrue(self.window.windowTitle().endswith("— SoundSausage"))
         for width, height in ((1015, 609), (1180, 720), (1280, 800)):
             with self.subTest(width=width, height=height):
                 self.window.resize(width, height)

@@ -151,7 +151,7 @@ class SessionActions:
     def open_session_dialog(self):
         if not self.confirm_session_discard():
             return
-        path, _ = QFileDialog.getOpenFileName(self, "Open Multitrack Session", "", "Supported projects (*.celp *.ses *.SES);;SoundSausage Project (*.celp);;Cool Edit Pro 1.0 session (*.ses *.SES)")
+        path, _ = QFileDialog.getOpenFileName(self, "Open Multitrack Session", "", "Supported projects (*.celp *.ses *.SES);;SoundSausage Project (*.celp);;Legacy session (*.ses *.SES)")
         if path:
             self.load_session_path(path)
 
@@ -176,7 +176,7 @@ class SessionActions:
         self.multitrack.set_session(session, fit=True)
         self.set_mode("multitrack")
         if hasattr(session, "legacy_report"):
-            message = "Imported Cool Edit Pro 1.0 session. Save as .celp to keep a native project."
+            message = "Imported SES session. Save as .celp to keep a SoundSausage project."
             if session.legacy_report["warnings"]:
                 message += " Empty source track metadata was invalid; an empty track was created."
             self.state_label.setText("SES imported — save as .celp" if not session.legacy_report["warnings"] else "SES imported — empty track metadata recovered")
