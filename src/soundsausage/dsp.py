@@ -9,6 +9,10 @@ class EnvelopePoint(C.Structure):
     _fields_ = [("frame", C.c_uint64), ("value", C.c_double)]
 
 
+class EffectPoint(C.Structure):
+    _fields_ = [("position", C.c_double), ("value", C.c_double)]
+
+
 class Dsp:
     def __init__(self, library=None):
         path = library or Path(__file__).resolve().parents[2] / "build/libsoundsausage_dsp.so"
@@ -17,7 +21,7 @@ class Dsp:
         except OSError as error:
             raise RuntimeError("The audio kernel is not built. Run 'make' in the project folder.") from error
         self.lib.ce_dsp_abi_version.restype = C.c_uint32
-        if self.lib.ce_dsp_abi_version() != 3:
+        if self.lib.ce_dsp_abi_version() != 4:
             raise RuntimeError("The audio kernel has an incompatible ABI. Rebuild it with make.")
         self.ptr = C.POINTER(C.c_float)
         signature = [self.ptr, C.c_size_t, C.c_size_t]
@@ -26,8 +30,15 @@ class Dsp:
             getattr(self.lib, name).restype = C.c_int
         self.lib.ce_gain.argtypes = signature + [C.POINTER(C.c_double), C.POINTER(C.c_double), C.c_int]
         self.lib.ce_gain.restype = C.c_int
-        self.lib.ce_normalize.argtypes = signature + [C.c_double, C.c_int]
+        self.lib.ce_normalize.argtypes = signature + [C.c_double, C.c_int, C.c_int]
         self.lib.ce_normalize.restype = C.c_int
+        self.lib.ce_channel_mix.argtypes = signature + [C.c_double] * 4
+        self.lib.ce_channel_mix.restype = C.c_int
+        self.lib.ce_envelope.argtypes = signature + [C.POINTER(EffectPoint), C.c_size_t, C.c_int]
+        self.lib.ce_envelope.restype = C.c_int
+        self.lib.ce_dynamics.argtypes = signature + [C.c_double, C.POINTER(EffectPoint), C.c_size_t,
+                                                   C.c_double, C.c_double, C.c_double, C.c_int]
+        self.lib.ce_dynamics.restype = C.c_int
         self.lib.ce_mix_add.argtypes = [self.ptr, C.c_size_t, self.ptr,
             C.c_size_t, C.c_size_t, C.c_size_t, C.c_size_t, C.c_size_t,
             C.c_size_t, C.c_size_t, C.c_double, C.c_double]
@@ -55,8 +66,38 @@ class Dsp:
         self._check(self.lib.ce_gain(*self._buffer(data),
             start.ctypes.data_as(C.POINTER(C.c_double)), end.ctypes.data_as(C.POINTER(C.c_double)), int(logarithmic)))
 
-    def normalize(self, data, target=0.98, linked=True):
-        self._check(self.lib.ce_normalize(*self._buffer(data), target, int(linked)))
+    def normalize(self, data, target=0.98, linked=True, remove_dc=False):
+        self._check(self.lib.ce_normalize(*self._buffer(data), target, int(linked), int(remove_dc)))
+
+    def channel_mix(self, data, matrix):
+        weights = np.asarray(matrix, dtype=np.float64)
+        if weights.shape != (2, 2):
+            raise ValueError("The channel mixer needs a 2 × 2 matrix.")
+        self._check(self.lib.ce_channel_mix(*self._buffer(data), *weights.ravel()))
+
+    @staticmethod
+    def _effect_points(points):
+        if not isinstance(points, (tuple, list)) or not 2 <= len(points) <= 64 or any(
+            not isinstance(p, (tuple, list)) or len(p) != 2 for p in points):
+            raise ValueError("An effect curve needs 2–64 ordered points.")
+        return (EffectPoint * len(points))(*(EffectPoint(x, y) for x, y in points))
+
+    def envelope(self, data, points, logarithmic=False):
+        curve = self._effect_points(points)
+        self._check(self.lib.ce_envelope(*self._buffer(data), curve, len(curve), int(logarithmic)))
+
+    def dynamics(self, data, sample_rate, points, attack_ms=10, release_ms=100, makeup_db=0, linked=True):
+        curve = self._effect_points(points)
+        self._check(self.lib.ce_dynamics(*self._buffer(data), sample_rate, curve, len(curve),
+                                        attack_ms, release_ms, makeup_db, int(linked)))
+
+    def process(self, name, data, sample_rate, **settings):
+        if name == "dynamics":
+            self.dynamics(data, sample_rate, **settings)
+        elif name in ("gain", "normalize", "channel_mix", "envelope"):
+            getattr(self, name)(data, **settings)
+        else:
+            self.simple(name, data)
 
     def simple(self, name, data):
         if name not in ("reverse", "invert", "silence"):

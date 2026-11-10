@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=SoundSausage
+GenericName=Audio Editor
+GenericName[nl]=Audiobewerker
+Comment=Edit waveforms and mix audio tracks
+Comment[nl]=Bewerk golfvormen en combineer audiosporen
+Exec=soundsausage %f
+Icon=soundsausage
+Terminal=false
+Categories=AudioVideo;Audio;AudioVideoEditing;
+MimeType=audio/x-wav;audio/wav;
+StartupNotify=true
+StartupWMClass=SoundSausage

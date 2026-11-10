@@ -57,8 +57,11 @@ class LayoutTests(unittest.TestCase):
         amplitude = self.window.menus["amplitude"]
         self.assertIn(self.window.actions["amplify"], amplitude.actions())
         self.assertIn(self.window.actions["normalize"], amplitude.actions())
+        self.assertIn(self.window.actions["channel_mix"], amplitude.actions())
         mixer = next(action for action in amplitude.actions() if action.text() == "Channel Mixer…")
         self.assertFalse(mixer.isEnabled())
+        self.load_waveform()
+        self.assertTrue(mixer.isEnabled())
         self.assertFalse(self.window.actions["record"].isEnabled())
 
     def test_all_toolbar_commands_have_visible_icons_and_named_tooltips(self):

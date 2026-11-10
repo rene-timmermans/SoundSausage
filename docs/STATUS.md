@@ -1,4 +1,4 @@
-# SoundSausage 0.4.1
+# SoundSausage 0.5.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -8,6 +8,8 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - De huidige golfvorm of sessie sluiten via File → Close of Ctrl+W, met een keuze voor niet-opgeslagen wijzigingen.
 - Golfvormbewerking met selecties, knippen, plakken, Mix Paste, trimmen en undo/redo.
 - Versterking, fades, normaliseren, omkeren, polariteit omkeren, tonen en stilte.
+- Channel Mixer, Dynamics Processing en Envelope, met presets, bewerkbare curves en luistervoorbeelden.
+- DC-offset verwijderen bij normaliseren; onafhankelijke of gekoppelde stereokanalen waar van toepassing.
 - Multitrack met maximaal 32 sporen, clips verplaatsen, trimmen en dupliceren.
 - Volume, pan, mute/solo en bewerkbare volume- en panlijnen per clip.
 - Zelfstandige CELP-projecten met ingebedde audio en WAV-mixdown.
@@ -18,7 +20,9 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 
 ## Beperkingen
 
-- Opnemen, geavanceerde effecten en externe plug-ins zijn nog niet beschikbaar.
+- Opnemen, tijd-/toonhoogte-effecten, galm, filters, ruisreductie en externe plug-ins zijn nog niet beschikbaar.
+- Amplitude-effecten bewerken de golfvorm; voor een multitrackclip open je eerst een bewerkkopie. Het zijn nog geen realtime spooreffecten.
+- Dynamics gebruikt piekdetectie zonder vooruitblik. Exact dezelfde uitkomst als historische effecten is niet aangetoond.
 - Nog niet beschikbare effecten staan uitgeschakeld in de menu's.
 - SES-import ondersteunt nog geen automation of cues. Opslaan gebeurt als CELP.
 - Audio binnen een sessie moet dezelfde samplerate hebben; automatisch omzetten ontbreekt.

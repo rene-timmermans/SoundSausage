@@ -8,7 +8,7 @@
 // No exceptions, allocations, host callbacks, or global mutable state cross this ABI.
 extern "C" {
 
-std::uint32_t ce_dsp_abi_version() noexcept { return 3; }
+std::uint32_t ce_dsp_abi_version() noexcept { return 4; }
 
 static bool valid_buffer(float* data, std::size_t frames, std::size_t channels) noexcept {
     return channels >= 1 && channels <= 2 &&
@@ -38,18 +38,113 @@ int ce_gain(float* data, std::size_t frames, std::size_t channels,
 }
 
 int ce_normalize(float* data, std::size_t frames, std::size_t channels,
-                 double target, int linked) noexcept {
+                 double target, int linked, int remove_dc) noexcept {
     if (!valid_buffer(data, frames, channels) || !std::isfinite(target) ||
         target < 0 || target > 1) return -1;
-    double peaks[2] = {0, 0};
+    double means[2] = {0, 0}, peaks[2] = {0, 0};
+    if (remove_dc && frames) {
+        for (std::size_t f = 0; f < frames; ++f)
+            for (std::size_t c = 0; c < channels; ++c)
+                means[c] += data[f * channels + c];
+        for (std::size_t c = 0; c < channels; ++c) means[c] /= frames;
+    }
     for (std::size_t f = 0; f < frames; ++f)
         for (std::size_t c = 0; c < channels; ++c)
-            peaks[c] = std::max(peaks[c], std::abs(static_cast<double>(data[f * channels + c])));
+            peaks[c] = std::max(peaks[c], std::abs(static_cast<double>(data[f * channels + c]) - means[c]));
     if (linked && channels == 2) peaks[0] = peaks[1] = std::max(peaks[0], peaks[1]);
     for (std::size_t f = 0; f < frames; ++f)
         for (std::size_t c = 0; c < channels; ++c)
             if (peaks[c] > 0)
-                data[f * channels + c] = static_cast<float>(data[f * channels + c] * target / peaks[c]);
+                data[f * channels + c] = static_cast<float>((data[f * channels + c] - means[c]) * target / peaks[c]);
+            else if (remove_dc) data[f * channels + c] = 0;
+    return 0;
+}
+
+int ce_channel_mix(float* data, std::size_t frames, std::size_t channels,
+                   double ll, double lr, double rl, double rr) noexcept {
+    if (!valid_buffer(data, frames, channels) || channels != 2) return -1;
+    for (double value : {ll, lr, rl, rr})
+        if (!std::isfinite(value) || std::abs(value) > 2) return -1;
+    for (std::size_t f = 0; f < frames; ++f) {
+        const double l = data[2 * f], r = data[2 * f + 1];
+        data[2 * f] = static_cast<float>(l * ll + r * lr);
+        data[2 * f + 1] = static_cast<float>(l * rl + r * rr);
+    }
+    return 0;
+}
+
+struct EffectPoint { double position, value; };
+
+static bool valid_effect_curve(const EffectPoint* points, std::size_t count,
+                               double xmin, double xmax, double ymin, double ymax) noexcept {
+    if (!points || count < 2 || count > 64) return false;
+    for (std::size_t i = 0; i < count; ++i)
+        if (!std::isfinite(points[i].position) || !std::isfinite(points[i].value) ||
+            points[i].position < xmin || points[i].position > xmax ||
+            points[i].value < ymin || points[i].value > ymax ||
+            (i && points[i].position <= points[i - 1].position)) return false;
+    return true;
+}
+
+static double effect_curve_value(const EffectPoint* points, std::size_t count,
+                                  double position, bool logarithmic = false) noexcept {
+    if (position <= points[0].position) return points[0].value;
+    for (std::size_t i = 1; i < count; ++i) {
+        if (position > points[i].position) continue;
+        const auto& a = points[i - 1];
+        const auto& b = points[i];
+        const double t = (position - a.position) / (b.position - a.position);
+        return logarithmic ? std::exp(std::log(a.value) + t * (std::log(b.value) - std::log(a.value)))
+                           : a.value + t * (b.value - a.value);
+    }
+    return points[count - 1].value;
+}
+
+int ce_envelope(float* data, std::size_t frames, std::size_t channels,
+                const EffectPoint* points, std::size_t count, int logarithmic) noexcept {
+    if (!valid_buffer(data, frames, channels) || !valid_effect_curve(points, count, 0, 1, 0, 2) ||
+        points[0].position != 0 || points[count - 1].position != 1) return -1;
+    if (logarithmic)
+        for (std::size_t i = 0; i < count; ++i) if (points[i].value <= 0) return -1;
+    for (std::size_t f = 0; f < frames; ++f) {
+        const double position = frames > 1 ? static_cast<double>(f) / (frames - 1) : 0;
+        const double gain = effect_curve_value(points, count, position, logarithmic);
+        for (std::size_t c = 0; c < channels; ++c)
+            data[f * channels + c] = static_cast<float>(data[f * channels + c] * gain);
+    }
+    return 0;
+}
+
+int ce_dynamics(float* data, std::size_t frames, std::size_t channels, double sample_rate,
+                const EffectPoint* points, std::size_t count,
+                double attack_ms, double release_ms, double makeup_db, int linked) noexcept {
+    if (!valid_buffer(data, frames, channels) || !valid_effect_curve(points, count, -96, 0, -96, 24) ||
+        !std::isfinite(sample_rate) || sample_rate < 1000 || sample_rate > 384000 ||
+        !std::isfinite(attack_ms) || attack_ms < 0 || attack_ms > 1000 ||
+        !std::isfinite(release_ms) || release_ms < 0 || release_ms > 5000 ||
+        !std::isfinite(makeup_db) || std::abs(makeup_db) > 24) return -1;
+    const double attack = attack_ms ? std::exp(-1000 / (sample_rate * attack_ms)) : 0;
+    const double release = release_ms ? std::exp(-1000 / (sample_rate * release_ms)) : 0;
+    double envelope[2] = {0, 0};
+    for (std::size_t f = 0; f < frames; ++f) {
+        double peaks[2] = {std::abs(static_cast<double>(data[f * channels])), 0};
+        if (channels == 2) peaks[1] = std::abs(static_cast<double>(data[f * channels + 1]));
+        if (linked && channels == 2) peaks[0] = peaks[1] = std::max(peaks[0], peaks[1]);
+        for (std::size_t c = 0; c < channels; ++c) {
+            const double coefficient = peaks[c] > envelope[c] ? attack : release;
+            envelope[c] = coefficient * envelope[c] + (1 - coefficient) * peaks[c];
+            const double db = 20 * std::log10(std::max(envelope[c], 1e-12));
+            // Below the curve keep a constant gain; above it continue the final slope.
+            const double clamped = std::clamp(db, points[0].position, points[count - 1].position);
+            double gain_db = effect_curve_value(points, count, clamped) - clamped + makeup_db;
+            if (db > clamped) {
+                const auto& a = points[count - 2];
+                const auto& b = points[count - 1];
+                gain_db += (db - clamped) * ((b.value - a.value) / (b.position - a.position) - 1);
+            }
+            data[f * channels + c] = static_cast<float>(data[f * channels + c] * std::pow(10, gain_db / 20));
+        }
+    }
     return 0;
 }
 

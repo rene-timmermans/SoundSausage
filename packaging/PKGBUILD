@@ -1,0 +1,21 @@
+pkgname=soundsausage
+pkgver=0.5.0
+pkgrel=1
+pkgdesc='Waveform and multitrack audio editor'
+arch=('x86_64')
+url='https://github.com/rene-timmermans/SoundSausage'
+license=('GPL-3.0-or-later')
+depends=('python>=3.12' 'pyside6>=6.8' 'python-numpy' 'ffmpeg')
+makedepends=('gcc' 'make')
+source=("soundsausage-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+    cd "${srcdir}/soundsausage-${pkgver}"
+    make
+}
+
+package() {
+    cd "${srcdir}/soundsausage-${pkgver}"
+    sh packaging/stage.sh "${pkgdir}"
+}

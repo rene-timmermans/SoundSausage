@@ -67,16 +67,13 @@ def create_menus(window):
     amplitude = transform.addMenu("&Amplitude")
     amplitude.setToolTipsVisible(True)
     window.menus["amplitude"] = amplitude
-    add(amplitude, ("amplify",))
+    add(amplitude, ("amplify", "channel_mix", "dynamics", "envelope"))
 
     def unavailable(target, label):
         action = target.addAction(label)
         action.setEnabled(False)
         action.setToolTip("Not available yet")
 
-    unavailable(amplitude, "Channel Mixer…")
-    unavailable(amplitude, "Dynamics Processing…")
-    unavailable(amplitude, "Envelope…")
     add(amplitude, ("normalize", None, "fade_in", "fade_out"))
     for name, items in (
         ("Delay Effects", ("Delay…", "Echo…", "Reverb…")),

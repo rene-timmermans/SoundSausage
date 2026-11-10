@@ -1,0 +1,173 @@
+name: Installers bouwen en publiceren
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/soundsausage/__init__.py
+      - packaging/**
+      - .github/workflows/release.yml
+      - docs/releases/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  QT_QPA_PLATFORM: offscreen
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        run: |
+          version=$(python3 -c 'import ast; print(ast.literal_eval(open("src/soundsausage/__init__.py").read().split("=", 1)[1].strip()))')
+          test -f "docs/releases/$version.md"
+          test "$(sed -n 's/^pkgver=//p' packaging/PKGBUILD)" = "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          mkdir dist
+          git archive --format=tar.gz --prefix="soundsausage-$version/" --output="dist/soundsausage-$version.tar.gz" HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source
+          path: dist/*.tar.gz
+
+  debian:
+    needs: source
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - name: Build dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets qt6-qpa-plugins ffmpeg
+      - uses: actions/download-artifact@v4
+        with: { name: source }
+      - name: Build, test and package
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
+        run: |
+          tar xzf "soundsausage-$VERSION.tar.gz"
+          cd "soundsausage-$VERSION"
+          make test
+          sh packaging/stage.sh ../root
+          mkdir -p ../root/DEBIAN
+          sed "s/@VERSION@/$VERSION/" packaging/debian/control.in > ../root/DEBIAN/control
+          echo "Installed-Size: $(du -sk ../root/usr | cut -f1)" >> ../root/DEBIAN/control
+          cd ..
+          dpkg-deb --root-owner-group --build root "soundsausage_${VERSION}-1_amd64.deb"
+      - name: Install and smoke test
+        run: |
+          apt-get install -y ./soundsausage_*_amd64.deb
+          cd /tmp
+          soundsausage --selftest
+      - uses: actions/upload-artifact@v4
+        with: { name: debian, path: "soundsausage_*_amd64.deb" }
+
+  ubuntu:
+    needs: debian
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ["ubuntu:latest", "ubuntu:rolling"]
+    container: ${{ matrix.image }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { name: debian }
+      - name: Install the same package and smoke test
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y ./soundsausage_*_amd64.deb
+          cd /tmp
+          soundsausage --selftest
+
+  fedora:
+    needs: source
+    runs-on: ubuntu-latest
+    container: fedora:latest
+    steps:
+      - run: dnf install -y rpm-build gcc-c++ make python3-pyside6 python3-numpy ffmpeg-free
+      - uses: actions/download-artifact@v4
+        with: { name: source }
+      - name: Build, test and package
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
+        run: |
+          tar xzf "soundsausage-$VERSION.tar.gz"
+          cd "soundsausage-$VERSION"
+          make test
+          cd ..
+          mkdir -p /tmp/rpmbuild/SOURCES
+          cp "soundsausage-$VERSION.tar.gz" /tmp/rpmbuild/SOURCES/
+          rpmbuild -bb --define '_topdir /tmp/rpmbuild' --define "ss_version $VERSION" "soundsausage-$VERSION/packaging/fedora/soundsausage.spec"
+          cp /tmp/rpmbuild/RPMS/x86_64/soundsausage-*.rpm .
+      - name: Install and smoke test
+        run: |
+          dnf install -y ./soundsausage-*.rpm
+          cd /tmp
+          soundsausage --selftest
+      - uses: actions/upload-artifact@v4
+        with: { name: fedora, path: "soundsausage-*.rpm" }
+
+  arch:
+    needs: source
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - run: pacman -Syu --noconfirm --needed base-devel pyside6 python-numpy ffmpeg
+      - uses: actions/download-artifact@v4
+        with: { name: source }
+      - name: Build as an ordinary user
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
+        run: |
+          tar xzf "soundsausage-$VERSION.tar.gz"
+          cd "soundsausage-$VERSION"
+          make test
+          cd ..
+          useradd -m builder
+          mkdir -p /home/builder/pkg
+          cp "soundsausage-$VERSION.tar.gz" "soundsausage-$VERSION/packaging/PKGBUILD" /home/builder/pkg/
+          chown -R builder /home/builder/pkg
+          su builder -c 'cd /home/builder/pkg && makepkg --noconfirm'
+          cp /home/builder/pkg/soundsausage-*.pkg.tar.zst .
+      - name: Install and smoke test
+        run: |
+          pacman -U --noconfirm soundsausage-*.pkg.tar.zst
+          cd /tmp
+          soundsausage --selftest
+      - uses: actions/upload-artifact@v4
+        with: { name: arch, path: "soundsausage-*.pkg.tar.zst" }
+
+  publish:
+    if: github.event_name == 'push'
+    needs: [source, debian, ubuntu, fedora, arch]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: dist, merge-multiple: true }
+      - name: Tag and publish all tested installers
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.source.outputs.version }}
+        run: |
+          cd dist
+          sha256sum soundsausage-* soundsausage_* > SHA256SUMS
+          cd ..
+          if gh release view "v$VERSION" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release v$VERSION already exists; it will not be overwritten."
+            exit 0
+          fi
+          gh release create "v$VERSION" dist/* -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "SoundSausage $VERSION" --notes-file "docs/releases/$VERSION.md"

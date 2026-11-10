@@ -75,7 +75,7 @@ class SessionActions:
         self.actions["save_as"].setText("Save Session &As…" if multi else "Save &As…")
         self.actions["close_file"].setText("&Close Session" if multi else "&Close")
         if multi:
-            for key in ("cut", "copy", "paste", "mix_paste", "trim", "zero", "amplify", "normalize",
+            for key in ("cut", "copy", "paste", "mix_paste", "trim", "zero", "amplify", "normalize", "channel_mix", "dynamics", "envelope",
                 "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "tone",
                 "generate_silence", "repeat", "save_selection"):
                 self.actions[key].setEnabled(False)

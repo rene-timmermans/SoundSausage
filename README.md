@@ -8,13 +8,14 @@ Linux-thema en accentkleur.
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-SoundSausage is in ontwikkeling. De huidige versie is prototype **0.4.1**.
+SoundSausage is in ontwikkeling. De huidige versie is prototype **0.5.0**.
 
 ## Wat het kan
 
 - WAV-bestanden openen, bewerken en opslaan.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
 - Volume aanpassen, fades toepassen, normaliseren, omkeren en stilte toevoegen.
+- Stereokanalen mengen, dynamiek bewerken en een volumeverloop tekenen, met luistervoorbeelden.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
 - Projecten opslaan als `.celp`, met alle gebruikte audio ingebed; een sessie exporteren als WAV.
@@ -27,6 +28,11 @@ Zie [status en beperkingen](docs/STATUS.md).
 ## Installeren en starten
 
 Benodigd: Python 3.12–3.14, een C++20-compiler, Make en `ffplay` (uit FFmpeg).
+
+Installatiepakketten voor Debian/Ubuntu, Fedora en Arch staan bij de
+[releases](https://github.com/rene-timmermans/SoundSausage/releases).
+Zie [installeren](docs/INSTALLEREN.md) voor ondersteunde versies en installatiecommando's.
+Handmatig bouwen vanuit de broncode:
 
 ```bash
 git clone https://github.com/rene-timmermans/SoundSausage.git
@@ -51,12 +57,17 @@ In multitrack sleep je WAV-bestanden op een spoor en verplaats of trim je clips 
 Met **Volume Line** en **Pan Line** teken je de lijnen op een clip.
 
 De effecten staan onder **Transform**; versterken en normaliseren vind je in **Amplitude**.
+Daar staan ook **Channel Mixer**, **Dynamics Processing** en **Envelope**.
+Effecten bewerken de selectie, of de hele golfvorm als er niets geselecteerd is.
+Met **Preview** beluister je de instelling voordat je die toepast. Zie [Amplitude](docs/AMPLITUDE.md).
 Onder de tijdlijn staan het transport, de grote klok, selectie- en weergavetijden en de stereometer.
 Met **Options → Show Toolbar Labels** toon je namen naast de werkbalkiconen. **F11** wisselt naar schermvullende weergave.
 
 Meer uitleg: [volume- en panlijnen](docs/ENVELOPES.md) en [thema](docs/THEMA.md).
 
 ## Wat er nieuw is
+
+**0.5.0** De groep Amplitude is uitgebreid met Channel Mixer, Dynamics Processing en Envelope. Alle Amplitude-dialogen hebben een luistervoorbeeld; Normalize kan DC-offset verwijderen. Installatiepakketten zijn beschikbaar voor Debian/Ubuntu, Fedora en Arch. Zie de [releasepunten](docs/releases/0.5.0.md).
 
 **0.4.1** File → Close en Ctrl+W sluiten de huidige golfvorm of sessie, met een keuze voor niet-opgeslagen wijzigingen.
 
@@ -67,3 +78,5 @@ Meer uitleg: [volume- en panlijnen](docs/ENVELOPES.md) en [thema](docs/THEMA.md)
 Python met Qt 6/PySide6 voor de desktopinterface, NumPy voor audioverwerking en een eigen
 C++20-kern voor effecten en het mengen van sporen. Afspelen verloopt voorlopig via FFmpeg/ffplay.
 Projecten gebruiken een eigen [CELP-formaat](docs/PROJECTFORMAAT.md).
+
+SoundSausage is beschikbaar onder [GPL-3.0-or-later](LICENSE): GNU GPL versie 3 of, naar keuze, een latere versie.

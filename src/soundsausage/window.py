@@ -21,6 +21,7 @@ from .multitrack import MultitrackEditor
 from .session_actions import SessionActions
 from . import chrome
 from .transport import TransportPanel
+from .amplitude_ui import EffectDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .theme import install_theme, colors
 from .icons import ICON_ACTIONS, PRIMARY_ACTIONS, make_icon, application_icon, mascot_icon
 
@@ -51,9 +52,12 @@ def buttons(dialog):
     return box
 
 
-class AmplifyDialog(QDialog):
-    def __init__(self, channels, parent=None):
-        super().__init__(parent)
+class AmplifyDialog(EffectDialog):
+    effect_name = "gain"
+
+    def __init__(self, document, parent=None, no_audio=False):
+        super().__init__(document, parent, no_audio)
+        channels = document.channels
         self.setWindowTitle("Amplify")
         self.setMinimumWidth(440)
         layout = QVBoxLayout(self)
@@ -88,7 +92,7 @@ class AmplifyDialog(QDialog):
         self.presets = QComboBox()
         self.presets.addItems(["Choose a preset…", "Amplify +6 dB", "Amplify −6 dB", "Fade In", "Fade Out"])
         layout.addWidget(self.presets)
-        layout.addWidget(buttons(self))
+        self.add_footer(layout)
         self._syncing = False
         for c, widget in enumerate(self.initial):
             widget.valueChanged.connect(lambda value, channel=c: self.sync(channel, False, value))
@@ -229,6 +233,10 @@ class MainWindow(SessionActions, QMainWindow):
         self.action("zoom_full", "Zoom &Full", lambda: self.active_view().fit(), "Ctrl+0")
         self.action("zoom_selection", "Zoom to &Selection", lambda: self.active_view().zoom_selection(), "Ctrl+Shift+A")
         self.action("amplify", "&Amplify / Fade…", self.amplify)
+        self.action("channel_mix", "Channel Mixer…", lambda: self.amplitude_dialog(ChannelMixerDialog))
+        self.actions["channel_mix"].setToolTip("Mix the left and right channels of a stereo waveform")
+        self.action("dynamics", "Dynamics Processing…", lambda: self.amplitude_dialog(DynamicsDialog))
+        self.action("envelope", "Envelope…", lambda: self.amplitude_dialog(EnvelopeDialog))
         self.action("normalize", "&Normalize…", self.normalize)
         self.action("fade_in", "Fade &In", lambda: self.effect("gain", initial=0.0, final=1.0))
         self.action("fade_out", "Fade &Out", lambda: self.effect("gain", initial=1.0, final=0.0))
@@ -315,8 +323,9 @@ class MainWindow(SessionActions, QMainWindow):
         self.detail_label.setText(f" {clock_text(doc.duration)} · {doc.frames:,} frames ")
         self.selection_changed(*doc.selection)
         has_audio = doc.frames > 0
-        for key in ("amplify", "normalize", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "select_all", "zoom_in", "zoom_out", "zoom_full"):
+        for key in ("amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "select_all", "zoom_in", "zoom_out", "zoom_full"):
             self.actions[key].setEnabled(has_audio)
+        self.actions["channel_mix"].setEnabled(has_audio and doc.channels == 2)
         self.actions["play"].setEnabled(has_audio and not self.no_audio)
         self.actions["undo"].setEnabled(bool(doc.undo_stack))
         self.actions["redo"].setEnabled(bool(doc.redo_stack))
@@ -438,22 +447,24 @@ class MainWindow(SessionActions, QMainWindow):
         self.waveform.update()
 
     def amplify(self):
-        dialog = AmplifyDialog(self.document.channels, self)
-        if dialog.exec() == QDialog.DialogCode.Accepted:
-            self.effect("gain", **dialog.settings())
+        self.amplitude_dialog(AmplifyDialog)
+
+    def amplitude_dialog(self, dialog_class):
+        if self.mode != "waveform" or not self.document.frames:
+            return
+        if dialog_class is ChannelMixerDialog and self.document.channels != 2:
+            return
+        self.player.stop()
+        dialog = dialog_class(self.document, self, no_audio=self.no_audio)
+        try:
+            if dialog.exec() == QDialog.DialogCode.Accepted:
+                self.effect(dialog.effect_name, **dialog.settings())
+        finally:
+            dialog.player.shutdown()
+            dialog.deleteLater()
 
     def normalize(self):
-        dialog = QDialog(self)
-        dialog.setWindowTitle("Normalize")
-        form = QFormLayout(dialog)
-        target = spin(98, 0, 100, 2, " %")
-        linked = QCheckBox("Normalize left / right equally")
-        linked.setChecked(True)
-        form.addRow("Normalize to", target)
-        form.addRow(linked)
-        form.addRow(buttons(dialog))
-        if dialog.exec() == QDialog.DialogCode.Accepted:
-            self.effect("normalize", target=target.value() / 100, linked=linked.isChecked())
+        self.amplitude_dialog(NormalizeDialog)
 
     def _confirm_discard(self):
         if not self.document.dirty:

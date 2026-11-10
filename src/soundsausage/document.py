@@ -1,5 +1,6 @@
 """Frame-exact edits over immutable audio pieces with shared undo snapshots."""
 from dataclasses import dataclass
+from copy import deepcopy
 from itertools import count
 
 import numpy as np
@@ -198,18 +199,13 @@ class Document:
         if start == end:
             return
         result = self.read(start, end)
-        if name == "gain":
-            self.dsp.gain(result, **settings)
-            label = "Amplify / Fade"
-        elif name == "normalize":
-            self.dsp.normalize(result, **settings)
-            label = "Normalize"
-        else:
-            self.dsp.simple(name, result)
-            label = name.capitalize()
+        self.dsp.process(name, result, self.sample_rate, **settings)
+        label = {"gain": "Amplify / Fade", "channel_mix": "Channel Mixer",
+                 "dynamics": "Dynamics Processing"}.get(name, name.capitalize())
         # Validate before committing: failed or overflowing effects leave the document intact.
         self.replace(start, end, result, label)
-        self.last_effect = (name, dict(settings))
+        # Store immutable settings, independent of a dialog's mutable controls.
+        self.last_effect = (name, deepcopy(settings))
 
     def repeat(self):
         if self.last_effect:

@@ -15,21 +15,35 @@ def main():
     parser.add_argument("waveform", nargs="?", help="WAV or .celp project to open")
     parser.add_argument("--multitrack", action="store_true", help="Start in multitrack view")
     parser.add_argument("--no-audio", action="store_true", help="Disable playback for headless or restricted environments")
+    parser.add_argument("--selftest", action="store_true", help="Check the installation without playing audio, then exit")
     parser.add_argument("--screenshot", type=Path, help="Render the window to a PNG and exit; does not start audio")
     args = parser.parse_args()
-    if args.screenshot:
+    if args.screenshot or args.selftest:
         os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     app = QApplication([sys.argv[0]])
     app.setApplicationName("SoundSausage")
+    app.setDesktopFileName("soundsausage")
     app.setOrganizationName("SoundSausage")
     app.setWindowIcon(application_icon())
     app.setStyle("Fusion")
     install_theme(app)
     try:
-        window = MainWindow(no_audio=args.no_audio or bool(args.screenshot))
+        window = MainWindow(no_audio=args.no_audio or bool(args.screenshot) or args.selftest)
     except RuntimeError as error:
         print(error, file=sys.stderr)
         return 1
+    if args.selftest:
+        from .selftest import run
+        try:
+            run(window)
+            return 0
+        except Exception as error:
+            print(f"SoundSausage selftest failed: {error}", file=sys.stderr)
+            return 1
+        finally:
+            window.document.mark_saved()
+            window.session.mark_saved()
+            window.close()
     if args.waveform and not window.load_path(args.waveform):
         return 1
     if args.multitrack:
