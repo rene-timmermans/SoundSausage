@@ -2,7 +2,7 @@
 
 Kopieer `A-mono.wav` en `B-stereo.wav` naar één map in de VM, bijvoorbeeld `C:\CEP-Test\`. Beide zijn standaard 44.100 Hz / 16-bit PCM. A is twee seconden mono; B is drie seconden stereo. Sla de sessies in diezelfde map op en behoud de WAV-bestandsnamen.
 
-Gebruik de huidige geïnstalleerde Cool Edit Pro-versie. Noteer de versie uit Help → About, of maak daarvan een screenshot. Opnieuw installeren is niet nodig.
+Gebruik de geïnstalleerde referentietoepassing. Noteer de versie uit Help → About, of maak daarvan een screenshot. Opnieuw installeren is niet nodig.
 
 Als File → New het venster **New Waveform** met Mono/Stereo en Resolution toont, zit je nog in golfvormweergave. Klik Cancel, kies **View → Multitrack View** en daarna **File → New Session…**. Kies 44100 als om de sample rate wordt gevraagd. Dit is 44.100 Hz; er hoeft geen leeg WAV-bestand te worden aangemaakt.
 

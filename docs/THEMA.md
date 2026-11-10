@@ -1,6 +1,6 @@
 # Thema en leesbaarheid — prototype 0.2.2
 
-De interface combineert de vertrouwde Cool Edit-indeling met het eigen Linux-thema, met belangrijke knoppen in de accentkleur, zoals in [PixelPickle](https://github.com/rene-timmermans/pixelpickle).
+De interface combineert een vertrouwde indeling met het eigen Linux-thema, met belangrijke knoppen in de accentkleur, zoals in [PixelPickle](https://github.com/rene-timmermans/pixelpickle).
 
 De gemelde schermafbeelding toonde lichte werkbalken met lichte tekst, slecht leesbare selectielabels en vaste blauwgrijze panelen binnen een donker bureaublad. De oorzaak in het prototype was een vaste lichte stylesheet naast een overgenomen donker Qt-palet.
 
@@ -8,7 +8,7 @@ De gemelde schermafbeelding toonde lichte werkbalken met lichte tekst, slecht le
 
 De GitHub-hoofdpagina is bekeken. De afzonderlijke broncodepagina's konden via de webtool niet worden opgehaald. De lokaal geïnstalleerde `pixelpickle 1.0.4-1` kon wel worden gelezen onder `/usr/share/pixelpickle/pixelpickle/`: `__main__.py`, de werkbalkcode in `mainwindow.py` en de kleur-/icooncode in `icons.py`. Die versie gebruikt Fusion, het Qt-palet en accentkleurige lijniconen. Er is niet vastgesteld dat deze pakketversie identiek is aan de huidige GitHub-hoofdbranch.
 
-De nieuwe Cool Edit-code gebruikt dezelfde ontwerpkeuzes: het Qt-desktoppalet als bron voor kleuren en een eigen kleine set vectoriconen. PixelPickle is geen runtime-afhankelijkheid.
+De SoundSausage-code gebruikt dezelfde ontwerpkeuzes: het Qt-desktoppalet als bron voor kleuren en een eigen kleine set vectoriconen. PixelPickle is geen runtime-afhankelijkheid.
 
 **Gedrag**
 

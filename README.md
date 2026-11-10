@@ -2,8 +2,8 @@
 
 <img src="src/soundsausage/assets/soundsausage.png" width="128" alt="SoundSausage-icoon">
 
-Audiobewerker voor Linux met een vertrouwde golfvorm- en multitrackweergave, geïnspireerd op
-Cool Edit Pro. Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen
+Audiobewerker voor Linux met een vertrouwde golfvorm- en multitrackweergave.
+Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen
 Linux-thema en accentkleur.
 
 ![SoundSausage met volumelijn](docs/screenshots/demo-volume-line-v03.png)
@@ -18,7 +18,7 @@ SoundSausage is in ontwikkeling. De huidige versie is prototype **0.3.0**.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
 - Projecten opslaan als `.celp`, met alle gebruikte audio ingebed; een sessie exporteren als WAV.
-- Eenvoudige Cool Edit Pro 1.0-sessies (`.ses`) importeren.
+- Eenvoudige oudere sessies (`.ses`) importeren.
 - Inzoomen op de golfvorm, afspelen in een lus en frequenties analyseren.
 
 Opnemen, geavanceerde effecten en volledige ondersteuning voor oude sessies volgen later.

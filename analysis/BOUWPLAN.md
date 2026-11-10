@@ -17,7 +17,7 @@ De huidige omgeving heeft een `c++`- en `pkg-config`-commando. CMake en Ninja zi
 | Taal en bouw | C++20, CMake, Ninja | Een native kern met expliciete audio- en geheugenmodellen |
 | Desktopinterface | Qt 6 Widgets, eigen golfvorm- en tijdlijnwidgets | Menu's, werkbalken, dialogen, toetsenbordbediening en twee vertrouwde werkmodi |
 | Audio op Linux | Een aparte backend op PipeWire | Opname en weergave buiten de GUI- en bestandsverwerking |
-| Standaardaudioformaten | libsndfile plus een eigen adapter voor historische Cool Edit-WAV-varianten | Standaard-I/O delen en afwijkende schaal-/formaatregels expliciet houden |
+| Standaardaudioformaten | libsndfile plus een eigen adapter voor historische WAV-varianten | Standaard-I/O delen en afwijkende schaal-/formaatregels expliciet houden |
 | DSP | Een zelfstandige kern met getypeerde effectparameters en blokverwerking | Preview, toepassen en batch gebruiken dezelfde implementatie |
 | Projecten | Een versieerbaar eigen projectmodel; SES-import als afzonderlijke adapter | Het nog onbekende binaire SES-formaat bepaalt niet de interne architectuur |
 
@@ -25,7 +25,7 @@ Qt biedt venster-, menu-, werkbalk- en dockcomponenten die dit desktopmodel onde
 
 PipeWire biedt streams met een verwerkingscallback en een optie om verwerking vanuit een realtime thread aan te roepen. De callback mag geen bestands-I/O, GUI-werk of blokkerende bewerkingen doen. Zie de [PipeWire-streamdocumentatie](https://docs.pipewire.org/group__pw__stream.html). Een alternatief voor een eerste audioadapter is Qt Multimedia; de huidige documentatie beschrijft zowel QIODevice- als callbackgebruik. De callbackvariant vereist een passende Qt-versie. Zie [QAudioSink](https://doc.qt.io/qt-6/qaudiosink.html). De backendkeuze moet in de eerste prototypefase op de doelmachine worden getoetst.
 
-libsndfile kan meerdere audioformaten via één interface lezen en schrijven en normaliseert integer-PCM standaard bij float-I/O. Daarom moet de overgang naar Cool Edit's gevonden amplitudeschaal expliciet worden getest. Zie de [libsndfile-API](https://libsndfile.github.io/libsndfile/api.html). Ondersteuning voor alle 19 historische filters is hiermee nog niet aangetoond.
+libsndfile kan meerdere audioformaten via één interface lezen en schrijven en normaliseert integer-PCM standaard bij float-I/O. Daarom moet de overgang naar de gevonden historische amplitudeschaal expliciet worden getest. Zie de [libsndfile-API](https://libsndfile.github.io/libsndfile/api.html). Ondersteuning voor alle 19 historische filters is hiermee nog niet aangetoond.
 
 **De kern opdelen langs de waargenomen grenzen**
 

@@ -1,8 +1,8 @@
 # Onderzoek van de zes aangeleverde SES-bestanden
 
-Bronnen: `00-leeg.ses` t/m `05-pan.ses`, op 9 november 2026 gemaakt in Cool Edit Pro in een Windows 7-VM en onder `/home/deck/` geplaatst. Ongewijzigde kopieën staan in `reference/vm-session-test/`. De oorspronkelijke bestanden zijn niet gewijzigd of uitgevoerd. De interpreter gebruikt lokale byteanalyse en vergelijking; er is geen REA-MCP-server verbonden.
+Bronnen: `00-leeg.ses` t/m `05-pan.ses`, op 9 november 2026 gemaakt met de referentietoepassing in een Windows 7-VM en onder `/home/deck/` geplaatst. Ongewijzigde kopieën staan in `reference/vm-session-test/`. De oorspronkelijke bestanden zijn niet gewijzigd of uitgevoerd. De interpreter gebruikt lokale byteanalyse en vergelijking; er is geen REA-MCP-server verbonden.
 
-De bestanden identificeren zichzelf als **Cool Edit Pro 1.0**, met samplerate **44100 Hz** en een 16-bit sessie-instelling. De VM levert afzonderlijke referentiegevallen. Onze Linux-versie heeft de VM niet nodig om te werken.
+De referentiebestanden gebruiken sessieformaat versie **1.0**, met samplerate **44100 Hz** en een 16-bit sessie-instelling. De VM levert afzonderlijke referentiegevallen. Onze Linux-versie heeft de VM niet nodig om te werken.
 
 **Rechtstreekse waarnemingen**
 
@@ -118,7 +118,7 @@ In `00-leeg.ses` zijn de gedeclareerde lengte en het aantal in `trks`, als signe
 
 `legacy.py` importeert de zes referentiegevallen in het Linux-sessionmodel. Windows-paden worden niet als netwerk- of schijfpaden geopend: de WAV-bestanden worden op bestandsnaam gezocht naast de SES, of in een door de gebruiker gekozen bronmap. De twee test-WAV's staan naast de bewaarde referentiekopieën.
 
-Er wordt niet naar `.ses` teruggeschreven. Opslaan levert een zelfstandig `.celp` op met ingebedde audio. Onbekende chunks, niet-ondersteunde vlaggen, cues en niet-neutrale volume-/panenvelopes worden afgewezen in plaats van overgeslagen. Andere Cool Edit-versies en volledige SES-functionaliteit zijn niet aangetoond.
+Er wordt niet naar `.ses` teruggeschreven. Opslaan levert een zelfstandig `.celp` op met ingebedde audio. Onbekende chunks, niet-ondersteunde vlaggen, cues en niet-neutrale volume-/panenvelopes worden afgewezen in plaats van overgeslagen. Andere SES-varianten en volledige SES-functionaliteit zijn niet aangetoond.
 
 De tests controleren de uitgelezen frameposities, de kanaalfactoren, bronverwijzingen, de lege-sessie-afwijking, ontbrekende audio, het weigeren van automation en behoud van de geïmporteerde mix bij conversie naar `.celp`. De basis-, volume- en panvariant hebben daarnaast de hierboven beschreven numerieke vergelijking met echte mixdowns uit de VM. Voor de overige varianten toetsen de tests voorlopig de eigen import-/mixregels.
 

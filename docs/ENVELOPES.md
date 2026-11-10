@@ -58,7 +58,7 @@ De GUI-tests gebruiken echte Qt-muisevents voor puntbewerkingen, annuleren met E
 
 Het bestaande gebruikersproject is alleen gelezen en was daarna byte voor byte ongewijzigd. De demo-mix is onafhankelijk van de GUI opnieuw geladen; aaneengevoegde gedeeltelijke renders zijn exact gelijk aan de volledige demo-render. Twee echte Qt-screenshots zijn op 1180 × 720 pixels gemaakt.
 
-Deze lijnen zijn nieuwe native functionaliteit. Hun interpolatie en gedrag zijn nog niet met een automation-export uit Cool Edit Pro vergeleken. De SES-import blijft daarom niet-neutrale automation weigeren totdat broncoördinaten, puntvelden en interpolatie van dat formaat zijn gevalideerd. Er wordt niet naar SES teruggeschreven.
+Deze lijnen zijn nieuwe native functionaliteit. Hun interpolatie en gedrag zijn nog niet met een oorspronkelijke automation-export vergeleken. De SES-import blijft daarom niet-neutrale automation weigeren totdat broncoördinaten, puntvelden en interpolatie van dat formaat zijn gevalideerd. Er wordt niet naar SES teruggeschreven.
 
 De demo opnieuw genereren, met voorbeelden:
 

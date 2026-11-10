@@ -1,4 +1,4 @@
-# Cool Edit Pro — onderzoeksmap
+# Onderzoeksmap
 
 Begin bij [ANALYSE.md](ANALYSE.md) voor de bevindingen en [BOUWPLAN.md](BOUWPLAN.md) voor het voorstel voor een Linux-implementatie.
 

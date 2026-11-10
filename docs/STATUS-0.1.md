@@ -2,7 +2,7 @@
 
 Het eerste native Linux-prototype staat in `/home/deck/Documenten/Codex/CoolEdit/`. De C++-DSP-kern is daadwerkelijk gecompileerd en de Qt-interface is gerenderd en getest. De aangeleverde GUI-afbeelding `/home/deck/01.jpg` is gebruikt als visuele referentie voor de grijze bediening, zwarte stereoweergave, groene golfvormen, transportpositie en grote klok.
 
-Dit is een eerste golfvormeditor. Het is nog geen volledige vervanging van Cool Edit Pro.
+Dit is een eerste prototype voor golfvormbewerking.
 
 | Onderdeel | Huidige toestand |
 | --- | --- |

@@ -10,7 +10,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Multitrack met maximaal 32 sporen, clips verplaatsen, trimmen en dupliceren.
 - Volume, pan, mute/solo en bewerkbare volume- en panlijnen per clip.
 - Zelfstandige CELP-projecten met ingebedde audio en WAV-mixdown.
-- Beperkte import van eenvoudige Cool Edit Pro 1.0-sessies.
+- Beperkte import van eenvoudige oudere sessies (`.ses`).
 - Qt-interface die het Linux-thema en de accentkleur volgt.
 
 ## Beperkingen

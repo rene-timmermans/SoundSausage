@@ -1,4 +1,4 @@
-# Cool Edit Pro: onderzoek voor een Linux-versie
+# Onderzoek voor SoundSausage
 
 Het doel is zo veel mogelijk oorspronkelijke functies en bediening te behouden.
 
@@ -13,7 +13,6 @@ De REA-skills zijn gebruikt voor onderzoeksopzet, afbakening en bewijsrapportage
 | Installatiemateriaal | `/home/deck/CoolEdit`; 18 bestanden buiten sessiemetadata |
 | Installer | `setup.exe`, 4.151.990 bytes, PE32/x86; niet als archief te openen met de aanwezige 7-Zip |
 | Geïnstalleerde toepassing | `/home/deck/.wine/drive_c/coolpro/coolpro.exe`, 1.466.880 bytes, PE32/x86 |
-| Identiteit | Resources noemen Cool Edit Pro en Syntrillium Software Corporation |
 | PE-tijdstempel hoofdprogramma | 18 juli 1997; een bestandsveld, geen onafhankelijk geverifieerde bouwdatum |
 | Versievelden | Twee version-resources: onder andere `1, 97, 212,9` en `1, 0, 0, 2`; het precieze commerciële versielabel is hiermee niet eenduidig vastgesteld |
 | Effecten | 32 `.xfm`-bestanden, Windows-DLL's |
