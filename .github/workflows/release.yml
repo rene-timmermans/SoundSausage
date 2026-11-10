@@ -55,7 +55,8 @@ jobs:
       - name: Private virtual audio device
         run: |
           mkdir -p /tmp/soundsausage-pulse
-          env -u PULSE_SERVER pulseaudio -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          chown pulse:pulse /tmp/soundsausage-pulse
+          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build, test and package
@@ -97,7 +98,8 @@ jobs:
           apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
           DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y ./soundsausage_*_amd64.deb pulseaudio
           mkdir -p /tmp/soundsausage-pulse
-          env -u PULSE_SERVER pulseaudio -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          chown pulse:pulse /tmp/soundsausage-pulse
+          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
           cd /tmp
           soundsausage --selftest
           soundsausage --audio-selftest
@@ -111,7 +113,8 @@ jobs:
       - name: Private virtual audio device
         run: |
           mkdir -p /tmp/soundsausage-pulse
-          env -u PULSE_SERVER pulseaudio -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          chown pulse:pulse /tmp/soundsausage-pulse
+          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build, test and package
@@ -144,7 +147,8 @@ jobs:
       - name: Private virtual audio device
         run: |
           mkdir -p /tmp/soundsausage-pulse
-          env -u PULSE_SERVER pulseaudio -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          chown pulse:pulse /tmp/soundsausage-pulse
+          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build as an ordinary user
