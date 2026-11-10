@@ -29,6 +29,9 @@ codering voor afspelen. De lokale extra resident geheugengroei bleef ongeveer
 kleine buffers, projectaantallen en de audiobackend beïnvloeden werkelijk gebruik.
 De automatische regressiecontrole bewaakt voor dit scenario een marge van 80 MiB.
 
-De distributiebouw voert de volledige suite, inclusief virtuele audio, opnieuw
-uit en controleert de geïnstalleerde Debian/Ubuntu-, Fedora- en Arch-pakketten.
+De [distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/42895623340)
+doorstaat alle 210 controles in Debian, Fedora en Arch, inclusief virtuele audio.
+De geïnstalleerde pakketten doorstaan ook de gewone en stille audiocontrole op
+Ubuntu 26.04 en Ubuntu Rolling. [Release 0.7.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.7.0)
+bevat de gecontroleerde pakketten.
 Een hoorbare controle op een fysiek geluidsapparaat blijft open.

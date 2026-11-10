@@ -14,7 +14,7 @@ distributies. Een hoorbare controle op fysieke geluidsapparaten blijft open.
 
 ## 2. Langere bestanden en betrouwbare bewerkingen
 
-**Gebouwd voor 0.7.0; eindcontrole en pakketpublicatie lopen.**
+**Afgerond in 0.7.0, met geteste installatiepakketten voor Debian/Ubuntu, Fedora en Arch.**
 
 - [x] Audio in kleinere blokken verwerken.
 - [x] De grens van 128 MiB vervangen door geschikte opslag voor grotere bestanden.
@@ -25,13 +25,14 @@ distributies. Een hoorbare controle op fysieke geluidsapparaten blijft open.
 - [x] Bestandsinformatie bij openen, bewerken en opslaan behouden waar ondersteund.
 - [x] De bestaande Amplitude-effecten gebruiken om de nieuwe verwerking te toetsen.
 - [x] Langere opnamen en herstel na onderbreking controleren.
-- [ ] De handleiding, beperkingen en releasepunten bijwerken.
+- [x] De handleiding, beperkingen en releasepunten bijwerken.
+- [x] Alle 210 controles en de geïnstalleerde pakketten op de ondersteunde distributies toetsen.
 
 Een grotere limiet alleen is onvoldoende: grote bestanden moeten te openen,
 bewerken, beluisteren en bewaren zijn zonder dat steeds de hele opname in het
 geheugen nodig is. Bevestigde bewerkingen blijven één stap in Undo/Redo.
 
-## 3. De dagelijkse werkwijze afronden
+## 3. De dagelijkse werkwijze afronden — eerstvolgend
 
 Openen, opnemen, bewerken, meerdere sporen combineren, opslaan, heropenen en
 exporteren moeten samen soepel werken. De volledige keten krijgt controles

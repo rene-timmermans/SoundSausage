@@ -29,7 +29,7 @@ te lezen. De presentatie volgt PixelPickle; GitHub-releases bevatten korte
 toegevoegde functies en work in progress. Nieuwe functies krijgen steeds een
 bijgewerkte uitleg in de handleiding.
 
-## 2. Langere bestanden en betrouwbare bewerkingen — eindcontrole 0.7.0
+## 2. Langere bestanden en betrouwbare bewerkingen — afgerond in 0.7.0
 
 - [x] Grote audiobuffers op schijf; de grens van 128 MiB vervalt.
 - [x] WAV, Amplitude, samplerates, afspelen, multitrack en projecten in blokken.
@@ -40,7 +40,12 @@ bijgewerkte uitleg in de handleiding.
 - [x] Amplitude vergelijken bij verschillende blokgroottes, inclusief Dynamics en Normalize.
 - [x] Lange bestanden, Undo/Redo, metadata en crashherstel automatisch toetsen.
 - [x] Handleiding voor lange opnamen, werkruimte, annuleren en herstel.
-- [ ] Definitieve distributiecontroles en publicatie van installatiepakketten.
+- [x] Definitieve distributiecontroles en publicatie van installatiepakketten.
+
+Alle 210 controles slagen in Debian, Fedora en Arch, inclusief virtuele audio.
+De geïnstalleerde pakketten doorstaan de installatie- en stille audiocontrole ook
+op Ubuntu 26.04 en Rolling. [Release 0.7.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.7.0)
+bevat de installers en korte releasepunten.
 
 Een gecontroleerde keten met 160 MiB audio bleef lokaal op ongeveer 17 MiB extra
 resident werkgeheugen boven de geladen toepassing. Dit is een meetresultaat van
@@ -50,7 +55,7 @@ bewaard; afgeleide metingen worden niet opnieuw berekend. Zie
 [lange bestanden en herstel](LANGE_BESTANDEN.md) voor ruimtegebruik en grenzen.
 De hoorbare controle uit fase 1 blijft open.
 
-## 3. Dagelijkse werkwijze — gepland
+## 3. Dagelijkse werkwijze — eerstvolgende fase
 
 Opnemen en de volledige keten van openen, bewerken, multitrack, opslaan,
 heropenen en exporteren toetsen.
