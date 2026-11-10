@@ -1,5 +1,6 @@
 """Small installation smoke test: native DSP, file round trips, widgets and icons."""
 from pathlib import Path
+import os
 import tempfile
 
 import numpy as np
@@ -33,6 +34,24 @@ def run(window):
         path = Path(folder)
         write_wav(path / "test.wav", doc.read(), doc.sample_rate, "float32")
         np.testing.assert_array_equal(read_wav(path / "test.wav").samples, doc.read())
+        from . import storage
+        from .recovery import Recovery, restore, discard
+        previous_cache=os.environ.get("SOUNDSAUSAGE_CACHE_DIR")
+        os.environ["SOUNDSAUSAGE_CACHE_DIR"]=str(path/"work")
+        manager=None
+        try:
+            mapped=storage.seal(storage.copy_array(doc.view(),force_disk=True))
+            assert isinstance(mapped,np.memmap)
+            disk_doc=Document(mapped,8000,dsp=doc.dsp)
+            disk_doc.apply("invert")
+            empty_session=Session(8000,1,dsp=doc.dsp)
+            manager=Recovery();manager.checkpoint(disk_doc,empty_session)
+            recovered,_,_,_=restore(manager.owner,dsp=doc.dsp)
+            np.testing.assert_array_equal(recovered.view(),disk_doc.view())
+        finally:
+            if manager is not None:manager.close()
+            if previous_cache is None:os.environ.pop("SOUNDSAUSAGE_CACHE_DIR",None)
+            else:os.environ["SOUNDSAUSAGE_CACHE_DIR"]=previous_cache
         session = Session(8000, dsp=doc.dsp)
         session.import_audio([(doc.read(), 8000, "Selftest")])
         save_project(session, path / "test.celp")
@@ -53,7 +72,7 @@ def run(window):
     finally:
         manual.close()
         manual.deleteLater()
-    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, icons, effects, manual)")
+    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, disk buffers, recovery, icons, effects, manual)")
 
 
 def run_audio(window):

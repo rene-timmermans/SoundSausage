@@ -6,19 +6,23 @@ import os
 from pathlib import Path
 import re
 import stat
+import shutil
 import struct
 import tempfile
 import zipfile
 
 import numpy as np
 
-from .audio import AudioError, MAX_AUDIO_BYTES, read_wav
+from .audio import AudioError, MAX_AUDIO_BYTES, read_wav, write_stream
+from .operations import progress
+from . import storage
+from .metadata import MAX_METADATA_BYTES
 from .session import Session, Track, SessionClip, MAX_TRACKS, MAX_CLIPS, MAX_MEDIA, integer, text, number
 from .envelopes import validate_points
 
 
 PROJECT_FORMAT = "cooledit-linux-project"
-PROJECT_VERSION = 2
+PROJECT_VERSION = 3
 MAX_MANIFEST_BYTES = 2 * 1024 * 1024
 _IDENTIFIER = re.compile(r"^[0-9a-f]{32}$")
 
@@ -30,13 +34,10 @@ def _id(value):
 
 
 def _float_wav(samples, rate):
-    channels = samples.shape[1]
-    payload = samples.astype("<f4", copy=False).tobytes()
-    fmt = struct.pack("<HHIIHH", 3, channels, rate, rate * channels * 4, channels * 4, 32)
-    body = b"WAVEfmt " + struct.pack("<I", len(fmt)) + fmt
-    body += b"fact" + struct.pack("<II", 4, len(samples))
-    body += b"data" + struct.pack("<I", len(payload)) + payload
-    return b"RIFF" + struct.pack("<I", len(body)) + body
+    # Small in-memory helper retained for format fixtures, not used for saves.
+    output = io.BytesIO()
+    write_stream(output,samples,rate,"float32")
+    return output.getvalue()
 
 
 def save_project(session, path):
@@ -58,7 +59,8 @@ def save_project(session, path):
         with zipfile.ZipFile(temporary, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=3) as archive:
             archive.writestr("project.json", encoded)
             for item in media:
-                archive.writestr(f"media/{item.id}.wav", _float_wav(item.samples, session.sample_rate))
+                with archive.open(f"media/{item.id}.wav", "w", force_zip64=True) as output:
+                    write_stream(output, item.samples, session.sample_rate, "float32", metadata=item.metadata)
         with temporary.open("rb") as handle:
             os.fsync(handle.fileno())
         os.chmod(temporary, previous_mode)
@@ -85,12 +87,12 @@ def _load_project(path, dsp):
             raise AudioError("The project archive uses an unsupported compression or encryption method.")
         if archive.getinfo("project.json").file_size > MAX_MANIFEST_BYTES:
             raise AudioError("The project description is too large.")
-        if sum(item.file_size for item in members) > MAX_AUDIO_BYTES + MAX_MANIFEST_BYTES + MAX_MEDIA * 128:
+        if sum(item.file_size for item in members) > MAX_AUDIO_BYTES + MAX_MANIFEST_BYTES + MAX_MEDIA * (MAX_METADATA_BYTES + 65536):
             raise AudioError("The project exceeds SoundSausage's source-audio limit.")
         manifest = json.loads(archive.read("project.json").decode("utf-8"), parse_constant=_reject_constant)
         if not isinstance(manifest, dict) or manifest.get("format") != PROJECT_FORMAT:
             raise AudioError("This is not a SoundSausage project.")
-        if type(manifest.get("version")) is not int or manifest["version"] not in (1, PROJECT_VERSION):
+        if type(manifest.get("version")) is not int or manifest["version"] not in (1, 2, PROJECT_VERSION):
             raise AudioError("This project version is not supported.")
         rate = integer(manifest.get("sample_rate"), "Sample rate", 1000, 384000)
         tracks_data, media_data = manifest.get("tracks"), manifest.get("media")
@@ -113,12 +115,28 @@ def _load_project(path, dsp):
             frames = integer(record.get("frames"), "Media frames", 1, MAX_AUDIO_BYTES // 4)
             channels = integer(record.get("channels"), "Media channels", 1, 2)
             total += frames * channels * 4
-            if total > MAX_AUDIO_BYTES or archive.getinfo(filename).file_size != frames * channels * 4 + 56:
+            base_size = frames * channels * 4 + 56
+            member_size = archive.getinfo(filename).file_size
+            if total > MAX_AUDIO_BYTES or not base_size <= member_size <= base_size + MAX_METADATA_BYTES + 65536:
                 raise AudioError("The embedded audio size does not match the project description.")
-            audio = read_wav(io.BytesIO(archive.read(filename)))
+            # Seekable private spool avoids ZipExtFile's repeated full decompression.
+            if 2*member_size > shutil.disk_usage(storage.workspace().path).free:
+                raise AudioError("There is not enough free disk space to open this embedded audio.")
+            with tempfile.TemporaryFile(dir=storage.workspace().path) as spool:
+                with archive.open(filename) as source:
+                    done = 0
+                    progress(0, member_size, "Projectaudio openen")
+                    while True:
+                        chunk = source.read(1024*1024)
+                        if not chunk:
+                            break
+                        spool.write(chunk); done += len(chunk)
+                        progress(done,member_size,"Projectaudio openen")
+                spool.seek(0)
+                audio = read_wav(spool)
             if audio.encoding != "float32" or audio.sample_rate != rate or audio.samples.shape != (frames, channels):
                 raise AudioError("The embedded audio format does not match the session.")
-            item = session._prepare_media(audio.samples, rate, text(record.get("name")))
+            item = session._prepare_media(audio.samples, rate, text(record.get("name")), audio.metadata)
             bank[key] = replace(item, id=key)
         if set(names) != expected_names:
             raise AudioError("The project contains unexpected archive entries.")

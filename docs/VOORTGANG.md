@@ -29,11 +29,26 @@ te lezen. De presentatie volgt PixelPickle; GitHub-releases bevatten korte
 toegevoegde functies en work in progress. Nieuwe functies krijgen steeds een
 bijgewerkte uitleg in de handleiding.
 
-## 2. Langere bestanden en betrouwbare bewerkingen — eerstvolgend
+## 2. Langere bestanden en betrouwbare bewerkingen — eindcontrole 0.7.0
 
-Verwerking en opslag in blokken, voortgang en annuleren, crashherstel en behoud
-van bestandsmetadata. De huidige geheugenlimiet blijft tot deze fase van kracht.
-Deze fase volgt op het afronden van de handleiding en release 0.6.1.
+- [x] Grote audiobuffers op schijf; de grens van 128 MiB vervalt.
+- [x] WAV, Amplitude, samplerates, afspelen, multitrack en projecten in blokken.
+- [x] Herbruikbare golfvormoverzichten en navigatie voorbij 32-bit frameposities.
+- [x] Voortgang en annuleren; documentstand en bestaande bestanden blijven intact.
+- [x] Herstel van golfvorm en sessie na onverwacht afsluiten, ook na een tweede crash.
+- [x] WAV-tekst, cuepunten, labels en ondersteunde positiegegevens behouden.
+- [x] Amplitude vergelijken bij verschillende blokgroottes, inclusief Dynamics en Normalize.
+- [x] Lange bestanden, Undo/Redo, metadata en crashherstel automatisch toetsen.
+- [x] Handleiding voor lange opnamen, werkruimte, annuleren en herstel.
+- [ ] Definitieve distributiecontroles en publicatie van installatiepakketten.
+
+Een gecontroleerde keten met 160 MiB audio bleef lokaal op ongeveer 17 MiB extra
+resident werkgeheugen boven de geladen toepassing. Dit is een meetresultaat van
+die synthetische opname, geen vaste bovengrens voor ieder project. Herstel begint
+met een nieuwe Undo-geschiedenis. Bijzondere recordergegevens worden letterlijk
+bewaard; afgeleide metingen worden niet opnieuw berekend. Zie
+[lange bestanden en herstel](LANGE_BESTANDEN.md) voor ruimtegebruik en grenzen.
+De hoorbare controle uit fase 1 blijft open.
 
 ## 3. Dagelijkse werkwijze — gepland
 

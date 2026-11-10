@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.6.1. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.7.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -63,9 +63,13 @@ Sommige oudere 32-bit WAV-bestanden hebben een dubbelzinnige beschrijving.
 SoundSausage vraagt dan of het om gehele PCM-waarden of oudere floatwaarden gaat.
 Kies de uitvoering die bij het bestand hoort; annuleren laat het bestand intact.
 
-Extra WAV-informatie, zoals markers en tekst, wordt nog niet bij elke export
-bewaard. Als zulke gegevens aanwezig zijn, vraagt het programma eerst om een
-keuze voordat ze bij opslaan worden weggelaten.
+WAV-informatie zoals tekst, cuepunten en labels blijft behouden. Cuepunten volgen
+bewerkingen en selectie-export. Plakken neemt cuepunten en labels mee; de titel
+van het doelbestand blijft behouden. Extra velden hebben samen een grens van
+16 MiB; bestanden met meer extra informatie worden bij openen geweigerd.
+Ontbrekende informatie wordt vóór export gemeld, met een keuze om te stoppen. Bijzondere velden van recorders worden letterlijk bewaard en worden
+na een effect niet opnieuw berekend. Een eindmix voegt geen markers uit alle
+sporen samen. Grote WAV-export gebruikt waar nodig RF64.
 
 ### Projecten met meerdere sporen
 
@@ -90,6 +94,33 @@ optie **Close Session**. Het programma blijft open. Bij wijzigingen kun je
 opslaan, verwerpen of annuleren. De andere weergave en het klembord blijven
 beschikbaar. **File → Exit** of **Ctrl+Q** sluit de toepassing en vraagt ook naar
 niet-opgeslagen wijzigingen.
+
+### Lange opnamen en annuleren
+
+Lange opnamen worden in kleine blokken verwerkt; de grens van 128 MiB is vervallen.
+De app gebruikt een eigen werkmap op schijf. Zorg voor vrije schijfruimte voor
+bronkopieën, nieuwe resultaten en Undo. Bij ruimtegebrek blijft het bestaande
+werk behouden. Multitracksessies houden hun grens van 24 uur en 32 sporen.
+
+Bij langere opdrachten verschijnt voortgang met **Annuleren**. Annuleren houdt
+audio, selectie en Undo/Redo intact; bij opslaan blijft het vorige doelbestand
+intact. Eén voltooid effect blijft één Undo-stap. Bij Preview wordt hoogstens acht
+seconden resultaat voorbereid; Normalize analyseert wel de hele selectie.
+
+### Werk herstellen
+
+Na onverwacht afsluiten biedt SoundSausage de laatst vastgelegde stand aan.
+Kies **Herstellen**, **Verwijderen** of **Later**. Met **File → Recover Work** kun
+je bewaarde herstelkopieën later openen. Andere actieve instanties worden
+overgeslagen. De oorspronkelijke bestanden blijven behouden. Golfvorm, sessie,
+clipinstellingen en lijnen worden hersteld; Undo begint opnieuw.
+
+Herstelkopieën volgen bevestigde wijzigingen; selectie en cursor volgen binnen
+ongeveer een seconde. Bij ruimtegebrek meldt de statusbalk dat de herstelkopie
+niet is bijgewerkt. Bewaar belangrijke opnamen zelf: herstel vervangt geen backup.
+Na gewoon opslaan of bevestigd sluiten wordt de eigen kopie opgeruimd. Zie
+[lange bestanden en herstel](https://github.com/rene-timmermans/SoundSausage/blob/main/docs/LANGE_BESTANDEN.md)
+voor werkruimte en grenzen.
 
 ## 3. Luisteren en navigeren
 
@@ -423,11 +454,13 @@ golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
 - **Een effect is grijs:** open een golfvorm of een bewerkkopie; Channel Mixer
   vereist stereo. Een aantal andere effectgroepen is nog niet gebouwd.
 - **Lijnpunten in plaats van clips verplaatsen:** kies Move Clips.
-- **Een bestand is te groot:** er geldt nog een limiet van 128 MiB gedecodeerde
-  audio. Dat is een geheugenmaat en kan afwijken van de bestandsgrootte op schijf.
+- **Onvoldoende werkruimte:** maak schijfruimte vrij voor bronkopieën, resultaten
+  en Undo. Verwijder geen werkbestanden terwijl SoundSausage actief is.
+- **Een herstelkopie ontbreekt of is beschadigd:** de oorspronkelijke bestanden
+  blijven beschikbaar. Verwijder de betreffende kopie alleen wanneer je die niet
+  meer wilt bewaren.
 
-Opnemen, langere bestanden met verwerking vanaf schijf, crashherstel, uitgebreid
-behoud van bestandsinformatie en realtime spooreffecten zijn nog in ontwikkeling.
+Opnemen, een markereditor en realtime spooreffecten zijn nog in ontwikkeling.
 Ook EQ/filters, delay/galm, ruisreductie, tijd-/toonhoogtebewerking en externe
 plug-ins volgen later. Uitgeschakelde opdrachten bieden daarvoor nog geen werking.
 

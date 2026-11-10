@@ -1,4 +1,4 @@
-# Native projectformaat, versie 2
+# Native projectformaat, versie 3
 
 Bestanden met extensie `.celp` zijn ZIP-archieven met `project.json` en de gebruikte audio als `media/<id>.wav`. Audio is ingebed als genormaliseerde float32-WAV en behoudt ook headroom boven ±1. Oorspronkelijke WAV-paden zijn niet nodig om het project te heropenen. Ongebruikte bronnen die alleen nog voor undo worden bewaard, worden niet opgeslagen.
 
@@ -7,7 +7,7 @@ Bestanden met extensie `.celp` zijn ZIP-archieven met `project.json` en de gebru
 | Sleutel | Betekenis |
 | --- | --- |
 | `format` | Vaste interne CELP-identificatie (automatisch beheerd) |
-| `version` | Geheel getal 2 bij nieuw opslaan; versie 1 wordt ook gelezen |
+| `version` | Geheel getal 3 bij nieuw opslaan; versies 1 en 2 worden ook gelezen |
 | `sample_rate` | Gemeenschappelijke samplerate |
 | `media` | Bron-ID, naam, frame-/kanaalaantal en de ingebedde bestandsnaam |
 | `tracks` | Spoor-ID, naam, gain, pan, mute/solo en een lijst clips |
@@ -16,7 +16,10 @@ Elke clip heeft een eigen ID, media-ID, naam, `start`, `source_start`, `source_e
 
 De twee envelopevelden zijn lijsten `[bronframe, waarde]`-paren, met maximaal 512 punten per lijn. Frames zijn geordend en uniek, vanaf 0 tot en met het laatste frame in de volledige bron. Een lege volumelijn is neutraal op 1; een lege panlijn op 0. Volume ondersteunt 0–2 en pan −1–1. De waarden worden lineair geïnterpoleerd; buiten het puntenbereik blijft de eerste of laatste waarde gelden. Volumefactor en panbalans worden boven op de bestaande gain/pan/fades toegepast. Zie [ENVELOPES.md](ENVELOPES.md) voor de bediening en precieze regels bij trimmen en bronvervanging.
 
-Versie 1 heeft geen envelopevelden en wordt met neutrale lijnen geladen. Bij versie 2 zijn beide velden verplicht, ook wanneer ze leeg zijn. Envelopevelden in een als versie 1 gemarkeerd bestand worden afgewezen. Oudere versies weigeren formaatversie 2 bij openen, zodat ze de nieuwe punten niet stilzwijgend kunnen negeren. De projectbeschrijving is maximaal 2 MiB.
+Versie 1 heeft geen envelopevelden en wordt met neutrale lijnen geladen. Vanaf versie 2 zijn beide velden verplicht, ook wanneer ze leeg zijn. Envelopevelden in een als versie 1 gemarkeerd bestand worden afgewezen. Oudere versies weigeren formaatversie 2 bij openen, zodat ze de nieuwe punten niet stilzwijgend kunnen negeren. De projectbeschrijving is maximaal 2 MiB. Versie 3 bewaart ook bronmetadata in
+de ingebedde WAV, staat RF64 voor grote bronnen toe en verwerkt ZIP-leden in
+blokken. Oudere appversies weigeren versie 3, zodat metadata niet ongemerkt
+verdwijnt. Openen en opslaan vragen werkruimte op schijf; zie [lange bestanden](LANGE_BESTANDEN.md).
 
 De mixer gebruikt een lineaire balans: pan −1 geeft alleen links, +1 alleen rechts en 0 geeft unity aan beide kanten. Mono wordt eerst naar twee kanalen gekopieerd. Track- en clipinstellingen worden na elkaar toegepast. Solo selecteert de hoorbare sporen; mute blijft doorslaggevend. Fades zijn lineair, liggen binnen de clipduur en mogen samen niet langer zijn dan de clip.
 

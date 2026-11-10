@@ -8,6 +8,8 @@ from PySide6.QtWidgets import (
 )
 
 from .audio import AudioError, write_wav
+from . import metadata
+from .progress_ui import long_operation
 from .document import Document
 from .project import save_project, load_project
 from .session import Session
@@ -155,6 +157,7 @@ class SessionActions:
         if path:
             self.load_session_path(path)
 
+    @long_operation
     def load_session_path(self, path):
         try:
             if Path(path).suffix.lower() == ".ses":
@@ -183,6 +186,7 @@ class SessionActions:
             self.state_label.setToolTip(message)
         return True
 
+    @long_operation
     def save_session(self, save_as=False):
         path = self.session.path
         if path is None or save_as:
@@ -205,6 +209,7 @@ class SessionActions:
         if paths:
             self.import_session_files(paths)
 
+    @long_operation
     def import_session_files(self, paths, track_id=None, start=None):
         try:
             items = []
@@ -212,7 +217,7 @@ class SessionActions:
                 audio = self.read_audio_file(path)
                 if audio is None:
                     return
-                items.append((audio.samples, audio.sample_rate, Path(path).name))
+                items.append((audio.samples, audio.sample_rate, Path(path).name, audio.metadata))
             self.player.stop()
             self.session.import_audio(items, track_id, start)
         except (ValueError, OSError, RuntimeError) as error:
@@ -221,19 +226,21 @@ class SessionActions:
         self.multitrack.set_session(self.session, fit=True)
         self.set_mode("multitrack")
 
+    @long_operation
     def insert_waveform(self):
         if not self.document.frames:
             return
         try:
             name = getattr(self.document, "display_name", None) or (self.document.path.name if self.document.path else "Untitled waveform")
             self.player.stop()
-            self.session.import_audio([(self.document.read(), self.document.sample_rate, name)])
+            self.session.import_audio([(self.document.view(), self.document.sample_rate, name, self.document.metadata)])
         except (ValueError, OSError, RuntimeError) as error:
             self.error("Insert in Multitrack", error)
             return
         self.multitrack.set_session(self.session, fit=True)
         self.set_mode("multitrack")
 
+    @long_operation
     def edit_clip_copy(self, clip_id):
         if not self._confirm_discard():
             return
@@ -242,6 +249,8 @@ class SessionActions:
             media = self.session.media[clip.media_id]
             data = media.samples[clip.source_start:clip.source_end]
             document = Document(data, self.session.sample_rate, encoding="float32", dsp=self.document.dsp)
+            document.metadata = metadata.crop(media.metadata,clip.source_start,clip.source_end)
+            document.extra_chunks = tuple(kind.decode("ascii","replace") for kind,_ in document.metadata)
             document.display_name = f"{clip.name} (clip copy)"
         except (ValueError, RuntimeError) as error:
             self.error("Edit Clip", error)
@@ -251,12 +260,13 @@ class SessionActions:
         self.set_mode("waveform")
         self.refresh(fit=True)
 
+    @long_operation
     def apply_waveform_to_clip(self):
         if not self.editing_clip_id:
             return
         try:
             self.player.stop()
-            self.session.replace_clip_audio(self.editing_clip_id, self.document.read(), self.document.sample_rate)
+            self.session.replace_clip_audio(self.editing_clip_id, self.document.view(), self.document.sample_rate, metadata=self.document.metadata)
         except (ValueError, RuntimeError) as error:
             self.error("Apply Waveform to Clip", error)
             return
@@ -264,6 +274,7 @@ class SessionActions:
         self.multitrack.set_session(self.session)
         self.set_mode("multitrack")
 
+    @long_operation
     def mixdown(self):
         if self.session.frames == 0:
             return

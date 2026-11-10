@@ -2,7 +2,7 @@ from pathlib import Path
 from functools import partial
 
 import numpy as np
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
@@ -21,7 +21,9 @@ from .audio_devices import AudioDevices, AudioHardwareDialog
 from .waveform import Waveform, clock_text
 from .multitrack import MultitrackEditor
 from .session_actions import SessionActions
-from . import chrome
+from . import chrome, metadata, storage
+from .errors import OperationCancelled
+from .progress_ui import long_operation
 from .transport import TransportPanel
 from .amplitude_ui import EffectDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .theme import install_theme, colors
@@ -149,6 +151,8 @@ class MainWindow(SessionActions, QMainWindow):
         self.init_session()
         self.clipboard = None
         self._manual_dialog = None
+        self.recovery = None
+        self._recovery_error = None
         self.no_audio = no_audio
         self.audio_devices = AudioDevices(self)
         self.player = Playback(self, devices=self.audio_devices)
@@ -219,6 +223,7 @@ class MainWindow(SessionActions, QMainWindow):
         self.action("save", "&Save", self.save, "Ctrl+S", standard.SP_DialogSaveButton)
         self.action("save_as", "Save &As…", lambda: self.save(True), "Ctrl+Shift+S")
         self.action("save_selection", "Save S&election…", self.save_selection)
+        self.action("recover", "Recover Work…", self.offer_recovery)
         self.action("exit", "E&xit", self.close, "Ctrl+Q")
         self.action("undo", "&Undo", lambda: self.edit(self.active_model().undo), "Ctrl+Z", standard.SP_ArrowBack)
         self.action("redo", "&Redo", lambda: self.edit(self.active_model().redo), "Ctrl+Shift+Z", standard.SP_ArrowForward)
@@ -316,6 +321,9 @@ class MainWindow(SessionActions, QMainWindow):
         self.statusBar().addPermanentWidget(self.detail_label)
 
     def error(self, title, message):
+        if isinstance(message, OperationCancelled):
+            self.statusBar().showMessage("Bewerking geannuleerd", 4000)
+            return
         QMessageBox.warning(self, title, str(message))
 
     def refresh(self, fit=False):
@@ -351,8 +359,11 @@ class MainWindow(SessionActions, QMainWindow):
         for key in ("to_start", "to_end", "seek_back", "seek_forward"):
             self.actions[key].setEnabled(has_audio)
         self.sync_view_fields()
+        self.checkpoint_recovery()
 
     def selection_changed(self, start, end):
+        if self.recovery is not None:
+            self._recovery_timer.start()
         doc = self.active_model()
         self.fields["Begin"].setText(clock_text(start / doc.sample_rate))
         self.fields["End"].setText(clock_text(end / doc.sample_rate))
@@ -365,10 +376,13 @@ class MainWindow(SessionActions, QMainWindow):
 
     def view_changed(self, start, end):
         self.scroll.blockSignals(True)
-        self.scroll.setRange(0, max(0, self.document.frames - (end - start)))
-        self.scroll.setPageStep(max(1, end - start))
-        self.scroll.setSingleStep(max(1, (end - start) // 20))
-        self.scroll.setValue(start)
+        maximum = max(0, self.document.frames - (end-start))
+        self._scroll_scale = max(1, (maximum + 2147483646)//2147483647)
+        scale = self._scroll_scale
+        self.scroll.setRange(0, (maximum+scale-1)//scale)
+        self.scroll.setPageStep(min(2147483647,max(1,(end-start)//scale)))
+        self.scroll.setSingleStep(min(2147483647,max(1,(end-start)//(20*scale))))
+        self.scroll.setValue(start//scale)
         self.scroll.blockSignals(False)
         if self.mode == "waveform":
             self.sync_view_fields()
@@ -388,8 +402,10 @@ class MainWindow(SessionActions, QMainWindow):
 
     def scroll_view(self, value):
         length = self.waveform.view_end - self.waveform.view_start
+        value = value * getattr(self,"_scroll_scale",1)
         self.waveform.set_view(value, value + length)
 
+    @long_operation
     def edit(self, operation):
         self.player.stop()
         previous_frames = self.active_model().frames
@@ -438,6 +454,7 @@ class MainWindow(SessionActions, QMainWindow):
             self.refresh(fit=True)
         dialog.deleteLater()
 
+    @long_operation
     def copy(self):
         try:
             self.clipboard = self.document.copy()
@@ -461,9 +478,10 @@ class MainWindow(SessionActions, QMainWindow):
         dialog = QDialog(self)
         dialog.setWindowTitle("Set Selection — Audio Frames")
         form = QFormLayout(dialog)
-        begin, end = QSpinBox(), QSpinBox()
+        begin, end = QDoubleSpinBox(), QDoubleSpinBox()
         for widget, value in ((begin, doc.selection[0]), (end, doc.selection[1])):
-            widget.setRange(0, min(2147483647, doc.frames))
+            widget.setDecimals(0)
+            widget.setRange(0, min(2**53, doc.frames))
             widget.setValue(value)
             widget.setGroupSeparatorShown(True)
         form.addRow("Begin frame", begin)
@@ -475,6 +493,7 @@ class MainWindow(SessionActions, QMainWindow):
             self.selection_changed(*doc.selection)
             self.active_view().update()
 
+    @long_operation
     def zero_crossings(self):
         self.document.zero_crossings()
         self.selection_changed(*self.document.selection)
@@ -553,6 +572,7 @@ class MainWindow(SessionActions, QMainWindow):
         if path:
             self.load_path(path)
 
+    @long_operation
     def read_audio_file(self, path):
         try:
             return read_wav(path)
@@ -565,6 +585,7 @@ class MainWindow(SessionActions, QMainWindow):
                 return None
             return read_wav(path, "integer" if choice.startswith("Signed") else "cool-edit-float")
 
+    @long_operation
     def load_path(self, path):
         if Path(path).suffix.lower() in (".celp", ".ses"):
             return self.load_session_path(path)
@@ -574,6 +595,7 @@ class MainWindow(SessionActions, QMainWindow):
                 return False
             doc = Document(audio.samples, audio.sample_rate, encoding=audio.encoding, dsp=self.document.dsp)
             doc.extra_chunks = audio.extra_chunks
+            doc.metadata = audio.metadata
             doc.path = Path(path).resolve()
             self.player.stop()
             self.document = doc
@@ -596,11 +618,13 @@ class MainWindow(SessionActions, QMainWindow):
         return Path(path), next((key for key, value in FORMAT_LABELS.items() if value == selected), encoding)
 
     def _metadata_permission(self):
-        if not self.document.extra_chunks:
+        preserved = {kind.decode("ascii","replace") for kind,_ in self.document.metadata}
+        omitted = [name for name in self.document.extra_chunks if name not in preserved]
+        if not omitted:
             return True
-        names = ", ".join(self.document.extra_chunks)
+        names = ", ".join(omitted)
         result = QMessageBox.question(self, "Audio-only WAV Export",
-            f"SoundSausage saves audio samples and format information. These additional WAV chunks will be omitted: {names}.\n\nContinue?",
+            f"These additional WAV chunks could not be preserved and will be omitted: {names}.\n\nContinue?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
         return result == QMessageBox.StandardButton.Yes
 
@@ -609,6 +633,7 @@ class MainWindow(SessionActions, QMainWindow):
             return self.save_session(save_as)
         return self.save_waveform(save_as)
 
+    @long_operation
     def save_waveform(self, save_as=False):
         path, encoding = self.document.path, self.document.encoding
         if save_as or path is None:
@@ -616,17 +641,18 @@ class MainWindow(SessionActions, QMainWindow):
         if path is None or not self._metadata_permission():
             return False
         try:
-            write_wav(path, self.document.read(), self.document.sample_rate, encoding)
+            write_wav(path, self.document.view(), self.document.sample_rate, encoding, metadata=self.document.metadata)
         except (ValueError, OSError) as error:
             self.error("Save Audio", error)
             return False
         self.document.path = path.resolve()
         self.document.encoding = encoding
-        self.document.extra_chunks = ()
+        self.document.extra_chunks = tuple(kind.decode("ascii","replace") for kind,_ in self.document.metadata)
         self.document.mark_saved()
         self.refresh()
         return True
 
+    @long_operation
     def save_selection(self):
         if not self.document.selected:
             return
@@ -634,7 +660,8 @@ class MainWindow(SessionActions, QMainWindow):
         if path is None or not self._metadata_permission():
             return
         try:
-            write_wav(path, self.document.read(*self.document.selection), self.document.sample_rate, encoding)
+            write_wav(path, self.document.view(*self.document.selection), self.document.sample_rate, encoding,
+                      metadata=metadata.crop(self.document.metadata,*self.document.selection))
         except (ValueError, OSError) as error:
             self.error("Save Selection", error)
 
@@ -667,7 +694,7 @@ class MainWindow(SessionActions, QMainWindow):
                 if frames * doc.channels * 4 > MAX_AUDIO_BYTES:
                     raise AudioError("The generated silence would exceed the document limit.")
                 a, b = doc.selection if doc.selected else (doc.cursor, doc.cursor)
-                doc.replace(a, b, np.zeros((frames, doc.channels), np.float32), "Generate Silence")
+                doc.replace(a, b, storage.seal(storage.allocate((frames, doc.channels), zero=True), checked=True), "Generate Silence")
             self.edit(perform)
 
     def frequency_analysis(self):
@@ -680,6 +707,7 @@ class MainWindow(SessionActions, QMainWindow):
             b = min(end, a + 262144)
             SpectrumDialog(self.document.read(a, b), self.document.sample_rate, self).exec()
 
+    @long_operation
     def toggle_play(self):
         if self.no_audio:
             return
@@ -692,7 +720,7 @@ class MainWindow(SessionActions, QMainWindow):
             start = 0
         if end > start:
             try:
-                audio = doc.render(start, end) if self.mode == "multitrack" else doc.read(start, end)
+                audio = doc.render(start, end) if self.mode == "multitrack" else doc.view(start, end)
                 self.player.play(audio, doc.sample_rate, start)
             except (ValueError, RuntimeError) as error:
                 self.error("Playback", error)
@@ -756,11 +784,86 @@ class MainWindow(SessionActions, QMainWindow):
         self._manual_dialog.raise_()
         self._manual_dialog.activateWindow()
 
+    def enable_recovery(self, offer=True):
+        from .recovery import Recovery, collect_orphans
+        try:
+            self.recovery = Recovery()
+            self._recovery_timer = QTimer(self)
+            self._recovery_timer.setSingleShot(True)
+            self._recovery_timer.setInterval(1000)
+            self._recovery_timer.timeout.connect(self.checkpoint_recovery)
+            collect_orphans()
+            if offer:
+                self.offer_recovery(quiet=True)
+            self.checkpoint_recovery()
+        except (ValueError,OSError) as error:
+            self._recovery_error = str(error)
+            self.statusBar().showMessage(f"Herstelkopie niet beschikbaar: {error}")
+
+    def checkpoint_recovery(self):
+        if self.recovery is None:
+            return
+        try:
+            self.recovery.checkpoint(self.document,self.session,self.mode,self.editing_clip_id)
+            self._recovery_error = None
+        except (ValueError,OSError) as error:
+            self._recovery_error = str(error)
+            self.statusBar().showMessage(f"Herstelkopie niet bijgewerkt: {error}")
+
+    @long_operation
+    def restore_recovery(self, owner):
+        from .recovery import restore, discard
+        document,session,mode,editing = restore(owner,self.document.dsp)
+        # Publish a new journal before releasing the previous crash record.
+        self.recovery.checkpoint(document,session,mode,editing)
+        self.player.stop()
+        self.document,self.session = document,session
+        self.editing_clip_id = editing
+        self.multitrack.set_session(session,fit=True)
+        self.set_mode(mode)
+        self.refresh(fit=True)
+        discard(owner)
+        return True
+
+    def offer_recovery(self, quiet=False):
+        if self.recovery is None:
+            self.enable_recovery(offer=False)
+            if self.recovery is None:
+                return
+        from .recovery import candidates, discard
+        available = candidates()
+        if not available and not quiet:
+            QMessageBox.information(self,"Werk herstellen","Er zijn geen herstelkopieën uit een vorige sessie gevonden.")
+        for owner in available:
+            try:
+                box = QMessageBox(self)
+                box.setWindowTitle("Werk herstellen")
+                box.setText("Er is werk gevonden uit een vorige, onverwacht beëindigde sessie.")
+                box.setInformativeText("Herstel de laatst vastgelegde stand. De oorspronkelijke bestanden blijven behouden. Undo begint na herstel opnieuw.")
+                recover = box.addButton("Herstellen",QMessageBox.ButtonRole.AcceptRole)
+                remove = box.addButton("Verwijderen",QMessageBox.ButtonRole.DestructiveRole)
+                box.addButton("Later",QMessageBox.ButtonRole.RejectRole)
+                box.setDefaultButton(recover)
+                box.exec()
+                if box.clickedButton() is remove:
+                    discard(owner)
+                elif box.clickedButton() is recover:
+                    if self._confirm_discard() and self.confirm_session_discard():
+                        self.restore_recovery(owner)
+            except (ValueError,OSError,RuntimeError) as error:
+                self.error("Werk herstellen",error)
+            finally:
+                owner.close()
+
     def closeEvent(self, event):
         if self._confirm_discard() and self.confirm_session_discard():
             if self._manual_dialog is not None:
                 self._manual_dialog.close()
             self.player.shutdown()
+            if self.recovery is not None:
+                self._recovery_timer.stop()
+                self.recovery.close()
+                self.recovery = None
             event.accept()
         else:
             event.ignore()

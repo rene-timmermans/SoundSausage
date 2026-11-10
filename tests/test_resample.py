@@ -53,12 +53,12 @@ class ResampleTests(unittest.TestCase):
             self.assertTrue(np.isfinite(result).all())
             self.assertGreater(float(abs(result).max()), 0)
 
-    def test_invalid_rates_and_size_limit_fail_before_any_large_allocation(self):
+    def test_invalid_rates_and_unavailable_storage_fail_before_conversion(self):
         data = self.tone(8000)
         for rate in (999, 384001, 44100.5, True):
             with self.subTest(rate=rate), self.assertRaises(AudioError):
                 resample(data, 8000, rate)
-        with patch("soundsausage.resample._library") as library, self.assertRaises(AudioError):
+        with patch("soundsausage.resample.storage.allocate", side_effect=OSError("disk full")), patch("soundsausage.resample._library") as library, self.assertRaises(OSError):
             resample(np.zeros((60000, 2), np.float32), 1000, 384000)
         library.assert_not_called()
 

@@ -9,6 +9,8 @@ import numpy as np
 
 from .audio import AudioError, MAX_AUDIO_BYTES, validate_audio
 from .dsp import Dsp
+from . import storage, peaks
+from .operations import blocks, progress
 from .resample import resample, frame_count
 from .envelopes import validate_points, remap_points
 
@@ -48,6 +50,7 @@ class Media:
     name: str
     samples: np.ndarray
     sample_rate: int
+    metadata: tuple = ()
 
 
 @dataclass(frozen=True)
@@ -257,13 +260,13 @@ class Session:
         tracks[index] = replace(tracks[index], **settings)
         self._commit(tracks, "Track Settings", selected_clip=self.selected_clip, selected_track=track_id)
 
-    def _prepare_media(self, samples, rate, name):
+    def _prepare_media(self, samples, rate, name, metadata=()):
         validate_audio(samples, rate)
         if len(samples) == 0:
             raise AudioError("An empty waveform cannot become a clip.")
-        data = np.array(samples, dtype=np.float32, order="C", copy=True)
-        data.flags.writeable = False
-        return Media(identifier(), text(name), data, rate)
+        data = storage.freeze(samples)
+        peaks.prepare(data)
+        return Media(identifier(), text(name), data, rate, metadata)
 
     def import_audio(self, items, track_id=None, start=None):
         """Import (samples, sample_rate, name) tuples into successive tracks atomically."""
@@ -277,7 +280,8 @@ class Session:
         integer(rate, "Sample rate", 1000, 384000)
         start = integer(self.cursor if start is None else start, "Clip position", 0, rate * MAX_SECONDS)
         total = sum(media.samples.nbytes for media in self.media.values())
-        for samples, item_rate, name in items:
+        for item in items:
+            samples, item_rate, name = item[:3]
             validate_audio(samples, item_rate)
             text(name)
             frames = frame_count(len(samples), item_rate, rate)
@@ -285,11 +289,16 @@ class Session:
                 raise AudioError("A clip cannot extend past the 24-hour timeline limit.")
             total += frames * samples.shape[1] * 4
         if total > MAX_AUDIO_BYTES or len(self.media) + len(items) > MAX_MEDIA:
-            raise AudioError("SoundSausage holds at most 128 MiB of source audio and 128 media items per session, including undo history.")
+            raise AudioError("A session supports at most 128 media items, including undo history.")
         if sum(len(track.clips) for track in self.tracks) + len(items) > MAX_CLIPS:
             raise AudioError("There are too many clips in this session.")
-        prepared = [self._prepare_media(resample(samples, item_rate, rate) if item_rate != rate else samples, rate, name)
-                    for samples, item_rate, name in items]
+        from .metadata import resample as remap_metadata
+        prepared = []
+        for item in items:
+            samples, item_rate, name = item[:3]
+            info = item[3] if len(item) == 4 else ()
+            prepared.append(self._prepare_media(resample(samples,item_rate,rate) if item_rate != rate else samples,
+                rate,name,remap_metadata(info,item_rate,rate,frame_count(len(samples),item_rate,rate)) if item_rate != rate else info))
         tracks = list(self.tracks)
         while len(tracks) < target + len(items):
             tracks.append(Track(identifier(), f"Track {len(tracks) + 1}"))
@@ -375,11 +384,13 @@ class Session:
         self._commit(tracks, "Duplicate Clip", selected_clip=clip.id, selected_track=track.id)
         return clip.id
 
-    def replace_clip_audio(self, clip_id, samples, sample_rate, name=None):
+    def replace_clip_audio(self, clip_id, samples, sample_rate, name=None, metadata=()):
         track, original = self.find_clip(clip_id)
         if sample_rate != self.sample_rate:
+            from .metadata import resample as remap_metadata
+            metadata = remap_metadata(metadata, sample_rate, self.sample_rate, frame_count(len(samples),sample_rate,self.sample_rate))
             samples = resample(samples, sample_rate, self.sample_rate)
-        media = self._prepare_media(samples, self.sample_rate, name or original.name)
+        media = self._prepare_media(samples, self.sample_rate, name or original.name, metadata)
         if sum(m.samples.nbytes for m in self.media.values()) + media.samples.nbytes > MAX_AUDIO_BYTES or len(self.media) >= MAX_MEDIA:
             raise AudioError("The edited audio would exceed the session's source-audio limit.")
         fade_in, fade_out = bounded_fades(original, len(samples))
@@ -400,8 +411,9 @@ class Session:
         if end < start or end > self.sample_rate * MAX_SECONDS:
             raise AudioError("Invalid mixdown range.")
         if (end - start) * 8 > MAX_AUDIO_BYTES:
-            raise AudioError("SoundSausage renders at most 128 MiB per mix. Select a shorter time range.")
-        output = np.zeros((end - start, 2), np.float32)
+            raise AudioError("The mix exceeds the supported address space.")
+        output = storage.allocate((end - start, 2), zero=True)
+        progress(0, end-start, "Sporen mixen")
         solo = any(track.solo for track in self.tracks)
         for track in self.tracks:
             if track.muted or (solo and not track.solo):
@@ -416,13 +428,19 @@ class Session:
                 offset = a - clip.start
                 source = self.media[clip.media_id].samples[clip.source_start + offset:clip.source_start + offset + b - a]
                 cl, cr = balance(clip.gain, clip.pan)
-                self.dsp.mix_add(output, source, a - start, offset, clip.frames,
-                                 clip.fade_in, clip.fade_out, tl * cl, tr * cr,
-                                 source_offset=clip.source_start + offset,
-                                 volume_envelope=clip.volume_envelope, pan_envelope=clip.pan_envelope)
-        if not np.isfinite(output).all():
-            raise AudioError("The mix overflowed. Reduce track or clip levels.")
-        return output
+                for p,q in blocks(len(source)):
+                    destination = output[a-start+p:a-start+q]
+                    self.dsp.mix_add(destination, source[p:q], 0, offset+p, clip.frames,
+                                     clip.fade_in, clip.fade_out, tl * cl, tr * cr,
+                                     source_offset=clip.source_start + offset+p,
+                                     volume_envelope=clip.volume_envelope, pan_envelope=clip.pan_envelope)
+                    if not np.isfinite(destination).all():
+                        raise AudioError("The mix overflowed. Reduce track or clip levels.")
+                    if isinstance(output, np.memmap):
+                        output.flush(); storage.release_pages(output)
+                    storage.release_pages(source)
+                    progress(a-start+q, end-start, "Sporen mixen")
+        return storage.seal(output, checked=True)
 
     def undo(self):
         if self.undo_stack:

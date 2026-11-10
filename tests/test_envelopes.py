@@ -139,7 +139,7 @@ class EnvelopeProjectTests(unittest.TestCase):
             for name, data in files.items():
                 archive.writestr(name, data)
 
-    def test_version_two_roundtrip_keeps_immutable_points_and_exact_mix(self):
+    def test_current_version_roundtrip_keeps_immutable_points_and_exact_mix(self):
         self.session.set_envelope(self.clip_id, "volume", [[0, 0], [4, 1], [8, .5]])
         self.session.set_envelope(self.clip_id, "pan", [[0, -1], [8, 1]])
         expected = self.session.render()
@@ -149,7 +149,7 @@ class EnvelopeProjectTests(unittest.TestCase):
         np.testing.assert_array_equal(restored.render(), expected)
         self.assertFalse(restored.dirty)
         with zipfile.ZipFile(self.path) as archive:
-            self.assertEqual(json.loads(archive.read("project.json"))["version"], 2)
+            self.assertEqual(json.loads(archive.read("project.json"))["version"], 3)
 
     def test_version_one_projects_load_with_neutral_curves(self):
         save_project(self.session, self.path)

@@ -6,6 +6,7 @@ from PySide6.QtGui import QColor, QPainter, QPen, QPolygonF
 from PySide6.QtWidgets import QWidget
 
 from .theme import colors, blend, readable
+from .peaks import piece_peaks
 
 
 def clock_text(seconds):
@@ -91,13 +92,7 @@ class Waveform(QWidget):
         key = (self.document.revision, start, end, columns)
         if self._cache is not None and self._cache[0] == key:
             return self._cache[1]
-        data = self.document.read(start, end)
-        if len(data) >= columns and len(data):
-            edges = np.linspace(0, len(data), columns + 1, dtype=np.int64)
-            result = (np.minimum.reduceat(data, edges[:-1], axis=0),
-                      np.maximum.reduceat(data, edges[:-1], axis=0), True)
-        else:
-            result = (data, data, False)
+        result = piece_peaks(self.document._slices(start,end), end-start, self.document.channels, columns)
         self._cache = (key, result)
         return result
 

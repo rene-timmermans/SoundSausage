@@ -65,6 +65,7 @@ def main():
         window.session.mark_saved()
         window.close()
         return 0
+    window.enable_recovery()
     return app.exec()
 
 

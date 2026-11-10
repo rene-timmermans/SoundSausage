@@ -195,8 +195,8 @@ def load_legacy_project(path, dsp=None, media_dirs=()):
             raise AudioError("The SES source audio has a different sample rate.")
         total += audio.samples.nbytes
         if total > MAX_AUDIO_BYTES:
-            raise AudioError("The SES source audio exceeds SoundSausage's 128 MiB limit.")
-        item = session._prepare_media(audio.samples, audio.sample_rate, record["basename"])
+            raise AudioError("The SES source audio exceeds the supported address space.")
+        item = session._prepare_media(audio.samples, audio.sample_rate, record["basename"], audio.metadata)
         bank[item.id] = item
         media_map[record["id"]] = item.id
     session._media = bank

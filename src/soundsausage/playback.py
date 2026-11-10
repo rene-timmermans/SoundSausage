@@ -10,8 +10,10 @@ except ImportError:  # PySide6 6.8 retains the QAudio namespace name.
     from PySide6.QtMultimedia import QAudio as QtAudio
 
 from .audio import AudioError, validate_audio
+from .errors import OperationCancelled
 from .audio_devices import AudioDevices
 from .resample import resample
+from . import storage
 
 
 def output_format(device, rate, channels):
@@ -51,6 +53,36 @@ def encode_output(samples, source_rate, fmt):
     if kind == QAudioFormat.SampleFormat.Int32:
         return np.clip(np.rint(data.astype(np.float64) * 2147483648), -2147483648, 2147483647).astype(byteorder + "i4").tobytes()
     return np.clip(np.rint(data * 128 + 128), 0, 255).astype(np.uint8).tobytes()
+
+
+class EncodedAudio:
+    """Byte-addressed output, encoding only the requested bounded block.
+
+    Resampling is stateful and disk-backed before playback; slicing never
+    materializes an entire PCM payload, including on short/partial writes.
+    """
+    def __init__(self, samples, rate, fmt):
+        self.samples = samples if rate == fmt.sampleRate() else resample(samples,rate,fmt.sampleRate())
+        self.format = fmt
+        self.frame_bytes = fmt.bytesPerFrame()
+        self._cache_start = 0
+        self._cache = b""
+
+    def __len__(self):
+        return len(self.samples) * self.frame_bytes
+
+    def __getitem__(self, item):
+        start,stop,step = item.indices(len(self))
+        if step != 1 or stop-start > 65536:
+            raise ValueError("Audio writes must be sequential bounded byte ranges.")
+        if not self._cache_start <= start <= stop <= self._cache_start + len(self._cache):
+            first = start // self.frame_bytes
+            last = min(len(self.samples), max((stop+self.frame_bytes-1)//self.frame_bytes, first+8192))
+            self._cache = encode_output(self.samples[first:last],self.format.sampleRate(),self.format)
+            self._cache_start = first * self.frame_bytes
+            storage.release_pages(self.samples)
+        offset = start-self._cache_start
+        return self._cache[offset:offset+stop-start]
 
 
 class Playback(QObject):
@@ -100,8 +132,8 @@ class Playback(QObject):
                 raise AudioError("Invalid playback position.")
             device = self.devices.output()
             self.format = output_format(device, rate, samples.shape[1])
-            self._data = np.array(samples, dtype=np.float32, order="C", copy=True)
-            self._payload = encode_output(self._data, rate, self.format)
+            self._data = storage.freeze(samples)
+            self._payload = EncodedAudio(self._data, rate, self.format)
             self._rate, self._start_frame, self._last_frame = rate, start_frame, start_frame
             self._output_id = bytes(device.id()).hex()
             self.output_description = device.description()
@@ -112,6 +144,9 @@ class Playback(QObject):
             sink.stateChanged.connect(lambda state: self._sink_state(sink, state))
             self._set_state("Starting")
             self._start_sink()
+        except OperationCancelled:
+            self.stop()
+            raise
         except (ValueError, OSError, RuntimeError) as error:
             self._fail(str(error))
 

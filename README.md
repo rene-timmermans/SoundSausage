@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.6.1**.
+De huidige versie is **0.7.0**.
 
 ## Wat het kan
 
@@ -68,6 +68,8 @@ De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handl
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.7.0** Lange opnamen met opslag en verwerking in blokken, voortgang en annuleren, herstel na onverwacht afsluiten en behoud van WAV-bestandsinformatie. Zie [lange bestanden en herstel](docs/LANGE_BESTANDEN.md).
 
 **0.6.1** Een volledige Nederlandstalige handleiding in het helpmenu, met F1 en zoeken, ook zonder internet.
 

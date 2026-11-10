@@ -14,17 +14,17 @@ distributies. Een hoorbare controle op fysieke geluidsapparaten blijft open.
 
 ## 2. Langere bestanden en betrouwbare bewerkingen
 
-**Eerstvolgende ontwikkelfase, na de handleiding in 0.6.1.**
+**Gebouwd voor 0.7.0; eindcontrole en pakketpublicatie lopen.**
 
-- [ ] Audio in kleinere blokken verwerken.
-- [ ] De grens van 128 MiB vervangen door geschikte opslag voor grotere bestanden.
-- [ ] Afspelen, golfvormweergave en multitrack laten werken met die opslag.
-- [ ] Voortgang en annuleren bij langere bewerkingen toevoegen.
-- [ ] Annuleren laat audio, selectie en Undo/Redo intact.
-- [ ] Crashherstel toevoegen voor niet-opgeslagen werk.
-- [ ] Bestandsinformatie bij openen, bewerken en opslaan behouden waar ondersteund.
-- [ ] De bestaande Amplitude-effecten gebruiken om de nieuwe verwerking te toetsen.
-- [ ] Langere opnamen en herstel na onderbreking controleren.
+- [x] Audio in kleinere blokken verwerken.
+- [x] De grens van 128 MiB vervangen door geschikte opslag voor grotere bestanden.
+- [x] Afspelen, golfvormweergave en multitrack laten werken met die opslag.
+- [x] Voortgang en annuleren bij langere bewerkingen toevoegen.
+- [x] Annuleren laat audio, selectie en Undo/Redo intact.
+- [x] Crashherstel toevoegen voor niet-opgeslagen werk.
+- [x] Bestandsinformatie bij openen, bewerken en opslaan behouden waar ondersteund.
+- [x] De bestaande Amplitude-effecten gebruiken om de nieuwe verwerking te toetsen.
+- [x] Langere opnamen en herstel na onderbreking controleren.
 - [ ] De handleiding, beperkingen en releasepunten bijwerken.
 
 Een grotere limiet alleen is onvoldoende: grote bestanden moeten te openen,

@@ -8,19 +8,16 @@ import struct
 import tempfile
 
 import numpy as np
+from .errors import AudioError, AmbiguousWavError
+from . import storage
+from .operations import blocks, progress
+from .metadata import MAX_METADATA_BYTES, CORE_CHUNKS
 
 
-MAX_AUDIO_BYTES = 128 * 1024 * 1024
+# Address-space safety, not a working-memory limit. Large audio uses disk storage.
+MAX_AUDIO_BYTES = (1 << 63) - 1
 FORMATS = {"pcm8": (1, 8), "pcm16": (1, 16), "pcm24": (1, 24),
            "pcm32": (1, 32), "float32": (3, 32)}
-
-
-class AudioError(ValueError):
-    pass
-
-
-class AmbiguousWavError(AudioError):
-    pass
 
 
 @dataclass(frozen=True)
@@ -29,6 +26,7 @@ class AudioFile:
     sample_rate: int
     encoding: str
     extra_chunks: tuple = ()
+    metadata: tuple = ()
 
 
 def validate_audio(samples, sample_rate):
@@ -37,9 +35,8 @@ def validate_audio(samples, sample_rate):
     if not 1000 <= sample_rate <= 384000:
         raise AudioError("The sample rate must be between 1,000 and 384,000 Hz.")
     if samples.shape[0] * samples.shape[1] * 4 > MAX_AUDIO_BYTES:
-        raise AudioError("SoundSausage supports at most 128 MiB of decoded audio per document.")
-    if not np.isfinite(samples).all():
-        raise AudioError("The audio contains non-finite sample values.")
+        raise AudioError("The audio dimensions exceed the supported address space.")
+    storage.finite(samples)
 
 
 def read_wav(path, pcm32_mode=None):
@@ -48,20 +45,36 @@ def read_wav(path, pcm32_mode=None):
         file_size = source.tell()
         source.seek(0)
         header = source.read(12)
-        if len(header) != 12 or header[:4] != b"RIFF" or header[8:] != b"WAVE":
+        if len(header) != 12 or header[:4] not in (b"RIFF", b"RF64") or header[8:] != b"WAVE":
             raise AudioError("This is not a little-endian RIFF/WAVE file.")
-        riff_end = struct.unpack_from("<I", header, 4)[0] + 8
+        rf64 = header[:4] == b"RF64"
+        riff_end = file_size if rf64 else struct.unpack_from("<I", header, 4)[0] + 8
+        rf64_data = None
         if riff_end < 12 or riff_end > file_size:
             raise AudioError("The WAV file is truncated or has an invalid RIFF length.")
         fmt = None
         data_location = None
         extras = []
+        metadata = []
+        metadata_size = 0
         while source.tell() + 8 <= riff_end:
             kind, length = struct.unpack("<4sI", source.read(8))
             start = source.tell()
-            if start + length > riff_end:
+            if rf64 and kind == b"data" and length == 0xffffffff:
+                if rf64_data is None:
+                    raise AudioError("RF64 needs a valid ds64 chunk before its audio.")
+                length = rf64_data
+            if start + length + (length & 1) > riff_end:
                 raise AudioError("A WAV chunk extends beyond the end of the file.")
-            if kind == b"fmt ":
+            if kind == b"ds64" and rf64:
+                if length < 28 or length > 65536 or rf64_data is not None:
+                    raise AudioError("Invalid RF64 size chunk.")
+                ds64 = source.read(length)
+                size, rf64_data, count = struct.unpack_from("<QQQ", ds64)
+                riff_end = size + 8
+                if riff_end > file_size or riff_end < start + length:
+                    raise AudioError("Invalid RF64 file length.")
+            elif kind == b"fmt ":
                 if length < 16 or length > 65536 or fmt is not None:
                     raise AudioError("Invalid or duplicate WAV format chunk.")
                 fmt = source.read(length)
@@ -69,8 +82,12 @@ def read_wav(path, pcm32_mode=None):
                 if data_location is not None:
                     raise AudioError("Multiple WAV audio chunks are not supported yet.")
                 data_location = (start, length)
-            elif kind not in (b"JUNK", b"PAD ", b"fact"):
+            elif kind not in CORE_CHUNKS:
                 extras.append(kind.decode("ascii", "replace"))
+                if metadata_size + length > MAX_METADATA_BYTES:
+                    raise AudioError("WAV metadata exceeds the supported 16 MiB size; the original file has not been changed.")
+                metadata.append((kind, source.read(length)))
+                metadata_size += length
             source.seek(start + length + (length & 1))
         if fmt is None or data_location is None:
             raise AudioError("The WAV file needs both a format chunk and an audio chunk.")
@@ -99,76 +116,102 @@ def read_wav(path, pcm32_mode=None):
             raise AudioError("The WAV data ends in a partial audio frame.")
         frames = length // alignment
         if frames * channels * 4 > MAX_AUDIO_BYTES:
-            raise AudioError("SoundSausage supports at most 128 MiB of decoded audio per document.")
+            raise AudioError("The audio dimensions exceed the supported address space.")
         if code == 1 and bits == 32 and not extensible and pcm32_mode not in ("integer", "cool-edit-float"):
             raise AmbiguousWavError("32-bit type-1 WAV may contain signed PCM integers or legacy floats.")
+        encoding = "float32" if code == 3 or (bits == 32 and pcm32_mode == "cool-edit-float" and not extensible) else "pcm" + str(bits)
+        samples = storage.allocate((frames, channels))
         source.seek(data_location[0])
-        raw = source.read(length)
-    if code == 3:
-        samples = np.frombuffer(raw, dtype="<f4").copy()
-        encoding = "float32"
-    elif bits == 8:
-        samples = (np.frombuffer(raw, dtype=np.uint8).astype(np.float32) - 128) / 128
-        encoding = "pcm8"
-    elif bits == 16:
-        samples = np.frombuffer(raw, dtype="<i2").astype(np.float32) / 32768
-        encoding = "pcm16"
-    elif bits == 24:
-        octets = np.frombuffer(raw, dtype=np.uint8).reshape(-1, 3).astype(np.int32)
-        values = octets[:, 0] | (octets[:, 1] << 8) | (octets[:, 2] << 16)
-        values = (values ^ 0x800000) - 0x800000
-        samples = values.astype(np.float32) / 8388608
-        encoding = "pcm24"
-    elif pcm32_mode == "cool-edit-float" and not extensible:
-        samples = np.frombuffer(raw, dtype="<f4").copy() / 32768
-        # Re-export in the unambiguous normalized format, not the historical carrier.
-        encoding = "float32"
-    else:
-        samples = (np.frombuffer(raw, dtype="<i4").astype(np.float64) / 2147483648).astype(np.float32)
-        encoding = "pcm32"
-    samples = np.ascontiguousarray(samples.reshape(frames, channels), dtype=np.float32)
-    validate_audio(samples, rate)
-    return AudioFile(samples, rate, encoding, tuple(extras))
+        progress(0, frames, "WAV openen")
+        for a, b in blocks(frames):
+            raw = source.read((b-a) * alignment)
+            if len(raw) != (b-a) * alignment:
+                raise AudioError("The WAV audio is truncated.")
+            if code == 3:
+                decoded = np.frombuffer(raw, dtype="<f4")
+            elif bits == 8:
+                decoded = (np.frombuffer(raw, dtype=np.uint8).astype(np.float32) - 128) / 128
+            elif bits == 16:
+                decoded = np.frombuffer(raw, dtype="<i2").astype(np.float32) / 32768
+            elif bits == 24:
+                octets = np.frombuffer(raw, dtype=np.uint8).reshape(-1, 3).astype(np.int32)
+                values = octets[:, 0] | (octets[:, 1] << 8) | (octets[:, 2] << 16)
+                decoded = ((values ^ 0x800000) - 0x800000).astype(np.float32) / 8388608
+            elif encoding == "float32":
+                decoded = np.frombuffer(raw, dtype="<f4") / 32768
+            else:
+                decoded = (np.frombuffer(raw, dtype="<i4").astype(np.float64) / 2147483648).astype(np.float32)
+            samples[a:b] = decoded.reshape(b-a, channels)
+            if not np.isfinite(samples[a:b]).all():
+                raise AudioError("The audio contains non-finite sample values.")
+            if isinstance(samples, np.memmap):
+                samples.flush(); storage.release_pages(samples)
+            progress(b, frames, "WAV openen")
+        samples = storage.seal(samples, checked=True)
+    return AudioFile(samples, rate, encoding, tuple(extras), tuple(metadata))
 
 
-def write_wav(path, samples, sample_rate, encoding="pcm16", *, pcm16_symmetric=False):
-    """Write WAV with selectable symmetric PCM16 bounds for session mixdowns."""
-    validate_audio(samples, sample_rate)
-    if encoding not in FORMATS:
-        raise AudioError("Unknown output format.")
+def encode(samples, encoding, *, pcm16_symmetric=False):
+    """Encode one bounded block of interleaved frames."""
     code, bits = FORMATS[encoding]
-    channels = samples.shape[1]
-    alignment = channels * bits // 8
     if code == 3:
-        payload = samples.astype("<f4").tobytes()
-    elif bits == 8:
-        payload = np.clip(np.rint(samples.astype(np.float64) * 128 + 128), 0, 255).astype(np.uint8).tobytes()
-    else:
-        scale = 1 << (bits - 1)
-        minimum = -32767 if bits == 16 and pcm16_symmetric else -scale
-        values = np.clip(np.rint(samples.astype(np.float64) * scale), minimum, scale - 1).astype(np.int64)
-        if bits == 24:
-            unsigned = values.reshape(-1).astype(np.uint32)
-            packed = np.column_stack((unsigned & 255, (unsigned >> 8) & 255, (unsigned >> 16) & 255))
-            payload = packed.astype(np.uint8).tobytes()
-        else:
-            payload = values.astype("<i2" if bits == 16 else "<i4").tobytes()
+        return samples.astype("<f4").tobytes()
+    if bits == 8:
+        return np.clip(np.rint(samples.astype(np.float64) * 128 + 128), 0, 255).astype(np.uint8).tobytes()
+    scale = 1 << (bits - 1)
+    minimum = -32767 if bits == 16 and pcm16_symmetric else -scale
+    values = np.clip(np.rint(samples.astype(np.float64) * scale), minimum, scale - 1).astype(np.int64)
+    if bits == 24:
+        unsigned = values.reshape(-1).astype(np.uint32)
+        packed = np.column_stack((unsigned & 255, (unsigned >> 8) & 255, (unsigned >> 16) & 255))
+        return packed.astype(np.uint8).tobytes()
+    return values.astype("<i2" if bits == 16 else "<i4").tobytes()
+
+
+def wav_header(frames, channels, sample_rate, encoding, metadata=()):
+    if sum(len(raw) for kind, raw in metadata) > MAX_METADATA_BYTES:
+        raise AudioError("WAV metadata exceeds the supported 16 MiB size.")
+    code, bits = FORMATS[encoding]
+    alignment = channels * bits // 8
+    payload_size = frames * alignment
     fmt = struct.pack("<HHIIHH", code, channels, sample_rate, sample_rate * alignment, alignment, bits)
     chunks = b"fmt " + struct.pack("<I", len(fmt)) + fmt
     if code == 3:
-        chunks += b"fact" + struct.pack("<II", 4, samples.shape[0])
-    chunks += b"data" + struct.pack("<I", len(payload))
-    total = 4 + len(chunks) + len(payload) + (len(payload) & 1)
+        chunks += b"fact" + struct.pack("<II", 4, min(frames, 0xffffffff))
+    for kind, raw in metadata:
+        if not isinstance(kind, bytes) or len(kind) != 4 or kind in CORE_CHUNKS or len(raw) > MAX_METADATA_BYTES:
+            raise AudioError("Invalid WAV metadata chunk.")
+        chunks += kind + struct.pack("<I", len(raw)) + raw + (b"\0" if len(raw) & 1 else b"")
+    total = 4 + len(chunks) + 8 + payload_size + (payload_size & 1)
+    if total > 0xffffffff:
+        ds64 = struct.pack("<QQQI", total + 36, payload_size, frames, 0)
+        return b"RF64" + struct.pack("<I", 0xffffffff) + b"WAVEds64" + struct.pack("<I", 28) + ds64 + chunks + b"data" + struct.pack("<I", 0xffffffff)
+    return b"RIFF" + struct.pack("<I", total) + b"WAVE" + chunks + b"data" + struct.pack("<I", payload_size)
+
+
+def write_stream(output, samples, sample_rate, encoding="pcm16", *, pcm16_symmetric=False, metadata=()):
+    validate_audio(samples, sample_rate)
+    if encoding not in FORMATS:
+        raise AudioError("Unknown output format.")
+    output.write(wav_header(len(samples), samples.shape[1], sample_rate, encoding, metadata))
+    progress(0, len(samples), "WAV opslaan")
+    for a, b in blocks(len(samples)):
+        output.write(encode(samples[a:b], encoding, pcm16_symmetric=pcm16_symmetric))
+        storage.release_pages(samples)
+        progress(b, len(samples), "WAV opslaan")
+    if len(samples) * samples.shape[1] * (FORMATS[encoding][1] // 8) & 1:
+        output.write(b"\0")
+
+
+def write_wav(path, samples, sample_rate, encoding="pcm16", *, pcm16_symmetric=False, metadata=()):
+    """Stream to a sibling file; failed or cancelled saves leave the original intact."""
     path = Path(path)
     previous_mode = stat.S_IMODE(path.stat().st_mode) if path.exists() else 0o644
     temporary = None
     try:
         with tempfile.NamedTemporaryFile(prefix="." + path.name + ".", suffix=".tmp", dir=path.parent, delete=False) as output:
             temporary = Path(output.name)
-            output.write(b"RIFF" + struct.pack("<I", total) + b"WAVE" + chunks)
-            output.write(payload)
-            if len(payload) & 1:
-                output.write(b"\0")
+            write_stream(output, samples, sample_rate, encoding, pcm16_symmetric=pcm16_symmetric, metadata=metadata)
             output.flush()
             os.fsync(output.fileno())
         os.chmod(temporary, previous_mode)
@@ -182,10 +225,19 @@ def write_wav(path, samples, sample_rate, encoding="pcm16", *, pcm16_symmetric=F
 def tone(duration, rate=44100, channels=2, frequency=440.0, amplitude=0.25):
     if not np.isfinite(duration) or duration <= 0 or not np.isfinite(frequency) or not 0 < frequency < rate / 2:
         raise AudioError("Choose a positive duration and a frequency below half the sample rate.")
+    if channels not in (1, 2) or not 1000 <= rate <= 384000:
+        raise AudioError("Choose mono/stereo and a sample rate from 1,000 to 384,000 Hz.")
     frames = max(1, round(duration * rate))
     if frames * channels * 4 > MAX_AUDIO_BYTES:
-        raise AudioError("The generated audio would exceed the 128 MiB document limit.")
+        raise AudioError("The audio dimensions exceed the supported address space.")
     if not np.isfinite(amplitude) or not 0 <= amplitude <= 1:
         raise AudioError("The amplitude must be between 0 and 1.")
-    mono = (np.sin(2 * np.pi * frequency * np.arange(frames) / rate) * amplitude).astype(np.float32)
-    return np.repeat(mono[:, None], channels, axis=1)
+    result = storage.allocate((frames, channels))
+    progress(0, frames, "Toon genereren")
+    for a, b in blocks(frames):
+        mono = np.sin(2 * np.pi * frequency * np.arange(a,b) / rate) * amplitude
+        result[a:b] = mono[:, None]
+        if isinstance(result, np.memmap):
+            result.flush(); storage.release_pages(result)
+        progress(b, frames, "Toon genereren")
+    return storage.seal(result, checked=True)

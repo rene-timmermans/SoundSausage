@@ -1,6 +1,7 @@
 """Qt multitrack timeline and track/clip controls for the native session model."""
 from dataclasses import replace
 import math
+from .peaks import piece_peaks
 
 import numpy as np
 from PySide6.QtCore import Qt, QRectF, QPointF, Signal
@@ -185,8 +186,7 @@ class Timeline(EnvelopeTimeline, QWidget):
         if key not in self._peaks:
             data = self.session.media[clip.media_id].samples[begin:end]
             columns = max(1, min(width, len(data)))
-            indexes = np.linspace(0, len(data), columns + 1, dtype=np.int64)[:-1]
-            self._peaks[key] = (np.minimum.reduceat(data, indexes, axis=0), np.maximum.reduceat(data, indexes, axis=0))
+            self._peaks[key] = piece_peaks((data,),len(data),data.shape[1],columns)[:2]
             if len(self._peaks) > 200:
                 oldest = next(iter(self._peaks))
                 if oldest != key:
@@ -531,14 +531,17 @@ class MultitrackEditor(QWidget):
         length = end - start
         # A finite scrollbar follows the content plus a little empty workspace.
         maximum = max(self.session.frames + self.session.sample_rate * 10, end) - length
-        self.scroll.setRange(0, min(2147483647, max(0, maximum)))
-        self.scroll.setPageStep(min(2147483647, max(1, length)))
-        self.scroll.setSingleStep(max(1, min(2147483647, length // 20)))
-        self.scroll.setValue(min(2147483647, start))
+        self._scroll_scale = max(1,(max(0,maximum)+2147483646)//2147483647)
+        scale=self._scroll_scale
+        self.scroll.setRange(0,(max(0,maximum)+scale-1)//scale)
+        self.scroll.setPageStep(min(2147483647,max(1,length//scale)))
+        self.scroll.setSingleStep(min(2147483647,max(1,length//(20*scale))))
+        self.scroll.setValue(start//scale)
         self.scroll.blockSignals(False)
 
     def _scroll_to(self, start):
         length = self.timeline.view_end - self.timeline.view_start
+        start *= getattr(self,"_scroll_scale",1)
         self.timeline.set_view(start, start + length)
 
     def perform(self, action):

@@ -41,7 +41,8 @@ de samplerate als de audiodata. Ondersteunde rates lopen van 1.000 tot 384.000 H
 
 De conversie gebruikt de bandbegrensde sinc-converter van libsamplerate, met een
 stilte-aanname buiten het fragment. Korte fragmenten kunnen daardoor een
-andere randvorm of piekwaarde krijgen. De actuele geheugenlimiet blijft gelden.
+andere randvorm of piekwaarde krijgen. De converter houdt filterstaat tussen
+blokken vast; lange resultaten kunnen op schijf worden voorbereid.
 
 Voor afspelen kiest SoundSausage een ondersteund mono-/stereoformaat. Zo nodig
 worden samplerate, kanaalaantal en sampletype alleen voor de uitvoer omgezet.
@@ -56,8 +57,9 @@ de geselecteerde uitgang met een kort stil signaal; er wordt niets opgenomen.
 
 De pakketbouw test afspelen met een privaat virtueel audioapparaat, inclusief
 pauzeren, hervatten, afspeeltijd en lussen. Een hoorbare controle op echte
-hardware blijft een aparte stap. Opname, verwerking vanaf schijf en realtime
-spooreffecten volgen in de volgende ontwikkelfasen; zie [voortgang](VOORTGANG.md).
+hardware blijft een aparte stap. Lange bestanden gebruiken verwerking vanaf
+schijf; zie [werkruimte en herstel](LANGE_BESTANDEN.md). Opname en realtime
+spooreffecten volgen later; zie [voortgang](VOORTGANG.md).
 
 Technische referenties: [Qt audio-uitvoer](https://doc.qt.io/qt-6.8/qaudiosink.html),
 [Qt apparaatformaten](https://doc.qt.io/qt-6.8/qaudiodevice.html) en

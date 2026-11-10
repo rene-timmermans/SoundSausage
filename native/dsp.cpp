@@ -8,7 +8,7 @@
 // No exceptions, allocations, host callbacks, or global mutable state cross this ABI.
 extern "C" {
 
-std::uint32_t ce_dsp_abi_version() noexcept { return 4; }
+std::uint32_t ce_dsp_abi_version() noexcept { return 5; }
 
 static bool valid_buffer(float* data, std::size_t frames, std::size_t channels) noexcept {
     return channels >= 1 && channels <= 2 &&
@@ -17,8 +17,9 @@ static bool valid_buffer(float* data, std::size_t frames, std::size_t channels) 
 }
 
 int ce_gain(float* data, std::size_t frames, std::size_t channels,
-            const double* initial, const double* final, int logarithmic) noexcept {
-    if (!valid_buffer(data, frames, channels) || !initial || !final) return -1;
+            const double* initial, const double* final, int logarithmic,
+            std::size_t offset, std::size_t total) noexcept {
+    if (!valid_buffer(data, frames, channels) || !initial || !final || offset > total || frames > total-offset) return -1;
     for (std::size_t c = 0; c < channels; ++c) {
         if (!std::isfinite(initial[c]) || !std::isfinite(final[c]) ||
             initial[c] < 0 || final[c] < 0 || initial[c] > 1000 || final[c] > 1000)
@@ -26,7 +27,7 @@ int ce_gain(float* data, std::size_t frames, std::size_t channels,
         if (logarithmic && (initial[c] <= 0 || final[c] <= 0)) return -1;
     }
     for (std::size_t f = 0; f < frames; ++f) {
-        const double t = frames > 1 ? static_cast<double>(f) / (frames - 1) : 0;
+        const double t = total > 1 ? static_cast<double>(offset + f) / (total - 1) : 0;
         for (std::size_t c = 0; c < channels; ++c) {
             const double gain = logarithmic
                 ? std::exp(std::log(initial[c]) + t * (std::log(final[c]) - std::log(initial[c])))
@@ -101,13 +102,14 @@ static double effect_curve_value(const EffectPoint* points, std::size_t count,
 }
 
 int ce_envelope(float* data, std::size_t frames, std::size_t channels,
-                const EffectPoint* points, std::size_t count, int logarithmic) noexcept {
-    if (!valid_buffer(data, frames, channels) || !valid_effect_curve(points, count, 0, 1, 0, 2) ||
+                const EffectPoint* points, std::size_t count, int logarithmic,
+                std::size_t offset, std::size_t total) noexcept {
+    if (!valid_buffer(data, frames, channels) || !valid_effect_curve(points, count, 0, 1, 0, 2) || offset > total || frames > total-offset ||
         points[0].position != 0 || points[count - 1].position != 1) return -1;
     if (logarithmic)
         for (std::size_t i = 0; i < count; ++i) if (points[i].value <= 0) return -1;
     for (std::size_t f = 0; f < frames; ++f) {
-        const double position = frames > 1 ? static_cast<double>(f) / (frames - 1) : 0;
+        const double position = total > 1 ? static_cast<double>(offset + f) / (total - 1) : 0;
         const double gain = effect_curve_value(points, count, position, logarithmic);
         for (std::size_t c = 0; c < channels; ++c)
             data[f * channels + c] = static_cast<float>(data[f * channels + c] * gain);
@@ -117,15 +119,14 @@ int ce_envelope(float* data, std::size_t frames, std::size_t channels,
 
 int ce_dynamics(float* data, std::size_t frames, std::size_t channels, double sample_rate,
                 const EffectPoint* points, std::size_t count,
-                double attack_ms, double release_ms, double makeup_db, int linked) noexcept {
-    if (!valid_buffer(data, frames, channels) || !valid_effect_curve(points, count, -96, 0, -96, 24) ||
+                double attack_ms, double release_ms, double makeup_db, int linked, double* envelope) noexcept {
+    if (!valid_buffer(data, frames, channels) || !valid_effect_curve(points, count, -96, 0, -96, 24) || !envelope ||
         !std::isfinite(sample_rate) || sample_rate < 1000 || sample_rate > 384000 ||
         !std::isfinite(attack_ms) || attack_ms < 0 || attack_ms > 1000 ||
         !std::isfinite(release_ms) || release_ms < 0 || release_ms > 5000 ||
         !std::isfinite(makeup_db) || std::abs(makeup_db) > 24) return -1;
     const double attack = attack_ms ? std::exp(-1000 / (sample_rate * attack_ms)) : 0;
     const double release = release_ms ? std::exp(-1000 / (sample_rate * release_ms)) : 0;
-    double envelope[2] = {0, 0};
     for (std::size_t f = 0; f < frames; ++f) {
         double peaks[2] = {std::abs(static_cast<double>(data[f * channels])), 0};
         if (channels == 2) peaks[1] = std::abs(static_cast<double>(data[f * channels + 1]));

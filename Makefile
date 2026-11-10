@@ -14,7 +14,7 @@ run: all
 	PYTHONPATH=src python3 -m soundsausage
 
 test: all
-	QT_QPA_PLATFORM=offscreen PYTHONPATH=src python3 -m unittest discover -s tests -v
+	SOUNDSAUSAGE_CACHE_DIR="$(CURDIR)/build/test-cache" QT_QPA_PLATFORM=offscreen PYTHONPATH=src python3 -m unittest discover -s tests -v
 
 demo: all
 	PYTHONPATH=src python3 tools/make_demo.py

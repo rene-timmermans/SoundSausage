@@ -13,6 +13,8 @@ from PySide6.QtWidgets import (
 from .audio import validate_audio
 from .playback import Playback
 from .theme import colors
+from .errors import OperationCancelled
+from .progress_ui import long_operation
 
 
 def spin(value, low, high, suffix="", decimals=1):
@@ -70,11 +72,11 @@ class EffectDialog(QDialog):
             self.player.stop()
 
     def preview_samples(self):
-        data = self.document.read(*self.document.effect_range)
-        self.document.dsp.process(self.effect_name, data, self.document.sample_rate, **self.settings())
-        validate_audio(data, self.document.sample_rate)
-        return np.ascontiguousarray(data[:8 * self.document.sample_rate])
+        return self.document.dsp.process_blocks(self.effect_name,
+            self.document.view(*self.document.effect_range), self.document.sample_rate,
+            limit=8 * self.document.sample_rate, **self.settings())
 
+    @long_operation
     def preview(self):
         if self.no_audio:
             return
@@ -84,6 +86,8 @@ class EffectDialog(QDialog):
         try:
             data = self.preview_samples()
             self.player.play(data, self.document.sample_rate)
+        except OperationCancelled:
+            return
         except (ValueError, OSError, RuntimeError) as error:
             QMessageBox.warning(self, "Preview", str(error))
 

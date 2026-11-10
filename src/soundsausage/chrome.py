@@ -56,7 +56,7 @@ def create_menus(window):
     file = menu("file", "&File")
     add(file, ("new", "open", "close_file", None, "save", "save_as", "save_selection", None,
                "new_session", "open_session", "save_session", "save_session_as", None,
-               "import_audio", "mixdown", None, "exit"))
+               "import_audio", "mixdown", None, "recover", None, "exit"))
     edit = menu("edit", "&Edit")
     add(edit, ("undo", "redo", "repeat", None, "cut", "copy", "paste", "mix_paste", "delete", "trim", None,
                "select_all", "select_range", "zero", None, "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))

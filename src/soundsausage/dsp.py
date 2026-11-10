@@ -2,6 +2,9 @@
 import ctypes as C
 from pathlib import Path
 
+from . import storage
+from .operations import blocks, progress
+
 import numpy as np
 
 
@@ -21,23 +24,23 @@ class Dsp:
         except OSError as error:
             raise RuntimeError("The audio kernel is not built. Run 'make' in the project folder.") from error
         self.lib.ce_dsp_abi_version.restype = C.c_uint32
-        if self.lib.ce_dsp_abi_version() != 4:
+        if self.lib.ce_dsp_abi_version() != 5:
             raise RuntimeError("The audio kernel has an incompatible ABI. Rebuild it with make.")
         self.ptr = C.POINTER(C.c_float)
         signature = [self.ptr, C.c_size_t, C.c_size_t]
         for name in ("ce_reverse", "ce_invert", "ce_silence"):
             getattr(self.lib, name).argtypes = signature
             getattr(self.lib, name).restype = C.c_int
-        self.lib.ce_gain.argtypes = signature + [C.POINTER(C.c_double), C.POINTER(C.c_double), C.c_int]
+        self.lib.ce_gain.argtypes = signature + [C.POINTER(C.c_double), C.POINTER(C.c_double), C.c_int, C.c_size_t, C.c_size_t]
         self.lib.ce_gain.restype = C.c_int
         self.lib.ce_normalize.argtypes = signature + [C.c_double, C.c_int, C.c_int]
         self.lib.ce_normalize.restype = C.c_int
         self.lib.ce_channel_mix.argtypes = signature + [C.c_double] * 4
         self.lib.ce_channel_mix.restype = C.c_int
-        self.lib.ce_envelope.argtypes = signature + [C.POINTER(EffectPoint), C.c_size_t, C.c_int]
+        self.lib.ce_envelope.argtypes = signature + [C.POINTER(EffectPoint), C.c_size_t, C.c_int, C.c_size_t, C.c_size_t]
         self.lib.ce_envelope.restype = C.c_int
         self.lib.ce_dynamics.argtypes = signature + [C.c_double, C.POINTER(EffectPoint), C.c_size_t,
-                                                   C.c_double, C.c_double, C.c_double, C.c_int]
+                                                   C.c_double, C.c_double, C.c_double, C.c_int, C.POINTER(C.c_double)]
         self.lib.ce_dynamics.restype = C.c_int
         self.lib.ce_mix_add.argtypes = [self.ptr, C.c_size_t, self.ptr,
             C.c_size_t, C.c_size_t, C.c_size_t, C.c_size_t, C.c_size_t,
@@ -59,12 +62,12 @@ class Dsp:
         if result:
             raise ValueError("Invalid effect settings.")
 
-    def gain(self, data, initial, final=None, logarithmic=False):
+    def gain(self, data, initial, final=None, logarithmic=False, *, offset=0, total=None):
         channels = data.shape[1]
         start = np.broadcast_to(np.asarray(initial, dtype=np.float64), (channels,)).copy()
         end = np.broadcast_to(np.asarray(initial if final is None else final, dtype=np.float64), (channels,)).copy()
         self._check(self.lib.ce_gain(*self._buffer(data),
-            start.ctypes.data_as(C.POINTER(C.c_double)), end.ctypes.data_as(C.POINTER(C.c_double)), int(logarithmic)))
+            start.ctypes.data_as(C.POINTER(C.c_double)), end.ctypes.data_as(C.POINTER(C.c_double)), int(logarithmic), offset, len(data) if total is None else total))
 
     def normalize(self, data, target=0.98, linked=True, remove_dc=False):
         self._check(self.lib.ce_normalize(*self._buffer(data), target, int(linked), int(remove_dc)))
@@ -82,14 +85,15 @@ class Dsp:
             raise ValueError("An effect curve needs 2–64 ordered points.")
         return (EffectPoint * len(points))(*(EffectPoint(x, y) for x, y in points))
 
-    def envelope(self, data, points, logarithmic=False):
+    def envelope(self, data, points, logarithmic=False, *, offset=0, total=None):
         curve = self._effect_points(points)
-        self._check(self.lib.ce_envelope(*self._buffer(data), curve, len(curve), int(logarithmic)))
+        self._check(self.lib.ce_envelope(*self._buffer(data), curve, len(curve), int(logarithmic), offset, len(data) if total is None else total))
 
-    def dynamics(self, data, sample_rate, points, attack_ms=10, release_ms=100, makeup_db=0, linked=True):
+    def dynamics(self, data, sample_rate, points, attack_ms=10, release_ms=100, makeup_db=0, linked=True, *, state=None):
         curve = self._effect_points(points)
+        state = (C.c_double * 2)() if state is None else state
         self._check(self.lib.ce_dynamics(*self._buffer(data), sample_rate, curve, len(curve),
-                                        attack_ms, release_ms, makeup_db, int(linked)))
+                                        attack_ms, release_ms, makeup_db, int(linked), state))
 
     def process(self, name, data, sample_rate, **settings):
         if name == "dynamics":
@@ -98,6 +102,61 @@ class Dsp:
             getattr(self, name)(data, **settings)
         else:
             self.simple(name, data)
+
+    def process_blocks(self, name, source, sample_rate, *, limit=None, block_frames=262144, **settings):
+        """Offline processing with bounded memory and one continuous effect state.
+
+        A preview may restrict the output while analysis still spans the full range.
+        No mutation of the immutable source occurs before the caller commits.
+        """
+        frames, channels = source.shape
+        wanted = frames if limit is None else min(frames, max(0, int(limit)))
+        result = storage.allocate((wanted, channels))
+        state = (C.c_double * 2)()
+        means = np.zeros(channels, np.float64)
+        peaks = np.zeros(channels, np.float64)
+        if name == "normalize":
+            unknown = set(settings) - {"target", "linked", "remove_dc"}
+            target = settings.get("target", .98)
+            if unknown or not np.isfinite(target) or not 0 <= target <= 1:
+                raise ValueError("Invalid normalization settings.")
+            if settings.get("remove_dc", False) and frames:
+                progress(0, frames, "DC analyseren")
+                for a, b in blocks(frames, block_frames):
+                    means += np.sum(source[a:b], axis=0, dtype=np.float64)
+                    storage.release_pages(source)
+                    progress(b, frames, "DC analyseren")
+                means /= frames
+            progress(0, frames, "Pieken analyseren")
+            for a, b in blocks(frames, block_frames):
+                peaks = np.maximum(peaks, np.max(np.abs(source[a:b].astype(np.float64) - means), axis=0))
+                storage.release_pages(source)
+                progress(b, frames, "Pieken analyseren")
+            if settings.get("linked", True):
+                peaks[:] = max(peaks)
+        progress(0, wanted, "Effect toepassen")
+        for a, b in blocks(wanted, block_frames):
+            if name == "reverse":
+                data = np.array(source[frames-b:frames-a][::-1], dtype=np.float32, order="C")
+            else:
+                data = np.array(source[a:b], dtype=np.float32, order="C")
+                if name == "normalize":
+                    scale = np.divide(target, peaks, out=np.ones_like(peaks), where=peaks > 0)
+                    data[:] = (data.astype(np.float64) - means) * scale
+                elif name in ("gain", "envelope"):
+                    getattr(self, name)(data, offset=a, total=frames, **settings)
+                elif name == "dynamics":
+                    self.dynamics(data, sample_rate, state=state, **settings)
+                else:
+                    self.process(name, data, sample_rate, **settings)
+            if not np.isfinite(data).all():
+                raise ValueError("The effect overflows float32 precision.")
+            result[a:b] = data
+            storage.release_pages(source)
+            if isinstance(result, np.memmap):
+                result.flush(); storage.release_pages(result)
+            progress(b, wanted, "Effect toepassen")
+        return storage.seal(result, checked=True)
 
     def simple(self, name, data):
         if name not in ("reverse", "invert", "silence"):
