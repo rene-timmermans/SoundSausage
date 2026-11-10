@@ -6,8 +6,6 @@ Audiobewerker voor Linux met een vertrouwde golfvorm- en multitrackweergave.
 Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen
 Linux-thema en accentkleur.
 
-Het programma gebruikt een losse worst in de kleine venstericonen en een paarse tegel met transparante buitenhoeken op groter formaat. Zie [de icoonvarianten](docs/ICONEN.md).
-
 ![SoundSausage met volumelijn](docs/screenshots/demo-volume-line-v03.png)
 
 SoundSausage is in ontwikkeling. De huidige versie is prototype **0.3.0**.

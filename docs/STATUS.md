@@ -12,9 +12,6 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Zelfstandige CELP-projecten met ingebedde audio en WAV-mixdown.
 - Beperkte import van eenvoudige oudere sessies (`.ses`).
 - Qt-interface die het Linux-thema en de accentkleur volgt.
-- Nieuwe worstmascotte: transparant binnen het programma, een paarse tegel met transparante buitenhoeken op groter formaat. Zie [iconen](ICONEN.md).
-
-De huidige broncode doorstaat 115 geautomatiseerde tests; de [testuitvoer](validation/test-results-icons.log) is bewaard. De vier icooncontroles toetsen de daadwerkelijke transparantie, kleine en grote formaten, dubbele schermschaal en het About-venster.
 
 ## Beperkingen
 

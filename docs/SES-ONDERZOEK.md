@@ -116,7 +116,7 @@ In `00-leeg.ses` zijn de gedeclareerde lengte en het aantal in `trks`, als signe
 
 **Bruikbare, begrensde import**
 
-`legacy.py` importeert de zes referentiegevallen in het Linux-sessionmodel. Windows-paden worden niet als netwerk- of schijfpaden geopend: de WAV-bestanden worden op bestandsnaam gezocht naast de SES, of in een door de gebruiker gekozen bronmap. De twee test-WAV's staan naast de bewaarde referentiekopieën.
+`legacy.py` importeert de zes referentiegevallen in het Linux-sessionmodel. Windows-paden worden niet als netwerk- of schijfpaden geopend: de WAV-bestanden worden op bestandsnaam gezocht naast de SES, of in een gekozen bronmap. De twee test-WAV's staan naast de bewaarde referentiekopieën.
 
 Er wordt niet naar `.ses` teruggeschreven. Opslaan levert een zelfstandig `.celp` op met ingebedde audio. Onbekende chunks, niet-ondersteunde vlaggen, cues en niet-neutrale volume-/panenvelopes worden afgewezen in plaats van overgeslagen. Andere SES-varianten en volledige SES-functionaliteit zijn niet aangetoond.
 

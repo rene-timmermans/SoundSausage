@@ -1,67 +1,52 @@
-# Volume- en panlijnen — prototype 0.3.0
+# Volume- en panlijnen
 
-Multitrackclips hebben nu bewerkbare volume- en panlijnen. De punten sturen de C++-mixer per audioframe; afspelen en WAV-export gebruiken dezelfde render. Punten en hun volledige precisie worden in het zelfstandige CELP-project opgeslagen.
+Met volume- en panlijnen verander je het volume en de stereobalans gedurende een clip. Je plaatst punten op de lijn; tussen de punten verloopt de verandering geleidelijk. De lijnen werken door in afspelen en mixdown en blijven samen met de audio bewaard in het project.
 
 ## Proberen
 
-Een demonstratie met ingebedde audio staat in `build/demo-envelopes.celp`:
+Open vanuit de projectmap het voorbeeld met ingebedde audio:
 
 ```bash
-cd SoundSausage
-PYTHONPATH=src python3 tools/make_envelope_demo.py
-./run.sh build/demo-envelopes.celp
+./run.sh examples/demo-envelopes.celp
 ```
 
-Druk na openen op **Spatie**. De eerste zes seconden demonstreren volumeveranderingen op spoor 1. Van zes tot twaalf seconden beweegt een toon op spoor 2 van links naar rechts. De gewone start gebruikt je desktopthema. De onderstaande afbeeldingen gebruiken een nagebootst donker palet met turquoise accent.
+Druk op **Spatie** om af te spelen. De eerste zes seconden demonstreren volumeveranderingen op spoor 1. Van zes tot twaalf seconden beweegt een toon op spoor 2 van links naar rechts.
 
-1. Kies **Volume Line** boven de tijdlijn. Klik binnen een clip om een punt toe te voegen en sleep een punt om tijd en volume te veranderen. Onder is 0%, midden 100% en boven 200%.
-2. Kies **Pan Line** om de balans te tekenen. Boven is rechts, midden neutraal en onder links. Voor de demo selecteer je hiervoor de clip op spoor 2.
-3. Klik met rechts bij een punt voor **Edit Point…** of **Remove Point**. Het venster stelt een exact frame binnen de clip en een waarde in procenten in. Dubbelklikken op een bestaand punt opent hetzelfde venster.
-4. **Delete** verwijdert het geselecteerde punt. In een lijnmodus wordt een clip daarmee niet verwijderd. **Esc** annuleert een lopende sleepbeweging.
-5. **Reset Line** maakt de gekozen lijn van de geselecteerde clip weer neutraal. Deze actie is ook ongedaan te maken.
-6. **Ctrl+Z** en **Ctrl+Shift+Z** herstellen en herhalen lijnbewerkingen. Een sleepbeweging telt als één bewerking, ook als je veel tussenposities probeert.
-7. Kies **Move Clips** voor het gewone verplaatsen en trimmen. De clipkop kan ook in een lijnmodus worden versleept. In Move Clips worden bestaande volumelijnen geel en panlijnen paars getoond; de actieve bewerkbare lijn gebruikt je accentkleur.
-8. **Ctrl+S** bewaart de sessie met ingebedde audio en punten. **Mix Down…** exporteert de hoorbare mix. Een geselecteerde tijdrange bepaalt de afspeelrange; mixdown exporteert de hele sessie.
+## Een lijn bewerken
 
-Tijdens slepen verandert de zichtbare lijn alvast. De audiogegevens en undo-geschiedenis veranderen pas bij loslaten. Een bevestigde sessiebewerking stopt het huidige afspelen; druk daarna op Spatie om de gewijzigde clip te horen. Er is nog geen verwerking van zulke wijzigingen tijdens lopend afspelen.
+1. Kies **Volume Line** boven de tijdlijn. Klik in een clip om een punt toe te voegen en sleep het om tijd en volume te veranderen. Onder is 0%, midden 100% en boven 200%.
+2. Kies **Pan Line** om de balans te tekenen. Boven is rechts, midden neutraal en onder links.
+3. Klik met rechts bij een punt en kies **Edit Point…** om de positie in frames en de waarde in procenten precies in te voeren. Dubbelklikken op een punt opent hetzelfde venster.
+4. Met **Remove Point** of **Delete** verwijder je het geselecteerde punt. In een lijnmodus blijft de clip zelf daarbij behouden.
+5. **Esc** annuleert een lopende sleepbeweging. **Reset Line** maakt de gekozen lijn van de geselecteerde clip weer neutraal.
+6. Gebruik **Ctrl+Z** en **Ctrl+Shift+Z** om lijnbewerkingen ongedaan te maken of opnieuw uit te voeren. Een sleepbeweging telt als één bewerking.
+7. Kies **Move Clips** voor verplaatsen en trimmen. De clipkop kun je ook tijdens het bewerken van een lijn verslepen.
+
+Een bevestigde wijziging stopt het afspelen. Druk opnieuw op Spatie om het resultaat te horen. Met **Ctrl+S** sla je de sessie op; **Mix Down…** exporteert de hele sessie als WAV. Een geselecteerd tijdbereik bepaalt alleen welk deel wordt afgespeeld.
 
 | Voorbeeld | Afbeelding |
 | --- | --- |
-| Volumelijn met punten | [Qt-screenshot](screenshots/demo-volume-line-v03.png) |
-| Panlijn van links naar rechts | [Qt-screenshot](screenshots/demo-pan-line-v03.png) |
+| Volumelijn met punten | [Volumelijn](screenshots/demo-volume-line-v03.png) |
+| Panlijn van links naar rechts | [Panlijn](screenshots/demo-pan-line-v03.png) |
 
-## Mixregels
+## Volume en balans
 
-Volume is een lineaire amplitudefactor van 0 tot 2. De neutrale waarde is 1, getoond als 100%. De lijn vermenigvuldigt het bestaande clipvolume, spoorvolume en eventuele clipfades.
+De volumelijn vermenigvuldigt het bestaande clipvolume, spoorvolume en eventuele fades. De neutrale waarde is 100%. Een lege lijn is neutraal; één punt stelt een constante waarde in. Voor het eerste punt en na het laatste punt blijft de waarde van dat eindpunt gelden.
 
-Pan is een aanvullende lineaire balans van −1 tot +1. Neutraal, 0, laat de bestaande clip- en spoorpan behouden. Een positieve waarde verlaagt links met factor `1 − pan`; een negatieve waarde verlaagt rechts met factor `1 + pan`. Deze balans wordt boven op de bestaande kanaalfactoren toegepast. Bij een clip met een bestaande sterke panstand kan de lijn het al verzwakte kanaal dus niet opnieuw versterken. Zet voor een volledige beweging van links naar rechts de gewone clip- en spoorpan op het midden. Stereo houdt links en rechts gescheiden; er wordt geen kanaal naar het andere gekopieerd.
+De panlijn werkt boven op de gewone clip- en spoorpan. Zet beide gewone paninstellingen in het midden voor een volledige beweging van links naar rechts. Een al verzwakt kanaal wordt door de lijn niet opnieuw versterkt. Bij stereoaudio blijven links en rechts gescheiden; de panlijn kopieert geen geluid naar het andere kanaal.
 
-Tussen punten wordt lineair geïnterpoleerd in amplitude respectievelijk balans. Voor het eerste punt en na het laatste punt blijft de grenswaarde gelden. Eén punt maakt een constante lijn; een lege lijn is neutraal. De interne mix behoudt headroom. Voor PCM-export blijven de bestaande formaat- en begrenzingsregels gelden.
+De groene golfvorm toont de bronaudio. De lijnen veranderen het hoorbare resultaat zonder die bron te herschrijven.
 
-De groene golfvorm blijft de bronaudio tonen. De lijn is een bewerkbare laag erboven; de bron wordt niet herschreven.
+## Verplaatsen, trimmen en opslaan
 
-## Posities en projecten
+De punten blijven aan dezelfde plek in de bronaudio gekoppeld wanneer je een clip verplaatst. Bij trimmen blijven verborgen punten bewaard; verlengen maakt ze weer zichtbaar. Duplicaten delen de audio, maar kunnen elk hun eigen lijnen hebben.
 
-Punten gebruiken gehele frames in de volledige bronaudio van de clip. Verplaatsen verandert hun positie ten opzichte van de audio niet. Trimt men een clip, dan blijven de verborgen punten bewaard en wordt de waarde bij de nieuwe rand uit dezelfde curve berekend. Het terug zichtbaar maken van bronmateriaal herstelt daardoor ook de bijbehorende lijn.
+Met **Apply Waveform to Clip** vervang je de audio van een clip door de bewerkte golfvorm. De lijn wordt naar de nieuwe lengte geschaald, met behoud van de waarden aan begin en einde. Undo herstelt zowel de vorige audio als de punten.
 
-Dupliceren deelt de bron, maar elke clip kan zijn eigen lijnen krijgen. Bij **Apply Waveform to Clip** wordt het zichtbare stuk van de lijn naar de nieuwe audiolengte geschaald, met behoud van de waarden aan begin en einde. Punten die daarbij op hetzelfde frame terechtkomen worden samengevoegd. Een vervanging door één frame gebruikt de oorspronkelijke beginwaarde. Undo herstelt zowel de vorige bron als de punten.
+CELP-versie 2 bewaart beide lijnen. Oudere versie-1-projecten openen met neutrale lijnen. Zie [het projectformaat](PROJECTFORMAAT.md).
 
-Elke lijn ondersteunt maximaal 512 punten. Punten moeten geordend, uniek en binnen de volledige bronaudio liggen. Waarden buiten het ondersteunde bereik, ongeldige frames en niet-eindige getallen worden afgewezen. De projectbeschrijving blijft begrensd tot 2 MiB.
+## Grenzen
 
-Nieuwe bestanden gebruiken **CELP versie 2**. Projecten van versie 1 blijven te openen met neutrale lijnen. Oudere prototypes die alleen versie 1 kennen weigeren een versie-2-bestand bij openen. Zie [PROJECTFORMAAT.md](PROJECTFORMAAT.md).
-
-## Controle en grenzen
-
-De 111 geautomatiseerde tests slagen; zie [de testuitvoer](validation/test-results-envelopes.log). Toegevoegd zijn controles met handmatig berekende samples, stereo zonder kanaaloverspraak, volume/pan samen met bestaande gain en fades, exact gelijke gedeeltelijke renders, trimmen/terughalen, verplaatsen, dupliceren, bronvervanging, één-frameclips en ongeldige punten.
-
-De GUI-tests gebruiken echte Qt-muisevents voor puntbewerkingen, annuleren met Esc, verwijderen met Delete, exacte invoer en verplaatsen via de clipkop. Ze controleren één undo per sleepbeweging, behoud bij opslaan/heropenen en daadwerkelijk doorgeven van de geautomatiseerde selectie aan de afspeeladapter. Die laatste controle onderschept het afspeelverzoek; er wordt daarbij geen fysiek audioapparaat gebruikt. Float32-mixdown wordt teruggelezen en vergeleken. De drie eerder aangeleverde oorspronkelijke PCM16-mixdowns blijven hun exacte gemeenschappelijke audio behouden.
-
-Het bestaande gebruikersproject is alleen gelezen en was daarna byte voor byte ongewijzigd. De demo-mix is onafhankelijk van de GUI opnieuw geladen; aaneengevoegde gedeeltelijke renders zijn exact gelijk aan de volledige demo-render. Twee echte Qt-screenshots zijn op 1180 × 720 pixels gemaakt.
-
-Deze lijnen zijn nieuwe native functionaliteit. Hun interpolatie en gedrag zijn nog niet met een oorspronkelijke automation-export vergeleken. De SES-import blijft daarom niet-neutrale automation weigeren totdat broncoördinaten, puntvelden en interpolatie van dat formaat zijn gevalideerd. Er wordt niet naar SES teruggeschreven.
-
-De demo opnieuw genereren, met voorbeelden:
-
-```bash
-PYTHONPATH=src python3 tools/make_envelope_demo.py --screenshots
-```
+- Elke lijn ondersteunt maximaal 512 punten.
+- De mix wordt vóór afspelen berekend; wijzigingen tijdens lopend afspelen worden nog niet direct hoorbaar.
+- De import van oudere `.ses`-bestanden ondersteunt nog geen veranderende volume- of panlijnen.
