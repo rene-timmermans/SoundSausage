@@ -1,4 +1,4 @@
-# SoundSausage 0.5.0
+# SoundSausage 0.6.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -17,6 +17,8 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Qt-interface die het Linux-thema en de accentkleur volgt.
 - Compacte werkbalken, gegroepeerde menu's en een grijs werkvlak zolang er geen audio openstaat.
 - Transport en grote klok onderaan, met selectie-/weergavetijden en een brede stereometer met dB-schaal.
+- Geïntegreerd afspelen, blijvende apparaat-/bufferkeuze en een cursor die de verwerkte audiotijd volgt.
+- Samplerates omzetten bij import, plakken, clipkopieën toepassen en gehele golfvormen, met Undo/Redo.
 
 ## Beperkingen
 
@@ -25,11 +27,13 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Dynamics gebruikt piekdetectie zonder vooruitblik. Exact dezelfde uitkomst als historische effecten is niet aangetoond.
 - Nog niet beschikbare effecten staan uitgeschakeld in de menu's.
 - SES-import ondersteunt nog geen automation of cues. Opslaan gebeurt als CELP.
-- Audio binnen een sessie moet dezelfde samplerate hebben; automatisch omzetten ontbreekt.
+- Sessies bewaren audio op één samplerate; geïmporteerde audio wordt daarnaartoe omgezet.
 - Audio wordt in het geheugen verwerkt, met maximaal 128 MiB gedecodeerde brondata.
   Lange opnamen en continue streaming vanaf schijf worden nog niet ondersteund.
 - WAV-metadata zoals cues en tekst blijft bij opslaan nog niet behouden.
-- Afspelen gebruikt voorlopig ffplay; de cursor en niveaumeters zijn indicatief.
+- De audiobackend rapporteert de verwerkte frames; exacte fysieke luidsprekerlatentie en naadloos lussen zijn niet gegarandeerd.
+- Uitvoer vereist een door Qt ondersteund mono-/stereoapparaat; multikanaals routering ontbreekt.
+- Virtuele audiocontroles zijn geautomatiseerd; een hoorbare controle op fysieke hardware staat nog open.
 - Crashherstel en dithering ontbreken nog.
 
 Zie de [projectbeschrijving](../README.md), [volume- en panlijnen](ENVELOPES.md) en

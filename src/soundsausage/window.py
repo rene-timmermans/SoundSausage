@@ -16,6 +16,7 @@ from . import __version__
 from .audio import AudioError, AmbiguousWavError, read_wav, write_wav, tone
 from .document import Document
 from .playback import Playback
+from .audio_devices import AudioDevices, AudioHardwareDialog
 from .waveform import Waveform, clock_text
 from .multitrack import MultitrackEditor
 from .session_actions import SessionActions
@@ -147,7 +148,8 @@ class MainWindow(SessionActions, QMainWindow):
         self.init_session()
         self.clipboard = None
         self.no_audio = no_audio
-        self.player = Playback(self)
+        self.audio_devices = AudioDevices(self)
+        self.player = Playback(self, devices=self.audio_devices)
         self.player.state_changed.connect(self.playback_state)
         self.player.position.connect(self.playback_position)
         self.player.failed.connect(lambda message: self.error("Playback", message))
@@ -246,6 +248,9 @@ class MainWindow(SessionActions, QMainWindow):
         self.action("tone", "&Tones…", self.generate_tone)
         self.action("generate_silence", "&Silence…", self.generate_silence)
         self.action("frequency", "&Frequency Analysis…", self.frequency_analysis, "Alt+Z")
+        self.action("convert_rate", "Convert Sample Rate…", self.convert_sample_rate)
+        self.action("audio_hardware", "Audio Hardware…", self.audio_hardware)
+        self.actions["audio_hardware"].setEnabled(not self.no_audio)
         self.action("play", "Play / Stop", self.toggle_play, "Space", standard.SP_MediaPlay)
         self.action("pause", "Pause / Resume", self.player.toggle_pause, "P", standard.SP_MediaPause)
         self.action("stop", "Stop", self.player.stop, "Esc", standard.SP_MediaStop)
@@ -323,7 +328,7 @@ class MainWindow(SessionActions, QMainWindow):
         self.detail_label.setText(f" {clock_text(doc.duration)} · {doc.frames:,} frames ")
         self.selection_changed(*doc.selection)
         has_audio = doc.frames > 0
-        for key in ("amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "select_all", "zoom_in", "zoom_out", "zoom_full"):
+        for key in ("amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
             self.actions[key].setEnabled(has_audio)
         self.actions["channel_mix"].setEnabled(has_audio and doc.channels == 2)
         self.actions["play"].setEnabled(has_audio and not self.no_audio)
@@ -403,6 +408,32 @@ class MainWindow(SessionActions, QMainWindow):
 
     def effect(self, name, **settings):
         self.edit(lambda: self.document.apply(name, **settings))
+
+    def audio_hardware(self):
+        if self.no_audio:
+            return
+        dialog = AudioHardwareDialog(self.audio_devices, self)
+        dialog.exec()
+        dialog.deleteLater()
+
+    def convert_sample_rate(self):
+        if self.mode != "waveform" or not self.document.frames:
+            return
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Convert Sample Rate")
+        form = QFormLayout(dialog)
+        rate = QSpinBox()
+        rate.setRange(1000, 384000)
+        rate.setValue(self.document.sample_rate)
+        form.addRow("New sample rate (Hz)", rate)
+        note = QLabel("Converts the whole waveform, preserving pitch and duration.\nSelection and cursor positions follow the same times.")
+        note.setWordWrap(True)
+        form.addRow(note)
+        form.addRow(buttons(dialog))
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.edit(lambda: self.document.convert_sample_rate(rate.value()))
+            self.refresh(fit=True)
+        dialog.deleteLater()
 
     def copy(self):
         try:
@@ -667,6 +698,7 @@ class MainWindow(SessionActions, QMainWindow):
         if not hasattr(self, "state_label"):
             return
         self.state_label.setText(state)
+        self.state_label.setToolTip(self.player.output_description if state != "Stopped" else "")
         self.actions["pause"].setEnabled(state in ("Playing", "Paused"))
         self.actions["stop"].setEnabled(state != "Stopped")
         if state == "Stopped":

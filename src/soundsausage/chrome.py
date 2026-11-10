@@ -59,7 +59,7 @@ def create_menus(window):
                "import_audio", "mixdown", None, "exit"))
     edit = menu("edit", "&Edit")
     add(edit, ("undo", "redo", "repeat", None, "cut", "copy", "paste", "mix_paste", "delete", "trim", None,
-               "select_all", "select_range", "zero", None, "clip_properties", "duplicate_clip", "remove_clip"))
+               "select_all", "select_range", "zero", None, "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
     view = menu("view", "&View")
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
     transform = menu("transform", "&Transform")
@@ -93,7 +93,7 @@ def create_menus(window):
     favorites = menu("favorites", "F&avorites")
     add(favorites, ("repeat", None, "normalize", "fade_in", "fade_out"))
     options = menu("options", "&Options")
-    add(options, ("toolbar_labels", "show_status", None, "loop"))
+    add(options, ("audio_hardware", None, "toolbar_labels", "show_status", None, "loop"))
     windows = menu("window", "&Window")
     add(windows, ("mode_wave", "mode_multi", None, "insert_wave", "apply_clip", None, "fullscreen"))
     help_menu = menu("help", "&Help")

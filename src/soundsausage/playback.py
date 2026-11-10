@@ -1,10 +1,52 @@
-"""Nonblocking playback adapter. Only its own ffplay child is controlled."""
-import os
-import shutil
-import signal
+"""Qt audio output with a device clock and bounded writes, shared by previews."""
+import sys
 
 import numpy as np
-from PySide6.QtCore import QObject, QProcess, QTimer, QElapsedTimer, Signal
+from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtMultimedia import QAudioSink, QAudioFormat, QtAudio
+
+from .audio import AudioError, validate_audio
+from .audio_devices import AudioDevices
+from .resample import resample
+
+
+def output_format(device, rate, channels):
+    preferred = device.preferredFormat()
+    rates = dict.fromkeys((rate, preferred.sampleRate(), 48000, 44100))
+    counts = dict.fromkeys((channels, preferred.channelCount(), 2, 1))
+    types = dict.fromkeys((QAudioFormat.SampleFormat.Float, preferred.sampleFormat(),
+                          QAudioFormat.SampleFormat.Int16, QAudioFormat.SampleFormat.Int32,
+                          QAudioFormat.SampleFormat.UInt8))
+    for r in rates:
+        for count in counts:
+            if not 1000 <= r <= 384000 or count not in (1, 2):
+                continue
+            for kind in types:
+                if kind == QAudioFormat.SampleFormat.Unknown:
+                    continue
+                fmt = QAudioFormat()
+                fmt.setSampleRate(r)
+                fmt.setChannelCount(count)
+                fmt.setSampleFormat(kind)
+                if device.isFormatSupported(fmt):
+                    return fmt
+    raise AudioError("This output device does not support a usable mono or stereo format.")
+
+
+def encode_output(samples, source_rate, fmt):
+    data = samples if source_rate == fmt.sampleRate() else resample(samples, source_rate, fmt.sampleRate())
+    if data.shape[1] != fmt.channelCount():
+        data = data.mean(axis=1, keepdims=True) if fmt.channelCount() == 1 else np.repeat(data, 2, axis=1)
+    data = np.clip(data, -1, 1)
+    byteorder = "<" if sys.byteorder == "little" else ">"
+    kind = fmt.sampleFormat()
+    if kind == QAudioFormat.SampleFormat.Float:
+        return data.astype(byteorder + "f4", copy=False).tobytes()
+    if kind == QAudioFormat.SampleFormat.Int16:
+        return np.clip(np.rint(data.astype(np.float64) * 32768), -32768, 32767).astype(byteorder + "i2").tobytes()
+    if kind == QAudioFormat.SampleFormat.Int32:
+        return np.clip(np.rint(data.astype(np.float64) * 2147483648), -2147483648, 2147483647).astype(byteorder + "i4").tobytes()
+    return np.clip(np.rint(data * 128 + 128), 0, 255).astype(np.uint8).tobytes()
 
 
 class Playback(QObject):
@@ -12,159 +54,180 @@ class Playback(QObject):
     state_changed = Signal(str)
     failed = Signal(str)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, devices=None, sink_factory=None):
         super().__init__(parent)
-        self.process = None
+        self.devices = devices if devices is not None else AudioDevices(self)
+        self._sink_factory = sink_factory or QAudioSink
+        self.devices.changed.connect(self.stop)
+        self.devices.outputs_changed.connect(self._outputs_changed)
+        self.sink = None
+        self._io = None
         self.state = "Stopped"
         self.loop = False
         self._data = None
-        self._buffer = None
+        self._payload = b""
         self._sent = 0
-        self._closed_input = False
         self._rate = 44100
-        self._start_frame = 0
-        self._elapsed_before_pause = 0
-        self._clock = QElapsedTimer()
+        self._start_frame = self._last_frame = 0
+        self._starting = False
+        self._feeding = False
+        self._generation = 0
+        self._loop_pending = False
+        self._output_id = ""
+        self.output_description = ""
+        self.format = None
         self._timer = QTimer(self)
-        self._timer.setInterval(30)
+        self._timer.setInterval(10)
         self._timer.timeout.connect(self._tick)
 
     def _set_state(self, state):
-        self.state = state
-        self.state_changed.emit(state)
+        if self.state != state:
+            self.state = state
+            self.state_changed.emit(state)
 
     def play(self, samples, rate, start_frame=0):
         self.stop()
-        executable = shutil.which("ffplay")
-        if not executable:
-            self.failed.emit("Playback needs ffplay, which was not found on PATH.")
-            return
-        if len(samples) == 0:
-            return
-        self._data = np.ascontiguousarray(samples, dtype="<f4")
-        self._buffer = memoryview(self._data).cast("B")
-        self._rate = rate
-        self._start_frame = start_frame
-        self._sent = 0
-        self._closed_input = False
-        self._elapsed_before_pause = 0
-        proc = QProcess(self)
-        self.process = proc
-        proc.setProgram(executable)
-        proc.setArguments(["-nodisp", "-autoexit", "-loglevel", "error", "-f", "f32le",
-            "-ar", str(rate), "-ch_layout", "mono" if samples.shape[1] == 1 else "stereo", "-i", "pipe:0"])
-        proc.started.connect(lambda: self._started(proc))
-        proc.bytesWritten.connect(lambda _: self._feed(proc))
-        proc.finished.connect(lambda code, status: self._finished(proc, code))
-        proc.errorOccurred.connect(lambda error: self._error(proc, error))
-        self._set_state("Starting")
-        proc.start()
+        try:
+            validate_audio(samples, rate)
+            if not len(samples):
+                return
+            if not isinstance(start_frame, int) or start_frame < 0:
+                raise AudioError("Invalid playback position.")
+            device = self.devices.output()
+            self.format = output_format(device, rate, samples.shape[1])
+            self._data = np.array(samples, dtype=np.float32, order="C", copy=True)
+            self._payload = encode_output(self._data, rate, self.format)
+            self._rate, self._start_frame, self._last_frame = rate, start_frame, start_frame
+            self._output_id = bytes(device.id()).hex()
+            self.output_description = device.description()
+            self.sink = self._sink_factory(device, self.format, self)
+            sink = self.sink
+            sink.setBufferSize(max(self.format.bytesPerFrame(),
+                                   self.format.bytesForDuration(self.devices.buffer_ms * 1000)))
+            sink.stateChanged.connect(lambda state: self._sink_state(sink, state))
+            self._set_state("Starting")
+            self._start_sink()
+        except (ValueError, OSError, RuntimeError) as error:
+            self._fail(str(error))
 
-    def _started(self, proc):
-        if proc is not self.process:
+    def _start_sink(self):
+        self._starting = True
+        self._sent = 0
+        self._last_frame = self._start_frame
+        try:
+            self._io = self.sink.start()
+        finally:
+            self._starting = False
+        if self._io is None or self.sink.error() not in (QtAudio.Error.NoError, QtAudio.Error.UnderrunError):
+            self._fail("The audio output could not start. Check the selected device in Options → Audio Hardware.")
             return
-        self._clock.start()
         self._timer.start()
         self._set_state("Playing")
-        self._feed(proc)
+        self.position.emit(self._start_frame)
+        self._feed()
 
-    def _feed(self, proc):
-        if proc is not self.process or self._buffer is None or self._closed_input:
+    def _feed(self):
+        if self.sink is None or self._io is None or self._feeding or self.state == "Paused":
             return
-        while proc.bytesToWrite() < 262144 and self._sent < len(self._buffer):
-            end = min(len(self._buffer), self._sent + 65536)
-            written = proc.write(bytes(self._buffer[self._sent:end]))
-            if written <= 0:
-                return
-            self._sent += written
-        if self._sent == len(self._buffer):
-            self._closed_input = True
-            proc.closeWriteChannel()
+        self._feeding = True
+        try:
+            count = min(len(self._payload) - self._sent, self.sink.bytesFree(), 65536)
+            if count > 0:
+                written = self._io.write(self._payload[self._sent:self._sent + count])
+                if written < 0:
+                    self._fail("The audio device rejected playback data.")
+                else:
+                    self._sent += written
+        finally:
+            self._feeding = False
 
     def _tick(self):
-        if self.state != "Playing" or self._data is None:
+        if self.sink is None or self.state != "Playing" or self._data is None:
             return
-        elapsed = self._elapsed_before_pause + self._clock.elapsed()
-        offset = min(len(self._data), round(elapsed * self._rate / 1000))
-        self.position.emit(self._start_frame + offset)
+        offset = max(0, self.sink.processedUSecs()) * self._rate // 1000000
+        self._last_frame = max(self._last_frame, self._start_frame + min(len(self._data), offset))
+        self.position.emit(self._last_frame)
+        self._feed()
+        if self.sink is not None and self.sink.state() == QtAudio.State.IdleState and self._sent == len(self._payload):
+            self._sink_state(self.sink, QtAudio.State.IdleState)
 
     def meter_samples(self, frame):
         if self._data is None:
             return None
         end = max(0, min(len(self._data), int(frame) - self._start_frame))
-        start = max(0, end - self._rate // 30)
-        return self._data[start:end]
+        return self._data[max(0, end - max(1, self._rate // 30)):end]
 
     def toggle_pause(self):
-        if self.process is None or self.process.processId() <= 0:
+        if self.sink is None:
+            return
+        if self.state == "Playing":
+            self._tick()
+            if self.sink is not None:
+                self.sink.suspend()
+        elif self.state == "Paused":
+            self.sink.resume()
+
+    def _sink_state(self, sink, state):
+        if sink is not self.sink or self._starting:
+            return
+        if state == QtAudio.State.SuspendedState:
+            self._timer.stop()
+            self._set_state("Paused")
+        elif state == QtAudio.State.ActiveState:
+            self._timer.start()
+            self._set_state("Playing")
+        elif state == QtAudio.State.IdleState:
+            if self._sent < len(self._payload):
+                self._feed()
+            elif self._data is not None:
+                self._timer.stop()
+                self._last_frame = self._start_frame + len(self._data)
+                self.position.emit(self._last_frame)
+                if self.loop and not self._loop_pending:
+                    self._loop_pending = True
+                    generation = self._generation
+                    QTimer.singleShot(0, lambda: self._restart(generation))
+                elif not self.loop:
+                    self.stop()
+        elif state == QtAudio.State.StoppedState and sink.error() != QtAudio.Error.NoError:
+            self._fail("The audio output stopped unexpectedly. Reconnect the device or choose another output in Audio Hardware.")
+
+    def _restart(self, generation):
+        if generation == self._generation and self.sink is not None:
+            self._loop_pending = False
+            self.sink.reset()
+            self._start_sink()
+
+    def _outputs_changed(self):
+        if self.sink is None:
             return
         try:
-            if self.state == "Playing":
-                os.kill(self.process.processId(), signal.SIGSTOP)
-                self._elapsed_before_pause += self._clock.elapsed()
-                self._set_state("Paused")
-            elif self.state == "Paused":
-                os.kill(self.process.processId(), signal.SIGCONT)
-                self._clock.restart()
-                self._set_state("Playing")
-        except ProcessLookupError:
-            self.stop()
+            if bytes(self.devices.output().id()).hex() == self._output_id:
+                return
+        except AudioError:
+            pass
+        self._fail("The playback device changed or disconnected. Choose an output in Options → Audio Hardware and start playback again.")
 
-    def _error(self, proc, error):
-        if proc is self.process and error == QProcess.ProcessError.FailedToStart:
-            message = proc.errorString()
-            self.stop()
-            self.failed.emit(message)
-
-    def _finished(self, proc, code):
-        if proc is not self.process:
-            proc.deleteLater()
-            return
-        message = bytes(proc.readAllStandardError()).decode("utf-8", "replace").strip()
-        data, rate, start = self._data, self._rate, self._start_frame
-        looping = self.loop and code == 0
-        self.process = None
-        self._timer.stop()
-        self._data = self._buffer = None
-        self._set_state("Stopped")
-        proc.deleteLater()
-        if code != 0:
-            self.failed.emit(message[-1200:] or "The audio player could not play this audio.")
-        elif looping:
-            self.play(data, rate, start)
+    def _fail(self, message):
+        self.stop()
+        self.failed.emit(message)
 
     def stop(self):
-        proc = self.process
-        self.process = None
+        already_stopped = self.state == "Stopped"
+        self._generation += 1
         self._timer.stop()
-        if proc is not None:
-            pid = proc.processId()
-            if pid > 0:
-                try:
-                    if self.state == "Paused":
-                        os.kill(pid, signal.SIGCONT)
-                except ProcessLookupError:
-                    pass
-                proc.terminate()
-                QTimer.singleShot(800, lambda: self._kill_if_running(proc))
-            else:
-                proc.kill()
-                if proc.state() == QProcess.ProcessState.NotRunning:
-                    proc.deleteLater()
-        self._data = self._buffer = None
+        sink, self.sink = self.sink, None
+        self._io = None
+        self._data = None
+        self._payload = b""
+        self._sent = 0
+        self._loop_pending = False
+        if sink is not None:
+            sink.reset()
+            sink.deleteLater()
         self._set_state("Stopped")
-
-    @staticmethod
-    def _kill_if_running(proc):
-        try:
-            if proc.state() != QProcess.ProcessState.NotRunning:
-                proc.kill()
-        except RuntimeError:
-            pass
+        if already_stopped:
+            self.state_changed.emit("Stopped")
 
     def shutdown(self):
-        proc = self.process
         self.stop()
-        if proc is not None and not proc.waitForFinished(1000):
-            proc.kill()
-            proc.waitForFinished(500)

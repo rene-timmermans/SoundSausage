@@ -10,6 +10,9 @@ venster sluiten stopt het ook. **OK** past het effect toe; **Cancel** laat de
 golfvorm ongewijzigd. **Ctrl+Z** maakt een toepassing ongedaan. **F2** herhaalt
 het laatste effect met dezelfde instellingen op de nieuwe selectie.
 
+Luistervoorbeelden gebruiken dezelfde uitgang als normaal afspelen. Kies die
+onder **Options → Audio Hardware**; een apparaatwijziging stopt lopende voorbeelden.
+
 ## Amplify / Fade
 
 Stel de begin- en eindversterking per kanaal in. 100% houdt het volume gelijk;

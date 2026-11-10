@@ -32,7 +32,7 @@ class EffectDialog(QDialog):
         super().__init__(parent)
         self.document = document
         self.no_audio = no_audio
-        self.player = Playback(self)
+        self.player = Playback(self, devices=getattr(parent, "audio_devices", None))
         self.player.failed.connect(lambda message: QMessageBox.warning(self, "Preview", message))
         self.player.state_changed.connect(self.preview_state)
 

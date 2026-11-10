@@ -77,7 +77,7 @@ class SessionActions:
         if multi:
             for key in ("cut", "copy", "paste", "mix_paste", "trim", "zero", "amplify", "normalize", "channel_mix", "dynamics", "envelope",
                 "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "tone",
-                "generate_silence", "repeat", "save_selection"):
+                "generate_silence", "repeat", "save_selection", "convert_rate"):
                 self.actions[key].setEnabled(False)
             self.actions["delete"].setEnabled(self.session.selected_clip is not None)
         else:

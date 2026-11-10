@@ -16,9 +16,10 @@ def main():
     parser.add_argument("--multitrack", action="store_true", help="Start in multitrack view")
     parser.add_argument("--no-audio", action="store_true", help="Disable playback for headless or restricted environments")
     parser.add_argument("--selftest", action="store_true", help="Check the installation without playing audio, then exit")
+    parser.add_argument("--audio-selftest", action="store_true", help="Check the selected audio output with silence, then exit")
     parser.add_argument("--screenshot", type=Path, help="Render the window to a PNG and exit; does not start audio")
     args = parser.parse_args()
-    if args.screenshot or args.selftest:
+    if args.screenshot or args.selftest or args.audio_selftest:
         os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     app = QApplication([sys.argv[0]])
     app.setApplicationName("SoundSausage")
@@ -28,14 +29,17 @@ def main():
     app.setStyle("Fusion")
     install_theme(app)
     try:
-        window = MainWindow(no_audio=args.no_audio or bool(args.screenshot) or args.selftest)
+        window = MainWindow(no_audio=args.no_audio or bool(args.screenshot) or args.selftest or args.audio_selftest)
     except RuntimeError as error:
         print(error, file=sys.stderr)
         return 1
-    if args.selftest:
-        from .selftest import run
+    if args.selftest or args.audio_selftest:
+        from .selftest import run, run_audio
         try:
-            run(window)
+            if args.selftest:
+                run(window)
+            if args.audio_selftest:
+                run_audio(window)
             return 0
         except Exception as error:
             print(f"SoundSausage selftest failed: {error}", file=sys.stderr)

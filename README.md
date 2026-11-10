@@ -8,7 +8,7 @@ Linux-thema en accentkleur.
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-SoundSausage is in ontwikkeling. De huidige versie is prototype **0.5.0**.
+SoundSausage is in ontwikkeling. De huidige versie is prototype **0.6.0**.
 
 ## Wat het kan
 
@@ -27,7 +27,8 @@ Zie [status en beperkingen](docs/STATUS.md).
 
 ## Installeren en starten
 
-Benodigd: Python 3.12–3.14, een C++20-compiler, Make en `ffplay` (uit FFmpeg).
+Benodigd: Python 3.12–3.14, een C++20-compiler, Make, Qt Multimedia en libsamplerate.
+Op Arch is Qt Multimedia een aparte afhankelijkheid naast PySide6.
 
 Installatiepakketten voor Debian/Ubuntu, Fedora en Arch staan bij de
 [releases](https://github.com/rene-timmermans/SoundSausage/releases).
@@ -62,10 +63,15 @@ Effecten bewerken de selectie, of de hele golfvorm als er niets geselecteerd is.
 Met **Preview** beluister je de instelling voordat je die toepast. Zie [Amplitude](docs/AMPLITUDE.md).
 Onder de tijdlijn staan het transport, de grote klok, selectie- en weergavetijden en de stereometer.
 Met **Options → Show Toolbar Labels** toon je namen naast de werkbalkiconen. **F11** wisselt naar schermvullende weergave.
+Via **Options → Audio Hardware** kies je het uitvoerapparaat. Verschillende samplerates
+worden bij import en plakken omgezet; **Edit → Convert Sample Rate** zet een golfvorm om.
+Zie [audio-instellingen](docs/AUDIO.md) en de [ontwikkelvoortgang](docs/VOORTGANG.md).
 
 Meer uitleg: [volume- en panlijnen](docs/ENVELOPES.md) en [thema](docs/THEMA.md).
 
 ## Wat er nieuw is
+
+**0.6.0** Geïntegreerd afspelen met apparaatkeuze en een audioklok voor cursor en meters. Samplerateconversie bij import, plakken en golfvormbewerking. Zie de [releasepunten](docs/releases/0.6.0.md).
 
 **0.5.0** De groep Amplitude is uitgebreid met Channel Mixer, Dynamics Processing en Envelope. Alle Amplitude-dialogen hebben een luistervoorbeeld; Normalize kan DC-offset verwijderen. Installatiepakketten zijn beschikbaar voor Debian/Ubuntu, Fedora en Arch. Zie de [releasepunten](docs/releases/0.5.0.md).
 
@@ -76,7 +82,8 @@ Meer uitleg: [volume- en panlijnen](docs/ENVELOPES.md) en [thema](docs/THEMA.md)
 ## Techniek
 
 Python met Qt 6/PySide6 voor de desktopinterface, NumPy voor audioverwerking en een eigen
-C++20-kern voor effecten en het mengen van sporen. Afspelen verloopt voorlopig via FFmpeg/ffplay.
+C++20-kern voor effecten en het mengen van sporen. Qt Multimedia verzorgt het afspelen;
+libsamplerate verzorgt de samplerateconversie.
 Projecten gebruiken een eigen [CELP-formaat](docs/PROJECTFORMAAT.md).
 
 SoundSausage is beschikbaar onder [GPL-3.0-or-later](LICENSE): GNU GPL versie 3 of, naar keuze, een latere versie.

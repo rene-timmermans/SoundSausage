@@ -7,6 +7,7 @@ import numpy as np
 
 from .audio import AudioError, MAX_AUDIO_BYTES, validate_audio
 from .dsp import Dsp
+from .resample import resample, frame_count
 
 
 _state_ids = count(1)
@@ -25,6 +26,7 @@ class Snapshot:
     cursor: int
     state_id: int
     label: str
+    sample_rate: int
 
 
 def _freeze(samples):
@@ -107,13 +109,14 @@ class Document:
         return np.concatenate(pieces)
 
     def _snapshot(self, label):
-        return Snapshot(self._pieces, self.selection, self.cursor, self._state_id, label)
+        return Snapshot(self._pieces, self.selection, self.cursor, self._state_id, label, self.sample_rate)
 
     def _restore(self, snapshot):
         self._pieces = snapshot.pieces
         self.selection = snapshot.selection
         self.cursor = snapshot.cursor
         self._state_id = snapshot.state_id
+        self.sample_rate = snapshot.sample_rate
         self.revision += 1
 
     @staticmethod
@@ -127,10 +130,12 @@ class Document:
                 buffers[id(owner)] = owner.nbytes
         return sum(buffers.values())
 
-    def _commit(self, pieces, selection, label):
+    def _commit(self, pieces, selection, label, sample_rate=None):
         self.undo_stack.append(self._snapshot(label))
         self.redo_stack.clear()
         self._pieces = tuple(piece for piece in pieces if len(piece))
+        if sample_rate is not None:
+            self.sample_rate = sample_rate
         self.select(*selection)
         self._state_id = next(_state_ids)
         self.revision += 1
@@ -173,18 +178,31 @@ class Document:
     def paste(self, clip, mix=False):
         if clip is None:
             return
-        if clip.sample_rate != self.sample_rate or clip.samples.shape[1] != self.channels:
-            raise AudioError("Clipboard audio has a different sample rate or channel count. Automatic conversion is not available yet.")
+        if clip.samples.shape[1] != self.channels:
+            raise AudioError("Clipboard audio has a different channel count. Mono/stereo conversion is not available for paste yet.")
+        samples = resample(clip.samples, clip.sample_rate, self.sample_rate) if clip.sample_rate != self.sample_rate else clip.samples
         start, end = self.selection if self.selected else (self.cursor, self.cursor)
         if mix:
-            end = min(self.frames, start + len(clip.samples))
-            combined = np.zeros_like(clip.samples)
+            end = min(self.frames, start + len(samples))
+            combined = np.zeros_like(samples)
             original = self.read(start, end)
             combined[:len(original)] = original
-            combined += clip.samples
+            combined += samples
             self.replace(start, end, combined, "Mix Paste")
         else:
-            self.replace(start, end, clip.samples, "Paste")
+            self.replace(start, end, samples, "Paste")
+
+    def convert_sample_rate(self, target_rate):
+        frame_count(self.frames, self.sample_rate, target_rate)  # Validate even for an empty waveform.
+        if target_rate == self.sample_rate:
+            return
+        source_rate = self.sample_rate
+        result = resample(self.read(), source_rate, target_rate)
+        remap = lambda frame: min(len(result), (frame * target_rate + source_rate // 2) // source_rate)
+        selection = tuple(remap(frame) for frame in self.selection)
+        cursor = remap(self.cursor)
+        self._commit((_freeze(result),), selection, "Convert Sample Rate", sample_rate=int(target_rate))
+        self.cursor = cursor
 
     def trim(self):
         if not self.selected:

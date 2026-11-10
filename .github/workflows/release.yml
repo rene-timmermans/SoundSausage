@@ -15,6 +15,9 @@ permissions:
 
 env:
   QT_QPA_PLATFORM: offscreen
+  QT_AUDIO_BACKEND: pulseaudio
+  PULSE_SERVER: unix:/tmp/soundsausage-pulse/native
+  SOUNDSAUSAGE_AUDIO_TEST: '1'
 
 concurrency:
   group: release-${{ github.ref }}
@@ -48,7 +51,11 @@ jobs:
       - name: Build dependencies
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest qt6-qpa-plugins ffmpeg
+          apt-get install -y --no-install-recommends g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest python3-pyside6.qtmultimedia qt6-qpa-plugins libsamplerate0 pulseaudio
+      - name: Private virtual audio device
+        run: |
+          mkdir -p /tmp/soundsausage-pulse
+          pulseaudio -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2'
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build, test and package
@@ -69,6 +76,7 @@ jobs:
           apt-get install -y ./soundsausage_*_amd64.deb
           cd /tmp
           soundsausage --selftest
+          soundsausage --audio-selftest
       - uses: actions/upload-artifact@v4
         with: { name: debian, path: "soundsausage_*_amd64.deb" }
 
@@ -87,16 +95,23 @@ jobs:
       - name: Install the same package and smoke test
         run: |
           apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
-          DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y ./soundsausage_*_amd64.deb
+          DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y ./soundsausage_*_amd64.deb pulseaudio
+          mkdir -p /tmp/soundsausage-pulse
+          pulseaudio -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2'
           cd /tmp
           soundsausage --selftest
+          soundsausage --audio-selftest
 
   fedora:
     needs: source
     runs-on: ubuntu-latest
     container: fedora:latest
     steps:
-      - run: dnf install -y rpm-build gcc-c++ make python3-pyside6 python3-numpy ffmpeg-free
+      - run: dnf install -y rpm-build gcc-c++ make python3-pyside6 qt6-qtmultimedia python3-numpy libsamplerate pulseaudio
+      - name: Private virtual audio device
+        run: |
+          mkdir -p /tmp/soundsausage-pulse
+          pulseaudio -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2'
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build, test and package
@@ -116,6 +131,7 @@ jobs:
           dnf install -y ./soundsausage-*.rpm
           cd /tmp
           soundsausage --selftest
+          soundsausage --audio-selftest
       - uses: actions/upload-artifact@v4
         with: { name: fedora, path: "soundsausage-*.rpm" }
 
@@ -124,7 +140,11 @@ jobs:
     runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
-      - run: pacman -Syu --noconfirm --needed base-devel pyside6 python-numpy ffmpeg
+      - run: pacman -Syu --noconfirm --needed base-devel pyside6 qt6-multimedia python-numpy libsamplerate pulseaudio
+      - name: Private virtual audio device
+        run: |
+          mkdir -p /tmp/soundsausage-pulse
+          pulseaudio -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2'
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build as an ordinary user
@@ -146,6 +166,7 @@ jobs:
           pacman -U --noconfirm soundsausage-*.pkg.tar.zst
           cd /tmp
           soundsausage --selftest
+          soundsausage --audio-selftest
       - uses: actions/upload-artifact@v4
         with: { name: arch, path: "soundsausage-*.pkg.tar.zst" }
 

@@ -3,7 +3,7 @@
 Download het pakket voor je distributie bij de
 [releases](https://github.com/rene-timmermans/SoundSausage/releases).
 De pakketten zijn voor **x86-64 / amd64**. De pakketbeheerder installeert Python,
-Qt/PySide6, NumPy en FFmpeg als afhankelijkheden; een compiler is niet nodig.
+Qt/PySide6 inclusief Multimedia, NumPy en libsamplerate als afhankelijkheden; een compiler is niet nodig.
 
 ## Debian en Ubuntu
 
@@ -12,7 +12,7 @@ of nieuwer uit de distributie. Ubuntu 24.04 en Debian 12 worden hiermee niet
 ondersteund. Op Ubuntu moet de universe-pakketbron ingeschakeld zijn.
 
 ```bash
-sudo apt install ./soundsausage_0.5.0-1_amd64.deb
+sudo apt install ./soundsausage_0.6.0-1_amd64.deb
 ```
 
 ## Fedora
@@ -20,7 +20,7 @@ sudo apt install ./soundsausage_0.5.0-1_amd64.deb
 Gebruik het `.rpm`-pakket voor de huidige Fedora-versie:
 
 ```bash
-sudo dnf install ./soundsausage-0.5.0-1*.x86_64.rpm
+sudo dnf install ./soundsausage-0.6.0-1*.x86_64.rpm
 ```
 
 ## Arch Linux
@@ -28,13 +28,14 @@ sudo dnf install ./soundsausage-0.5.0-1*.x86_64.rpm
 Werk Arch eerst normaal bij en installeer dan het pakket:
 
 ```bash
-sudo pacman -U ./soundsausage-0.5.0-1-x86_64.pkg.tar.zst
+sudo pacman -U ./soundsausage-0.6.0-1-x86_64.pkg.tar.zst
 ```
 
 ## Starten en controleren
 
 Start **SoundSausage** via het toepassingenmenu of met `soundsausage`.
 `soundsausage --selftest` controleert de installatie zonder geluid af te spelen.
+`soundsausage --audio-selftest` controleert de ingestelde uitgang met een stil signaal.
 Een nieuw pakket met dezelfde naam werkt een eerdere versie bij.
 
 Elke release bevat de broncode en `SHA256SUMS`. De bouw controleert alle tests,

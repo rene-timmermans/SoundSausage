@@ -100,9 +100,9 @@ class SessionTests(unittest.TestCase):
         self.session.undo()
         self.assertEqual(self.session.find_clip(clip_id)[0].name, "Track 2")
 
-    def test_import_of_multiple_files_is_atomic_on_rate_mismatch(self):
+    def test_import_of_multiple_files_is_atomic_on_invalid_rate(self):
         with self.assertRaises(AudioError):
-            self.session.import_audio([(self.mono, 8000, "A"), (self.mono, 44100, "B")])
+            self.session.import_audio([(self.mono, 8000, "A"), (self.mono, 999, "B")])
         self.assertFalse(self.session.dirty)
         self.assertEqual(len(self.session.media), 0)
 
@@ -116,10 +116,10 @@ class SessionTests(unittest.TestCase):
 
     def test_explicitly_chosen_session_rate_is_not_changed_by_import(self):
         session = Session(44100, adopt_first_rate=False)
-        with self.assertRaises(AudioError):
-            session.import_audio([(self.mono, 48000, "Different rate")])
+        session.import_audio([(self.mono, 48000, "Different rate")])
         self.assertEqual(session.sample_rate, 44100)
-        self.assertFalse(session.dirty)
+        self.assertTrue(session.dirty)
+        self.assertEqual(next(iter(session.media.values())).sample_rate, 44100)
 
     def test_invalid_settings_preserve_the_previous_session(self):
         clip_id = self.add()
@@ -192,8 +192,9 @@ class ProjectTests(unittest.TestCase):
         self.assertEqual(len(loaded.tracks), 3)
         self.assertEqual(loaded.frames, 0)
         self.assertEqual(loaded.render().shape, (0, 2))
-        with self.assertRaises(AudioError):
-            loaded.import_audio([(np.zeros((10, 1), np.float32), 48000, "Different rate")])
+        loaded.import_audio([(np.zeros((480, 1), np.float32), 48000, "Different rate")])
+        self.assertEqual(loaded.sample_rate, 44100)
+        self.assertEqual(loaded.frames, 441)
 
     def test_deleted_media_in_undo_history_is_not_saved(self):
         self.session.remove_clip(self.clip)

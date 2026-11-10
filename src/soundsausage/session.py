@@ -9,6 +9,7 @@ import numpy as np
 
 from .audio import AudioError, MAX_AUDIO_BYTES, validate_audio
 from .dsp import Dsp
+from .resample import resample, frame_count
 from .envelopes import validate_points, remap_points
 
 
@@ -279,16 +280,16 @@ class Session:
         for samples, item_rate, name in items:
             validate_audio(samples, item_rate)
             text(name)
-            if item_rate != rate:
-                raise AudioError(f"This session uses {rate} Hz; all imported audio must use the same sample rate.")
-            if start + len(samples) > rate * MAX_SECONDS:
+            frames = frame_count(len(samples), item_rate, rate)
+            if start + frames > rate * MAX_SECONDS:
                 raise AudioError("A clip cannot extend past the 24-hour timeline limit.")
-            total += samples.shape[0] * samples.shape[1] * 4
+            total += frames * samples.shape[1] * 4
         if total > MAX_AUDIO_BYTES or len(self.media) + len(items) > MAX_MEDIA:
             raise AudioError("This prototype holds at most 128 MiB of source audio and 128 media items per session, including undo history.")
         if sum(len(track.clips) for track in self.tracks) + len(items) > MAX_CLIPS:
             raise AudioError("There are too many clips in this session.")
-        prepared = [self._prepare_media(samples, item_rate, name) for samples, item_rate, name in items]
+        prepared = [self._prepare_media(resample(samples, item_rate, rate) if item_rate != rate else samples, rate, name)
+                    for samples, item_rate, name in items]
         tracks = list(self.tracks)
         while len(tracks) < target + len(items):
             tracks.append(Track(identifier(), f"Track {len(tracks) + 1}"))
@@ -377,8 +378,8 @@ class Session:
     def replace_clip_audio(self, clip_id, samples, sample_rate, name=None):
         track, original = self.find_clip(clip_id)
         if sample_rate != self.sample_rate:
-            raise AudioError("The edited waveform must have the session's sample rate.")
-        media = self._prepare_media(samples, sample_rate, name or original.name)
+            samples = resample(samples, sample_rate, self.sample_rate)
+        media = self._prepare_media(samples, self.sample_rate, name or original.name)
         if sum(m.samples.nbytes for m in self.media.values()) + media.samples.nbytes > MAX_AUDIO_BYTES or len(self.media) >= MAX_MEDIA:
             raise AudioError("The edited audio would exceed the session's source-audio limit.")
         fade_in, fade_out = bounded_fades(original, len(samples))

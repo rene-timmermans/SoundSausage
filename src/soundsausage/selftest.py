@@ -1,6 +1,5 @@
 """Small installation smoke test: native DSP, file round trips, widgets and icons."""
 from pathlib import Path
-import shutil
 import tempfile
 
 import numpy as np
@@ -12,6 +11,7 @@ from .session import Session
 from .project import save_project, load_project
 from .amplitude_ui import ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .icons import application_icon, mascot_icon
+from .resample import resample
 
 
 def run(window):
@@ -27,7 +27,7 @@ def run(window):
     assert np.isfinite(doc.read()).all()
     assert not application_icon().pixmap(32, 32).isNull()
     assert not mascot_icon().pixmap(24, 24).isNull()
-    assert shutil.which("ffplay"), "ffplay is missing"
+    assert resample(np.zeros((441, 2), np.float32), 44100, 48000).shape == (480, 2)
     with tempfile.TemporaryDirectory(prefix="soundsausage-selftest-") as folder:
         path = Path(folder)
         write_wav(path / "test.wav", doc.read(), doc.sample_rate, "float32")
@@ -46,3 +46,27 @@ def run(window):
             dialog.reject()
             dialog.deleteLater()
     print(f"SoundSausage {__version__}: selftest OK (DSP, WAV, CELP, icons, amplitude dialogs)")
+
+
+def run_audio(window):
+    """Exercise the selected real/virtual output with silence; do not record audio."""
+    from PySide6.QtCore import QEventLoop, QTimer
+    loop, errors, positions = QEventLoop(), [], []
+    player = window.player
+    player.failed.connect(errors.append)
+    player.position.connect(positions.append)
+    player.state_changed.connect(lambda state: loop.quit() if state == "Stopped" else None)
+    timeout = QTimer()
+    timeout.setSingleShot(True)
+    timeout.timeout.connect(loop.quit)
+    try:
+        player.play(np.zeros((11025, 2), np.float32), 44100)
+        if player.state != "Stopped":
+            timeout.start(7000)
+            loop.exec()
+        if errors or player.state != "Stopped" or not positions or positions[-1] != 11025:
+            raise RuntimeError("; ".join(errors) or "Audio output did not finish within seven seconds.")
+        print(f"SoundSausage {__version__}: audio selftest OK ({player.output_description}, {player.format.sampleRate()} Hz)")
+    finally:
+        timeout.stop()
+        player.shutdown()

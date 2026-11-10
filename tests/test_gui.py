@@ -112,41 +112,6 @@ class GuiTests(unittest.TestCase):
         self.assertAlmostEqual(plot.peak_db, 0, places=2)
 
 
-class PlaybackTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.app = QApplication.instance() or QApplication([])
-
-    def test_missing_player_reports_failure_without_starting_anything(self):
-        player = Playback()
-        errors = []
-        player.failed.connect(errors.append)
-        with patch("soundsausage.playback.shutil.which", return_value=None):
-            player.play(np.zeros((10, 2), np.float32), 8000)
-        self.assertEqual(player.state, "Stopped")
-        self.assertEqual(len(errors), 1)
-
-    @unittest.skipUnless(shutil.which("ffplay"), "ffplay unavailable")
-    def test_raw_audio_reaches_ffplay_and_exits_with_a_dummy_audio_device(self):
-        # No host sound server or physical audio device is contacted.
-        player = Playback()
-        errors, states = [], []
-        player.failed.connect(errors.append)
-        player.state_changed.connect(states.append)
-        values = np.sin(2 * np.pi * 440 * np.arange(1600) / 8000).astype(np.float32) * 0.1
-        samples = np.column_stack((values, values))
-        try:
-            with patch.dict(os.environ, {"SDL_AUDIODRIVER": "dummy", "SDL_VIDEODRIVER": "dummy"}):
-                player.play(samples, 8000)
-                deadline = time.monotonic() + 8
-                while player.state != "Stopped" and time.monotonic() < deadline:
-                    QTest.qWait(20)
-            self.assertFalse(errors, errors)
-            self.assertIn("Playing", states)
-            self.assertEqual(player.state, "Stopped")
-        finally:
-            player.shutdown()
-
 
 if __name__ == "__main__":
     unittest.main()
