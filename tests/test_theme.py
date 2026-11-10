@@ -61,7 +61,7 @@ class ThemeGuiTests(unittest.TestCase):
                 self.assertEqual(image.pixelColor(2, self.window.height() // 2).name(), background)
                 button = self.toolbar_button("open")
                 rendered = button.grab().toImage()
-                fill = rendered.pixelColor(5, button.height() // 2)
+                fill = rendered.pixelColor(3, button.height() - 4)
                 self.assertEqual(fill.name(), accent)
                 foreground = button.palette().color(QPalette.ColorGroup.Active, QPalette.ColorRole.ButtonText)
                 self.assertGreaterEqual(contrast(foreground, fill), 4.5)
@@ -72,7 +72,7 @@ class ThemeGuiTests(unittest.TestCase):
                 self.assertGreaterEqual(contrast(ink[0], fill), 4.5)
                 QTest.mouseMove(button, QPoint(10, 10))
                 self.app.processEvents()
-                hover_fill = button.grab().toImage().pixelColor(5, button.height() // 2)
+                hover_fill = button.grab().toImage().pixelColor(3, button.height() - 4)
                 self.assertGreaterEqual(contrast(foreground, hover_fill), 4.5)
                 clock_palette = self.window.time_label.palette()
                 self.assertGreaterEqual(contrast(clock_palette.windowText().color(), clock_palette.window().color()), 4.5)
@@ -80,10 +80,10 @@ class ThemeGuiTests(unittest.TestCase):
                 undo = self.toolbar_button("undo")
                 self.assertFalse(undo.isEnabled())
                 disabled = undo.palette().color(QPalette.ColorGroup.Disabled, QPalette.ColorRole.ButtonText)
-                disabled_background = undo.grab().toImage().pixelColor(5, undo.height() // 2)
+                disabled_background = undo.grab().toImage().pixelColor(3, undo.height() - 4)
                 self.assertGreaterEqual(contrast(disabled, disabled_background), 3.0)
 
-    def test_mode_buttons_keep_their_labels_and_highlight_the_active_view(self):
+    def test_compact_mode_buttons_have_tooltips_and_highlight_the_active_view(self):
         self.use_palette("#252a30", "#ecf0f4", "#36c5ac")
         for key, mode in (("mode_multi", "multitrack"), ("mode_wave", "waveform")):
             with self.subTest(mode=mode):
@@ -91,11 +91,23 @@ class ThemeGuiTests(unittest.TestCase):
                 self.app.processEvents()
                 button = self.toolbar_button(key)
                 self.assertTrue(button.isChecked())
-                self.assertEqual(button.toolButtonStyle(), Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-                self.assertIn("View", button.text())
+                self.assertEqual(button.toolButtonStyle(), Qt.ToolButtonStyle.ToolButtonIconOnly)
+                self.assertIn("View", button.toolTip())
                 self.assertEqual(self.window.mode, mode)
-                fill = button.grab().toImage().pixelColor(5, button.height() // 2)
+                fill = button.grab().toImage().pixelColor(3, button.height() - 4)
                 self.assertEqual(fill.name(), "#36c5ac")
+
+    def test_optional_toolbar_labels_keep_the_selected_mode_and_theme(self):
+        self.use_palette("#252a30", "#ecf0f4", "#36c5ac")
+        self.window.actions["toolbar_labels"].setChecked(True)
+        self.app.processEvents()
+        button = self.toolbar_button("mode_wave")
+        self.assertEqual(button.toolButtonStyle(), Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+        self.assertIn("View", button.text())
+        self.assertTrue(button.isChecked())
+        self.assertEqual(button.grab().toImage().pixelColor(3, button.height() - 4).name(), "#36c5ac")
+        self.window.actions["toolbar_labels"].setChecked(False)
+        self.assertEqual(button.toolButtonStyle(), Qt.ToolButtonStyle.ToolButtonIconOnly)
 
     def test_menu_icons_are_visible_on_neutral_backgrounds_including_checked_modes(self):
         self.use_palette("#f0f1f3", "#20252b", "#794bc4")

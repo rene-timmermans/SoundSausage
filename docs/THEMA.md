@@ -12,10 +12,12 @@ SoundSausage volgt de kleuren en het lettertype van je Linux-bureaublad. Het pro
 
 Wijzig het kleurenthema of de accentkleur in de instellingen van je bureaublad. Hoe die instellingen aan Qt worden doorgegeven, hangt af van je Linux-omgeving.
 
+De werkbalken gebruiken compacte pictogrammen. Kies **Options → Show Toolbar Labels** om ook de knopnamen te tonen. Het lege werkvlak blijft neutraal grijs; geopende golfvormen hebben een donkere achtergrond.
+
 ## Voorbeeldweergaven
 
 | Weergave | Donker/turquoise | Licht/paars |
 | --- | --- | --- |
-| Leeg | [Afbeelding](screenshots/theme-previews/dark-teal-empty.png) | [Afbeelding](screenshots/theme-previews/light-purple-empty.png) |
-| Golfvorm | [Afbeelding](screenshots/theme-previews/dark-teal-waveform.png) | [Afbeelding](screenshots/theme-previews/light-purple-waveform.png) |
-| Multitrack | [Afbeelding](screenshots/theme-previews/dark-teal-multitrack.png) | [Afbeelding](screenshots/theme-previews/light-purple-multitrack.png) |
+| Leeg | [Afbeelding](screenshots/layout-previews/dark-empty.png) | [Afbeelding](screenshots/layout-previews/light-empty.png) |
+| Golfvorm | [Afbeelding](screenshots/layout-previews/dark-waveform.png) | [Afbeelding](screenshots/layout-previews/light-waveform.png) |
+| Multitrack | [Afbeelding](screenshots/layout-previews/dark-multitrack.png) | [Afbeelding](screenshots/layout-previews/light-multitrack.png) |

@@ -36,7 +36,7 @@ def main():
         window.set_mode("multitrack")
     if not args.screenshot and app.platformName() != "offscreen" and app.primaryScreen():
         area = app.primaryScreen().availableGeometry()
-        window.resize(min(1180, max(850, area.width() - 40)), min(760, max(540, area.height() - 50)))
+        window.resize(min(1180, max(850, area.width() - 40)), min(720, max(540, area.height() - 50)))
     window.show()
     if args.screenshot:
         app.processEvents()

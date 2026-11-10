@@ -438,6 +438,7 @@ class MultitrackEditor(QWidget):
             ("Duplicate", self.duplicate_clip), ("Remove Clip", self.remove_clip),
             ("Mix Down…", self.mixdown_requested.emit)):
             button = QPushButton(name)
+            button.setProperty("compact", True)
             if name in ("Import WAV…", "Mix Down…"):
                 button.setProperty("primary", True)
                 self.primary_buttons["import_audio" if name == "Import WAV…" else "mixdown"] = button
@@ -450,6 +451,7 @@ class MultitrackEditor(QWidget):
         group = QButtonGroup(self)
         for mode, label in (("move", "Move Clips"), ("volume", "Volume Line"), ("pan", "Pan Line")):
             button = QToolButton()
+            button.setProperty("compact", True)
             button.setText(label)
             button.setCheckable(True)
             button.setChecked(mode == "move")

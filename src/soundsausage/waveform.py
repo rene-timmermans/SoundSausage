@@ -32,11 +32,12 @@ class Waveform(QWidget):
         self.setMinimumSize(500, 230)
         self.setMouseTracking(True)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        self.setCursor(Qt.CursorShape.IBeamCursor)
+        self.setCursor(Qt.CursorShape.IBeamCursor if document.frames else Qt.CursorShape.ArrowCursor)
         self.setToolTip("Drag to select audio. Double-click selects the visible audio. Ctrl+wheel zooms; wheel scrolls.")
 
     def set_document(self, document, fit=True):
         self.document = document
+        self.setCursor(Qt.CursorShape.IBeamCursor if document.frames else Qt.CursorShape.ArrowCursor)
         self.playhead = None
         self._cache = None
         if fit:
@@ -103,6 +104,9 @@ class Waveform(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
         c = colors()
+        if not self.document.frames:
+            painter.fillRect(self.rect(), c.workspace)
+            return
         painter.fillRect(self.rect(), c.window)
         rect = self.plot_rect()
         painter.fillRect(rect, c.plot)

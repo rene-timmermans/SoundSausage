@@ -7,7 +7,9 @@ from PySide6.QtGui import QGuiApplication, QIcon, QPainter, QPainterPath, QPen, 
 
 ICON_ACTIONS = {"new", "open", "save", "save_session", "save_session_as", "undo", "redo",
                 "cut", "copy", "paste", "trim", "zoom_in", "zoom_out", "zoom_full", "zoom_selection",
-                "play", "pause", "stop", "loop", "mode_wave", "mode_multi", "import_audio", "mixdown"}
+                "play", "pause", "stop", "loop", "mode_wave", "mode_multi", "import_audio", "mixdown",
+                "amplify", "normalize", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency",
+                "insert_wave", "apply_clip", "select_range", "to_start", "to_end", "seek_back", "seek_forward", "record"}
 PRIMARY_ACTIONS = {"open", "save", "play", "import_audio", "mixdown"}
 _CACHE = {}
 _APPLICATION_ICONS = {}
@@ -134,6 +136,71 @@ def draw(p, name, color):
         line(12, 14, 12, 21)
         line(8, 17, 12, 21)
         line(16, 17, 12, 21)
+    elif name in ("amplify", "normalize", "frequency", "fade_in", "fade_out"):
+        heights = (3, 6, 9, 6, 3)
+        if name in ("fade_in", "fade_out"):
+            heights = (2, 4, 6, 8, 10)
+            if name == "fade_out":
+                heights = tuple(reversed(heights))
+        elif name == "frequency":
+            heights = (4, 8, 6, 10, 3)
+        for x, height in zip((4, 8, 12, 16, 20), heights):
+            line(x, 12 - height, x, 12 + height)
+        if name == "normalize":
+            line(2, 2, 22, 2)
+            line(2, 22, 22, 22)
+    elif name == "invert":
+        line(3, 12, 21, 12)
+        line(6, 6, 6, 10)
+        line(4, 8, 8, 8)
+        line(16, 18, 21, 18)
+        line(12, 3, 12, 8)
+        line(10, 5, 12, 3)
+        line(14, 5, 12, 3)
+        line(12, 16, 12, 21)
+        line(10, 19, 12, 21)
+        line(14, 19, 12, 21)
+    elif name == "reverse":
+        line(3, 7, 21, 7)
+        line(3, 7, 8, 3)
+        line(3, 7, 8, 11)
+        line(3, 17, 21, 17)
+        line(21, 17, 16, 13)
+        line(21, 17, 16, 21)
+    elif name == "silence":
+        line(3, 12, 21, 12)
+        line(7, 5, 17, 19)
+        line(7, 19, 17, 5)
+    elif name == "insert_wave":
+        rect(3, 3, 18, 5)
+        for x, height in ((4, 3), (7, 6), (10, 4), (13, 2)):
+            line(x, 16 - height, x, 16 + height)
+        line(15, 16, 22, 16)
+        line(19, 13, 22, 16)
+        line(19, 19, 22, 16)
+    elif name == "apply_clip":
+        rect(3, 16, 18, 6)
+        line(12, 2, 12, 16)
+        line(7, 11, 12, 16)
+        line(17, 11, 12, 16)
+    elif name == "select_range":
+        rect(4, 5, 16, 14)
+        line(8, 3, 8, 21)
+        line(16, 3, 16, 21)
+    elif name == "record":
+        p.setBrush(color)
+        p.drawEllipse(QRectF(5, 5, 14, 14))
+    elif name in ("to_start", "to_end", "seek_back", "seek_forward"):
+        if name in ("to_end", "seek_forward"):
+            p.translate(24, 0)
+            p.scale(-1, 1)
+        p.setBrush(color)
+        if name in ("to_start", "to_end"):
+            line(4, 4, 4, 20)
+            p.drawPolygon(QPolygonF([QPointF(8, 12), QPointF(19, 4), QPointF(19, 20)]))
+        else:
+            for x in (2, 12):
+                p.drawPolygon(QPolygonF([QPointF(x, 12), QPointF(x + 8, 5), QPointF(x + 8, 19)]))
     elif name == "more":
         for x in (5, 12):
             line(x, 6, x + 6, 12)

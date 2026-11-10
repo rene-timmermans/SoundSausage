@@ -53,6 +53,7 @@ class Colors:
     plot_text: QColor
     plot_grid: QColor
     waveform: QColor
+    workspace: QColor
 
 
 def from_palette(palette):
@@ -69,7 +70,7 @@ def from_palette(palette):
         readable(blend(button, button_text, 0.45), button, 3.0),
         blend(window, text, 0.3), accent, readable(get(role.HighlightedText), accent),
         readable(accent, button, 3.0), QColor("#070d0e"), QColor("#e3eeeb"),
-        QColor("#29413f"), QColor("#27efae"),
+        QColor("#29413f"), QColor("#27efae"), QColor("#404347"),
     )
 
 
@@ -90,6 +91,7 @@ def stylesheet(c):
         QToolBar {{ background: {n(c.panel)}; border: none; border-bottom: 1px solid {n(c.border)};
                     spacing: 4px; padding: 4px; }}
         QToolBar::separator {{ background: {n(c.border)}; width: 1px; margin: 4px; }}
+        QToolBar[compact="true"] {{ spacing: 2px; padding: 2px; }}
         QToolButton, QPushButton {{ background: {n(c.button)}; color: {n(c.button_text)};
             border: 1px solid {n(c.border)}; border-radius: 4px; padding: 4px 7px; min-height: 18px; }}
         QToolButton:hover:enabled, QPushButton:hover:enabled {{ background: {n(hover)}; border-color: {n(c.icon)}; }}
@@ -104,18 +106,21 @@ def stylesheet(c):
             background: {n(pressed)}; color: {n(c.accent_text)}; border-color: {n(c.icon)}; }}
         QToolButton:disabled, QPushButton:disabled {{ background: {n(c.button)}; color: {n(c.disabled)};
             border-color: {n(c.border)}; }}
+        QToolBar[compact="true"] QToolButton, QToolButton[compact="true"], QPushButton[compact="true"] {{
+            padding: 2px; min-width: 20px; min-height: 18px; border-radius: 2px; }}
+        QWidget#TransportPanel {{ background: {n(c.panel)}; border-top: 1px solid {n(c.border)}; }}
         QLineEdit, QComboBox {{ background: {n(c.base)}; color: {n(c.field_text)};
             border: 1px solid {n(c.border)}; border-radius: 3px; padding: 3px;
             selection-background-color: {n(c.accent)}; selection-color: {n(c.accent_text)}; }}
         QAbstractSpinBox {{ background: {n(c.base)}; color: {n(c.field_text)};
             selection-background-color: {n(c.accent)}; selection-color: {n(c.accent_text)}; }}
         QLineEdit:focus, QComboBox:focus {{ border-color: {n(c.icon)}; }}
+        QLineEdit[compact="true"] {{ padding: 0px 3px; border-radius: 1px; }}
         QGroupBox {{ border: 1px solid {n(c.border)}; border-radius: 4px; margin-top: 8px; padding-top: 5px; }}
         QGroupBox::title {{ subcontrol-origin: margin; left: 9px; padding: 0 4px; }}
         QStatusBar::item {{ border: none; }}
-        QLabel#TimeDisplay {{ background: {n(c.base)}; color: {n(c.field_text)};
-            border: 1px solid {n(c.border)}; border-left: 4px solid {n(c.accent)};
-            border-radius: 4px; padding: 3px 8px; }}
+        QLabel#TimeDisplay {{ background: {n(c.panel)}; color: {n(c.text)};
+            border: none; padding: 0px; }}
         QWidget#TrackControls {{ background: {n(c.panel)}; border: 1px solid {n(c.border)}; border-radius: 4px; }}
         QPushButton[trackState="mute"]:checked {{ background: #ae3544; color: #ffffff; border-color: #ae3544; }}
         QPushButton[trackState="solo"]:checked {{ background: #e3be52; color: #15130b; border-color: #b38d24; }}

@@ -1,4 +1,4 @@
-# SoundSausage 0.3.0
+# SoundSausage 0.4.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -12,10 +12,13 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Zelfstandige CELP-projecten met ingebedde audio en WAV-mixdown.
 - Beperkte import van eenvoudige oudere sessies (`.ses`).
 - Qt-interface die het Linux-thema en de accentkleur volgt.
+- Compacte werkbalken, gegroepeerde menu's en een grijs werkvlak zolang er geen audio openstaat.
+- Transport en grote klok onderaan, met selectie-/weergavetijden en een brede stereometer met dB-schaal.
 
 ## Beperkingen
 
 - Opnemen, geavanceerde effecten en externe plug-ins zijn nog niet beschikbaar.
+- Nog niet beschikbare effecten staan uitgeschakeld in de menu's.
 - SES-import ondersteunt nog geen automation of cues. Opslaan gebeurt als CELP.
 - Audio binnen een sessie moet dezelfde samplerate hebben; automatisch omzetten ontbreekt.
 - Audio wordt in het geheugen verwerkt, met maximaal 128 MiB gedecodeerde brondata.

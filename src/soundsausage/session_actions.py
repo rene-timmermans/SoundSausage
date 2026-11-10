@@ -1,10 +1,9 @@
 """Main-window actions for sessions; waveform and project save paths stay separate."""
 from pathlib import Path
 
-from PySide6.QtCore import Qt
 from PySide6.QtGui import QActionGroup
 from PySide6.QtWidgets import (
-    QToolBar, QFileDialog, QMessageBox, QDialog, QFormLayout,
+    QFileDialog, QMessageBox, QDialog, QFormLayout,
     QSpinBox, QDialogButtonBox,
 )
 
@@ -48,15 +47,6 @@ class SessionActions:
         self.action("duplicate_clip", "Duplicate Clip", lambda: self.multitrack.duplicate_clip(), "Ctrl+D")
         self.action("remove_clip", "Remove Clip", lambda: self.multitrack.remove_clip())
         self.action("mixdown", "Mix Down Session…", self.mixdown)
-
-    def create_session_toolbar(self):
-        self.addToolBarBreak()
-        modes = QToolBar("Working Mode", self)
-        modes.setMovable(False)
-        modes.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        self.addToolBar(modes)
-        for key in ("mode_wave", "mode_multi", "insert_wave", "apply_clip"):
-            modes.addAction(self.actions[key])
 
     def set_mode(self, mode):
         if mode not in ("waveform", "multitrack"):

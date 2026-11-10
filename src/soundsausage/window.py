@@ -1,15 +1,14 @@
 from pathlib import Path
 from functools import partial
-import math
 
 import numpy as np
-from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QAction, QFont, QKeySequence
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
+    QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QLabel, QToolBar, QToolButton, QStyle, QFileDialog, QMessageBox, QDialog,
     QDialogButtonBox, QFormLayout, QDoubleSpinBox, QSpinBox, QComboBox,
-    QCheckBox, QGroupBox, QRadioButton, QLineEdit, QScrollBar, QProgressBar,
+    QCheckBox, QRadioButton, QScrollBar,
     QInputDialog, QStackedWidget,
 )
 
@@ -20,6 +19,8 @@ from .playback import Playback
 from .waveform import Waveform, clock_text
 from .multitrack import MultitrackEditor
 from .session_actions import SessionActions
+from . import chrome
+from .transport import TransportPanel
 from .theme import install_theme, colors
 from .icons import ICON_ACTIONS, PRIMARY_ACTIONS, make_icon, application_icon, mascot_icon
 
@@ -147,7 +148,7 @@ class MainWindow(SessionActions, QMainWindow):
         self.player.position.connect(self.playback_position)
         self.player.failed.connect(lambda message: self.error("Playback", message))
         self.actions = {}
-        self.resize(1180, 760)
+        self.resize(1180, 720)
         self.setMinimumSize(850, 540)
         self._create_actions()
         self._create_menus()
@@ -167,6 +168,7 @@ class MainWindow(SessionActions, QMainWindow):
             key = by_action.get(action)
             if key is not None:
                 button.setProperty("primary", key in PRIMARY_ACTIONS)
+                button.setProperty("compact", True)
                 self._action_buttons.append((key, button))
                 # QToolButton copies its QAction icon again on every action change.
                 # Reapply the button variant after that copy; menus keep the accent icon.
@@ -243,49 +245,20 @@ class MainWindow(SessionActions, QMainWindow):
         self.actions["loop"].toggled.connect(lambda value: setattr(self.player, "loop", value))
         self.action("about", "&About…", self.about)
         self.create_session_actions()
+        chrome.create_actions(self)
 
     def _create_menus(self):
-        groups = [
-            ("&File", ["new", "open", "new_session", "open_session", None, "save", "save_as", "save_selection", "save_session", "save_session_as", "mixdown", None, "exit"]),
-            ("&Edit", ["undo", "redo", "repeat", None, "cut", "copy", "paste", "mix_paste", "delete", "trim", None, "select_all", "select_range", "zero"]),
-            ("&View", ["mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection"]),
-            ("&Insert", ["insert_wave", "import_audio", "apply_clip", None, "clip_properties", "duplicate_clip", "remove_clip"]),
-            ("&Transform", ["amplify", "normalize", "fade_in", "fade_out", None, "invert", "reverse", "silence"]),
-            ("&Generate", ["tone", "generate_silence"]),
-            ("&Analyze", ["frequency"]),
-            ("&Help", ["about"]),
-        ]
-        for label, keys in groups:
-            menu = self.menuBar().addMenu(label)
-            for key in keys:
-                menu.addSeparator() if key is None else menu.addAction(self.actions[key])
+        chrome.create_menus(self)
 
     def _create_toolbars(self):
-        top = QToolBar("File and Edit", self)
-        top.setMovable(False)
-        top.setIconSize(QSize(18, 18))
-        top.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        self.addToolBar(top)
-        for key in ("open", "save", "undo", "redo", "cut", "copy", "paste", "trim"):
-            top.addAction(self.actions[key])
-        top.addSeparator()
-        for key in ("zoom_in", "zoom_out", "zoom_full", "zoom_selection"):
-            top.addAction(self.actions[key])
-        self.addToolBarBreak()
-        effects = QToolBar("Transform", self)
-        self.effects_toolbar = effects
-        effects.setMovable(False)
-        self.addToolBar(effects)
-        for key in ("amplify", "normalize", "fade_in", "fade_out", "reverse", "invert", "silence", "frequency"):
-            effects.addAction(self.actions[key])
-        self.create_session_toolbar()
+        chrome.create_toolbars(self)
 
     def _create_editor(self):
         central = QWidget()
         self.setCentralWidget(central)
         layout = QVBoxLayout(central)
-        layout.setContentsMargins(7, 5, 7, 5)
-        layout.setSpacing(5)
+        layout.setContentsMargins(3, 3, 3, 0)
+        layout.setSpacing(2)
         self.scroll = QScrollBar(Qt.Orientation.Horizontal)
         self.scroll.setFixedHeight(14)
         wave_page = QWidget()
@@ -310,66 +283,12 @@ class MainWindow(SessionActions, QMainWindow):
         self.editor_stack.addWidget(wave_page)
         self.editor_stack.addWidget(self.multitrack)
         layout.addWidget(self.editor_stack, 1)
-        transport = QHBoxLayout()
-        transport.setSpacing(8)
-        controls = QWidget()
-        control_grid = QGridLayout(controls)
-        control_grid.setContentsMargins(0, 0, 0, 0)
-        control_grid.setSpacing(3)
-        for i, key in enumerate(("stop", "play", "pause", "loop")):
-            button = QToolButton()
-            button.setDefaultAction(self.actions[key])
-            button.setObjectName(f"transport_{key}")
-            button.setProperty("primary", key == "play")
-            if key == "loop":
-                button.setText("∞")
-            button.setFixedSize(40, 32)
-            button.setIconSize(QSize(18, 18))
-            control_grid.addWidget(button, 0, i)
-        for i, (label, callback) in enumerate((("|◀", self.to_start), ("◀", lambda: self.active_view().zoom(0.5)), ("▶|", self.to_end), ("↔", lambda: self.active_view().fit()))):
-            button = QToolButton()
-            button.setText(label)
-            button.setToolTip(("Go to start", "Zoom out", "Go to end", "Show entire audio")[i])
-            button.setFixedSize(38, 27)
-            button.clicked.connect(lambda checked=False, action=callback: action())
-            control_grid.addWidget(button, 1, i)
-        transport.addWidget(controls)
-        self.time_label = QLabel("0:00.000")
-        self.time_label.setObjectName("TimeDisplay")
-        self.time_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.time_label.setFont(QFont("DejaVu Sans Mono", 30))
-        self.time_label.setMinimumWidth(300)
-        transport.addWidget(self.time_label, 1)
-        selection = QGroupBox("Selection")
-        selection_grid = QGridLayout(selection)
-        selection_grid.setContentsMargins(8, 5, 8, 5)
-        self.fields = {}
-        for column, title in enumerate(("Begin", "End", "Length")):
-            selection_grid.addWidget(QLabel(title), 0, column)
-            field = QLineEdit("0:00.000")
-            field.setReadOnly(True)
-            field.setAlignment(Qt.AlignmentFlag.AlignRight)
-            field.setMaximumWidth(110)
-            self.fields[title] = field
-            selection_grid.addWidget(field, 1, column)
-        precise = QToolButton()
-        precise.setText("Set…")
-        precise.setDefaultAction(self.actions["select_range"])
-        selection_grid.addWidget(precise, 1, 3)
-        transport.addWidget(selection)
-        layout.addLayout(transport)
-        meter_row = QHBoxLayout()
-        self.meters = []
-        for channel in ("L", "R"):
-            meter_row.addWidget(QLabel(channel))
-            meter = QProgressBar()
-            meter.setRange(0, 600)
-            meter.setFixedHeight(16)
-            meter.setValue(0)
-            meter.setFormat("−60 dB")
-            self.meters.append(meter)
-            meter_row.addWidget(meter)
-        layout.addLayout(meter_row)
+        self.transport = TransportPanel(self.actions, self)
+        self.time_label = self.transport.time_label
+        self.fields = self.transport.fields
+        self.view_fields = self.transport.view_fields
+        layout.addWidget(self.transport)
+        self.multitrack.timeline.view_changed.connect(self.multitrack_view_changed)
 
     def _create_status(self):
         self.state_label = QLabel("Stopped")
@@ -386,6 +305,7 @@ class MainWindow(SessionActions, QMainWindow):
         doc = self.active_model()
         if self.mode == "waveform":
             self.waveform.set_document(self.document, fit=fit)
+            self.scroll.setVisible(self.document.frames > 0)
         elif fit:
             self.multitrack.set_session(self.session, fit=True)
         name = doc.path.name if doc.path else getattr(doc, "display_name", None) or ("Untitled Session" if self.mode == "multitrack" else "Untitled")
@@ -408,6 +328,9 @@ class MainWindow(SessionActions, QMainWindow):
         self.actions["pause"].setEnabled(self.player.state in ("Playing", "Paused"))
         self.actions["stop"].setEnabled(self.player.state != "Stopped")
         self.update_session_actions()
+        for key in ("to_start", "to_end", "seek_back", "seek_forward"):
+            self.actions[key].setEnabled(has_audio)
+        self.sync_view_fields()
 
     def selection_changed(self, start, end):
         doc = self.active_model()
@@ -427,6 +350,21 @@ class MainWindow(SessionActions, QMainWindow):
         self.scroll.setSingleStep(max(1, (end - start) // 20))
         self.scroll.setValue(start)
         self.scroll.blockSignals(False)
+        if self.mode == "waveform":
+            self.sync_view_fields()
+
+    def sync_view_fields(self):
+        if not hasattr(self, "transport"):
+            return
+        model, view = self.active_model(), self.active_view()
+        begin, end = view.view_start, view.view_end
+        if self.mode == "waveform" and not model.frames:
+            begin = end = 0
+        self.transport.set_view_range(begin, end, model.sample_rate)
+
+    def multitrack_view_changed(self, start, end):
+        if self.mode == "multitrack":
+            self.sync_view_fields()
 
     def scroll_view(self, value):
         length = self.waveform.view_end - self.waveform.view_start
@@ -719,11 +657,7 @@ class MainWindow(SessionActions, QMainWindow):
         self.update_meters(self.player.meter_samples(frame))
 
     def update_meters(self, data):
-        for channel, meter in enumerate(self.meters):
-            peak = float(np.max(np.abs(data[:, channel]))) if data is not None and len(data) and channel < data.shape[1] else 0
-            db = max(-60, 20 * math.log10(peak)) if peak else -60
-            meter.setValue(min(600, max(0, round((db + 60) * 10))))
-            meter.setFormat(f"{db:+.1f} dB" if peak else "−60 dB")
+        self.transport.meter.set_samples(data)
 
     def to_start(self):
         self.player.stop()

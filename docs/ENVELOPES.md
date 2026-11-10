@@ -26,8 +26,8 @@ Een bevestigde wijziging stopt het afspelen. Druk opnieuw op Spatie om het resul
 
 | Voorbeeld | Afbeelding |
 | --- | --- |
-| Volumelijn met punten | [Volumelijn](screenshots/demo-volume-line-v03.png) |
-| Panlijn van links naar rechts | [Panlijn](screenshots/demo-pan-line-v03.png) |
+| Volumelijn met punten | [Volumelijn](screenshots/layout-previews/dark-multitrack.png) |
+| Panlijn van links naar rechts | [Panlijn](screenshots/layout-previews/dark-pan-line.png) |
 
 ## Volume en balans
 
