@@ -1,6 +1,6 @@
 # SoundSausage
 
-<img src="src/soundsausage/assets/soundsausage.png" width="128" alt="SoundSausage-icoon">
+<img src="src/soundsausage/assets/soundsausage.png" width="64" alt="SoundSausage-icoon">
 
 Audiobewerker voor Linux met een vertrouwde golfvorm- en multitrackweergave.
 Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen
