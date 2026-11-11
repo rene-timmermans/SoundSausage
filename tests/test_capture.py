@@ -62,6 +62,7 @@ class CaptureTests(unittest.TestCase):
         self.outputs.stop();self.query.stop();self.env.stop();gc.collect();self.folder.cleanup()
 
     def test_no_input_is_queried_or_opened_at_startup(self):
+        self.recorder._source_changed()
         self.devices.inputs.assert_not_called();self.assertEqual(self.recorder.state,'Stopped')
 
     def test_partial_reads_join_exact_frames_and_stop_preserves_every_sample(self):
@@ -75,6 +76,23 @@ class CaptureTests(unittest.TestCase):
         np.testing.assert_array_equal(self.takes[0].samples,data)
         self.assertLessEqual(max(source.reads),65536)
         self.assertEqual(self.blocks[-1][1],len(data))
+
+    def test_qt68_input_device_may_report_zero_while_source_has_bytes(self):
+        class ReadDevice(QObject):
+            readyRead=Signal()
+            def __init__(self,source):super().__init__(source);self.source=source
+            def bytesAvailable(self):return 0
+            def read(self,count):return self.source.read(count)
+        class SeparateSource(Source):
+            def start(self):
+                self.proxy=ReadDevice(self);self.transition(QtAudio.State.IdleState);return self.proxy
+            def push(self,raw):
+                self.pending.extend(raw);self.transition(QtAudio.State.ActiveState);self.proxy.readyRead.emit()
+        self.recorder._source_factory=SeparateSource
+        self.recorder.start(48000,2)
+        self.recorder.source.push(np.full((80,2),.25,np.float32).tobytes())
+        self.assertEqual(self.recorder.take.frames,80)
+        self.recorder.stop();np.testing.assert_array_equal(self.takes[0].samples,.25)
 
     def test_pause_clock_freezes_and_resume_preserves_order(self):
         self.recorder.start(48000,1)

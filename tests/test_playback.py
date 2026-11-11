@@ -90,6 +90,7 @@ class PlaybackTests(unittest.TestCase):
         self.app.processEvents(); self.query.stop(); self.input_query.stop()
 
     def test_lazy_startup_does_not_query_or_open_audio_devices(self):
+        self.player._sink_changed()  # A late event may have no surviving sender.
         self.devices.outputs.assert_not_called()
         self.assertEqual(self.player.state, "Stopped")
 

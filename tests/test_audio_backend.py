@@ -1,4 +1,6 @@
 """Real Qt output against the CI job's private null sink; never host audio."""
+from contextlib import redirect_stderr
+import io
 import os
 import time
 import unittest
@@ -14,6 +16,15 @@ from soundsausage.playback import Playback
 class AudioBackendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls): cls.app = QApplication.instance() or QApplication([])
+
+    def setUp(self):
+        self._callback_errors=io.StringIO()
+        self._capture_stderr=redirect_stderr(self._callback_errors)
+        self._capture_stderr.__enter__()
+
+    def tearDown(self):
+        self._capture_stderr.__exit__(None,None,None)
+        self.assertNotIn('TypeError:',self._callback_errors.getvalue(),self._callback_errors.getvalue())
 
     def wait_for(self, predicate, seconds=7, diagnostic=None):
         deadline = time.monotonic() + seconds

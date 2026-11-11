@@ -2,7 +2,7 @@
 import sys
 
 import numpy as np
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject, QTimer, Signal, Slot
 from PySide6.QtMultimedia import QAudioSink, QAudioFormat
 try:
     from PySide6.QtMultimedia import QtAudio
@@ -141,7 +141,7 @@ class Playback(QObject):
             sink = self.sink
             sink.setBufferSize(max(self.format.bytesPerFrame(), min(len(self._payload),
                                    self.format.bytesForDuration(self.devices.buffer_ms * 1000))))
-            sink.stateChanged.connect(lambda state: self._sink_state(sink, state))
+            sink.stateChanged.connect(self._sink_changed)
             self._set_state("Starting")
             self._start_sink()
         except OperationCancelled:
@@ -214,6 +214,14 @@ class Playback(QObject):
             self._timer.start()
             self.sink.resume()
             self._feed()
+
+    @Slot()
+    def _sink_changed(self):
+        # Qt retains the legacy QAudio::State signal name. A zero-argument slot
+        # avoids enum-name conversion failures in newer PySide bindings.
+        sink=self.sender()
+        if sink is not None and sink is self.sink:
+            self._sink_state(sink,sink.state())
 
     def _sink_state(self, sink, state):
         if sink is not self.sink or self._starting:

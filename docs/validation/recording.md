@@ -1,6 +1,6 @@
 # Opname en dagelijkse keten — 0.8.0
 
-Lokaal doorstaat de suite 236 controles, met vier echte audiobackendcontroles
+Lokaal doorstaat de suite 237 controles, met vier echte audiobackendcontroles
 overgeslagen. De beperkte ontwikkelomgeving kan de fysieke audioserver niet
 openen. De pakketbouw gebruikt private virtuele in-/uitvoer voor die controles.
 

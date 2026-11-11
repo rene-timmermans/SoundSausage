@@ -12,7 +12,7 @@ import time
 from uuid import uuid4
 
 import numpy as np
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject, QTimer, Signal, Slot
 from PySide6.QtMultimedia import QAudioSource, QAudioFormat
 
 from .audio import AudioError
@@ -219,7 +219,7 @@ class Recorder(QObject):
             self.source=self._source_factory(device,self.format,self)
             source=self.source
             source.setBufferSize(max(self.format.bytesPerFrame(),self.format.bytesForDuration(100000)))
-            source.stateChanged.connect(lambda state:self._source_state(source,state))
+            source.stateChanged.connect(self._source_changed)
             self._set_state('Starting');self._starting=True
             try:self._io=source.start()
             finally:self._starting=False
@@ -235,7 +235,10 @@ class Recorder(QObject):
         if self._draining or self._io is None or (self.state!='Recording' and not force):return
         self._draining=True
         try:
-            budget=min(max(0,self._io.bytesAvailable()),16*1024*1024 if force else 8*65536)
+            # Qt 6.8's read device may report zero while QAudioSource itself
+            # has buffered input. Query both through their public APIs.
+            available=max(0,self._io.bytesAvailable(),self.source.bytesAvailable())
+            budget=min(available,16*1024*1024 if force else 8*65536)
             while budget>0:
                 raw=bytes(self._io.read(min(65536,budget)))
                 if not raw:break
@@ -299,6 +302,12 @@ class Recorder(QObject):
             if take is not None:take.leave_for_recovery()
             message+=' The last durable recording copy remains under File → Recover Work.'
         self._set_state('Stopped');self.failed.emit(message)
+
+    @Slot()
+    def _source_changed(self):
+        source=self.sender()
+        if source is not None and source is self.source:
+            self._source_state(source,source.state())
 
     def _source_state(self,source,state):
         if source is not self.source or self._starting:return

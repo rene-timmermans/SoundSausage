@@ -68,7 +68,7 @@ De hoorbare controle uit fase 1 blijft open.
 - [ ] Definitieve distributiecontroles en installatiepakketten voor 0.8.0.
 - [ ] Fysieke opname-/afspeelcontrole.
 
-Lokaal slagen 236 controles, met vier virtuele audiobackendcontroles overgeslagen
+Lokaal slagen 237 controles, met vier virtuele audiobackendcontroles overgeslagen
 omdat de host-audioserver vanuit de ontwikkelomgeving niet bereikbaar is.
 De distributiebouw controleert die in-/uitvoer met private virtuele apparaten.
 Ook de 160 MiB geheugencontrole bevat nu een opnamebestand en toevoegen aan de
