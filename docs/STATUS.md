@@ -52,7 +52,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Galm en echo hebben begrensde, optionele uitklank; extreme feedback kan langer dan 60 seconden doorlopen.
 - EQ en filters veranderen fase; korte selecties kunnen aan de randen een overgang geven.
 - Dynamics gebruikt piekdetectie zonder vooruitblik. Exact dezelfde uitkomst als historische effecten is niet aangetoond.
-- SES-import ondersteunt nog geen automation of cues. Opslaan gebeurt als CELP.
+- Import van oudere sessies ondersteunt nog geen automation of cues. Bewaren kan als zelfstandig project.
 - Sessies bewaren audio op één samplerate; geïmporteerde audio wordt daarnaartoe omgezet.
 - Grote bewerkingen vragen vrije schijfruimte voor bronkopieën, resultaten en Undo.
 - Multitrack blijft begrensd tot 24 uur, 32 sporen en 128 bronbestanden.

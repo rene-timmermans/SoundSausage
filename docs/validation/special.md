@@ -5,7 +5,12 @@ bitgelijke Preview-prefixen, blokgroottes, FFT-convolutie tegen een directe
 lineaire referentie, kanaalafzondering, energienormalisatie, IR-resampling,
 uitklank, Undo/F2, opslag/herstel zonder extern IR-bestand, foutafhandeling en
 annuleren. Grote effectresultaten worden als memmap gecontroleerd. De volledige
-suite telt 322 controles; distributie- en pakketverificatie volgen bij de release.
+suite doorstaat alle 322 controles in Debian, Fedora en Arch, inclusief de echte
+virtuele audiobackendtests. De geïnstalleerde pakketten doorstaan gewone, afspeel-
+en opnamecontroles ook op Ubuntu 26.04 en Rolling. De geverifieerde logs bevatten
+geen callback- of bufferfouten. Bewijs: [distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/42998388816).
+[Release 0.13.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.13.0)
+bevat de geteste pakketten, broncode en checksums.
 
 Een 5 kHz-sinus bij 48 kHz, hard clip en 18 dB Drive levert in de lokale proef
 een 13 kHz-alias op ongeveer −17,5 dB ten opzichte van de grondtoon zonder

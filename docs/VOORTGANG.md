@@ -79,7 +79,7 @@ editor; de extra resident geheugengroei bleef ongeveer 17 MiB in dat scenario.
 Gelijktijdig opnemen en terugluisteren, punch-in/out en latencycompensatie blijven
 vervolgmogelijkheden. De fysieke controle uit fase 1 is daarmee ook afgerond.
 
-## 4. Effecten en tools — actief
+## 4. Effecten en tools — afgerond in 0.13.0
 
 Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
 
@@ -87,7 +87,7 @@ Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
 - [x] Delay, echo en galm — gepubliceerd in 0.10.0.
 - [x] Ruisreductie en klikverwijdering — gepubliceerd in 0.11.0.
 - [x] Tijd-/toonhoogtebewerking — gepubliceerd in 0.12.0.
-- [ ] Vervorming en convolutie: gebouwd voor 0.13.0; distributiecontroles volgen.
+- [x] Vervorming en convolutie — gepubliceerd in 0.13.0.
 
 De eerste groep is afgerond in [release 0.9.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.9.0).
 Alle 258 controles slagen in Debian, Fedora en Arch. De geïnstalleerde pakketten
@@ -105,8 +105,13 @@ distributies. Deze groep is afgerond.
 
 [Release 0.12.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.12.0)
 voegt tijd- en toonhoogtebewerking toe. Alle 308 controles en de geïnstalleerde
-pakketten slagen op de ondersteunde distributies. Vier van de vijf groepen zijn
-afgerond; vervorming en convolutie volgen.
+pakketten slagen op de ondersteunde distributies. Deze groep is afgerond.
+
+[Release 0.13.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.13.0)
+rondt de vijfde groep af met vervorming en convolutie. Alle 322 controles slagen
+in Debian, Fedora en Arch; de geïnstalleerde pakketten doorstaan gewone, afspeel-
+en opnamecontroles ook op Ubuntu 26.04 en Rolling. Alle vijf afgesproken groepen
+zijn nu beschikbaar, met bijgewerkte handleiding en installatiepakketten.
 Elke groep krijgt een afzonderlijke bruikbare release.
 Amplitude is beschikbaar sinds 0.5.0 en dient ook als controle voor de nieuwe
 audiobasis. Uitgebreide oude SES-compatibiliteit en externe plug-ins volgen later.

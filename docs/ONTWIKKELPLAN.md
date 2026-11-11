@@ -51,7 +51,7 @@ De functionaliteit is in 0.8.0 gepubliceerd, met 237 geslaagde controles, getest
 pakketten en bevestigde fysieke opname-/afspeelcontrole. Gelijktijdig opnemen en afspelen, punch-in/out en automatische
 latencycompensatie zijn vervolgmogelijkheden, geen huidige functies.
 
-## 4. Overige effecten en tools — actief
+## 4. Overige effecten en tools — afgerond in 0.13.0
 
 Eerst EQ en filters, vervolgens delay en galm, daarna complexere functies zoals
 ruisreductie en tijd-/toonhoogtebewerking. Iedere groep wordt bruikbaar afgerond.
@@ -61,9 +61,12 @@ Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 - [x] Delay, echo en galm — 0.10.0, met geteste installatiepakketten.
 - [x] Ruisreductie en klikverwijdering — 0.11.0, met geteste installatiepakketten.
 - [x] Tijd- en toonhoogtebewerking — 0.12.0, met geteste installatiepakketten.
-- [ ] Vervorming en convolutie — gebouwd voor 0.13.0; distributiecontroles volgen.
+- [x] Vervorming en convolutie — 0.13.0, met geteste installatiepakketten.
 
-Deze vijf groepen vullen de eerder afgeronde Amplitude-groep aan.
+Alle vijf groepen zijn beschikbaar met handleiding, luistervoorbeelden en geteste
+installatiepakketten. Ze vullen de eerder afgeronde Amplitude-groep aan.
+Realtime spooreffecten, externe plug-ins en uitgebreidere sessiecompatibiliteit
+blijven afzonderlijke vervolgstappen.
 
 Iedere groep krijgt meetbare audiocontroles, Undo/Redo, bediening voor selecties
 en lange bestanden, bijgewerkte uitleg en een geteste release.
