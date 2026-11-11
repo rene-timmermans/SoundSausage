@@ -1,4 +1,4 @@
-# SoundSausage 0.8.0
+# SoundSausage 0.9.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -13,6 +13,9 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Golfvormbewerking met selecties, knippen, plakken, Mix Paste, trimmen en undo/redo.
 - Versterking, fades, normaliseren, omkeren, polariteit omkeren, tonen en stilte.
 - Channel Mixer, Dynamics Processing en Envelope, met presets, bewerkbare curves en luistervoorbeelden.
+- Grafische tienbands-EQ, vijf parametrische bell-banden en low/high shelf.
+- Hoog-/laagdoorlaat met 12–48 dB/oct, banddoorlaat en notch met instelbare Q.
+- EQ-presets, frequentierespons, uitgangsvolume en luistervoorbeelden.
 - DC-offset verwijderen bij normaliseren; onafhankelijke of gekoppelde stereokanalen waar van toepassing.
 - Multitrack met maximaal 32 sporen, clips verplaatsen, trimmen en dupliceren.
 - Volume, pan, mute/solo en bewerkbare volume- en panlijnen per clip.
@@ -31,8 +34,9 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 
 ## Beperkingen
 
-- Tijd-/toonhoogte-effecten, galm, filters, ruisreductie en externe plug-ins zijn nog niet beschikbaar.
-- Amplitude-effecten bewerken de golfvorm; voor een multitrackclip open je eerst een bewerkkopie. Het zijn nog geen realtime spooreffecten.
+- Tijd-/toonhoogte-effecten, galm, ruisreductie en externe plug-ins zijn nog niet beschikbaar.
+- Amplitude-, EQ- en filtereffecten bewerken de golfvorm; voor een multitrackclip open je eerst een bewerkkopie. Het zijn nog geen realtime spooreffecten.
+- EQ en filters veranderen fase; korte selecties kunnen aan de randen een overgang geven.
 - Dynamics gebruikt piekdetectie zonder vooruitblik. Exact dezelfde uitkomst als historische effecten is niet aangetoond.
 - Nog niet beschikbare effecten staan uitgeschakeld in de menu's.
 - SES-import ondersteunt nog geen automation of cues. Opslaan gebeurt als CELP.
@@ -44,7 +48,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - De audiobackend rapporteert de verwerkte frames; exacte fysieke luidsprekerlatentie en naadloos lussen zijn niet gegarandeerd.
 - Bestaande sporen worden tijdens opname nog niet afgespeeld; punch-in/out en automatische latencycompensatie ontbreken.
 - Uitvoer vereist een door Qt ondersteund mono-/stereoapparaat; multikanaals routering ontbreekt.
-- Virtuele in-/uitvoercontroles zijn geautomatiseerd; opname en terugluisteren op fysieke hardware staan nog open.
+- Virtuele in-/uitvoercontroles zijn geautomatiseerd; opname, pauze/hervatten en terugluisteren zijn ook met een USB-microfoon in de praktijk bevestigd.
 - Dithering en een markereditor ontbreken nog.
 
 Zie de [projectbeschrijving](../README.md), [volume- en panlijnen](ENVELOPES.md) en

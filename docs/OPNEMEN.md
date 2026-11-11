@@ -39,6 +39,6 @@ Een complete werkwijze:
 6. Maak met Mix Down een WAV-eindmix. De opgeslagen bronopnamen blijven behouden.
 
 Opname en afspelen zijn automatisch controleerbaar met een private virtuele
-audiobackend. De praktijktest met een fysieke microfoon en luidsprekers blijft
-apart zichtbaar in [voortgang](VOORTGANG.md). De volledige uitleg staat ook
+audiobackend. De bevestigde praktijktest met een fysieke USB-microfoon en uitvoer staat
+ook in [voortgang](VOORTGANG.md). De volledige uitleg staat ook
 offline in **Help → Handleiding / F1**.

@@ -8,12 +8,48 @@
 // No exceptions, allocations, host callbacks, or global mutable state cross this ABI.
 extern "C" {
 
-std::uint32_t ce_dsp_abi_version() noexcept { return 5; }
+std::uint32_t ce_dsp_abi_version() noexcept { return 6; }
 
 static bool valid_buffer(float* data, std::size_t frames, std::size_t channels) noexcept {
     return channels >= 1 && channels <= 2 &&
            frames <= std::numeric_limits<std::size_t>::max() / channels &&
            (data != nullptr || frames == 0);
+}
+
+// Normalized biquads [b0,b1,b2,a1,a2], transposed direct form II.
+// State is caller-owned [stage][channel][z1,z2] and survives block boundaries.
+int ce_biquads(float* data, std::size_t frames, std::size_t channels,
+               const double* coefficients, std::size_t stages, double* state,
+               double gain) noexcept {
+    if (!valid_buffer(data, frames, channels) || stages > 64 ||
+        (stages && (!coefficients || !state)) || !std::isfinite(gain) || gain < 0 || gain > 16) return -1;
+    for (std::size_t s = 0; s < stages; ++s) {
+        const double* k = coefficients + 5*s;
+        for (std::size_t j = 0; j < 5; ++j) if (!std::isfinite(k[j])) return -1;
+        if (std::abs(k[4]) >= 1 || 1+k[3]+k[4] <= 0 || 1-k[3]+k[4] <= 0) return -1;
+        for (std::size_t j = 0; j < 2*channels; ++j)
+            if (!std::isfinite(state[s*channels*2+j])) return -1;
+    }
+    for (std::size_t f = 0; f < frames; ++f) {
+        for (std::size_t c = 0; c < channels; ++c) {
+            double x = data[f*channels+c];
+            for (std::size_t s = 0; s < stages; ++s) {
+                const double* k = coefficients + 5*s;
+                double* z = state + (s*channels+c)*2;
+                const double y = k[0]*x + z[0];
+                z[0] = k[1]*x - k[3]*y + z[1];
+                z[1] = k[2]*x - k[4]*y;
+                // Prevent slow denormal arithmetic during long silent tails.
+                if (std::abs(z[0]) < 1e-300) z[0] = 0;
+                if (std::abs(z[1]) < 1e-300) z[1] = 0;
+                x = y;
+            }
+            const double y = x*gain;
+            if (!std::isfinite(y) || std::abs(y) > std::numeric_limits<float>::max()) return -2;
+            data[f*channels+c] = static_cast<float>(y);
+        }
+    }
+    return 0;
 }
 
 int ce_gain(float* data, std::size_t frames, std::size_t channels,

@@ -5,7 +5,7 @@ doorstaat alle 237 controles in Debian, Fedora en Arch. Daaronder vallen vier ec
 Qt-backendcontroles met private virtuele in-/uitvoer. De geïnstalleerde pakketten
 doorstaan ook de gewone, afspeel- en opnamecontrole op Ubuntu 26.04 en Rolling.
 Er zijn geen Python-callbackfouten in de geverifieerde logs. [Release 0.8.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.8.0)
-bevat de geteste pakketten. Een fysieke opname-/afspeelcontrole blijft open.
+bevat de geteste pakketten. De fysieke USB-opname-/afspeelcontrole is bevestigd.
 
 Gecontroleerd zijn begrensde reads en complete frames, genormaliseerde float- en
 integerinvoer, mono/stereokanalen, pauze/hervatten, apparaatverlies, oude callbacks,
@@ -29,13 +29,14 @@ De 160 MiB geheugencontrole omvat ook het schrijven van een opnamebestand en het
 toevoegen aan het document. De lokale extra resident geheugengroei bleef ongeveer
 17 MiB in dit scenario. Dit is een meetresultaat, geen grens voor elk project.
 
-## Nog te bevestigen op fysieke hardware
+## Bevestigde praktijkcontrole
 
 - Kies een echte USB-microfoon of audio-interface onder Audio Hardware.
 - Neem enkele seconden spraak op, pauzeer en hervat, en stop de take.
 - Luister terug; controleer geluid, cursor, meters en de uitgesloten pauzetijd.
 - Bewaar als WAV en heropen die om het resultaat opnieuw te beluisteren.
 
-Deze praktische controle blijft open totdat het resultaat bekend is. Gelijktijdig
+Opnemen, pauzeren/hervatten, terugluisteren, cursor en meters zijn op fysieke
+USB-invoer en HDMI-uitvoer bevestigd. Gelijktijdig
 opnemen en afspelen, punch-in/out en automatische latencycompensatie zijn nog geen
 onderdeel van de beschikbare functies.

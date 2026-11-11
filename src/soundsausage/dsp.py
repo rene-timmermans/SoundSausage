@@ -4,6 +4,7 @@ from pathlib import Path
 
 from . import storage
 from .operations import blocks, progress
+from .filters import EFFECTS as FILTER_EFFECTS, design
 
 import numpy as np
 
@@ -24,7 +25,7 @@ class Dsp:
         except OSError as error:
             raise RuntimeError("The audio kernel is not built. Run 'make' in the project folder.") from error
         self.lib.ce_dsp_abi_version.restype = C.c_uint32
-        if self.lib.ce_dsp_abi_version() != 5:
+        if self.lib.ce_dsp_abi_version() != 6:
             raise RuntimeError("The audio kernel has an incompatible ABI. Rebuild it with make.")
         self.ptr = C.POINTER(C.c_float)
         signature = [self.ptr, C.c_size_t, C.c_size_t]
@@ -42,6 +43,9 @@ class Dsp:
         self.lib.ce_dynamics.argtypes = signature + [C.c_double, C.POINTER(EffectPoint), C.c_size_t,
                                                    C.c_double, C.c_double, C.c_double, C.c_int, C.POINTER(C.c_double)]
         self.lib.ce_dynamics.restype = C.c_int
+        self.lib.ce_biquads.argtypes = signature + [C.POINTER(C.c_double), C.c_size_t,
+                                                   C.POINTER(C.c_double), C.c_double]
+        self.lib.ce_biquads.restype = C.c_int
         self.lib.ce_mix_add.argtypes = [self.ptr, C.c_size_t, self.ptr,
             C.c_size_t, C.c_size_t, C.c_size_t, C.c_size_t, C.c_size_t,
             C.c_size_t, C.c_size_t, C.c_double, C.c_double]
@@ -96,12 +100,28 @@ class Dsp:
                                         attack_ms, release_ms, makeup_db, int(linked), state))
 
     def process(self, name, data, sample_rate, **settings):
-        if name == "dynamics":
+        if name in FILTER_EFFECTS:
+            coefficients, gain = design(name, sample_rate, **settings)
+            state = np.zeros((len(coefficients), data.shape[1], 2), np.float64)
+            self.biquads(data, coefficients, state, gain)
+        elif name == "dynamics":
             self.dynamics(data, sample_rate, **settings)
         elif name in ("gain", "normalize", "channel_mix", "envelope"):
             getattr(self, name)(data, **settings)
         else:
             self.simple(name, data)
+
+    def biquads(self, data, coefficients, state, gain):
+        channels = self._buffer(data)[2]
+        if (not isinstance(coefficients, np.ndarray) or coefficients.dtype != np.float64 or
+            coefficients.ndim != 2 or coefficients.shape[1] != 5 or len(coefficients) > 64 or
+            not coefficients.flags.c_contiguous or not isinstance(state, np.ndarray) or
+            state.dtype != np.float64 or state.shape != (len(coefficients), channels, 2) or
+            not state.flags.c_contiguous or not state.flags.writeable):
+            raise ValueError("Invalid filter coefficients or state buffer.")
+        self._check(self.lib.ce_biquads(*self._buffer(data),
+            coefficients.ctypes.data_as(C.POINTER(C.c_double)), len(coefficients),
+            state.ctypes.data_as(C.POINTER(C.c_double)), gain))
 
     def process_blocks(self, name, source, sample_rate, *, limit=None, block_frames=262144, **settings):
         """Offline processing with bounded memory and one continuous effect state.
@@ -111,6 +131,9 @@ class Dsp:
         """
         frames, channels = source.shape
         wanted = frames if limit is None else min(frames, max(0, int(limit)))
+        if name in FILTER_EFFECTS:
+            coefficients, output_gain = design(name, sample_rate, **settings)
+            filter_state = np.zeros((len(coefficients), channels, 2), np.float64)
         result = storage.allocate((wanted, channels))
         state = (C.c_double * 2)()
         means = np.zeros(channels, np.float64)
@@ -143,6 +166,8 @@ class Dsp:
                 if name == "normalize":
                     scale = np.divide(target, peaks, out=np.ones_like(peaks), where=peaks > 0)
                     data[:] = (data.astype(np.float64) - means) * scale
+                elif name in FILTER_EFFECTS:
+                    self.biquads(data, coefficients, filter_state, output_gain)
                 elif name in ("gain", "envelope"):
                     getattr(self, name)(data, offset=a, total=frames, **settings)
                 elif name == "dynamics":

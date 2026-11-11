@@ -78,9 +78,11 @@ def create_menus(window):
         action.setToolTip("Not available yet")
 
     add(amplitude, ("normalize", None, "fade_in", "fade_out"))
+    filters = transform.addMenu("Filters")
+    window.menus["filters"] = filters
+    add(filters, ("graphic_eq", "parametric_eq", "filter"))
     for name, items in (
         ("Delay Effects", ("Delay…", "Echo…", "Reverb…")),
-        ("Filters", ("Graphic Equalizer…", "Parametric Equalizer…")),
         ("Noise Reduction", ("Noise Reduction…", "Click Removal…")),
         ("Special", ("Distortion…", "Convolution…")),
         ("Time/Pitch", ("Stretch…", "Pitch Shift…")),

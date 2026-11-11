@@ -10,7 +10,7 @@ Geïntegreerd afspelen, keuze van uitvoerapparaat, synchronisatie van geluid,
 cursor en meters, en omgaan met verschillende samplerates.
 
 **Stand:** beschikbaar sinds 0.6.0 en automatisch gecontroleerd op de ondersteunde
-distributies. Een hoorbare controle op fysieke geluidsapparaten blijft open.
+distributies. De praktische opname-/afspeelcontrole met een USB-microfoon is bevestigd.
 
 ## 2. Langere bestanden en betrouwbare bewerkingen
 
@@ -32,7 +32,7 @@ Een grotere limiet alleen is onvoldoende: grote bestanden moeten te openen,
 bewerken, beluisteren en bewaren zijn zonder dat steeds de hele opname in het
 geheugen nodig is. Bevestigde bewerkingen blijven één stap in Undo/Redo.
 
-## 3. De dagelijkse werkwijze afronden — actief (0.8.0)
+## 3. De dagelijkse werkwijze afronden — afgerond in 0.8.0
 
 Openen, opnemen, bewerken, meerdere sporen combineren, opslaan, heropenen en
 exporteren moeten samen soepel werken. De volledige keten krijgt controles
@@ -45,18 +45,26 @@ met echte geluidsapparaten, naast automatische tests.
 - [x] De hele keten van opname tot heropend project en WAV-eindmix automatisch toetsen.
 - [x] De handleiding voor opname en dagelijks werken aanvullen.
 - [x] Definitieve virtuele in-/uitvoer- en pakketcontroles voor 0.8.0.
-- [ ] Opnemen en terugluisteren met fysieke microfoon en uitvoer controleren.
+- [x] Opnemen en terugluisteren met fysieke microfoon en uitvoer controleren.
 
-De functionaliteit is gebouwd en in 0.8.0 gepubliceerd, met 237 geslaagde
-controles en geteste pakketten. De fysieke controle blijft open totdat die is
-bevestigd. Gelijktijdig opnemen en afspelen, punch-in/out en automatische
+De functionaliteit is in 0.8.0 gepubliceerd, met 237 geslaagde controles, geteste
+pakketten en bevestigde fysieke opname-/afspeelcontrole. Gelijktijdig opnemen en afspelen, punch-in/out en automatische
 latencycompensatie zijn vervolgmogelijkheden, geen huidige functies.
 
-## 4. Overige effecten en tools
+## 4. Overige effecten en tools — actief
 
 Eerst EQ en filters, vervolgens delay en galm, daarna complexere functies zoals
 ruisreductie en tijd-/toonhoogtebewerking. Iedere groep wordt bruikbaar afgerond.
 Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
+
+- [ ] EQ en filters, met luistervoorbeeld en frequentierespons: gebouwd voor 0.9.0; distributiecontroles volgen.
+- [ ] Delay, echo en galm.
+- [ ] Ruisreductie en klikverwijdering.
+- [ ] Tijd- en toonhoogtebewerking.
+- [ ] Overige aangeboden tools per groep afronden.
+
+Iedere groep krijgt meetbare audiocontroles, Undo/Redo, bediening voor selecties
+en lange bestanden, bijgewerkte uitleg en een geteste release.
 
 ## Open punten blijven zichtbaar
 

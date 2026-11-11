@@ -5,7 +5,7 @@ resterende effecten en tools per groep af. Iedere afgeronde versie krijgt
 releasepunten en geteste installatiepakketten.
 De [afgesproken route en open punten](ONTWIKKELPLAN.md) blijven de leidraad.
 
-## 1. Audiobasis — automatisch gecontroleerd (0.6.0)
+## 1. Audiobasis — afgerond (0.6.0)
 
 - [x] Geïntegreerd afspelen zonder een extern afspeelproces.
 - [x] Keuze en onthouden van het uitvoerapparaat.
@@ -14,7 +14,7 @@ De [afgesproken route en open punten](ONTWIKKELPLAN.md) blijven de leidraad.
 - [x] Verschillende samplerates omzetten bij import en afspelen.
 - [x] Samplerate van een golfvorm wijzigen met Undo/Redo.
 - [x] Automatische controles met een virtueel audioapparaat.
-- [ ] Hoorbare controle op een fysiek geluidsapparaat.
+- [x] Hoorbare controle op een fysiek geluidsapparaat.
 
 In Debian, Fedora en Arch slagen alle 183 controles, inclusief de twee echte
 audiobackendcontroles. De geïnstalleerde pakketten doorstaan de gewone en stille
@@ -53,9 +53,9 @@ die synthetische opname, geen vaste bovengrens voor ieder project. Herstel begin
 met een nieuwe Undo-geschiedenis. Bijzondere recordergegevens worden letterlijk
 bewaard; afgeleide metingen worden niet opnieuw berekend. Zie
 [lange bestanden en herstel](LANGE_BESTANDEN.md) voor ruimtegebruik en grenzen.
-De hoorbare controle uit fase 1 blijft open.
+De hoorbare controle uit fase 1 is bevestigd.
 
-## 3. Dagelijkse werkwijze — actief (0.8.0)
+## 3. Dagelijkse werkwijze — afgerond in 0.8.0
 
 - [x] Opnemen van mono/stereo met blijvende keuze van ingang.
 - [x] Live golfvorm, meters en klok, pauze/hervatten en Stop als één Undo-stap.
@@ -66,20 +66,26 @@ De hoorbare controle uit fase 1 blijft open.
 - [x] Afspeelcursor na Stop behouden voor hervatten of opnemen op die positie.
 - [x] Handleiding en praktische opnamevoorbeelden bijwerken.
 - [x] Definitieve distributiecontroles en installatiepakketten voor 0.8.0.
-- [ ] Fysieke opname-/afspeelcontrole.
+- [x] Fysieke opname-/afspeelcontrole.
 
 Alle 237 controles slagen in Debian, Fedora en Arch, inclusief de echte
 virtuele in-/uitvoercontroles. De geïnstalleerde pakketten doorstaan gewone,
 afspeel- en opnamecontroles ook op Ubuntu 26.04 en Rolling.
 [Release 0.8.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.8.0)
-bevat de geteste installers. De fysieke controle blijft open.
+bevat de geteste installers. Opnemen, pauzeren/hervatten, terugluisteren, cursor
+en meters zijn ook met een USB-microfoon in de praktijk bevestigd.
 Ook de 160 MiB geheugencontrole bevat nu een opnamebestand en toevoegen aan de
 editor; de extra resident geheugengroei bleef ongeveer 17 MiB in dat scenario.
 Gelijktijdig opnemen en terugluisteren, punch-in/out en latencycompensatie blijven
-vervolgmogelijkheden. De fysieke controle uit fase 1 blijft eveneens zichtbaar.
+vervolgmogelijkheden. De fysieke controle uit fase 1 is daarmee ook afgerond.
 
-## 4. Effecten en tools — gepland
+## 4. Effecten en tools — actief
 
-EQ en filters, delay en galm, daarna restauratie en tijd-/toonhoogtebewerking.
+- [ ] EQ en filters: gebouwd voor 0.9.0; pakketcontroles en publicatie lopen.
+- [ ] Delay en galm.
+- [ ] Restauratie: ruisreductie en klikverwijdering.
+- [ ] Tijd-/toonhoogtebewerking.
+
+De eerste groep is EQ en filters. Elke groep krijgt een afzonderlijke bruikbare release.
 Amplitude is beschikbaar sinds 0.5.0 en dient ook als controle voor de nieuwe
 audiobasis. Uitgebreide oude SES-compatibiliteit en externe plug-ins volgen later.

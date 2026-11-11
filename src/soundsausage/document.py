@@ -257,7 +257,8 @@ class Document:
             return
         result = self.dsp.process_blocks(name, self.view(start, end), self.sample_rate, **settings)
         label = {"gain": "Amplify / Fade", "channel_mix": "Channel Mixer",
-                 "dynamics": "Dynamics Processing"}.get(name, name.capitalize())
+                 "dynamics": "Dynamics Processing", "graphic_eq": "Graphic Equalizer",
+                 "parametric_eq": "Parametric Equalizer", "filter": "Filters"}.get(name, name.capitalize())
         # Validate before committing: failed or overflowing effects leave the document intact.
         new_metadata = metadata.remap(self.metadata, lambda p: start + end - 1 - p if start <= p < end else p) if name == "reverse" else self.metadata
         self.replace(start, end, result, label, new_metadata=new_metadata)

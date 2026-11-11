@@ -75,7 +75,7 @@ volgen later; zie [voortgang](VOORTGANG.md).
 of er frames binnenkomen en verwijdert de testopname. Alleen die expliciete
 optie start een opname; de gewone selftest opent geen microfoon. De pakketbouw
 controleert opname, pauzeren/hervatten en stoppen tegen een private virtuele ingang.
-De fysieke opname-/afspeelcontrole blijft een afzonderlijk open punt.
+De fysieke opname-/afspeelcontrole met een USB-microfoon is bevestigd.
 
 Technische referenties: [Qt audio-uitvoer](https://doc.qt.io/qt-6.8/qaudiosink.html),
 [Qt audio-invoer](https://doc.qt.io/qt-6.8/qaudiosource.html),
