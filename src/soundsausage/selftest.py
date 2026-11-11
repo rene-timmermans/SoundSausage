@@ -105,13 +105,20 @@ def run(window):
             finally:
                 dialog.reject()
                 dialog.deleteLater()
-    manual = ManualDialog(window)
+    from .i18n import LANGUAGES,language,install_language,tr,catalogue
+    previous_language=language()
+    manual=ManualDialog(window)
     try:
-        assert "Channel Mixer" in manual.browser.toPlainText()
-        assert "Audio Hardware" in manual.browser.toPlainText()
+        for code in LANGUAGES:
+            install_language().set_language(code,persist=False)
+            assert len(manual.browser.toPlainText().split())>3000
+            assert tr('Channel Mixer') in manual.browser.toPlainText()
+            assert tr('Audio Hardware') in manual.browser.toPlainText()
+            assert len(catalogue(code))>1200
+            assert code=='en' or install_language().qt_translator is not None
     finally:
-        manual.close()
-        manual.deleteLater()
+        install_language().set_language(previous_language,persist=False)
+        manual.close();manual.deleteLater()
     print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, disk buffers, recovery, recording files, icons, effects, track inserts, isolated VST3 host, manual)")
 
 

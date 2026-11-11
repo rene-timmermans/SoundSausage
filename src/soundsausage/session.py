@@ -14,6 +14,7 @@ from .operations import blocks, progress
 from .resample import resample, frame_count
 from .envelopes import validate_points, remap_points
 from .trackfx import chain
+from .i18n import tr
 
 
 MAX_TRACKS = 32
@@ -126,7 +127,7 @@ class Session:
         integer(track_count, "Track count", 1, MAX_TRACKS)
         self.dsp = dsp or Dsp()
         self.adopt_first_rate = bool(adopt_first_rate)
-        self._tracks = tuple(Track(identifier(), f"Track {i + 1}") for i in range(track_count))
+        self._tracks = tuple(Track(identifier(), tr(f"Track {i + 1}")) for i in range(track_count))
         self._media = {}
         self.selected_track = self._tracks[0].id
         self.selected_clip = None
@@ -237,7 +238,7 @@ class Session:
     def add_track(self, name=None):
         if len(self.tracks) >= MAX_TRACKS:
             raise AudioError(f"SoundSausage supports at most {MAX_TRACKS} tracks.")
-        track = Track(identifier(), text(name or f"Track {len(self.tracks) + 1}"))
+        track = Track(identifier(), text(name or tr(f"Track {len(self.tracks) + 1}")))
         self._commit((*self.tracks, track), "Add Track", selected_track=track.id)
         return track.id
 
@@ -310,7 +311,7 @@ class Session:
                 rate,name,remap_metadata(info,item_rate,rate,frame_count(len(samples),item_rate,rate)) if item_rate != rate else info))
         tracks = list(self.tracks)
         while len(tracks) < target + len(items):
-            tracks.append(Track(identifier(), f"Track {len(tracks) + 1}"))
+            tracks.append(Track(identifier(), tr(f"Track {len(tracks) + 1}")))
         result = []
         for i, media in enumerate(prepared):
             clip = SessionClip(identifier(), media.id, media.name, start, 0, len(media.samples))

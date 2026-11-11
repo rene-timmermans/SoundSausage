@@ -1,9 +1,11 @@
 """Track insert rack; existing effect controls remain familiar in both views."""
+from .i18n import Literal
 from dataclasses import replace
 import numpy as np
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel, QListWidget,
-    QListWidgetItem, QComboBox, QPushButton, QDialogButtonBox, QMessageBox, QDoubleSpinBox)
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QDialog, QLabel, QListWidget, QListWidgetItem, QComboBox, QPushButton, QMessageBox, QDoubleSpinBox
 
 from .document import Document
 from .trackfx import NAMES, effect, Processor
@@ -25,9 +27,7 @@ def dialog_for(kind, session, parent):
     document = Document(np.zeros((1, 2), np.float32), session.sample_rate, dsp=session.dsp)
     dialog = classes[kind](document, parent, no_audio=True)
     dialog.preview_button.hide()
-    for label in dialog.findChildren(QLabel):
-        if label.text().startswith('Channels:'):
-            label.setText('Track insert: the source audio stays unchanged.\nApply changes while listening; the same chain is included in mixdown.')
+    dialog.range_note.setText('Track insert: the source audio stays unchanged.\nApply changes while listening; the same chain is included in mixdown.')
     if kind == 'gain':
         dialog.constant.setChecked(True); dialog.constant.setEnabled(False)
         for index in (3, 4): dialog.presets.model().item(index).setEnabled(False)
@@ -109,7 +109,7 @@ class TrackEffectsDialog(QDialog):
         selected = self.effects.currentRow() if selected is None else selected
         self.effects.blockSignals(True); self.effects.clear()
         for spec in track.effects:
-            item = QListWidgetItem(effect_icon(spec.kind), spec.settings.get('name',NAMES[spec.kind]) if spec.kind=='plugin' else NAMES[spec.kind]); item.setData(Qt.ItemDataRole.UserRole,spec.id)
+            item = QListWidgetItem(effect_icon(spec.kind), Literal(spec.settings.get('name',NAMES[spec.kind])) if spec.kind=='plugin' else NAMES[spec.kind]); item.setData(Qt.ItemDataRole.UserRole,spec.id)
             item.setFlags(item.flags()|Qt.ItemFlag.ItemIsUserCheckable)
             item.setCheckState(Qt.CheckState.Checked if spec.enabled else Qt.CheckState.Unchecked)
             self.effects.addItem(item)

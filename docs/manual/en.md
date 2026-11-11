@@ -1,0 +1,162 @@
+# SoundSausage — manual
+
+Version 0.16.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+
+## 1. Language and help
+
+Choose **Options → Language** and select Nederlands, English, Deutsch, Français or Español. Menus, windows, tips and the open manual change immediately. The choice is remembered for the next start. File names, track names and plug-in names retain their original spelling.
+
+**Help → Manual** or **F1** opens this manual offline, alongside the editor. **Ctrl+F** focuses search; **F3** finds the next occurrence and **Shift+F3** the previous one. The previous/next buttons wrap at the ends. Only an explicitly clicked website link needs internet. **About** shows the version, author, license, website and components.
+
+## 2. Quick start and workspace
+
+Open a WAV with **File → Open**. Press **Space** to listen or stop. Drag over a fragment, choose **Transform → Amplitude → Normalize**, listen with **Preview**, then confirm with **OK**. **Ctrl+Z** undoes the edit. Use **Save As** to keep a separate result. For several recordings, create a **New Multitrack Session**, import WAV files and finish with **Mix Down**.
+
+**Edit Waveform View** edits one recording; **Multitrack View** combines clips. Switch with **Tab**, the top buttons or **View**. Both documents remain available. Tooltips explain buttons; **Show Toolbar Labels** adds text and **Show Status Bar** toggles the status bar. **F11** toggles full screen. The lower clock follows audio; selection fields show start, end and length, and view fields the visible time range. Red peaks indicate output overload. A star before a document name means unsaved changes.
+
+## 3. Files, projects and recovery
+
+**New** creates an empty mono or stereo waveform at the chosen sample rate. **Open** reads WAV. **Save** updates the current file; **Save As** chooses another name/encoding; **Save Selection** writes only the chosen time and channels. WAV export supports PCM 8/16/24/32-bit and float32. PCM16 is a useful exchange format; float32 also preserves internal peaks above 0 dBFS. Extra bit depth cannot restore lost detail. Ambiguous older 32-bit WAV files ask for PCM or legacy-float interpretation; cancelling leaves the file intact.
+
+WAV text, cues and labels are retained. Cues follow editing, pasting and selection export; the destination title is kept. Recorder-specific fields are preserved verbatim, not recalculated after effects. Extra metadata is limited to 16 MiB; oversized input is rejected and omitted output fields require confirmation. Mixdown does not merge all source markers. Large WAV exports use RF64 when necessary.
+
+**New Multitrack Session**, **Open Session**, **Save Session** and **Save Session As** manage editable projects. A SoundSausage project (`.celp`) contains the audio, clips, lines, track settings, effect order/bypass/tails and VST3 settings. Save a project as well as the final WAV to retain separate tracks. Older SoundSausage versions remain readable; projects with track racks need app 0.15.0 or newer. Legacy `.ses` import is limited; use a new SoundSausage project for continued work.
+
+**Close / Ctrl+W** closes the current waveform; in multitrack it is **Close Session**. Save, discard or cancel when asked. The other view and clipboard remain available. **Exit / Ctrl+Q** closes the application and checks unsaved work.
+
+Long files are processed in blocks on disk, without the former 128 MiB limit. Reserve free space for source copies, results and Undo. Sessions are limited to 24 hours and 32 tracks. Long operations show progress and cancellation; cancelling preserves audio, selection, history and the old export target. One applied effect is one Undo step.
+
+After an unexpected exit, recovery offers the latest checkpoint: restore, remove or later. **File → Recover Work** opens retained copies. Original files remain intact; waveform, session, channels, clips, lines and racks return, but Undo starts afresh. Confirmed edits are checkpointed, cursor/selection about once per second. Active instances are skipped. Ordinary save/confirmed close clears that instance's recovery. Keep your own backups; a disk error can leave an older checkpoint.
+
+## 4. Playback, zoom and audio devices
+
+**Space** starts/stops; **P** pauses/resumes; **Esc** stops. A selection plays its range; otherwise playback starts at the cursor. **Loop** repeats that range, with a possible short boundary transition. **Home/End** go to start/end; skip buttons move five seconds. Navigating or applying a waveform edit stops playback. **Zoom In / Zoom Out**, **Ctrl+wheel**, the wheel and horizontal scrollbar navigate the display. **Zoom Full / Ctrl+0** shows everything; **Zoom to Selection / Ctrl+Shift+A** fills the view with the selection. Their icons differ. At close zoom samples join continuously; further out each screen column retains minimum/maximum peaks.
+
+In **Options → Audio Hardware**, select an output or **System Default**; it is remembered and used for playback and Preview. The playback buffer defaults to 100 ms: larger tolerates interruptions, smaller responds faster. Actual device buffers can differ. Changes stop playback/previews. If a device disappears, reconnect or select an available output and restart. Check system volume, route, Mute and Solo when silent. Output-rate conversion does not change the recording.
+
+## 5. Recording
+
+Connect a microphone/interface, choose the recording device in **Audio Hardware**, then press **R**. The setup window selects input, destination, mono/stereo, first input channel and maximum duration. New waveform records separately; insert at cursor or replace selection edits an existing waveform; multitrack adds a new clip on the chosen track at the cursor. A mono input can feed both stereo channels. An existing waveform determines rate/channels; differing input rate is converted after Stop. **Until Stop** continues until stopped or storage is exhausted.
+
+**Start Recording** opens the microphone; nothing opens before that. The live waveform shows the last 20 seconds, the clock the total captured duration and meters the input. **P** pauses/resumes without including paused time. **Stop**, **Esc**, **Space** or **R** keeps the take. Insertion/replacement or a new multitrack clip is one Undo step; a new waveform still needs Save. **Discard Recording** asks before removing only this take. Closing asks to keep, discard or continue. Other edits are locked during recording.
+
+The input is not monitored through speakers. Adjust gain on the interface/microphone or Linux sound settings; clipped input cannot be repaired by lowering it later. Device loss stops and retains captured audio rather than switching microphones. Takes are written in blocks, checkpointed roughly each second. Recovery opens the last checkpoint as a separate waveform. Cancelling conversion after Stop leaves the take available under **Recover Work** and the old document unchanged.
+
+## 6. Selection, channels and editing
+
+Click for a cursor; drag for a time range. In stereo, drag inside L or R to select that channel, across both for stereo. **Channels** or **Edit → Select Channels** changes channels without losing the time range: **Alt+B / Alt+L / Alt+R** choose both/left/right. Shift-click extends the range while retaining channels; double-click selects visible audio in the clicked channel; **Ctrl+A** selects the whole duration of the current channels. Mono has one channel. **Set Selection** enters exact frame positions; at 44,100 Hz, 44,100 frames equal a second. **F4** moves boundaries inward to zero crossings (left when both channels are chosen).
+
+**Cut / Ctrl+X** removes and copies; **Copy / Ctrl+C** copies; **Paste / Ctrl+V** replaces the selection or inserts at the cursor. **Mix Paste / Ctrl+M** adds clipboard audio from that position and may raise peaks. **Delete** removes the range; **Trim / Ctrl+T** keeps only it. **Ctrl+Z / Ctrl+Shift+Z** undo/redo. Pasting converts sample rate, leaving the clipboard intact. With both channels, channel counts must match. Left/right Copy or Save Selection produces mono, while Save/Save As always retains the full stereo waveform.
+
+A stereo waveform shares one timeline: duration-changing edits (cut/delete/trim, Stretch, insertion and added tails) require both channels. A mono paste into one stereo channel must exactly replace that range; Mix Paste must stay inside the existing duration. **Silence** clears one selected channel without moving the other. Pitch Shift, delay, echo, reverb and convolution can change one channel while preserving length. Recording into an existing stereo waveform also requires both channels. Undo/recovery retain channel choice.
+
+## 7. Applying effects
+
+Waveform effects under **Transform** affect the selected range/channels, or their whole duration without a time selection. The other channel remains unchanged and audible in stereo Preview. **Preview** plays at most the first eight seconds without committing; click again, change a setting or close to stop. **OK** applies one Undo step; **Cancel** preserves the waveform. **F2 / Repeat Last Command** repeats the last settings on the current selection/channels. Some effects analyse the full selection before previewing: Normalize, time/pitch and high-quality distortion.
+
+### Amplitude
+
+**Amplify / Fade** uses initial/final amplification: 100% unchanged, 50% half amplitude, 200% double. Lock left/right ties channels; equal initial/final gives constant gain, untick for a fade. Linear fades can reach zero, logarithmic fades need positive endpoints. Presets include ±6 dB and fades. Direct **Fade In / Fade Out** apply a linear fade immediately. Example: select a quiet introduction, choose a fade-in, preview and confirm.
+
+**Channel Mixer** is stereo only. Each output combines percentages of the original L/R; negatives invert input polarity and output inversion flips the sum. Presets swap channels, copy one to both, average to mono (still two channels) or subtract channels. Mixing can exceed 0 dBFS. A one-channel selection changes only that output, though both originals can feed it.
+
+**Dynamics Processing** maps input dB to output dB. Below the diagonal reduces levels, above boosts. Click/drag points; edit exact values below; right-click, Remove Point or Delete removes interior points. End positions stay fixed. Attack controls response to peaks, Release recovery, Output gain the result. Stereo linking keeps common gain. Start with 3:1 above −18 dB for speech. Compressor reduces loud passages; limiter restrains peaks; gate/expander reduces quiet passages. There is no look-ahead, so slow attack can let transients through.
+
+**Envelope** draws gain over 0–100% of the fragment, with 0–200% amplitude (100% neutral). Click/drag or enter positions/gains; remove interior points. Presets provide fades, both-end fades and a central dip. Logarithmic interpolation needs positive gains. To lower one word, place points around it and draw a dip. This writes audio; multitrack clip lines stay separately editable.
+
+**Normalize** moves the highest peak to a target (default 98%) using one gain factor. It does not equalize words. Equal left/right normalization preserves balance; unlink for independent peaks. DC removal recentres the signal first; silence remains silence. Use after mixing to leave PCM headroom. **Invert** reverses polarity, **Reverse** reverses time, and **Silence** zeros the chosen range without removing time. They apply immediately.
+
+### EQ and filters
+
+Under **Filters**, **Graphic Equalizer** has ten octave bands, 31.5 Hz–16 kHz, each −24…+24 dB. Unusable bands at low sample rates are disabled. Flat resets, Bass lift adds low end, Voice presence emphasizes speech, Gentle smile lightly lifts lows/highs. The graph combines overlapping bands and Output gain (display −36…+36 dB). Boosting can exceed 0 dBFS: lower Output gain before PCM export.
+
+**Parametric Equalizer** has five bell bands plus low/high shelves, individually enabled. Frequency chooses the centre/transition, Gain is −24…+24 dB, and higher Q narrows a bell. Shelves have fixed smooth transitions and no Q control. For a resonance, use a narrow negative bell; for broad tone, use a wide bell/shelf with small gain. Flat/Reset zeros gains; voice clarity and warmth are starting points.
+
+**Filters** offers high-pass (remove low rumble, starts 80 Hz), low-pass (soften highs, starts 8 kHz), band-pass and notch. High/low-pass use Butterworth 12/24/36/48 dB/oct, about −3 dB at cutoff; steeper can ring more. Band-pass/notch use Q. Telephone is a broad band-pass; 50/60 Hz notches remove only the fundamental hum, not its harmonics. Reset restores the rumble preset. Filters keep state between blocks, but start empty at the selection boundary, preserve length and change phase. Abrupt short selections can click; use a wider range.
+
+### Delay, echo and reverb
+
+**Delay Effects → Delay** adds one copy after 1–2,000 ms. Left/mono controls the first delay; unlink channels for a separate right time. Presets include single delay 250 ms, slapback 80 ms, doubling 25 ms and stereo widening. **Echo** repeats via Feedback (0–95%); higher means longer decay. High-frequency damping darkens feedback repeats, not the first copy. Ping-pong alternates stereo repeats. Warm echo and long repeats are useful starts; high feedback can build excessive levels.
+
+**Reverb** uses Room size for reflection spacing, Decay for approximate RT60 (0.1–10 s), Predelay (0–250 ms) before the wet signal, high-frequency damping and stereo width (0 same wet signal both sides, 100 full spread; disabled for mono). Small room, studio, large hall and long ambient presets vary space/decay. For speech start with low Wet, short decay and some predelay. This is algorithmic reverb, not an exact hall model.
+
+Dry and Wet are independent percentages added together; Output gain (−24…+24 dB) scales the sum without automatic limiting. Default length is unchanged: later repeats are cut. Add effect tail inserts 0.01–60 s, shifting following waveform audio and later cues. The last 10 ms fades to silence. Presets untick the tail; set it after choosing one. Suggested tail can exceed the limit with extreme echo; lower feedback/delay. Example: 2 s voice + 3 s tail becomes 5 s. A single stereo channel cannot add time.
+
+### Noise reduction and click repair
+
+Select background-only audio (typically half a second to several seconds), choose **Capture Noise Profile**, then select the audio to clean and reopen **Noise Reduction**. Capture from selection in the dialog also works; capturing changes no audio. A profile averages at most the first 30 s. Minimum duration depends on sample rate; rate/channel count must match. For one selected stereo channel the corresponding profile channel is used. Save/Load Profile uses `.ssnoise`, a spectrum rather than an audio recording. Reuse only for a matching setup.
+
+Maximum reduction is 0–36 dB; begin at 6–12 dB. Sensitivity treats more background as noise; smoothing softens changing suppression but may let noise through after sounds. Stereo linking retains balance. “Keep removed noise only” auditions the removed material: disable it before applying a cleaned result. Gentle/Balanced are useful starts. Best for steady hiss/ventilation; it cannot separate voices or restore lost detail. Excess reduction or a musical profile can damage sound. Length/cues stay fixed; this is offline processing.
+
+**Click Removal** joins undamaged samples around short isolated impulses. Higher threshold multiplier is more conservative; lower minimum jump dBFS detects quieter clicks. Maximum click width is 0.02–2 ms. Conservative, small-click and wider-click presets are starting points. Preview percussion carefully: sharp attacks can resemble damage. Long crackles, clipping and damaged boundary samples need separate treatment.
+
+### Time and pitch
+
+**Time/Pitch → Stretch** changes duration (25–400%) while keeping pitch: 200% doubles length, 50% halves it. Tempo fields calculate old/new BPM (120→100 gives 120%); they do not detect tempo. Cues inside follow the scale; later audio/cues shift by the difference. Stereo requires both channels. **Pitch Shift** changes −24…+24 semitones without changing duration/cues; ±12 is an octave, 0.01 semitone one cent. Formant preservation can keep vocal character; compare both settings for instruments.
+
+Fine (default) and Fast use Rubber Band offline. Stereo is processed jointly; extreme changes can sound artificial. For a real change use at least 50 ms and 64 samples. Neutral settings return original audio exactly; output rounds to whole samples. Preview analyses the whole selection before playing at most eight seconds; long files need analysis time and some analysis memory. Progress is cancellable. For a multitrack clip, edit a waveform copy then apply it back; line positions scale to the new length, following clips do not shift automatically.
+
+### Special effects
+
+**Special → Distortion** offers soft clip (rounded saturation), hard clip (sharp cutoff), wavefold (folds peaks) and bit crush (2–16 bits). Drive is 0–36 dB, Ceiling 10–100%, Effect mix blends original/processed, Output gain −24…+24 dB. Ceiling shapes only the processed part, not dry audio or final output. Soft warmth, crunch, wavefold and bit-crush presets are starts. High quality oversamples to reduce aliasing (usually 4×, adapted at high rates) and processes the whole selection even for Preview; standard is faster/rougher. Length/cues remain fixed; silence stays silent.
+
+**Convolution** applies a WAV impulse response representing a filter, cabinet or acoustic response. Choose the response, set Dry/Wet and preview. Mono responses work per channel; stereo responses need stereo input and use the corresponding selected channel. A different rate is converted; the response is limited after conversion to 10 seconds and 524,288 samples, with a 32 MiB file limit. Empty or silent responses are rejected. A response tail has no extra fade. Normalize impulse energy scales both response channels together; disable for a deliberately calibrated response. Dry 0%, Wet 100% gives a pure filter result. Keep full response tail adds response length minus one sample and shifts later audio/cues. Without it length stays fixed. Keep the response file unchanged for F2; changed/missing files require choosing again.
+
+## 8. Generate, analyse and convert
+
+**Generate → Tones** inserts a sine wave at the cursor or replaces a selection with the specified duration, frequency in Hz and amplitude %. Try 440 Hz at modest level. **Generate → Silence** inserts/replaces with a chosen silence duration; **Transform → Silence** instead preserves the existing duration.
+
+**Analyze → Frequency Analysis / Alt+Z** shows frequency versus dBFS for the selected channels/range (or full recording). It uses a bounded central part of long ranges, a Hann window and channel-power average. The peak frequency/level is shown below. Select a shorter sound to investigate it; this is not a continuous spectrum meter. Closing changes no audio.
+
+**Edit → Convert Sample Rate** converts the entire waveform to the chosen Hz, preserving pitch/duration with whole-frame rounding (at least one frame). Cursor/selection follow the same times. Undo restores audio and rate. This changes the document; automatic playback conversion changes only the output stream.
+
+## 9. Multitrack and automation
+
+Create a session with rate/track count, import WAV using the file menu/import button or drop files from the file manager. Rates are converted; multiple files use successive tracks. **Window → Insert Current Waveform in Multitrack** inserts the open waveform. Add/remove track changes the selected track; Undo restores deleted content. Track names are editable. Mute silences, Solo restricts playback to solo tracks; Mute still wins. Pan −100 is left, 0 centre, +100 right. For stereo it attenuates one side rather than copying channels.
+
+In **Move Clips**, drag the centre to move, edges to trim; trimming retains source audio for later extension. Empty timeline space selects a playback range. **Duplicate Clip / Ctrl+D** shares the source; **Remove Clip / Delete** removes the clip, not its source file. Right-click opens clip commands. **Clip Properties** edits name, timeline/source bounds (seconds), gain, pan, fades and mute; total fades must fit the clip. Cancel leaves it unchanged.
+
+**Volume Line** and **Pan Line** draw points inside clips. Click adds, drag moves, right/double-click opens exact frame/value input, Remove Point/Delete removes the selected point, Reset Line restores neutral. Esc cancels a drag. Volume: bottom 0%, middle 100%, top 200%, multiplying clip/track gain and fades. Pan: top right, middle neutral, bottom left, adding to clip/track pan. Set ordinary pan centre for a full sweep. Points follow source audio when moving/trimming and are saved in the project. Return to Move Clips to move clips again.
+
+Double-click or **Edit Copy in Waveform** opens a clip copy for offline effects. **Window → Apply Waveform to Clip** explicitly returns the result; merely switching views does not apply it. Session Undo restores old audio/lines. Sample rate is converted back, lines scale with changed length, and later clips do not move: check overlaps. **Mix Down Session / Mix Down** exports the entire session, regardless of time selection, with mute/solo, gain/pan, lines, effects and tails. Save Session keeps the editable project. Volume/pan/mute/solo/racks can change during playback; Undo and view changes stop it.
+
+## 10. Realtime track effects and VST3
+
+Click **FX** by a track or **Transform → Track Effects**. Add an effect, choose settings/preset, OK adds it, Apply changes it while the window stays open. Up/Down changes order, a checkmark bypasses, Edit/double-click edits, Remove deletes. Up to 16 effects per track run top-to-bottom after clip gain/lines/fades, before track volume/pan. Mono sources become stereo. Tail after last clip adds 0–60 s. Chains are included in playback, mixdown, projects and recovery. Restart/seek/bypass starts empty effect memory; internal edits can restart decay, VST3 parameter edits retain the instance.
+
+Realtime racks support fixed Amplify, Channel Mixer, Dynamics, Graphic/Parametric EQ, filters, Delay, Echo, Reverb, Invert and VST3. For gain variation use Volume Line. Normalize, noise/click repair, time/pitch, distortion and convolution remain offline waveform edits. Apply can update while listening; audio already buffered still uses old settings. Source recordings remain unchanged.
+
+Install a **64-bit native Linux VST3 audio effect**, choose VST3 Plug-in then **Add VST3 Bundle**, and select its `.vst3` directory. Multiple effects appear separately. Search parameter names and change their normalized 0–100% position (50% need not mean 50% volume); discrete parameters have steps, read-only ones cannot change. Apply auditions on the track; OK confirms/closes. The original custom plug-in editor is not embedded. Supported: one stereo input bus/output bus and float32 processing. No VST2, Windows VST, MIDI instruments, sidechains or other formats. Unsupported requirements are reported without changing the project.
+
+Plug-in delay is displayed but not automatically compensated across tracks. Each plug-in runs in a helper process; crash, timeout or invalid audio stops playback and preserves a recording take. Projects store parameters and at most 1 MiB state per effect, not plug-in code or external libraries/samples. On another machine install/add the matching bundle. Missing/changed versions retain settings but playback/export requires the matching effect or deliberate bypass; effects are never silently dropped.
+
+## 11. Recording with backing tracks
+
+Place backing clips on tracks, select a different target track and position the cursor. Press **R**, select input and a new-clip destination, enable “Play existing tracks while recording”. Existing tracks and effects play from the cursor; input is not sent to speakers. **P** pauses/resumes both; **Stop/Esc/Space/R** stops both and keeps the take as one Undo step. Recording can continue after the backing ends; a maximum duration stops both. Discard removes only this take. Device/plug-in failure retains captured samples. Document edits are locked during recording.
+
+“Recording position offset” adjusts the inserted clip: negative earlier, positive later. If a take is 15 ms late, try −15 ms. Record a known click through your actual input/output route, compare positions, enter the difference and verify with a second take. Recalibrate after changing devices/buffer. Audio before timeline zero is trimmed on insertion. Offset is remembered, but automatic physical calibration, drift correction between clocks, plug-in delay compensation and punch-in/out remain work in progress. Check a short take before a long session.
+
+## 12. Shortcuts, favourites and troubleshooting
+
+**Favorites** provides repeat, normalize and fades; custom lists are not yet available. **Window** switches views and transfers waveforms/clips. Most common shortcuts are listed below; when typing in a field, keys belong to that field. Click the waveform/timeline before transport/edit shortcuts.
+
+| Keys | Action |
+| --- | --- |
+| Ctrl+N / Ctrl+O | New / open in current view |
+| Ctrl+S / Ctrl+Shift+S | Save / save as |
+| Ctrl+Alt+N / Ctrl+Alt+O / Ctrl+Alt+S | New / open / save session |
+| Ctrl+W / Ctrl+Q | Close document / exit |
+| Ctrl+Z / Ctrl+Shift+Z | Undo / redo |
+| Ctrl+X / Ctrl+C / Ctrl+V | Cut / copy / paste |
+| Ctrl+M / Ctrl+T / Delete | Mix Paste / trim / remove |
+| Ctrl+A / F4 | Select whole duration / zero crossings |
+| Alt+B / Alt+L / Alt+R | Both / left / right channels |
+| Space / P / Esc / R | Play-stop / pause / stop / record |
+| Home / End / + / − | Start / end / zoom in / out |
+| Ctrl+0 / Ctrl+Shift+A | Full / selection zoom |
+| Ctrl+D / Tab / F11 | Duplicate clip / change view / full screen |
+| F1 / F2 / Alt+Z | Manual / repeat effect / frequency analysis 
+
+No input: check chosen device/channel and Linux microphone level, reconnect then start a new take. No output: check routing, volume, mute/solo and Audio Hardware. Distortion/red peaks: lower summed gain and normalize before PCM; Mix Paste and overlapping clips add. Paste rejected: check channel count or exact mono replacement length. Effect disabled: open a waveform/copy; Channel Mixer needs stereo, time-changing edits need both channels. Moving points instead of clips: choose Move Clips. Disk full: free space for copies/results/Undo without deleting active work files. Damaged recovery: original files remain; remove a copy only if no longer needed.
+
+Work in progress includes custom plug-in editors, more formats, automatic latency/drift compensation, punch-in/out, custom favourites and a marker editor. Realtime chains, Linux VST3 and recording with backing are available as described above. Save your project before leaving. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

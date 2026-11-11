@@ -1,0 +1,54 @@
+{
+  " {0} Hz · Input · {1} ": [
+    1
+  ],
+  " {0} Hz · {1} · {2} ": [
+    1,
+    2
+  ],
+  "Channels: {0}. Applies to the selection, or the whole waveform if nothing is selected.\nPreview plays the first 8 seconds without changing the waveform.": [
+    0
+  ],
+  "Invalid {0}.": [
+    0
+  ],
+  "Parametric band {0}: {1}": [
+    1
+  ],
+  "Selection {0}": [
+    0
+  ],
+  "Suggested tail: about {0} s.{1}\nThe final 10 ms of an added tail fade to silence.": [
+    1
+  ],
+  "The SES {0} chunk is truncated.": [
+    0
+  ],
+  "The SES {0} record layout is unsupported.": [
+    0
+  ],
+  "View {0}": [
+    0
+  ],
+  "{0} Hz · {1} · {2}": [
+    1,
+    2
+  ],
+  "{0} Line Point": [
+    0
+  ],
+  "{0} by {1}; click to add or drag points, Delete to remove": [
+    0,
+    1
+  ],
+  "{0} is outside the supported range.": [
+    0
+  ],
+  "{0} must be between {1} and {2}.": [
+    0
+  ],
+  "{0} output from {1}": [
+    0,
+    1
+  ]
+}

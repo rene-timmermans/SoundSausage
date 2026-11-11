@@ -1,8 +1,10 @@
 """VST3 bundle selection and a generic parameter editor with saved component state."""
+from .i18n import Literal
 from pathlib import Path
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QDialog,QVBoxLayout,QHBoxLayout,QComboBox,QPushButton,
-    QLabel,QDoubleSpinBox,QDialogButtonBox,QFileDialog)
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QDialog, QComboBox, QPushButton, QLabel, QDoubleSpinBox, QFileDialog
 from .plugins import read_registry, scan_plugin, PluginProcess
 from .progress_ui import long_operation
 from .icons import make_icon
@@ -32,8 +34,8 @@ class PluginDialog(QDialog):
 
     def reload(self,key=None):
         registry=read_registry();self.plugin.blockSignals(True);self.plugin.clear()
-        for identifier,entry in sorted(registry.items(),key=lambda item:item[1]['name'].casefold()):self.plugin.addItem(entry['name'],identifier)
-        if key and key not in registry:self.plugin.addItem((self.saved or {}).get('name','Missing plug-in'),key)
+        for identifier,entry in sorted(registry.items(),key=lambda item:item[1]['name'].casefold()):self.plugin.addItem(Literal(entry['name']),identifier)
+        if key and key not in registry:self.plugin.addItem(Literal(self.saved['name']) if self.saved and self.saved.get('name') else 'Missing plug-in',key)
         if key:self.plugin.setCurrentIndex(max(0,self.plugin.findData(key)))
         self.plugin.blockSignals(False);self.load_plugin()
 
@@ -58,9 +60,9 @@ class PluginDialog(QDialog):
             self.process=PluginProcess(settings,self.session.sample_rate)
             self.parameters=self.process.info['parameters'];self.values={str(p['id']):p['value'] for p in self.parameters if not p['readonly']}
             self.values.update(settings.get('values',{}))
-            for parameter in self.parameters:self.parameter.addItem(parameter['name'],str(parameter['id']))
+            for parameter in self.parameters:self.parameter.addItem(Literal(parameter['name']),str(parameter['id']))
             latency=self.process.info['latency']*1000/self.session.sample_rate
-            self.status.setText(entry['name']+(' · Plug-in delay: %.2f ms (without automatic compensation)'%latency if latency else ''))
+            self.status.setText(f"{entry['name']} · Plug-in delay: {latency:.2f} ms (without automatic compensation)" if latency else Literal(entry['name']))
             self.button_box.button(QDialogButtonBox.StandardButton.Ok).setEnabled(True);self.show_parameter()
         except (ValueError,OSError,RuntimeError) as error:self.status.setText(str(error));self.value.setEnabled(False)
 
@@ -71,7 +73,7 @@ class PluginDialog(QDialog):
         self.value.setValue(self.values.get(str(parameter['id']),parameter['value'])*100)
         self.value.setSingleStep(100/parameter['steps'] if parameter['steps']>0 else .1)
         self.value.setEnabled(not parameter['readonly']);self.value.blockSignals(False)
-        self.display.setText(parameter.get('unit',''))
+        self.display.setText(Literal(parameter.get('unit','')))
 
     def change_value(self,value):
         index=self.parameter.currentIndex()

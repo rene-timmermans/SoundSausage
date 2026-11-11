@@ -4,7 +4,7 @@ Section: sound
 Priority: optional
 Architecture: amd64
 Maintainer: Rene Timmermans <rtimmermans@infodatek.com>
-Depends: python3 (>= 3.12), python3-numpy, python3-pyside6.qtcore (>= 6.8), python3-pyside6.qtgui (>= 6.8), python3-pyside6.qtwidgets (>= 6.8), python3-pyside6.qtmultimedia (>= 6.8), qt6-qpa-plugins, libsamplerate0, librubberband2 (>= 3.3) | librubberband3, libc6 (>= 2.41), libstdc++6
+Depends: python3 (>= 3.12), python3-numpy, python3-pyside6.qtcore (>= 6.8), python3-pyside6.qtgui (>= 6.8), python3-pyside6.qtwidgets (>= 6.8), python3-pyside6.qtmultimedia (>= 6.8), qt6-qpa-plugins, qt6-translations-l10n, libsamplerate0, librubberband2 (>= 3.3) | librubberband3, libc6 (>= 2.41), libstdc++6
 Homepage: https://github.com/rene-timmermans/SoundSausage
 Description: Intuïtieve audio-editor met vertrouwde gereedschappen
  Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek

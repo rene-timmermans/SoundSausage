@@ -1,0 +1,46 @@
+ (import)||| (import)||| (Import)||| (importé)||| (importado)
+{0} Hz · Input · {1}|||{0} Hz · Ingang · {1}|||{0} Hz · Eingang · {1}|||{0} Hz · Entrée · {1}|||{0} Hz · Entrada · {1}
+{0} Hz · {1} · {2}|||{0} Hz · {1} · {2}|||{0} Hz · {1} · {2}|||{0} Hz · {1} · {2}|||{0} Hz · {1} · {2}
+{0} captured frames|||{0} opgenomen frames|||{0} aufgenommene Frames|||{0} trames enregistrés|||{0} tramas grabados
+{0} · {1} frames|||{0} · {1} frames|||{0} · {1} Frames|||{0} · {1} trames|||{0} · {1} tramas
+ · MUTE||| · GEDEMPT||| · STUMM||| · MUET||| · SILENCIO
+ · PAN line||| · PAN-lijn||| · PAN-Kurve||| · Courbe PAN||| · Curva PAN
+ · VOL line||| · VOL-lijn||| · LAUTST.-Kurve||| · Courbe VOL||| · Curva VOL
+ · {0} dB||| · {0} dB||| · {0} dB||| · {0} dB||| · {0} dB
+ · −∞ dB||| · −∞ dB||| · −∞ dB||| · −∞ dB||| · −∞ dB
+TRACKS                         sec|||SPOREN                         s|||SPUREN                         s|||PISTES                         s|||PISTAS                         s
+sec|||s|||s|||s|||s
+ sec||| s||| s||| s||| s
+Mixdown saved: {0}|||Eindmix opgeslagen: {0}|||Abmischung gespeichert: {0}|||Mixage enregistré : {0}|||Mezcla guardada: {0}
+Original: {0} s → Result: {1} s|||Origineel: {0} s → Resultaat: {1} s|||Original: {0} s → Ergebnis: {1} s|||Original : {0} s → Résultat : {1} s|||Original: {0} s → Resultado: {1} s
+Noise profile: {0} Hz, {1} channel(s), {2} s|||Ruisprofiel: {0} Hz, {1} kanaal/kanalen, {2} s|||Rauschprofil: {0} Hz, {1} Kanal/Kanäle, {2} s|||Profil de bruit : {0} Hz, {1} canal/canaux, {2} s|||Perfil de ruido: {0} Hz, {1} canal(es), {2} s
+Recording — |||Opname — |||Aufnahme — |||Enregistrement — |||Grabación — 
+New clip on {0}|||Nieuwe clip op {0}|||Neuer Clip auf {0}|||Nouveau clip sur {0}|||Nuevo clip en {0}
+{0} · Plug-in delay: {1} ms (without automatic compensation)|||{0} · Plug-invertraging: {1} ms (zonder automatische compensatie)|||{0} · Plug-in-Verzögerung: {1} ms (ohne automatischen Ausgleich)|||{0} · Retard du plug-in : {1} ms (sans compensation automatique)|||{0} · Retardo del complemento: {1} ms (sin compensación automática)
+32-bit WAV Interpretation|||Interpretatie van 32-bits WAV|||32-Bit-WAV-Interpretation|||Interprétation du WAV 32 bits|||Interpretación de WAV de 32 bits
+32-bit type-1 WAV may contain signed PCM integers or legacy floats.|||32-bits type-1-WAV kan PCM-gehele getallen met teken of oudere floats bevatten.|||32-Bit-WAV vom Typ 1 kann vorzeichenbehaftete PCM-Ganzzahlen oder ältere Gleitkommadaten enthalten.|||Un WAV de type 1 en 32 bits peut contenir des entiers PCM signés ou d’anciens flottants.|||Un WAV de tipo 1 y 32 bits puede contener enteros PCM con signo o flotantes antiguos.
+Signed 32-bit PCM integers (float32 editing precision)|||32-bits PCM-gehele getallen met teken (float32-bewerkingsprecisie)|||Vorzeichenbehaftete 32-Bit-PCM-Ganzzahlen (float32-Bearbeitungsgenauigkeit)|||Entiers PCM signés sur 32 bits (précision de traitement float32)|||Enteros PCM de 32 bits con signo (precisión de edición float32)
+Legacy type-1 floats (convert to normalized float32)|||Oudere type-1-floats (omzetten naar genormaliseerde float32)|||Ältere Typ-1-Gleitkommadaten (in normiertes float32 umwandeln)|||Anciens flottants de type 1 (conversion en float32 normalisé)|||Flotantes antiguos de tipo 1 (convertir a float32 normalizado)
+Signed|||Met teken|||Mit Vorzeichen|||Signé|||Con signo
+Supported WAV formats: PCM 8/16/24/32 and normalized float32.|||Ondersteunde WAV-formaten: PCM 8/16/24/32 en genormaliseerde float32.|||Unterstützte WAV-Formate: PCM 8/16/24/32 und normiertes float32.|||Formats WAV pris en charge : PCM 8/16/24/32 et float32 normalisé.|||Formatos WAV admitidos: PCM 8/16/24/32 y float32 normalizado.
+WAV · 8-bit PCM (*.wav)|||WAV · 8-bits PCM (*.wav)|||WAV · 8-Bit-PCM (*.wav)|||WAV · PCM 8 bits (*.wav)|||WAV · PCM de 8 bits (*.wav)
+WAV · 16-bit PCM (*.wav)|||WAV · 16-bits PCM (*.wav)|||WAV · 16-Bit-PCM (*.wav)|||WAV · PCM 16 bits (*.wav)|||WAV · PCM de 16 bits (*.wav)
+WAV · 24-bit PCM (*.wav)|||WAV · 24-bits PCM (*.wav)|||WAV · 24-Bit-PCM (*.wav)|||WAV · PCM 24 bits (*.wav)|||WAV · PCM de 24 bits (*.wav)
+WAV · 32-bit integer PCM (*.wav)|||WAV · 32-bits gehele PCM (*.wav)|||WAV · 32-Bit-Ganzzahl-PCM (*.wav)|||WAV · PCM entier 32 bits (*.wav)|||WAV · PCM entero de 32 bits (*.wav)
+WAV · 32-bit normalized float (*.wav)|||WAV · 32-bits genormaliseerde float (*.wav)|||WAV · normiertes 32-Bit-Gleitkomma (*.wav)|||WAV · flottant 32 bits normalisé (*.wav)|||WAV · flotante normalizado de 32 bits (*.wav)
+WAV audio (*.wav *.WAV)|||WAV-audio (*.wav *.WAV)|||WAV-Audio (*.wav *.WAV)|||Audio WAV (*.wav *.WAV)|||Audio WAV (*.wav *.WAV)
+WAV audio (*.wav *.WAV);;All files (*)|||WAV-audio (*.wav *.WAV);;Alle bestanden (*)|||WAV-Audio (*.wav *.WAV);;Alle Dateien (*)|||Audio WAV (*.wav *.WAV);;Tous les fichiers (*)|||Audio WAV (*.wav *.WAV);;Todos los archivos (*)
+SoundSausage Project (*.celp)|||SoundSausage-project (*.celp)|||SoundSausage-Projekt (*.celp)|||Projet SoundSausage (*.celp)|||Proyecto SoundSausage (*.celp)
+Supported projects (*.celp *.ses *.SES);;SoundSausage Project (*.celp);;Legacy session (*.ses *.SES)|||Ondersteunde projecten (*.celp *.ses *.SES);;SoundSausage-project (*.celp);;Oudere sessie (*.ses *.SES)|||Unterstützte Projekte (*.celp *.ses *.SES);;SoundSausage-Projekt (*.celp);;Ältere Sitzung (*.ses *.SES)|||Projets pris en charge (*.celp *.ses *.SES);;Projet SoundSausage (*.celp);;Ancienne session (*.ses *.SES)|||Proyectos admitidos (*.celp *.ses *.SES);;Proyecto SoundSausage (*.celp);;Sesión antigua (*.ses *.SES)
+Noise profiles (*.ssnoise)|||Ruisprofielen (*.ssnoise)|||Rauschprofile (*.ssnoise)|||Profils de bruit (*.ssnoise)|||Perfiles de ruido (*.ssnoise)
+Noise profiles (*.ssnoise);;All files (*)|||Ruisprofielen (*.ssnoise);;Alle bestanden (*)|||Rauschprofile (*.ssnoise);;Alle Dateien (*)|||Profils de bruit (*.ssnoise);;Tous les fichiers (*)|||Perfiles de ruido (*.ssnoise);;Todos los archivos (*)
+Locate the WAV files used by this session: |||Zoek de WAV-bestanden van deze sessie: |||WAV-Dateien dieser Sitzung suchen: |||Rechercher les fichiers WAV utilisés par cette session : |||Buscar archivos WAV usados por esta sesión: 
+Imported SES session. Save as .celp to keep a SoundSausage project.|||SES-sessie geïmporteerd. Sla op als .celp om een SoundSausage-project te bewaren.|||SES-Sitzung importiert. Als .celp speichern, um ein SoundSausage-Projekt zu behalten.|||Session SES importée. Enregistrez en .celp pour conserver un projet SoundSausage.|||Sesión SES importada. Guarda como .celp para conservar un proyecto SoundSausage.
+SES imported — empty track metadata recovered|||SES geïmporteerd — lege spoorinformatie hersteld|||SES importiert — leere Spurmetadaten wiederhergestellt|||SES importé — métadonnées de piste vide récupérées|||SES importada — metadatos de pista vacía recuperados
+SES imported — save as .celp|||SES geïmporteerd — opslaan als .celp|||SES importiert — als .celp speichern|||SES importé — enregistrer en .celp|||SES importada — guardar como .celp
+Stop and keep the recording before closing?|||Opname stoppen en behouden vóór afsluiten?|||Aufnahme vor dem Schließen stoppen und behalten?|||Arrêter et conserver l’enregistrement avant de fermer ?|||¿Detener y conservar la grabación antes de cerrar?
+Save changes to the current waveform?|||Wijzigingen in de huidige golfvorm opslaan?|||Änderungen an der aktuellen Wellenform speichern?|||Enregistrer les modifications de la forme d’onde actuelle ?|||¿Guardar cambios en la forma de onda actual?
+Save changes to the multitrack session?|||Wijzigingen in de multitracksessie opslaan?|||Änderungen an der Mehrspursitzung speichern?|||Enregistrer les modifications de la session multipiste ?|||¿Guardar cambios en la sesión multipista?
+Discard this take? Existing audio remains unchanged.|||Deze take verwerpen? Bestaande audio blijft ongewijzigd.|||Diese Aufnahme verwerfen? Vorhandenes Audio bleibt unverändert.|||Abandonner cette prise ? L’audio existant reste inchangé.|||¿Descartar esta toma? El audio existente no cambiará.
+Recording kept for recovery. Use File → Recover Work.|||Opname bewaard voor herstel. Gebruik Bestand → Werk herstellen.|||Aufnahme zur Wiederherstellung behalten. Datei → Arbeit wiederherstellen verwenden.|||Enregistrement conservé pour récupération. Utilisez Fichier → Récupérer le travail.|||Grabación conservada para recuperación. Usa Archivo → Recuperar trabajo.
+De handleiding ontbreekt in deze installatie. Installeer SoundSausage opnieuw.|||De handleiding ontbreekt in deze installatie. Installeer SoundSausage opnieuw.|||Das Handbuch fehlt in dieser Installation. SoundSausage erneut installieren.|||Le manuel manque dans cette installation. Réinstallez SoundSausage.|||Falta el manual en esta instalación. Reinstala SoundSausage.|||The manual is missing from this installation. Reinstall SoundSausage.

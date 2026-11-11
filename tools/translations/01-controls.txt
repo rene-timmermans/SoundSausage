@@ -1,0 +1,165 @@
+&File|||&Bestand|||&Datei|||&Fichier|||&Archivo
+&Edit|||Be&werken|||&Bearbeiten|||É&dition|||&Editar
+&View|||B&eeld|||&Ansicht|||&Affichage|||&Ver
+&Transform|||E&ffecten|||&Effekte|||Effe&ts|||E&fectos
+&Generate|||&Genereren|||Er&zeugen|||&Générer|||&Generar
+&Analyze|||&Analyseren|||Anal&ysieren|||Anal&yser|||A&nalizar
+F&avorites|||Fa&vorieten|||&Favoriten|||Fa&voris|||Favo&ritos
+&Options|||&Opties|||&Optionen|||&Options|||&Opciones
+&Window|||Ve&nster|||Fe&nster|||Fe&nêtre|||Ven&tana
+&Help|||&Help|||&Hilfe|||Aid&e|||A&yuda
+Language|||Taal|||Sprache|||Langue|||Idioma
+File|||Bestand|||Datei|||Fichier|||Archivo
+Edit|||Bewerken|||Bearbeiten|||Modifier|||Editar
+View|||Beeld|||Ansicht|||Affichage|||Vista
+Transform|||Effecten|||Effekte|||Effets|||Efectos
+Generate|||Genereren|||Erzeugen|||Générer|||Generar
+Analyze|||Analyseren|||Analysieren|||Analyser|||Analizar
+Favorites|||Favorieten|||Favoriten|||Favoris|||Favoritos
+Options|||Opties|||Optionen|||Options|||Opciones
+Window|||Venster|||Fenster|||Fenêtre|||Ventana
+Help|||Help|||Hilfe|||Aide|||Ayuda
+New|||Nieuw|||Neu|||Nouveau|||Nuevo
+Open|||Openen|||Öffnen|||Ouvrir|||Abrir
+Close|||Sluiten|||Schließen|||Fermer|||Cerrar
+Save|||Opslaan|||Speichern|||Enregistrer|||Guardar
+Save As|||Opslaan als|||Speichern unter|||Enregistrer sous|||Guardar como
+Save Selection|||Selectie opslaan|||Auswahl speichern|||Enregistrer la sélection|||Guardar selección
+New Session|||Nieuwe sessie|||Neue Sitzung|||Nouvelle session|||Nueva sesión
+Open Session|||Sessie openen|||Sitzung öffnen|||Ouvrir une session|||Abrir sesión
+Close Session|||Sessie sluiten|||Sitzung schließen|||Fermer la session|||Cerrar sesión
+Save Session|||Sessie opslaan|||Sitzung speichern|||Enregistrer la session|||Guardar sesión
+Save Session As|||Sessie opslaan als|||Sitzung speichern unter|||Enregistrer la session sous|||Guardar sesión como
+New Multitrack Session|||Nieuwe multitracksessie|||Neue Mehrspursitzung|||Nouvelle session multipiste|||Nueva sesión multipista
+Open Multitrack Session|||Multitracksessie openen|||Mehrspursitzung öffnen|||Ouvrir une session multipiste|||Abrir sesión multipista
+Recover Work|||Werk herstellen|||Arbeit wiederherstellen|||Récupérer le travail|||Recuperar trabajo
+Exit|||Afsluiten|||Beenden|||Quitter|||Salir
+Undo|||Ongedaan maken|||Rückgängig|||Annuler|||Deshacer
+Redo|||Opnieuw uitvoeren|||Wiederholen|||Rétablir|||Rehacer
+Repeat Last Command|||Laatste opdracht herhalen|||Letzten Befehl wiederholen|||Répéter la dernière commande|||Repetir última orden
+Cut|||Knippen|||Ausschneiden|||Couper|||Cortar
+Copy|||Kopiëren|||Kopieren|||Copier|||Copiar
+Paste|||Plakken|||Einfügen|||Coller|||Pegar
+Mix Paste|||Gemengd plakken|||Einmischen|||Collage mixé|||Pegar mezclando
+Delete Selection|||Selectie verwijderen|||Auswahl löschen|||Supprimer la sélection|||Eliminar selección
+Trim|||Trimmen|||Zuschneiden|||Rogner|||Recortar
+Select All|||Alles selecteren|||Alles auswählen|||Tout sélectionner|||Seleccionar todo
+Set Selection|||Selectie instellen|||Auswahl festlegen|||Définir la sélection|||Definir selección
+Select Channels|||Kanalen selecteren|||Kanäle auswählen|||Choisir les canaux|||Seleccionar canales
+Both (L+R)|||Beide (L+R)|||Beide (L+R)|||Les deux (L+R)|||Ambos (L+R)
+Left (L)|||Links (L)|||Links (L)|||Gauche (L)|||Izquierdo (L)
+Right (R)|||Rechts (R)|||Rechts (R)|||Droit (R)|||Derecho (R)
+Channels|||Kanalen|||Kanäle|||Canaux|||Canales
+Channels:|||Kanalen:|||Kanäle:|||Canaux :|||Canales:
+Left|||Links|||Links|||Gauche|||Izquierdo
+Right|||Rechts|||Rechts|||Droite|||Derecho
+Mono|||Mono|||Mono|||Mono|||Mono
+Stereo|||Stereo|||Stereo|||Stéréo|||Estéreo
+Begin|||Begin|||Beginn|||Début|||Inicio
+End|||Einde|||Ende|||Fin|||Fin
+Length|||Lengte|||Länge|||Durée|||Duración
+Sel|||Sel|||Ausw.|||Sél.|||Sel.
+Begin frame|||Beginframe|||Start-Frame|||Trame de début|||Trama inicial
+End frame|||Eindframe|||End-Frame|||Trame de fin|||Trama final
+Name|||Naam|||Name|||Nom|||Nombre
+Type|||Type|||Typ|||Type|||Tipo
+Duration|||Duur|||Dauer|||Durée|||Duración
+Channels (1 or 2)|||Kanalen (1 of 2)|||Kanäle (1 oder 2)|||Canaux (1 ou 2)|||Canales (1 o 2)
+Sample rate (Hz)|||Samplerate (Hz)|||Abtastrate (Hz)|||Fréquence d’échantillonnage (Hz)|||Frecuencia de muestreo (Hz)
+Sample rate|||Samplerate|||Abtastrate|||Fréquence d’échantillonnage|||Frecuencia de muestreo
+Play / Stop|||Afspelen / stoppen|||Wiedergabe / Stopp|||Lecture / arrêt|||Reproducir / detener
+Stop|||Stoppen|||Stopp|||Arrêter|||Detener
+Pause|||Pauzeren|||Pause|||Pause|||Pausa
+Loop Playback|||Herhaald afspelen|||Schleifenwiedergabe|||Lecture en boucle|||Reproducción en bucle
+Go to Start|||Naar begin|||Zum Anfang|||Aller au début|||Ir al inicio
+Go to End|||Naar einde|||Zum Ende|||Aller à la fin|||Ir al final
+Back 5 Seconds|||5 seconden terug|||5 Sekunden zurück|||Reculer de 5 secondes|||Retroceder 5 segundos
+Forward 5 Seconds|||5 seconden vooruit|||5 Sekunden vor|||Avancer de 5 secondes|||Avanzar 5 segundos
+Record|||Opnemen|||Aufnehmen|||Enregistrer|||Grabar
+Stop Recording|||Opname stoppen|||Aufnahme stoppen|||Arrêter l’enregistrement|||Detener grabación
+Start Recording|||Opname starten|||Aufnahme starten|||Démarrer l’enregistrement|||Iniciar grabación
+Discard Recording|||Opname verwerpen|||Aufnahme verwerfen|||Abandonner l’enregistrement|||Descartar grabación
+Recording|||Opnemen|||Aufnahme|||Enregistrement|||Grabación
+Playing|||Afspelen|||Wiedergabe|||Lecture|||Reproduciendo
+Paused|||Gepauzeerd|||Pausiert|||En pause|||En pausa
+Stopped|||Gestopt|||Gestoppt|||À l’arrêt|||Detenido
+Starting|||Starten|||Starten|||Démarrage|||Iniciando
+Finishing|||Afronden|||Abschließen|||Finalisation|||Finalizando
+Playback|||Afspelen|||Wiedergabe|||Lecture|||Reproducción
+Zoom In|||Inzoomen|||Vergrößern|||Zoom avant|||Acercar
+Zoom Out|||Uitzoomen|||Verkleinern|||Zoom arrière|||Alejar
+Zoom Full|||Volledig overzicht|||Gesamtansicht|||Vue complète|||Vista completa
+Zoom to Selection|||Inzoomen op selectie|||Auswahl vergrößern|||Zoom sur la sélection|||Ampliar selección
+Full Screen|||Volledig scherm|||Vollbild|||Plein écran|||Pantalla completa
+Show Toolbar Labels|||Werkbalkteksten tonen|||Werkzeugleistenbeschriftungen anzeigen|||Afficher le texte des barres d’outils|||Mostrar etiquetas de herramientas
+Show Status Bar|||Statusbalk tonen|||Statusleiste anzeigen|||Afficher la barre d’état|||Mostrar barra de estado
+Edit Waveform View|||Golfvorm bewerken|||Wellenform bearbeiten|||Modifier la forme d’onde|||Editar forma de onda
+Multitrack View|||Multitrackweergave|||Mehrspuransicht|||Vue multipiste|||Vista multipista
+Switch Waveform / Multitrack|||Wisselen tussen golfvorm en multitrack|||Wellenform / Mehrspur wechseln|||Basculer forme d’onde / multipiste|||Alternar forma de onda / multipista
+Working Mode|||Werkmodus|||Arbeitsmodus|||Mode de travail|||Modo de trabajo
+File and Edit|||Bestand en bewerken|||Datei und Bearbeiten|||Fichier et édition|||Archivo y edición
+Multitrack|||Multitrack|||Mehrspur|||Multipiste|||Multipista
+Timeline|||Tijdlijn|||Zeitleiste|||Chronologie|||Línea de tiempo
+Track|||Spoor|||Spur|||Piste|||Pista
+Tracks|||Sporen|||Spuren|||Pistes|||Pistas
+TRACKS|||SPOREN|||SPUREN|||PISTES|||PISTAS
++ Track|||+ Spoor|||+ Spur|||+ Piste|||+ Pista
+− Track|||− Spoor|||− Spur|||− Piste|||− Pista
+Add Track|||Spoor toevoegen|||Spur hinzufügen|||Ajouter une piste|||Añadir pista
+Remove Track|||Spoor verwijderen|||Spur entfernen|||Supprimer la piste|||Eliminar pista
+Track name|||Spoornaam|||Spurname|||Nom de la piste|||Nombre de pista
+Track Effects|||Spooreffecten|||Spureffekte|||Effets de piste|||Efectos de pista
+Track Settings|||Spoorinstellingen|||Spureinstellungen|||Réglages de piste|||Ajustes de pista
+Insert Current Waveform in Multitrack|||Huidige golfvorm in multitrack invoegen|||Aktuelle Wellenform in Mehrspur einfügen|||Insérer la forme d’onde dans le multipiste|||Insertar forma de onda actual en multipista
+Import WAV into Multitrack|||WAV in multitrack importeren|||WAV in Mehrspur importieren|||Importer un WAV en multipiste|||Importar WAV a multipista
+Import WAV|||WAV importeren|||WAV importieren|||Importer un WAV|||Importar WAV
+Insert in Session|||In sessie invoegen|||In Sitzung einfügen|||Insérer dans la session|||Insertar en sesión
+Mix Down Session|||Sessie mixen|||Sitzung abmischen|||Mixer la session|||Mezclar sesión
+Mix Down|||Eindmix maken|||Abmischen|||Mixer|||Mezclar
+Apply Waveform to Clip|||Golfvorm op clip toepassen|||Wellenform auf Clip anwenden|||Appliquer la forme d’onde au clip|||Aplicar forma de onda al clip
+Edit Copy in Waveform|||Kopie in golfvorm bewerken|||Kopie in Wellenform bearbeiten|||Modifier une copie en forme d’onde|||Editar copia en forma de onda
+Clip Properties|||Clipeigenschappen|||Clip-Eigenschaften|||Propriétés du clip|||Propiedades del clip
+Clip Settings|||Clipinstellingen|||Clip-Einstellungen|||Réglages du clip|||Ajustes del clip
+Duplicate Clip|||Clip dupliceren|||Clip duplizieren|||Dupliquer le clip|||Duplicar clip
+Remove Clip|||Clip verwijderen|||Clip entfernen|||Supprimer le clip|||Eliminar clip
+Duplicate|||Dupliceren|||Duplizieren|||Dupliquer|||Duplicar
+Remove|||Verwijderen|||Entfernen|||Supprimer|||Eliminar
+Add|||Toevoegen|||Hinzufügen|||Ajouter|||Añadir
+Up|||Omhoog|||Nach oben|||Monter|||Subir
+Down|||Omlaag|||Nach unten|||Descendre|||Bajar
+Mute|||Dempen|||Stumm|||Muet|||Silenciar
+Solo|||Solo|||Solo|||Solo|||Solo
+Move Clips|||Clips verplaatsen|||Clips verschieben|||Déplacer les clips|||Mover clips
+Volume Line|||Volumelijn|||Lautstärkekurve|||Courbe de volume|||Curva de volumen
+Pan Line|||Panlijn|||Panoramakurve|||Courbe de panoramique|||Curva panorámica
+Reset Line|||Lijn herstellen|||Kurve zurücksetzen|||Réinitialiser la courbe|||Restablecer curva
+Volume|||Volume|||Lautstärke|||Volume|||Volumen
+Vol %|||Vol %|||Lautst. %|||Vol. %|||Vol. %
+Pan|||Pan|||Panorama|||Panoramique|||Panorámica
+Reset|||Herstellen|||Zurücksetzen|||Réinitialiser|||Restablecer
+Apply|||Toepassen|||Anwenden|||Appliquer|||Aplicar
+Cancel|||Annuleren|||Abbrechen|||Annuler|||Cancelar
+Annuleren|||Annuleren|||Abbrechen|||Annuler|||Cancelar|||Cancel
+Sluiten|||Sluiten|||Schließen|||Fermer|||Cerrar|||Close
+Input|||Ingang|||Eingang|||Entrée|||Entrada
+Output|||Uitgang|||Ausgang|||Sortie|||Salida
+Destination|||Bestemming|||Ziel|||Destination|||Destino
+System Default|||Systeemstandaard|||Systemstandard|||Valeur par défaut du système|||Predeterminado del sistema
+Audio Hardware|||Audioapparaten|||Audiogeräte|||Périphériques audio|||Dispositivos de audio
+Input device|||Invoerapparaat|||Eingabegerät|||Périphérique d’entrée|||Dispositivo de entrada
+Output device|||Uitvoerapparaat|||Ausgabegerät|||Périphérique de sortie|||Dispositivo de salida
+Buffer|||Buffer|||Puffer|||Tampon|||Búfer
+Buffer (ms)|||Buffer (ms)|||Puffer (ms)|||Tampon (ms)|||Búfer (ms)
+New waveform|||Nieuwe golfvorm|||Neue Wellenform|||Nouvelle forme d’onde|||Nueva forma de onda
+Insert at cursor|||Invoegen bij cursor|||Am Cursor einfügen|||Insérer au curseur|||Insertar en el cursor
+Replace selection|||Selectie vervangen|||Auswahl ersetzen|||Remplacer la sélection|||Reemplazar selección
+First input channel|||Eerste invoerkanaal|||Erster Eingangskanal|||Premier canal d’entrée|||Primer canal de entrada
+Maximum duration|||Maximale duur|||Maximale Dauer|||Durée maximale|||Duración máxima
+Until Stop|||Tot stoppen|||Bis zum Stopp|||Jusqu’à l’arrêt|||Hasta detener
+Play existing tracks while recording|||Bestaande sporen afspelen tijdens opnemen|||Vorhandene Spuren während der Aufnahme abspielen|||Lire les pistes existantes pendant l’enregistrement|||Reproducir pistas existentes durante la grabación
+Recording position offset|||Verschuiving van opnamepositie|||Versatz der Aufnahmeposition|||Décalage de position d’enregistrement|||Desplazamiento de posición de grabación
+Recording input|||Opname-ingang|||Aufnahmeeingang|||Entrée d’enregistrement|||Entrada de grabación
+Recording destination|||Opnamebestemming|||Aufnahmeziel|||Destination d’enregistrement|||Destino de grabación
+Show only active devices|||Alleen actieve apparaten tonen|||Nur aktive Geräte anzeigen|||Afficher uniquement les périphériques actifs|||Mostrar solo dispositivos activos
+Untitled|||Naamloos|||Unbenannt|||Sans titre|||Sin título
+Untitled Session|||Naamloze sessie|||Unbenannte Sitzung|||Session sans titre|||Sesión sin título

@@ -1,12 +1,15 @@
 """Recording setup, bounded live waveform and editor transaction integration."""
+from .i18n import Literal
 from collections import deque
 from datetime import datetime
 
 import numpy as np
 from PySide6.QtCore import Qt,QPointF,QRectF,QTimer
-from PySide6.QtGui import QPainter,QPen
-from PySide6.QtWidgets import (QWidget,QVBoxLayout,QLabel,QDialog,QFormLayout,QComboBox,QSpinBox,
-                             QDoubleSpinBox,QDialogButtonBox,QPushButton,QHBoxLayout,QMessageBox,QCheckBox)
+from PySide6.QtGui import QPen
+from .i18n_widgets import QPainter
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QWidget, QLabel, QDialog, QFormLayout, QComboBox, QSpinBox, QDoubleSpinBox, QPushButton, QMessageBox, QCheckBox
 
 from .audio import AudioError
 from .capture import Recorder,input_format,recover_take
@@ -16,6 +19,7 @@ from .progress_ui import long_operation
 from .resample import resample
 from .theme import colors
 from .waveform import clock_text
+from .i18n_widgets import set_text
 
 
 class RecordDialog(QDialog):
@@ -28,7 +32,7 @@ class RecordDialog(QDialog):
         self.target=QComboBox();self.target.setAccessibleName('Recording destination')
         if window.mode=='multitrack':
             name=window.session.tracks[window.session.track_index(window.session.selected_track)].name
-            self.target.addItem('New clip on '+name,'multitrack')
+            self.target.addItem(f'New clip on {name}','multitrack')
         elif window.document.frames and not window.document.partial_channels:
             self.target.addItem('Insert at cursor','insert')
             if window.document.selected:self.target.addItem('Replace selection','replace')
@@ -50,7 +54,7 @@ class RecordDialog(QDialog):
         self.note=QLabel();self.note.setWordWrap(True);form.addRow(self.note)
         form.addRow(QLabel('Stop keeps the take. Discard removes only this recording.\nThe input is not played through the speakers.'))
         self.box=QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
-        self.box.button(QDialogButtonBox.StandardButton.Ok).setText('Start Recording')
+        set_text(self.box.button(QDialogButtonBox.StandardButton.Ok),'Start Recording')
         self.box.accepted.connect(self.accept);self.box.rejected.connect(self.reject);form.addRow(self.box)
         self.reload(self.devices.input_id)
         self.devices.inputs_changed.connect(self.reload)
@@ -61,7 +65,7 @@ class RecordDialog(QDialog):
     def reload(self,selected=None):
         selected=(self.input.currentData() or '') if selected is None else selected
         self.input.clear();self.input.addItem('System Default','')
-        for device in self.devices.inputs():self.input.addItem(device.description(),bytes(device.id()).hex())
+        for device in self.devices.inputs():self.input.addItem(Literal(device.description()),bytes(device.id()).hex())
         index=self.input.findData(selected)
         if selected and index<0:self.input.addItem('Selected input (disconnected)',selected);index=self.input.count()-1
         self.input.setCurrentIndex(max(0,index))
@@ -91,7 +95,7 @@ class RecordDialog(QDialog):
             maximum=min(32,max(1,device.maximumChannelCount() if hasattr(device,'maximumChannelCount') else device.preferredFormat().channelCount()))
             self.first.setMaximum(max(1,maximum-(self.channels.currentIndex()+1)+1))
             fmt=input_format(device,self.rate.value(),self.channels.currentIndex()+1,self.first.value()-1)
-            text=device.description()
+            text=f'Device: {device.description()}'
             if fmt.channelCount()==1 and self.channels.currentIndex()==1:
                 text+='\nMono input is recorded on both stereo channels.'
             if fmt.sampleRate()!=self.rate.value():text+=f'\nInput at {fmt.sampleRate():,} Hz; the take is converted after Stop.'
@@ -122,7 +126,7 @@ class RecordingView(QWidget):
 
     def reset(self,rate,channels,description):
         self.rate=rate;self.channels=channels;self.frames=0;self.bins.clear()
-        self.heading.setText('Recording — '+description);self._paint_timer.start();self.plot.update()
+        self.heading.setText(f'Recording — {description}');self._paint_timer.start();self.plot.update()
 
     def feed(self,data,frames):
         start=frames-len(data);step=max(1,self.rate//100);offset=0

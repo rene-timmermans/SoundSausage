@@ -8,10 +8,11 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.15.0**.
+De huidige versie is **0.16.0**.
 
 ## Wat het kan
 
+- Nederlands, Engels, Duits, Frans en Spaans, met directe taalkeuze en bijpassende offline handleiding.
 - WAV-bestanden openen, bewerken en opslaan.
 - Mono of stereo opnemen via microfoon of audio-interface, met apparaatkeuze en live meters.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
@@ -63,32 +64,39 @@ Het startscript bouwt de audiokern automatisch. Voorbeeldprojecten staan in [exa
 Wissel met **Tab** tussen golfvorm en multitrack. **Spatie** start en stopt het afspelen.
 **Ctrl+W** sluit de huidige golfvorm of sessie; het programma blijft open. Bij niet-opgeslagen wijzigingen kun je opslaan, verwerpen of annuleren.
 In multitrack sleep je WAV-bestanden op een spoor en verplaats of trim je clips met de muis.
-Met **Volume Line** en **Pan Line** teken je de lijnen op een clip.
+Met **Volumelijn** en **Balanslijn** teken je de lijnen op een clip.
 **FX** opent een bewerkbare spoorketen; effecten en VST3-instellingen werken
 tijdens luisteren en in mixdown. Zie [spooreffecten, VST3 en opnemen met begeleiding](docs/REALTIME.md).
 
-De effecten staan onder **Transform**; versterken en normaliseren vind je in **Amplitude**.
-Daar staan ook **Channel Mixer**, **Dynamics Processing** en **Envelope**.
+De effecten staan onder **Effecten**; versterken en normaliseren vind je in **Amplitude**.
+Daar staan ook **Kanaalmixer**, **Dynamiekbewerking** en **Volumeverloop**.
 Effecten bewerken het gekozen tijdvak en de gekozen kanalen. Sleep in één golf voor links
 of rechts, of over beide golven voor stereo. De keuze staat ook boven de golfvorm.
 Zie [kanaalselectie en zoomen](docs/KANAALSELECTIE.md).
-Met **Preview** beluister je de instelling voordat je die toepast. Zie [Amplitude](docs/AMPLITUDE.md).
+Met **Voorbeeld** beluister je de instelling voordat je die toepast. Zie [Amplitude](docs/AMPLITUDE.md).
 Onder **Filters** staan de grafische en parametrische EQ en de filters, met presets
 en een grafiek van de gezamenlijke frequentierespons. Zie [EQ en filters](docs/FILTERS.md).
-Onder **Delay Effects** staan Delay, Echo en Reverb. Met **Add effect tail**
+Onder **Vertragingseffecten** staan Delay, Echo en Reverb. Met **Effectuitklank toevoegen**
 bewaar je ook de uitklank. Zie [delay, echo en galm](docs/DELAY_GALM.md).
 Onder de tijdlijn staan het transport, de grote klok, selectie- en weergavetijden en de stereometer.
 Met **R** of de opnameknop kies je een ingang en bestemming. **Stop**, **Esc** of **Spatie** bewaart de take; **P** pauzeert/hervat. Zie de handleiding voor het verschil tussen stoppen en verwerpen.
-Met **Options → Show Toolbar Labels** toon je namen naast de werkbalkiconen. **F11** wisselt naar schermvullende weergave.
-Via **Options → Audio Hardware** kies je het uitvoerapparaat. Verschillende samplerates
-worden bij import en plakken omgezet; **Edit → Convert Sample Rate** zet een golfvorm om.
+Met **Opties → Werkbalkteksten tonen** toon je namen naast de werkbalkiconen. **F11** wisselt naar schermvullende weergave.
+Via **Opties → Audioapparaten** kies je het uitvoerapparaat. Verschillende samplerates
+worden bij import en plakken omgezet; **Bewerken → Samplerate omzetten** zet een golfvorm om.
 Zie [audio-instellingen](docs/AUDIO.md) en de [ontwikkelvoortgang](docs/VOORTGANG.md).
 
 Meer uitleg: [volume- en panlijnen](docs/ENVELOPES.md) en [thema](docs/THEMA.md).
 De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handleiding**
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
+Kies **Opties → Taal** voor Nederlands, English, Deutsch, Français of Español.
+De taalkeuze blijft bewaard. De handleidingen zijn ook rechtstreeks te lezen:
+[Nederlands](docs/HANDLEIDING.md), [English](docs/manual/en.md),
+[Deutsch](docs/manual/de.md), [Français](docs/manual/fr.md), [Español](docs/manual/es.md).
+
 ## Wat er nieuw is
+
+**0.16.0** Interface in vijf talen, met onthouden taalkeuze onder Opties → Taal. De doorzoekbare offline handleiding volgt de gekozen taal, ook als ze al openstaat.
 
 **0.15.0** Realtime spoorketens met bypass en volgorde, Linux VST3-effecten met opgeslagen status, opnemen met begeleiding en gekoppeld pauzeren. Projecten bewaren de ketens en instellingen; mixdown gebruikt dezelfde effecten.
 

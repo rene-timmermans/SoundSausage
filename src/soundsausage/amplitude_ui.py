@@ -3,12 +3,12 @@ from bisect import bisect_left
 
 import numpy as np
 from PySide6.QtCore import Qt, Signal, QPointF, QRectF
-from PySide6.QtGui import QPainter, QPen, QPolygonF
-from PySide6.QtWidgets import (
-    QWidget, QDialog, QVBoxLayout, QHBoxLayout, QGridLayout, QFormLayout,
-    QGroupBox, QLabel, QDoubleSpinBox, QComboBox, QCheckBox, QSlider,
-    QDialogButtonBox, QPushButton, QMessageBox, QRadioButton,
-)
+from PySide6.QtGui import QPen, QPolygonF
+from .i18n_widgets import QPainter
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
+from .i18n_widgets import QSlider
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QWidget, QDialog, QFormLayout, QGroupBox, QLabel, QDoubleSpinBox, QComboBox, QCheckBox, QPushButton, QMessageBox, QRadioButton
 
 from .audio import validate_audio
 from .playback import Playback
@@ -42,6 +42,7 @@ class EffectDialog(QDialog):
         note = QLabel(f"Channels: {self.document.channel_label}. "
                       "Applies to the selection, or the whole waveform if nothing is selected.\n"
                       "Preview plays the first 8 seconds without changing the waveform.")
+        self.range_note=note
         note.setWordWrap(True)
         layout.addWidget(note)
         self.button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
@@ -127,7 +128,7 @@ class ChannelMixerDialog(EffectDialog):
                 slider = QSlider(Qt.Orientation.Horizontal)
                 slider.setRange(-2000, 2000)
                 slider.setValue(round(field.value() * 10))
-                slider.setAccessibleName(field.accessibleName())
+                slider.setAccessibleName(field._loc_sources[("setAccessibleName",())])
                 slider.valueChanged.connect(lambda value, f=field: f.setValue(value / 10))
                 field.valueChanged.connect(lambda value, s=slider: s.setValue(round(value * 10)))
                 field.valueChanged.connect(self.custom)

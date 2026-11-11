@@ -3,7 +3,8 @@ from functools import wraps
 import time
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QProgressDialog
+from PySide6.QtWidgets import QApplication
+from .i18n_widgets import QProgressDialog
 
 from .errors import OperationCancelled
 from .operations import operation, _current

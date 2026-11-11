@@ -1,6 +1,11 @@
 """Compact desktop menus and toolbars shared by the two editor modes."""
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtWidgets import QToolBar
+from .i18n_widgets import QToolBar
+from .i18n import LANGUAGES, install_language, language
+from .i18n_widgets import QAction
+from PySide6.QtGui import QActionGroup
+from .icons import make_icon
+from .theme import colors
 
 
 def seek(window, seconds):
@@ -100,6 +105,16 @@ def create_menus(window):
     favorites = menu("favorites", "F&avorites")
     add(favorites, ("repeat", None, "normalize", "fade_in", "fade_out"))
     options = menu("options", "&Options")
+    language_menu=options.addMenu('Language')
+    language_menu.setIcon(make_icon('language',colors()))
+    window.menus['language']=language_menu
+    window.language_actions={};group=QActionGroup(window)
+    for code,name in LANGUAGES.items():
+        action=QAction(name,window);action.setCheckable(True);action.setChecked(code==language())
+        action.triggered.connect(lambda checked=False,code=code:install_language().set_language(code))
+        group.addAction(action);language_menu.addAction(action);window.language_actions[code]=action
+    install_language().changed.connect(window.update_language_actions)
+    options.addSeparator()
     add(options, ("audio_hardware", "record", "discard_recording", None, "toolbar_labels", "show_status", None, "loop"))
     windows = menu("window", "&Window")
     add(windows, ("mode_wave", "mode_multi", None, "insert_wave", "apply_clip", None, "fullscreen"))

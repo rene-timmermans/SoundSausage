@@ -1,7 +1,10 @@
 """Shared input/output preferences; device discovery starts only when audio is used."""
+from .i18n import Literal
 from PySide6.QtCore import QObject, QSettings, Signal
 from PySide6.QtMultimedia import QMediaDevices
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QFormLayout, QComboBox, QSpinBox, QLabel, QDialogButtonBox
+from PySide6.QtWidgets import QVBoxLayout
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QDialog, QFormLayout, QComboBox, QSpinBox, QLabel
 
 from .audio import AudioError
 
@@ -112,7 +115,7 @@ class AudioHardwareDialog(QDialog):
         self.output.clear()
         self.output.addItem("System Default", "")
         for device in self.devices.outputs():
-            self.output.addItem(device.description(), bytes(device.id()).hex())
+            self.output.addItem(Literal(device.description()), bytes(device.id()).hex())
         index = self.output.findData(selected)
         if selected and index < 0:
             self.output.addItem("Selected output (disconnected)", selected)
@@ -124,7 +127,7 @@ class AudioHardwareDialog(QDialog):
         self.input.clear()
         self.input.addItem("System Default", "")
         for device in self.devices.inputs():
-            self.input.addItem(device.description(),bytes(device.id()).hex())
+            self.input.addItem(Literal(device.description()),bytes(device.id()).hex())
         index = self.input.findData(selected)
         if selected and index < 0:
             self.input.addItem("Selected input (disconnected)",selected)

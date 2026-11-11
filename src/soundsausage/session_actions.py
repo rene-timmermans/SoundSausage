@@ -2,10 +2,8 @@
 from pathlib import Path
 
 from PySide6.QtGui import QActionGroup
-from PySide6.QtWidgets import (
-    QFileDialog, QMessageBox, QDialog, QFormLayout,
-    QSpinBox, QDialogButtonBox,
-)
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QFileDialog, QMessageBox, QDialog, QFormLayout, QSpinBox
 
 from .audio import AudioError, write_wav
 from . import metadata

@@ -4,7 +4,8 @@ from dataclasses import replace
 
 from PySide6.QtCore import Qt, QEvent, QPointF, QRectF
 from PySide6.QtGui import QColor, QPen, QPolygonF
-from PySide6.QtWidgets import QMenu, QDialog, QFormLayout, QSpinBox, QDoubleSpinBox, QDialogButtonBox, QLabel
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QMenu, QDialog, QFormLayout, QSpinBox, QDoubleSpinBox, QLabel
 
 from .audio import AudioError
 from .envelopes import KINDS, MAX_ENVELOPE_POINTS, value_at

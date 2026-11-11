@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout, QLabel, QPushButton, QCheckBox, QComboBox, QFileDialog, QMessageBox
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from .i18n_widgets import QFormLayout, QLabel, QPushButton, QCheckBox, QComboBox, QFileDialog, QMessageBox
 
 from .amplitude_ui import EffectDialog, spin
 from .progress_ui import long_operation

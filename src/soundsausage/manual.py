@@ -3,14 +3,19 @@ from pathlib import Path
 
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QDesktopServices, QKeySequence, QShortcut, QTextCursor, QTextDocument, QPalette
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton, QLabel, QTextBrowser, QDialogButtonBox
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QDialog, QLineEdit, QPushButton, QLabel, QTextBrowser
 
 from .icons import application_icon
 from .theme import colors, readable
+from .i18n import language, install_language
 
 
-def manual_path():
-    return Path(__file__).resolve().parents[2] / "docs/HANDLEIDING.md"
+def manual_path(code=None):
+    code=code or language()
+    docs=Path(__file__).resolve().parents[2]/'docs'
+    return docs/'HANDLEIDING.md' if code=='nl' else docs/'manual'/(code+'.md')
 
 
 class ManualDialog(QDialog):
@@ -39,13 +44,13 @@ class ManualDialog(QDialog):
         palette = self.browser.palette()
         palette.setColor(QPalette.ColorRole.Link, readable(c.accent, c.base))
         self.browser.setPalette(palette)
-        self.browser.setMarkdown(manual_path().read_text(encoding="utf-8"))
+        self.reload_language()
+        install_language().changed.connect(self.reload_language)
         self.browser.anchorClicked.connect(self.open_link)
         layout.addWidget(self.browser, 1)
         self.search_status = QLabel("Ctrl+F: zoeken · F3: volgende · Shift+F3: vorige")
         layout.addWidget(self.search_status)
         box = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
-        box.button(QDialogButtonBox.StandardButton.Close).setText("Sluiten")
         box.button(QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         box.rejected.connect(self.close)
         layout.addWidget(box)
@@ -62,6 +67,12 @@ class ManualDialog(QDialog):
         self.search.setFocus()
         self.search.selectAll()
 
+    def reload_language(self,*_):
+        scroll=self.browser.verticalScrollBar()
+        position=scroll.value()/max(1,scroll.maximum())
+        self.browser.setMarkdown(manual_path().read_text(encoding='utf-8'))
+        scroll.setValue(round(position*scroll.maximum()))
+
     def find(self, backwards=False):
         term = self.search.text().strip()
         if not term:
@@ -72,7 +83,7 @@ class ManualDialog(QDialog):
         if not found:
             self.browser.moveCursor(QTextCursor.MoveOperation.End if backwards else QTextCursor.MoveOperation.Start)
             found = self.browser.find(term, flags)
-        self.search_status.setText("Gevonden: " + term if found else "Niet gevonden: " + term)
+        self.search_status.setText(f"Gevonden: {term}" if found else f"Niet gevonden: {term}")
 
     def open_link(self, url):
         if url.isRelative() and url.fragment():

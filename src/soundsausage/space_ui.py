@@ -1,9 +1,8 @@
 """Delay, echo and reverb controls with the shared non-destructive preview."""
 import math
 
-from PySide6.QtWidgets import (
-    QVBoxLayout, QHBoxLayout, QFormLayout, QLabel, QComboBox, QCheckBox, QPushButton,
-)
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from .i18n_widgets import QFormLayout, QLabel, QComboBox, QCheckBox, QPushButton
 
 from .amplitude_ui import EffectDialog, spin
 

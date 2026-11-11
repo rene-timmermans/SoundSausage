@@ -1,5 +1,7 @@
 from pathlib import Path
-from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QFormLayout, QLabel, QPushButton, QComboBox, QCheckBox, QFileDialog, QMessageBox, QDialogButtonBox
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QFormLayout, QLabel, QPushButton, QComboBox, QCheckBox, QFileDialog, QMessageBox
 
 from .amplitude_ui import EffectDialog, spin
 from .special import load_impulse

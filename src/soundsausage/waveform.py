@@ -2,8 +2,9 @@ import math
 
 import numpy as np
 from PySide6.QtCore import Qt, QRectF, QPointF, Signal
-from PySide6.QtGui import QColor, QPainter, QPen, QPolygonF
-from PySide6.QtWidgets import QWidget
+from PySide6.QtGui import QColor, QPen, QPolygonF
+from .i18n_widgets import QPainter
+from .i18n_widgets import QWidget
 
 from .theme import colors, blend, readable
 from .peaks import piece_peaks

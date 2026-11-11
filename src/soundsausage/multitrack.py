@@ -1,17 +1,16 @@
 """Qt multitrack timeline and track/clip controls for the native session model."""
+from .i18n import Literal, tr
 from dataclasses import replace
 import math
 from .peaks import piece_peaks
 
 import numpy as np
 from PySide6.QtCore import Qt, QRectF, QPointF, Signal
-from PySide6.QtGui import QColor, QPainter, QPen
-from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, QLineEdit,
-    QPushButton, QToolButton, QDoubleSpinBox, QCheckBox, QScrollArea,
-    QScrollBar, QDialog, QFormLayout, QDialogButtonBox, QMenu,
-    QButtonGroup, QSizePolicy,
-)
+from PySide6.QtGui import QColor, QPen
+from .i18n_widgets import QPainter
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QScrollArea, QScrollBar, QButtonGroup, QSizePolicy
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QWidget, QLabel, QLineEdit, QPushButton, QToolButton, QDoubleSpinBox, QCheckBox, QDialog, QFormLayout, QMenu
 
 from .audio import AudioError
 from .session import bounded_fades
@@ -247,12 +246,12 @@ class Timeline(EnvelopeTimeline, QWidget):
             if clip.pan != 0:
                 title += f" · {'R' if clip.pan > 0 else 'L'} {abs(clip.pan) * 100:.1f}%"
             if clip.muted:
-                title += " · MUTE"
+                title += tr(" · MUTE")
             if clip.volume_envelope:
-                title += " · VOL line"
+                title += tr(" · VOL line")
             if clip.pan_envelope:
-                title += " · PAN line"
-            painter.drawText(QRectF(rect.left() + 6, rect.top() + 1, max(0, rect.width() - 12), 18), Qt.AlignmentFlag.AlignLeft, title)
+                title += tr(" · PAN line")
+            painter.drawText(QRectF(rect.left() + 6, rect.top() + 1, max(0, rect.width() - 12), 18), Qt.AlignmentFlag.AlignLeft, Literal(title))
             begin = max(clip.start, self.view_start)
             end = min(clip.end, self.view_end)
             source_start = clip.source_start + begin - clip.start
@@ -593,7 +592,7 @@ class MultitrackEditor(QWidget):
         dialog = QDialog(self)
         dialog.setWindowTitle("Wave Block Properties")
         form = QFormLayout(dialog)
-        name = QLineEdit(clip.name)
+        name = QLineEdit(Literal(clip.name))
         position = decimal(clip.start / session.sample_rate, 0, 86400, " sec", 6)
         begin = decimal(clip.source_start / session.sample_rate, 0, len(media.samples) / session.sample_rate, " sec", 6)
         end = decimal(clip.source_end / session.sample_rate, 0, len(media.samples) / session.sample_rate, " sec", 6)

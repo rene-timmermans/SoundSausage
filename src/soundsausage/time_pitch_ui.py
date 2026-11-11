@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QVBoxLayout, QFormLayout, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QMessageBox
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
+from .i18n_widgets import QFormLayout, QLabel, QComboBox, QCheckBox, QPushButton, QMessageBox
 
 from .amplitude_ui import EffectDialog, spin
 

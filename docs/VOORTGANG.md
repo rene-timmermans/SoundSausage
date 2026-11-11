@@ -160,3 +160,17 @@ De geverifieerde logs bevatten geen callback- of RingBuffer-fouten.
 bevat de geteste installatiepakketten. Zie [realtime-/plug-incontroles](validation/realtime-plugins.md).
 Eigen plug-invensters, meer formaten, automatische latency-/driftcompensatie en
 punch-in/out blijven vervolgmogelijkheden.
+
+## Meertalige bediening — 0.16.0
+
+- [x] Nederlands, Engels, Duits, Frans en Spaans.
+- [x] Taalkeuze onder Opties, direct toepassen en onthouden.
+- [x] Geopende effectvensters, meldingen en bediening vertalen zonder modelwijzigingen.
+- [x] Volledige offline handleidingen in alle vijf talen, inclusief live wisselen en zoeken.
+- [x] Taalregressies en behoud van audio, kanaalkeuze, instellingen en Undo toetsen.
+- [ ] Definitieve distributiecontroles en publicatie van installatiepakketten.
+
+De effectgroepen en realtime functies blijven afgerond. Eigen plug-invensters,
+meer formaten, automatische latency-/driftcompensatie en punch-in/out blijven open.
+De fysieke duplexroute en handmatige opnameverschuiving vragen nog een proeftake;
+de gewone B910-opname-/afspeelcontrole is eerder bevestigd.

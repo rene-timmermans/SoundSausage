@@ -3,14 +3,12 @@ from functools import partial
 
 import numpy as np
 from PySide6.QtCore import Qt, QTimer
-from PySide6.QtGui import QAction, QActionGroup, QKeySequence
-from PySide6.QtWidgets import (
-    QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
-    QLabel, QToolBar, QToolButton, QStyle, QFileDialog, QMessageBox, QDialog,
-    QDialogButtonBox, QFormLayout, QDoubleSpinBox, QSpinBox, QComboBox,
-    QCheckBox, QRadioButton, QScrollBar,
-    QInputDialog, QStackedWidget,
-)
+from PySide6.QtGui import QActionGroup, QKeySequence
+from .i18n_widgets import QAction
+from PySide6.QtWidgets import QToolButton as NativeToolButton
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QStyle, QScrollBar, QStackedWidget
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QMainWindow, QWidget, QLabel, QToolBar, QToolButton, QFileDialog, QMessageBox, QDialog, QFormLayout, QDoubleSpinBox, QSpinBox, QComboBox, QCheckBox, QRadioButton, QInputDialog
 
 from .about import AboutDialog
 from .manual import ManualDialog
@@ -34,6 +32,7 @@ from .space_ui import DelayDialog, EchoDialog, ReverbDialog
 from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog
 from .amplitude_ui import EffectDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .theme import install_theme, colors
+from .i18n import bind, Literal, tr, install_language
 from .icons import PRIMARY_ACTIONS, make_icon, application_icon
 
 
@@ -180,11 +179,20 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.theme.changed.connect(self.apply_theme)
         self.apply_theme()
         self.refresh(fit=True)
+        install_language().changed.connect(self.update_window_title)
+
+    def update_language_actions(self,code):
+        for key,action in self.language_actions.items():action.setChecked(key==code)
+
+    def update_window_title(self,*_):
+        doc=self.active_model()
+        name=doc.path.name if doc.path else tr(getattr(doc,"display_name",None) or ("Untitled Session" if self.mode=="multitrack" else "Untitled"))
+        self.setWindowTitle(Literal(f"{'* ' if doc.dirty else ''}{name} — SoundSausage"))
 
     def bind_button_icons(self):
         self._action_buttons = []
         by_action = {action: key for key, action in self.actions.items()}
-        for button in self.findChildren(QToolButton):
+        for button in self.findChildren(NativeToolButton):
             action = button.defaultAction()
             key = by_action.get(action)
             if key is not None:
@@ -207,14 +215,14 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             self.actions[key].setIcon(make_icon(icon_key, c))
             self.actions[key].setIconVisibleInMenu(True)
         for toolbar in self.findChildren(QToolBar):
-            overflow = toolbar.findChild(QToolButton, "qt_toolbar_ext_button")
+            overflow = toolbar.findChild(NativeToolButton, "qt_toolbar_ext_button")
             if overflow is not None:
                 overflow.setIcon(make_icon("more", c, primary=True))
-                overflow.setToolTip("More actions")
+                bind(overflow,"setToolTip","More actions")
         for key, button in self._action_buttons:
             self.update_button_icon(key, button)
         for group, glyph in (("amplitude", "amplify"), ("filters", "filter"), ("delay", "echo"),
-                             ("noise", "noise_reduction"), ("time_pitch", "pitch_shift"), ("special", "distortion"), ("channels", "channels_both")):
+                             ("noise", "noise_reduction"), ("time_pitch", "pitch_shift"), ("special", "distortion"), ("channels", "channels_both"), ("language", "language")):
             self.menus[group].setIcon(make_icon(glyph, c))
         for index, key in enumerate(("channels_both", "channels_left", "channels_right")):
             self.channel_choice.setItemIcon(index, make_icon(key, c))
@@ -380,8 +388,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             self.scroll.setVisible(self.document.frames > 0)
         elif fit:
             self.multitrack.set_session(self.session, fit=True)
-        name = doc.path.name if doc.path else getattr(doc, "display_name", None) or ("Untitled Session" if self.mode == "multitrack" else "Untitled")
-        self.setWindowTitle(f"{'* ' if doc.dirty else ''}{name} — SoundSausage")
+        self.update_window_title()
         self.format_label.setText(f" {doc.sample_rate} Hz · {doc.encoding} · {'Stereo' if doc.channels == 2 else 'Mono'} ")
         self.detail_label.setText(f" {clock_text(doc.duration)} · {doc.frames:,} frames ")
         self.selection_changed(*doc.selection)

@@ -3,8 +3,10 @@ import math
 
 import numpy as np
 from PySide6.QtCore import Qt, QRectF, QPointF, QSize
-from PySide6.QtGui import QColor, QFont, QPainter, QPen
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QToolButton, QLabel, QLineEdit
+from PySide6.QtGui import QColor, QFont, QPen
+from .i18n_widgets import QPainter
+from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QGridLayout
+from .i18n_widgets import QWidget, QToolButton, QLabel, QLineEdit
 
 from .theme import colors
 from .waveform import clock_text
@@ -112,7 +114,7 @@ class TransportPanel(QWidget):
             for column, title in enumerate(("Begin", "End", "Length"), 1):
                 field = QLineEdit("0:00.000")
                 field.setReadOnly(True)
-                field.setAccessibleName(f"{label} {title}")
+                field.setAccessibleName(f"Selection {title}" if label=="Sel" else f"View {title}")
                 field.setProperty("compact", True)
                 field.setAlignment(Qt.AlignmentFlag.AlignRight)
                 field.setFixedWidth(92)

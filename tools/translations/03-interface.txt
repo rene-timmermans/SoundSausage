@@ -1,0 +1,138 @@
+About|||Over|||Über|||À propos|||Acerca de
+Handleiding|||Handleiding|||Handbuch|||Manuel|||Manual|||Manual
+&Handleiding|||&Handleiding|||&Handbuch|||&Manuel|||&Manual|||&Manual
+Handleiding — SoundSausage|||Handleiding — SoundSausage|||Handbuch — SoundSausage|||Manuel — SoundSausage|||Manual — SoundSausage|||Manual — SoundSausage
+Over SoundSausage|||Over SoundSausage|||Über SoundSausage|||À propos de SoundSausage|||Acerca de SoundSausage|||About SoundSausage
+Zoeken in de handleiding…|||Zoeken in de handleiding…|||Im Handbuch suchen…|||Rechercher dans le manuel…|||Buscar en el manual…|||Search the manual…
+Zoeken in de handleiding|||Zoeken in de handleiding|||Im Handbuch suchen|||Rechercher dans le manuel|||Buscar en el manual|||Search the manual
+Vorige|||Vorige|||Zurück|||Précédent|||Anterior|||Previous
+Volgende|||Volgende|||Weiter|||Suivant|||Siguiente|||Next
+Gevonden: {0}|||Gevonden: {0}|||Gefunden: {0}|||Trouvé : {0}|||Encontrado: {0}|||Found: {0}
+Niet gevonden: {0}|||Niet gevonden: {0}|||Nicht gefunden: {0}|||Introuvable : {0}|||No encontrado: {0}|||Not found: {0}
+Ctrl+F: zoeken · F3: volgende · Shift+F3: vorige|||Ctrl+F: zoeken · F3: volgende · Shift+F3: vorige|||Strg+F: suchen · F3: weiter · Umschalt+F3: zurück|||Ctrl+F : rechercher · F3 : suivant · Maj+F3 : précédent|||Ctrl+F: buscar · F3: siguiente · Mayús+F3: anterior|||Ctrl+F: search · F3: next · Shift+F3: previous
+Tones|||Tonen|||Töne|||Tonalités|||Tonos
+Generate Tones|||Tonen genereren|||Töne erzeugen|||Générer des tonalités|||Generar tonos
+Generate Silence|||Stilte genereren|||Stille erzeugen|||Générer du silence|||Generar silencio
+Duration (seconds)|||Duur (seconden)|||Dauer (Sekunden)|||Durée (secondes)|||Duración (segundos)
+Sine|||Sinus|||Sinus|||Sinusoïdale|||Senoidal
+Square|||Blokgolf|||Rechteck|||Carrée|||Cuadrada
+Triangle|||Driehoek|||Dreieck|||Triangulaire|||Triangular
+Sawtooth|||Zaagtand|||Sägezahn|||Dent de scie|||Diente de sierra
+White Noise|||Witte ruis|||Weißes Rauschen|||Bruit blanc|||Ruido blanco
+Waveform|||Golfvorm|||Wellenform|||Forme d’onde|||Forma de onda
+Convert Sample Rate|||Samplerate omzetten|||Abtastrate umwandeln|||Convertir la fréquence d’échantillonnage|||Convertir frecuencia de muestreo
+New sample rate (Hz)|||Nieuwe samplerate (Hz)|||Neue Abtastrate (Hz)|||Nouvelle fréquence d’échantillonnage (Hz)|||Nueva frecuencia de muestreo (Hz)
+New Waveform|||Nieuwe golfvorm|||Neue Wellenform|||Nouvelle forme d’onde|||Nueva forma de onda
+Open Audio|||Audio openen|||Audio öffnen|||Ouvrir l’audio|||Abrir audio
+Open a Waveform|||Golfvorm openen|||Wellenform öffnen|||Ouvrir une forme d’onde|||Abrir una forma de onda
+Save a Waveform|||Golfvorm opslaan|||Wellenform speichern|||Enregistrer une forme d’onde|||Guardar una forma de onda
+Save Audio|||Audio opslaan|||Audio speichern|||Enregistrer l’audio|||Guardar audio
+Save Multitrack Session|||Multitracksessie opslaan|||Mehrspursitzung speichern|||Enregistrer la session multipiste|||Guardar sesión multipista
+Save Changes|||Wijzigingen opslaan|||Änderungen speichern|||Enregistrer les modifications|||Guardar cambios
+Import Audio|||Audio importeren|||Audio importieren|||Importer l’audio|||Importar audio
+Import Audio into Multitrack|||Audio in multitrack importeren|||Audio in Mehrspur importieren|||Importer l’audio en multipiste|||Importar audio a multipista
+Insert in Multitrack|||In multitrack invoegen|||In Mehrspur einfügen|||Insérer dans le multipiste|||Insertar en multipista
+Mix Down Entire Session|||Volledige sessie mixen|||Gesamte Sitzung abmischen|||Mixer toute la session|||Mezclar toda la sesión
+Audio-only WAV Export|||WAV-export van alleen audio|||WAV-Export nur mit Audio|||Export WAV audio uniquement|||Exportar solo audio WAV
+Set Selection — Audio Frames|||Selectie instellen — audioframes|||Auswahl festlegen — Audio-Frames|||Définir la sélection — trames audio|||Definir selección — tramas de audio
+Select &Entire Wave|||Gehele golfvorm &selecteren|||Gesamte Wellenform &auswählen|||Sélectionner toute la forme d’&onde|||Seleccionar toda la &onda
+Adjust Selection Inward to &Zero Crossings|||Selectie naar binnen aanpassen aan &nuldoorgangen|||Auswahl nach innen an &Nulldurchgänge anpassen|||Ajuster la sélection vers les passages par &zéro|||Ajustar selección hacia los cruces por &cero
+Selected audio channels|||Geselecteerde audiokanalen|||Ausgewählte Audiokanäle|||Canaux audio sélectionnés|||Canales de audio seleccionados
+Playback device|||Afspeelapparaat|||Wiedergabegerät|||Périphérique de lecture|||Dispositivo de reproducción
+Recording device|||Opnameapparaat|||Aufnahmegerät|||Périphérique d’enregistrement|||Dispositivo de grabación
+Playback buffer|||Afspeelbuffer|||Wiedergabepuffer|||Tampon de lecture|||Búfer de reproducción
+Selected input (disconnected)|||Geselecteerde ingang (losgekoppeld)|||Gewählter Eingang (getrennt)|||Entrée sélectionnée (déconnectée)|||Entrada seleccionada (desconectada)
+Selected output (disconnected)|||Geselecteerde uitgang (losgekoppeld)|||Gewählter Ausgang (getrennt)|||Sortie sélectionnée (déconnectée)|||Salida seleccionada (desconectada)
+Record from the selected microphone or audio interface|||Opnemen via de geselecteerde microfoon of audio-interface|||Mit dem gewählten Mikrofon oder Audiointerface aufnehmen|||Enregistrer depuis le microphone ou l’interface audio sélectionnés|||Grabar desde el micrófono o la interfaz seleccionados
+New clip on |||Nieuwe clip op |||Neuer Clip auf |||Nouveau clip sur |||Nuevo clip en 
+Pause / Resume|||Pauzeren / hervatten|||Pausieren / fortsetzen|||Pause / reprise|||Pausar / reanudar
+Loop|||Herhalen|||Schleife|||Boucle|||Bucle
+Cursor|||Cursor|||Cursor|||Curseur|||Cursor
+Playhead time|||Afspeelpositie|||Abspielposition|||Position de lecture|||Posición de reproducción
+Stereo peak level meter|||Stereo-piekmeter|||Stereo-Spitzenpegelanzeige|||Crête-mètre stéréo|||Medidor de picos estéreo
+Peak levels in dBFS. Red at the right edge indicates clipping.|||Piekniveaus in dBFS. Rood aan de rechterrand geeft oversturing aan.|||Spitzenpegel in dBFS. Rot am rechten Rand zeigt Übersteuerung an.|||Crêtes en dBFS. Le rouge à droite indique un écrêtage.|||Picos en dBFS. El rojo a la derecha indica recorte.
+More actions|||Meer acties|||Weitere Aktionen|||Autres actions|||Más acciones
+Edit Clip|||Clip bewerken|||Clip bearbeiten|||Modifier le clip|||Editar clip
+Edit Point|||Punt bewerken|||Punkt bearbeiten|||Modifier le point|||Editar punto
+Add Point Here|||Hier punt toevoegen|||Punkt hier hinzufügen|||Ajouter un point ici|||Añadir punto aquí
+Remove Point|||Punt verwijderen|||Punkt entfernen|||Supprimer le point|||Eliminar punto
+Delete|||Verwijderen|||Löschen|||Supprimer|||Eliminar
+Reset {0} Line|||{0}lijn herstellen|||{0}-Kurve zurücksetzen|||Réinitialiser la courbe {0}|||Restablecer curva de {0}
+Frame within clip|||Frame binnen clip|||Frame im Clip|||Trame dans le clip|||Trama dentro del clip
+Frame|||Frame|||Frame|||Trame|||Trama
+End frame (exclusive)|||Eindframe (exclusief)|||End-Frame (exklusiv)|||Trame de fin (exclu)|||Trama final (excluido)
+Source begin|||Bronbegin|||Quellanfang|||Début de la source|||Inicio de fuente
+Source end|||Broneinde|||Quellende|||Fin de la source|||Fin de fuente
+Source end (exclusive)|||Broneinde (exclusief)|||Quellende (exklusiv)|||Fin de la source (exclue)|||Fin de fuente (excluida)
+Clip begin|||Clipbegin|||Clip-Anfang|||Début du clip|||Inicio del clip
+Clip end|||Clipeinde|||Clip-Ende|||Fin du clip|||Fin del clip
+Clip position|||Clippositie|||Clip-Position|||Position du clip|||Posición del clip
+Clip volume|||Clipvolume|||Clip-Lautstärke|||Volume du clip|||Volumen del clip
+Clip pan|||Clippan|||Clip-Panorama|||Panoramique du clip|||Panorámica del clip
+Mute this clip|||Deze clip dempen|||Diesen Clip stummschalten|||Rendre ce clip muet|||Silenciar este clip
+Pan: −100 L / +100 R|||Pan: −100 L / +100 R|||Panorama: −100 L / +100 R|||Panoramique : −100 L / +100 R|||Panorámica: −100 L / +100 R
+−100 = left, 0 = center, +100 = right|||−100 = links, 0 = midden, +100 = rechts|||−100 = links, 0 = Mitte, +100 = rechts|||−100 = gauche, 0 = centre, +100 = droite|||−100 = izquierda, 0 = centro, +100 = derecha
+Centre|||Midden|||Mitte|||Centre|||Centro
+From|||Van|||Von|||De|||Desde
+New Left Channel|||Nieuw linkerkanaal|||Neuer linker Kanal|||Nouveau canal gauche|||Nuevo canal izquierdo
+New Right Channel|||Nieuw rechterkanaal|||Neuer rechter Kanal|||Nouveau canal droit|||Nuevo canal derecho
+Mono (L + R average)|||Mono (gemiddelde L + R)|||Mono (Mittelwert L + R)|||Mono (moyenne L + R)|||Mono (promedio L + R)
+Side Signal (L − R)|||Zijsignaal (L − R)|||Seitensignal (L − R)|||Signal latéral (L − R)|||Señal lateral (L − R)
+Invert output polarity|||Uitgangspolariteit omkeren|||Ausgangspolarität umkehren|||Inverser la polarité de sortie|||Invertir polaridad de salida
+Normalize left / right equally|||Links en rechts gelijk normaliseren|||Links / rechts gleich normalisieren|||Normaliser gauche / droite ensemble|||Normalizar izquierda / derecha por igual
+Normalize peak to|||Piek normaliseren naar|||Spitze normalisieren auf|||Normaliser la crête à|||Normalizar pico a
+Remove DC offset before normalizing|||DC-offset verwijderen vóór normaliseren|||Gleichspannungsversatz vor dem Normalisieren entfernen|||Supprimer le décalage continu avant normalisation|||Eliminar continua antes de normalizar
+Link stereo channels (preserve stereo balance)|||Stereokanalen koppelen (stereobalans behouden)|||Stereokanäle koppeln (Stereobalance erhalten)|||Lier les canaux stéréo (préserver l’équilibre)|||Vincular canales estéreo (conservar balance)
+Soft Gate|||Zachte ruispoort|||Sanftes Gate|||Porte douce|||Puerta suave
+Peak Limiter (−6 dB)|||Piekbegrenzer (−6 dB)|||Spitzenbegrenzer (−6 dB)|||Limiteur de crête (−6 dB)|||Limitador de picos (−6 dB)
+Soft warmth|||Zachte warmte|||Sanfte Wärme|||Chaleur douce|||Calidez suave
+Predelay (ms)|||Voorvertraging (ms)|||Vorverzögerung (ms)|||Préretard (ms)|||Retardo previo (ms)
+Right delay (ms)|||Vertraging rechts (ms)|||Verzögerung rechts (ms)|||Retard à droite (ms)|||Retardo derecho (ms)
+Noise reduction (dB)|||Ruisreductie (dB)|||Rauschminderung (dB)|||Réduction du bruit (dB)|||Reducción de ruido (dB)
+Minimum click level (dBFS)|||Minimaal klikniveau (dBFS)|||Minimaler Klickpegel (dBFS)|||Niveau minimal du clic (dBFS)|||Nivel mínimo de clic (dBFS)
+Maximum click width (ms)|||Maximale klikduur (ms)|||Maximale Klickdauer (ms)|||Durée maximale du clic (ms)|||Duración máxima de clic (ms)
+Load Noise Profile|||Ruisprofiel laden|||Rauschprofil laden|||Charger un profil de bruit|||Cargar perfil de ruido
+Save Noise Profile|||Ruisprofiel opslaan|||Rauschprofil speichern|||Enregistrer le profil de bruit|||Guardar perfil de ruido
+Profile sample rate|||Samplerate van profiel|||Profil-Abtastrate|||Fréquence d’échantillonnage du profil|||Frecuencia de muestreo del perfil
+Length ratio|||Lengteverhouding|||Längenverhältnis|||Rapport de durée|||Relación de duración
+New length (100% = unchanged)|||Nieuwe lengte (100% = ongewijzigd)|||Neue Länge (100% = unverändert)|||Nouvelle durée (100 % = inchangée)|||Nueva duración (100 % = sin cambios)
+Set from tempo|||Uit tempo instellen|||Aus Tempo übernehmen|||Définir à partir du tempo|||Definir a partir del tempo
+Pitch change (+12 = one octave up)|||Toonhoogteverschuiving (+12 = één octaaf hoger)|||Tonhöhenänderung (+12 = eine Oktave höher)|||Transposition (+12 = une octave au-dessus)|||Cambio de tono (+12 = una octava arriba)
+Preserve formants (natural vocal character)|||Formanten behouden (natuurlijke stemklank)|||Formanten erhalten (natürlicher Stimmcharakter)|||Préserver les formants (caractère vocal naturel)|||Conservar formantes (carácter vocal natural)
+Keep full response tail (inserts time after selection)|||Volledige uitklank behouden (voegt tijd toe na selectie)|||Vollständigen Ausklang behalten (fügt Zeit nach Auswahl ein)|||Conserver toute la fin de réponse (ajoute du temps après la sélection)|||Conservar cola completa (añade tiempo tras la selección)
+Logarithmic interpolation (positive levels only)|||Logaritmische interpolatie (alleen positieve niveaus)|||Logarithmische Interpolation (nur positive Pegel)|||Interpolation logarithmique (niveaux positifs uniquement)|||Interpolación logarítmica (solo niveles positivos)
+Q (higher = narrower)|||Q (hoger = smaller)|||Q (höher = schmaler)|||Q (plus élevé = plus étroit)|||Q (mayor = más estrecho)
+Q (band-pass / notch)|||Q (banddoorlaat / sperfilter)|||Q (Bandpass / Kerbfilter)|||Q (passe-bande / coupe-bande)|||Q (paso banda / muesca)
+Frequency response: Hz horizontally, gain in dB vertically|||Frequentierespons: Hz horizontaal, versterking in dB verticaal|||Frequenzgang: Hz horizontal, Verstärkung in dB vertikal|||Réponse fréquentielle : Hz à l’horizontale, gain en dB à la verticale|||Respuesta de frecuencia: Hz horizontal, ganancia en dB vertical
+Combined response, including output gain. Display range: −36 to +36 dB.|||Gezamenlijke respons, inclusief uitgangsversterking. Weergave: −36 tot +36 dB.|||Gesamtfrequenzgang einschließlich Ausgangsverstärkung. Anzeige: −36 bis +36 dB.|||Réponse combinée, gain de sortie inclus. Affichage : −36 à +36 dB.|||Respuesta combinada, incluida ganancia de salida. Rango: −36 a +36 dB.
+Bell bandwidth. Shelves use a fixed monotonic slope.|||Bandbreedte van piekband. Plateaus hebben een vaste monotone helling.|||Bandbreite der Glocke. Shelves verwenden eine feste monotone Flanke.|||Largeur de la cloche. Les plateaux utilisent une pente monotone fixe.|||Anchura de campana. Los estantes usan una pendiente monótona fija.
+Afspelen voorbereiden|||Afspelen voorbereiden|||Wiedergabe vorbereiten|||Préparation de la lecture|||Preparando reproducción|||Preparing playback
+Audio controleren|||Audio controleren|||Audio prüfen|||Vérification de l’audio|||Verificando audio|||Checking audio
+Audio kopiëren|||Audio kopiëren|||Audio kopieren|||Copie de l’audio|||Copiando audio|||Copying audio
+Audio samenstellen|||Audio samenstellen|||Audio zusammenstellen|||Assemblage de l’audio|||Componiendo audio|||Assembling audio
+DC analyseren|||DC analyseren|||Gleichspannungsanteil analysieren|||Analyse de la composante continue|||Analizando continua|||Analysing DC offset
+Convolutie toepassen|||Convolutie toepassen|||Faltung anwenden|||Application de la convolution|||Aplicando convolución|||Applying convolution
+Effect toepassen|||Effect toepassen|||Effekt anwenden|||Application de l’effet|||Aplicando efecto|||Applying effect
+Gekozen kanaal toepassen|||Gekozen kanaal toepassen|||Gewählten Kanal bearbeiten|||Traitement du canal choisi|||Aplicando canal seleccionado|||Applying selected channel
+Golfvorm samenvatten|||Golfvorm samenvatten|||Wellenform zusammenfassen|||Synthèse de la forme d’onde|||Resumiendo forma de onda|||Summarising waveform
+Golfvorm voorbereiden|||Golfvorm voorbereiden|||Wellenform vorbereiten|||Préparation de la forme d’onde|||Preparando forma de onda|||Preparing waveform
+Impulsrespons lezen|||Impulsrespons lezen|||Impulsantwort lesen|||Lecture de la réponse impulsionnelle|||Leyendo respuesta al impulso|||Reading impulse response
+Impulsrespons voorbereiden|||Impulsrespons voorbereiden|||Impulsantwort vorbereiten|||Préparation de la réponse impulsionnelle|||Preparando respuesta al impulso|||Preparing impulse response
+Klikken herstellen|||Klikken herstellen|||Klicks reparieren|||Correction des clics|||Reparando clics|||Repairing clicks
+Nuldoorgangen zoeken|||Nuldoorgangen zoeken|||Nulldurchgänge suchen|||Recherche des passages par zéro|||Buscando cruces por cero|||Finding zero crossings
+Pieken analyseren|||Pieken analyseren|||Spitzen analysieren|||Analyse des crêtes|||Analizando picos|||Analysing peaks
+Projectaudio openen|||Projectaudio openen|||Projektaudio öffnen|||Ouverture de l’audio du projet|||Abriendo audio del proyecto|||Opening project audio
+Ruis verminderen|||Ruis verminderen|||Rauschen mindern|||Réduction du bruit|||Reduciendo ruido|||Reducing noise
+Ruisprofiel opnemen|||Ruisprofiel opnemen|||Rauschprofil erfassen|||Capture du profil de bruit|||Capturando perfil de ruido|||Capturing noise profile
+Samplerate afronden|||Samplerate afronden|||Abtastrate abschließen|||Finalisation de la fréquence d’échantillonnage|||Finalizando frecuencia de muestreo|||Finishing sample-rate conversion
+Samplerate converteren|||Samplerate converteren|||Abtastrate umwandeln|||Conversion de la fréquence d’échantillonnage|||Convirtiendo frecuencia de muestreo|||Converting sample rate
+Sporen mixen|||Sporen mixen|||Spuren mischen|||Mixage des pistes|||Mezclando pistas|||Mixing tracks
+Bewerking geannuleerd|||Bewerking geannuleerd|||Vorgang abgebrochen|||Opération annulée|||Operación cancelada|||Operation cancelled
+Bewerking geannuleerd.|||Bewerking geannuleerd.|||Vorgang abgebrochen.|||Opération annulée.|||Operación cancelada.|||Operation cancelled.
+Herstellen|||Herstellen|||Wiederherstellen|||Récupérer|||Recuperar|||Recover
+Later|||Later|||Später|||Plus tard|||Más tarde
+Er is een onderbroken opname gevonden.|||Er is een onderbroken opname gevonden.|||Eine unterbrochene Aufnahme wurde gefunden.|||Un enregistrement interrompu a été trouvé.|||Se ha encontrado una grabación interrumpida.|||An interrupted recording was found.
+Er is werk gevonden uit een vorige, onverwacht beëindigde sessie.|||Er is werk gevonden uit een vorige, onverwacht beëindigde sessie.|||Arbeit aus einer unerwartet beendeten Sitzung wurde gefunden.|||Du travail d’une session interrompue a été trouvé.|||Se ha encontrado trabajo de una sesión cerrada inesperadamente.|||Work from an unexpectedly closed session was found.
+Er zijn geen herstelkopieën uit een vorige sessie gevonden.|||Er zijn geen herstelkopieën uit een vorige sessie gevonden.|||Keine Wiederherstellungskopien einer früheren Sitzung gefunden.|||Aucune copie de récupération d’une session précédente n’a été trouvée.|||No se encontraron copias de recuperación de una sesión anterior.|||No recovery copies from a previous session were found.
+Herstelkopie niet beschikbaar: {0}|||Herstelkopie niet beschikbaar: {0}|||Wiederherstellungskopie nicht verfügbar: {0}|||Copie de récupération indisponible : {0}|||Copia de recuperación no disponible: {0}|||Recovery copy unavailable: {0}
+Herstelkopie niet bijgewerkt: {0}|||Herstelkopie niet bijgewerkt: {0}|||Wiederherstellungskopie nicht aktualisiert: {0}|||Copie de récupération non mise à jour : {0}|||Copia de recuperación no actualizada: {0}|||Recovery copy not updated: {0}

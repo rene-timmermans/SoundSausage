@@ -49,12 +49,12 @@ class ManualTests(unittest.TestCase):
         dialog.search.setText("Normalize")
         QTest.keyClick(dialog.search, Qt.Key.Key_Return)
         self.assertTrue(dialog.isVisible())
-        self.assertEqual(dialog.browser.textCursor().selectedText(), "Normalize")
+        self.assertEqual(dialog.browser.textCursor().selectedText().casefold(), "normalize")
         dialog.find(True)
-        self.assertEqual(dialog.browser.textCursor().selectedText(), "Normalize")
+        self.assertEqual(dialog.browser.textCursor().selectedText().casefold(), "normalize")
         dialog.search.setText("zzzonderzoekresultaat")
         dialog.find()
-        self.assertIn("Niet gevonden", dialog.search_status.text())
+        self.assertIn("Not found", dialog.search_status.text())
 
     def test_only_explicit_web_links_open_a_browser(self):
         self.window.open_manual()

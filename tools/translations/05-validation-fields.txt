@@ -1,0 +1,99 @@
+Invalid {0}.|||Ongeldig: {0}.|||Ungültig: {0}.|||Élément non valide : {0}.|||Elemento no válido: {0}.
+Duplicate {0}.|||Dubbel aanwezig: {0}.|||Doppelt vorhanden: {0}.|||Élément en double : {0}.|||Elemento duplicado: {0}.
+Unknown {0}.|||Onbekend: {0}.|||Unbekannt: {0}.|||Élément inconnu : {0}.|||Elemento desconocido: {0}.
+Unsupported {0}.|||Niet ondersteund: {0}.|||Nicht unterstützt: {0}.|||Élément non pris en charge : {0}.|||Elemento no admitido: {0}.
+SES envelope reference|||SES-verwijzing naar verloop|||SES-Kurvenverweis|||référence d’enveloppe SES|||referencia de envolvente SES
+SES media identifier|||SES-bron-ID|||SES-Medienkennung|||identifiant de média SES|||identificador de medio SES
+clip identifier|||clip-ID|||Clip-Kennung|||identifiant de clip|||identificador de clip
+media identifier|||bron-ID|||Medienkennung|||identifiant de média|||identificador de medio
+recovery clip|||herstelclip|||Wiederherstellungsclip|||clip de récupération|||clip de recuperación
+recovery media|||herstelbron|||Wiederherstellungsmedium|||média de récupération|||medio de recuperación
+recovery track|||herstelspoor|||Wiederherstellungsspur|||piste de récupération|||pista de recuperación
+track effect identifier|||spooreffect-ID|||Spureffektkennung|||identifiant d’effet de piste|||identificador de efecto de pista
+track identifier|||spoor-ID|||Spurkennung|||identifiant de piste|||identificador de pista
+RF64 file length|||RF64-bestandslengte|||RF64-Dateilänge|||longueur du fichier RF64|||longitud del archivo RF64
+RF64 size chunk|||RF64-grootteblok|||RF64-Größenblock|||bloc de taille RF64|||bloque de tamaño RF64
+SES clip track or source reference|||SES-spoor- of bronverwijzing van clip|||SES-Spur- oder Quellverweis des Clips|||référence de piste ou de source du clip SES|||referencia de pista o fuente del clip SES
+Time/Pitch quality setting|||kwaliteitsinstelling voor tijd/toonhoogte|||Qualitätseinstellung für Zeit/Tonhöhe|||réglage de qualité durée/hauteur|||ajuste de calidad tiempo/tono
+VST3 audio block|||VST3-audioblok|||VST3-Audioblock|||bloc audio VST3|||bloque de audio VST3
+VST3 block size|||VST3-blokgrootte|||VST3-Blockgröße|||taille de bloc VST3|||tamaño de bloque VST3
+VST3 class count|||aantal VST3-klassen|||VST3-Klassenanzahl|||nombre de classes VST3|||número de clases VST3
+VST3 class identifier|||VST3-klasse-ID|||VST3-Klassenkennung|||identifiant de classe VST3|||identificador de clase VST3
+VST3 parameter list|||VST3-parameterlijst|||VST3-Parameterliste|||liste de paramètres VST3|||lista de parámetros VST3
+VST3 rate|||VST3-samplerate|||VST3-Abtastrate|||fréquence d’échantillonnage VST3|||frecuencia de muestreo VST3
+VST3 state size|||grootte van VST3-status|||VST3-Statusgröße|||taille de l’état VST3|||tamaño de estado VST3
+WAV metadata chunk|||WAV-metadatablok|||WAV-Metadatenblock|||bloc de métadonnées WAV|||bloque de metadatos WAV
+amplification|||versterking|||Verstärkung|||amplification|||amplificación
+audio block size|||audioblokgrootte|||Audioblockgröße|||taille de bloc audio|||tamaño de bloque de audio
+audio buffer dimensions|||audiobufferafmetingen|||Audiopufferabmessungen|||dimensions du tampon audio|||dimensiones del búfer de audio
+audio buffer|||audiobuffer|||Audiopuffer|||tampon audio|||búfer de audio
+audio workspace path|||audiowerkruimtepad|||Audiowerkbereichspfad|||chemin de l’espace de travail audio|||ruta del espacio de trabajo de audio
+band enable switch|||inschakeling van band|||Bandaktivierung|||activation de bande|||activación de banda
+captured audio|||opgenomen audio|||aufgenommenes Audio|||audio enregistré|||audio grabado
+channel selection|||kanaalselectie|||Kanalauswahl|||sélection de canaux|||selección de canales
+clip record|||clipgegevens|||Clip-Datensatz|||données du clip|||datos del clip
+convolution switch|||convolutie-optie|||Faltungsoption|||option de convolution|||opción de convolución
+distortion settings|||vervormingsinstellingen|||Verzerrungseinstellungen|||réglages de distorsion|||ajustes de distorsión
+effect settings|||effectinstellingen|||Effekteinstellungen|||réglages d’effet|||ajustes de efecto
+envelope points|||verlooppunten|||Kurvenpunkte|||points d’enveloppe|||puntos de envolvente
+envelope source position|||bronpositie van verloop|||Kurvenposition in der Quelle|||position source de l’enveloppe|||posición de origen de envolvente
+extensible WAV format|||uitgebreid WAV-formaat|||erweitertes WAV-Format|||format WAV extensible|||formato WAV extensible
+filter coefficients or state buffer|||filtercoëfficiënten of statusbuffer|||Filterkoeffizienten oder Zustandspuffer|||coefficients de filtre ou tampon d’état|||coeficientes de filtro o búfer de estado
+local plug-in list|||lokale plug-inlijst|||lokale Plug-in-Liste|||liste locale de plug-ins|||lista local de complementos
+media list|||bronnenlijst|||Medienliste|||liste des médias|||lista de medios
+media record|||brongegevens|||Mediendatensatz|||données du média|||datos del medio
+mixdown range|||mixbereik|||Abmischbereich|||plage de mixage|||intervalo de mezcla
+noise profile duration|||duur van ruisprofiel|||Rauschprofildauer|||durée du profil de bruit|||duración del perfil de ruido
+noise profile spectrum|||spectrum van ruisprofiel|||Rauschprofilspektrum|||spectre du profil de bruit|||espectro del perfil de ruido
+noise profile|||ruisprofiel|||Rauschprofil|||profil de bruit|||perfil de ruido
+noise reduction switch|||ruisreductie-optie|||Rauschminderungsoption|||option de réduction du bruit|||opción de reducción de ruido
+normalization settings|||normalisatie-instellingen|||Normalisierungseinstellungen|||réglages de normalisation|||ajustes de normalización
+normalized parameter|||genormaliseerde parameter|||normierter Parameter|||paramètre normalisé|||parámetro normalizado
+parametric band type|||parametrisch bandtype|||parametrischer Bandtyp|||type de bande paramétrique|||tipo de banda paramétrica
+parametric band|||parametrische band|||parametrisches Band|||bande paramétrique|||banda paramétrica
+ping pong setting|||pingponginstelling|||Pingpong-Einstellung|||réglage ping-pong|||ajuste ping-pong
+playback position|||afspeelpositie|||Wiedergabeposition|||position de lecture|||posición de reproducción
+playback range|||afspeelbereik|||Wiedergabebereich|||plage de lecture|||intervalo de reproducción
+plug-in response length|||lengte van plug-inantwoord|||Länge der Plug-in-Antwort|||longueur de réponse du plug-in|||longitud de respuesta del complemento
+plug-in response|||plug-inantwoord|||Plug-in-Antwort|||réponse du plug-in|||respuesta del complemento
+recording destination|||opnamebestemming|||Aufnahmeziel|||destination d’enregistrement|||destino de grabación
+recording input|||opname-ingang|||Aufnahmeeingang|||entrée d’enregistrement|||entrada de grabación
+recording position offset|||opnamepositieverschuiving|||Aufnahmepositionsversatz|||décalage de position d’enregistrement|||desplazamiento de posición de grabación
+recording recovery information|||opnameherstelgegevens|||Aufnahmewiederherstellungsdaten|||données de récupération d’enregistrement|||datos de recuperación de grabación
+recovery buffer path|||herstelbufferpad|||Wiederherstellungspufferpfad|||chemin du tampon de récupération|||ruta del búfer de recuperación
+recovery buffer range|||herstelbufferbereik|||Wiederherstellungspufferbereich|||plage du tampon de récupération|||intervalo del búfer de recuperación
+recovery encoding|||herstelcodering|||Wiederherstellungskodierung|||encodage de récupération|||codificación de recuperación
+recovery metadata|||herstelmetadata|||Wiederherstellungsmetadaten|||métadonnées de récupération|||metadatos de recuperación
+recovery mute/solo|||demping/solo in herstel|||Stumm/Solo in der Wiederherstellung|||muet/solo de récupération|||silencio/solo de recuperación
+recovery track/media count|||aantal herstelsporen/-bronnen|||Spur-/Medienanzahl der Wiederherstellung|||nombre de pistes/médias de récupération|||número de pistas/medios de recuperación
+restoration settings|||restauratie-instellingen|||Restaurierungseinstellungen|||réglages de restauration|||ajustes de restauración
+special effect settings|||instellingen voor speciaal effect|||Spezialeffekteinstellungen|||réglages d’effet spécial|||ajustes de efecto especial
+streaming output range|||bereik van streamuitvoer|||Streaming-Ausgabebereich|||plage de sortie du flux|||intervalo de salida del flujo
+track effect record|||spooreffectgegevens|||Spureffektdatensatz|||données d’effet de piste|||datos de efecto de pista
+track list|||sporenlijst|||Spurliste|||liste des pistes|||lista de pistas
+track mute/solo settings|||demping-/solo-instellingen van spoor|||Stumm-/Solo-Einstellungen der Spur|||réglages muet/solo de piste|||ajustes de silencio/solo de pista
+track record|||spoorgegevens|||Spurdatensatz|||données de piste|||datos de pista
+EQ effect|||EQ-effect|||EQ-Effekt|||effet d’égalisation|||efecto de ecualización
+Time/Pitch effect|||tijd-/toonhoogte-effect|||Zeit-/Tonhöheneffekt|||effet de durée/hauteur|||efecto de tiempo/tono
+Time/Pitch settings|||instellingen voor tijd/toonhoogte|||Zeit-/Tonhöheneinstellungen|||réglages de durée/hauteur|||ajustes de tiempo/tono
+amplification setting|||versterkingsinstelling|||Verstärkungseinstellung|||réglage d’amplification|||ajuste de amplificación
+clip setting|||clipinstelling|||Clip-Einstellung|||réglage de clip|||ajuste de clip
+delay effect|||vertragingseffect|||Verzögerungseffekt|||effet de retard|||efecto de retardo
+effect|||effect|||Effekt|||effet|||efecto
+filter type|||filtertype|||Filtertyp|||type de filtre|||tipo de filtro
+output format|||uitvoerformaat|||Ausgabeformat|||format de sortie|||formato de salida
+plug-in request|||plug-inopdracht|||Plug-in-Anfrage|||requête de plug-in|||solicitud al complemento
+plug-in setting|||plug-ininstelling|||Plug-in-Einstellung|||réglage de plug-in|||ajuste de complemento
+restoration effect|||restauratie-effect|||Restaurierungseffekt|||effet de restauration|||efecto de restauración
+special effect|||speciaal effect|||Spezialeffekt|||effet spécial|||efecto especial
+track setting|||spoorinstelling|||Spureinstellung|||réglage de piste|||ajuste de pista
+SES envelope layout|||SES-verloopindeling|||SES-Kurvenstruktur|||structure d’enveloppe SES|||estructura de envolvente SES
+SES header layout|||SES-kopindeling|||SES-Kopfstruktur|||structure d’en-tête SES|||estructura de cabecera SES
+SES media-list entry|||SES-bronnenlijstitem|||SES-Medienlisteneintrag|||entrée de liste de médias SES|||entrada de lista de medios SES
+SES source-file description|||SES-bronbestandsbeschrijving|||SES-Quelldateibeschreibung|||description du fichier source SES|||descripción de archivo fuente SES
+extensible WAV subformat|||uitgebreid WAV-subformaat|||erweitertes WAV-Unterformat|||sous-format WAV extensible|||subformato WAV extensible
+recording sample format|||opnamesampleformaat|||Aufnahme-Sampleformat|||format d’trame d’enregistrement|||formato de muestra de grabación
+recovery journal|||herstellogboek|||Wiederherstellungsprotokoll|||journal de récupération|||registro de recuperación
+track effect|||spooreffect|||Spureffekt|||effet de piste|||efecto de pista
+Invalid or duplicate WAV format chunk.|||WAV-formaatblok is ongeldig of dubbel aanwezig.|||Der WAV-Formatblock ist ungültig oder doppelt vorhanden.|||Le bloc de format WAV est non valide ou en double.|||El bloque de formato WAV no es válido o está duplicado.
+Invalid or oversized clip list.|||De cliplijst is ongeldig of te groot.|||Die Clip-Liste ist ungültig oder zu groß.|||La liste des clips est non valide ou trop grande.|||La lista de clips no es válida o es demasiado grande.

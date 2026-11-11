@@ -1,0 +1,5 @@
+enabled|||ingeschakeld|||aktiviert|||activée|||activada
+frequency|||frequentie|||Frequenz|||fréquence|||frecuencia
+gain|||versterking|||Verstärkung|||gain|||ganancia
+left|||links|||links|||gauche|||izquierda
+right|||rechts|||rechts|||droite|||derecha

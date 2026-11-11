@@ -18,3 +18,8 @@ install -Dm644 docs/HANDLEIDING.md "$destination/usr/share/doc/soundsausage/HAND
 if [ -f LICENSE ]; then
     install -Dm644 LICENSE "$destination/usr/share/licenses/soundsausage/LICENSE"
 fi
+
+for manual in docs/manual/*.md; do
+    install -Dm644 "$manual" "$destination/usr/lib/soundsausage/docs/manual/$(basename "$manual")"
+    install -Dm644 "$manual" "$destination/usr/share/doc/soundsausage/manual/$(basename "$manual")"
+done

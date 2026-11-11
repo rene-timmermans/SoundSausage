@@ -1,0 +1,200 @@
+Amplitude|||Amplitude|||Amplitude|||Amplitude|||Amplitud
+Amplify|||Versterken|||Verstärken|||Amplifier|||Amplificar
+Amplify / Fade|||Versterken / vervagen|||Verstärken / Blenden|||Amplifier / fondre|||Amplificar / fundido
+Amplify +6 dB|||Versterken +6 dB|||Verstärken +6 dB|||Amplifier de +6 dB|||Amplificar +6 dB
+Amplify −6 dB|||Versterken −6 dB|||Verstärken −6 dB|||Atténuer de −6 dB|||Atenuar −6 dB
+Amplification (%)|||Versterking (%)|||Verstärkung (%)|||Amplification (%)|||Amplificación (%)
+Initial amplification|||Beginversterking|||Anfangsverstärkung|||Amplification initiale|||Amplificación inicial
+Final amplification|||Eindversterking|||Endverstärkung|||Amplification finale|||Amplificación final
+Lock left / right|||Links en rechts koppelen|||Links / rechts koppeln|||Lier gauche / droite|||Vincular izquierda / derecha
+Keep initial and final amplification equal|||Begin- en eindversterking gelijk houden|||Anfangs- und Endverstärkung gleich halten|||Garder les amplifications initiale et finale identiques|||Mantener iguales las amplificaciones inicial y final
+Linear fades|||Lineaire overgangen|||Lineare Blenden|||Fondus linéaires|||Fundidos lineales
+Logarithmic fades|||Logaritmische overgangen|||Logarithmische Blenden|||Fondus logarithmiques|||Fundidos logarítmicos
+Logarithmic fade|||Logaritmische overgang|||Logarithmische Blende|||Fondu logarithmique|||Fundido logarítmico
+Fade In|||Invloeien|||Einblenden|||Fondu d’entrée|||Fundido de entrada
+Fade Out|||Uitvloeien|||Ausblenden|||Fondu de sortie|||Fundido de salida
+Fade &In|||&Invloeien|||&Einblenden|||Fondu d’&entrée|||Fundido de &entrada
+Fade &Out|||&Uitvloeien|||&Ausblenden|||Fondu de &sortie|||Fundido de &salida
+Fade In / Out|||In- en uitvloeien|||Ein- / Ausblenden|||Fondu d’entrée / sortie|||Fundido de entrada / salida
+Fade in|||Invloeien|||Einblenden|||Fondu d’entrée|||Fundido de entrada
+Fade out|||Uitvloeien|||Ausblenden|||Fondu de sortie|||Fundido de salida
+Channel Mixer|||Kanalenmixer|||Kanalmischer|||Mélangeur de canaux|||Mezclador de canales
+From Left|||Van links|||Von links|||Depuis la gauche|||Desde la izquierda
+From Right|||Van rechts|||Von rechts|||Depuis la droite|||Desde la derecha
+To Left|||Naar links|||Nach links|||Vers la gauche|||A la izquierda
+To Right|||Naar rechts|||Nach rechts|||Vers la droite|||A la derecha
+Swap Left / Right|||Links en rechts wisselen|||Links / rechts tauschen|||Permuter gauche / droite|||Intercambiar izquierda / derecha
+Stereo to Mono|||Stereo naar mono|||Stereo zu Mono|||Stéréo vers mono|||Estéreo a mono
+Left to Both|||Links naar beide|||Links auf beide|||Gauche vers les deux|||Izquierda a ambos
+Right to Both|||Rechts naar beide|||Rechts auf beide|||Droite vers les deux|||Derecha a ambos
+Invert Left|||Links ompolen|||Links invertieren|||Inverser la gauche|||Invertir izquierda
+Invert Right|||Rechts ompolen|||Rechts invertieren|||Inverser la droite|||Invertir derecha
+Vocal Cut|||Zang onderdrukken|||Gesang reduzieren|||Réduire la voix|||Reducir voz
+Dynamics|||Dynamiek|||Dynamik|||Dynamique|||Dinámica
+Dynamics Processing|||Dynamiekbewerking|||Dynamikbearbeitung|||Traitement de la dynamique|||Procesamiento de dinámica
+Input (dB)|||Ingang (dB)|||Eingang (dB)|||Entrée (dB)|||Entrada (dB)
+Output (dB)|||Uitgang (dB)|||Ausgang (dB)|||Sortie (dB)|||Salida (dB)
+Attack|||Aanspreektijd|||Ansprechzeit|||Attaque|||Ataque
+Release|||Hersteltijd|||Rücklaufzeit|||Relâchement|||Liberación
+Attack (ms)|||Aanspreektijd (ms)|||Ansprechzeit (ms)|||Attaque (ms)|||Ataque (ms)
+Release (ms)|||Hersteltijd (ms)|||Rücklaufzeit (ms)|||Relâchement (ms)|||Liberación (ms)
+Makeup gain|||Compensatieversterking|||Aufholverstärkung|||Gain de compensation|||Ganancia de compensación
+Makeup gain (dB)|||Compensatieversterking (dB)|||Aufholverstärkung (dB)|||Gain de compensation (dB)|||Ganancia de compensación (dB)
+Link stereo channels|||Stereokanalen koppelen|||Stereokanäle koppeln|||Lier les canaux stéréo|||Vincular canales estéreo
+Link stereo channels (preserve balance)|||Stereokanalen koppelen (balans behouden)|||Stereokanäle koppeln (Balance erhalten)|||Lier les canaux stéréo (préserver l’équilibre)|||Vincular canales estéreo (conservar balance)
+Compressor (3:1 above −18 dB)|||Compressor (3:1 boven −18 dB)|||Kompressor (3:1 über −18 dB)|||Compresseur (3:1 au-dessus de −18 dB)|||Compresor (3:1 por encima de −18 dB)
+Limiter|||Begrenzer|||Begrenzer|||Limiteur|||Limitador
+Downward Expander|||Neerwaartse expander|||Abwärtsexpander|||Expanseur descendant|||Expansor descendente
+Noise Gate|||Ruispoort|||Rausch-Gate|||Porte de bruit|||Puerta de ruido
+Envelope|||Volumeverloop|||Lautstärkeverlauf|||Enveloppe de volume|||Envolvente de volumen
+Position (%)|||Positie (%)|||Position (%)|||Position (%)|||Posición (%)
+Volume (%)|||Volume (%)|||Lautstärke (%)|||Volume (%)|||Volumen (%)
+Level (%)|||Niveau (%)|||Pegel (%)|||Niveau (%)|||Nivel (%)
+Position|||Positie|||Position|||Position|||Posición
+Level|||Niveau|||Pegel|||Niveau|||Nivel
+Linear|||Lineair|||Linear|||Linéaire|||Lineal
+Logarithmic|||Logaritmisch|||Logarithmisch|||Logarithmique|||Logarítmico
+Flat|||Vlak|||Flach|||Plat|||Plano
+Dip in the Middle|||Dip in het midden|||Absenkung in der Mitte|||Creux au milieu|||Caída en el centro
+Normalize|||Normaliseren|||Normalisieren|||Normaliser|||Normalizar
+Peak level|||Piekniveau|||Spitzenpegel|||Niveau de crête|||Nivel de pico
+Target peak (%)|||Doelpiek (%)|||Zielspitze (%)|||Crête cible (%)|||Pico objetivo (%)
+Remove DC offset|||DC-offset verwijderen|||Gleichspannungsversatz entfernen|||Supprimer le décalage continu|||Eliminar desplazamiento de continua
+Keep stereo balance|||Stereobalans behouden|||Stereobalance erhalten|||Préserver l’équilibre stéréo|||Conservar balance estéreo
+Invert|||Ompolen|||Invertieren|||Inverser la polarité|||Invertir polaridad
+Reverse|||Achterstevoren|||Rückwärts|||Inverser le sens|||Invertir sentido
+Silence|||Stilte|||Stille|||Silence|||Silencio
+Filters|||Filters|||Filter|||Filtres|||Filtros
+Filter|||Filter|||Filter|||Filtre|||Filtro
+Graphic EQ|||Grafische EQ|||Grafischer EQ|||Égaliseur graphique|||Ecualizador gráfico
+Graphic Equalizer|||Grafische equalizer|||Grafischer Equalizer|||Égaliseur graphique|||Ecualizador gráfico
+Parametric EQ|||Parametrische EQ|||Parametrischer EQ|||Égaliseur paramétrique|||Ecualizador paramétrico
+Parametric Equalizer|||Parametrische equalizer|||Parametrischer Equalizer|||Égaliseur paramétrique|||Ecualizador paramétrico
+Band|||Band|||Band|||Bande|||Banda
+Band gain (dB)|||Bandversterking (dB)|||Bandverstärkung (dB)|||Gain de bande (dB)|||Ganancia de banda (dB)
+Bell {0}|||Piekband {0}|||Glocke {0}|||Cloche {0}|||Campana {0}
+Low shelf|||Laagplateau|||Tiefen-Shelf|||Plateau grave|||Estante de graves
+High shelf|||Hoogplateau|||Höhen-Shelf|||Plateau aigu|||Estante de agudos
+High-pass|||Hoogdoorlaat|||Hochpass|||Passe-haut|||Paso alto
+Low-pass|||Laagdoorlaat|||Tiefpass|||Passe-bas|||Paso bajo
+Band-pass|||Banddoorlaat|||Bandpass|||Passe-bande|||Paso banda
+Notch|||Sperfilter|||Kerbfilter|||Coupe-bande|||Filtro de muesca
+Cutoff / centre frequency|||Grens- / middenfrequentie|||Grenz- / Mittenfrequenz|||Fréquence de coupure / centrale|||Frecuencia de corte / central
+Butterworth slope (low/high-pass)|||Butterworth-helling (laag-/hoogdoorlaat)|||Butterworth-Flankensteilheit (Tief-/Hochpass)|||Pente Butterworth (passe-bas/haut)|||Pendiente Butterworth (paso bajo/alto)
+Gain|||Versterking|||Verstärkung|||Gain|||Ganancia
+Gain (dB)|||Versterking (dB)|||Verstärkung (dB)|||Gain (dB)|||Ganancia (dB)
+Output gain|||Uitgangsversterking|||Ausgangsverstärkung|||Gain de sortie|||Ganancia de salida
+Output gain (dB)|||Uitgangsversterking (dB)|||Ausgangsverstärkung (dB)|||Gain de sortie (dB)|||Ganancia de salida (dB)
+Frequency|||Frequentie|||Frequenz|||Fréquence|||Frecuencia
+Frequency (Hz)|||Frequentie (Hz)|||Frequenz (Hz)|||Fréquence (Hz)|||Frecuencia (Hz)
+Frequency Analysis|||Frequentieanalyse|||Frequenzanalyse|||Analyse fréquentielle|||Análisis de frecuencias
+Voice clarity|||Spraakhelderheid|||Sprachverständlichkeit|||Clarté vocale|||Claridad de voz
+Warmth|||Warmte|||Wärme|||Chaleur|||Calidez
+Bass lift|||Lage tonen versterken|||Bass anheben|||Renforcer les graves|||Realzar graves
+Gentle smile|||Lichte glimlachcurve|||Sanfte Badewanne|||Courbe en sourire légère|||Curva de sonrisa suave
+Remove low rumble|||Laag gerommel verwijderen|||Tiefes Rumpeln entfernen|||Supprimer les grondements graves|||Eliminar retumbo grave
+Soften high frequencies|||Hoge tonen verzachten|||Höhen abmildern|||Adoucir les aigus|||Suavizar agudos
+Telephone band|||Telefoonband|||Telefonband|||Bande téléphonique|||Banda telefónica
+50 Hz notch|||50 Hz-sperfilter|||50-Hz-Kerbfilter|||Coupe-bande 50 Hz|||Muesca de 50 Hz
+60 Hz notch|||60 Hz-sperfilter|||60-Hz-Kerbfilter|||Coupe-bande 60 Hz|||Muesca de 60 Hz
+Delay Effects|||Vertragingseffecten|||Verzögerungseffekte|||Effets de retard|||Efectos de retardo
+Delay|||Vertraging|||Verzögerung|||Retard|||Retardo
+Delay (left / mono)|||Vertraging (links / mono)|||Verzögerung (links / mono)|||Retard (gauche / mono)|||Retardo (izquierda / mono)
+Delay (ms)|||Vertraging (ms)|||Verzögerung (ms)|||Retard (ms)|||Retardo (ms)
+Right delay|||Vertraging rechts|||Verzögerung rechts|||Retard à droite|||Retardo derecho
+Same delay for both channels|||Gelijke vertraging voor beide kanalen|||Gleiche Verzögerung für beide Kanäle|||Même retard pour les deux canaux|||Mismo retardo en ambos canales
+Single delay|||Enkele vertraging|||Einzelverzögerung|||Retard unique|||Retardo único
+Slapback|||Korte terugkaatsing|||Kurzes Echo|||Écho court|||Eco corto
+Doubling|||Verdubbeling|||Dopplung|||Doublage|||Duplicación
+Stereo widening|||Stereoverbreding|||Stereoverbreiterung|||Élargissement stéréo|||Ampliación estéreo
+Echo|||Echo|||Echo|||Écho|||Eco
+Feedback|||Terugkoppeling|||Rückkopplung|||Réinjection|||Realimentación
+Damping|||Demping|||Dämpfung|||Amortissement|||Amortiguación
+High-frequency damping|||Demping van hoge tonen|||Höhendämpfung|||Amortissement des aigus|||Amortiguación de agudos
+Alternate repeats between left and right|||Herhalingen afwisselen tussen links en rechts|||Wiederholungen zwischen links und rechts wechseln|||Alterner les répétitions entre gauche et droite|||Alternar repeticiones entre izquierda y derecha
+Repeating echo|||Herhalende echo|||Wiederholtes Echo|||Écho répétitif|||Eco repetitivo
+Warm echo|||Warme echo|||Warmes Echo|||Écho chaud|||Eco cálido
+Stereo ping pong|||Stereo-pingpong|||Stereo-Pingpong|||Ping-pong stéréo|||Ping-pong estéreo
+Long repeats|||Lange herhalingen|||Lange Wiederholungen|||Longues répétitions|||Repeticiones largas
+Reverb|||Galm|||Hall|||Réverbération|||Reverberación
+Room size|||Ruimtegrootte|||Raumgröße|||Taille de la pièce|||Tamaño de sala
+Decay (approx. RT60)|||Nagalmtijd (ongeveer RT60)|||Nachhallzeit (etwa RT60)|||Décroissance (RT60 approximatif)|||Decaimiento (RT60 aproximado)
+Decay (seconds)|||Nagalmtijd (seconden)|||Nachhallzeit (Sekunden)|||Décroissance (secondes)|||Decaimiento (segundos)
+Predelay|||Voorvertraging|||Vorverzögerung|||Préretard|||Retardo previo
+Stereo width|||Stereobreedte|||Stereobreite|||Largeur stéréo|||Anchura estéreo
+Small room|||Kleine ruimte|||Kleiner Raum|||Petite pièce|||Sala pequeña
+Studio|||Studio|||Studio|||Studio|||Estudio
+Large hall|||Grote zaal|||Großer Saal|||Grande salle|||Sala grande
+Long ambient|||Lange sfeerklank|||Langer Raumklang|||Longue ambiance|||Ambiente largo
+Dry (original)|||Droog (origineel)|||Trocken (Original)|||Son direct (original)|||Seco (original)
+Wet (effect)|||Nat (effect)|||Effektanteil|||Son traité (effet)|||Húmedo (efecto)
+Dry level|||Droog niveau|||Trockenpegel|||Niveau direct|||Nivel seco
+Wet level|||Effectniveau|||Effektpegel|||Niveau traité|||Nivel húmedo
+Add effect tail after the selection|||Uitklank toevoegen na de selectie|||Effektausklang hinter der Auswahl hinzufügen|||Ajouter la fin de l’effet après la sélection|||Añadir cola del efecto tras la selección
+Tail after last clip|||Uitklank na laatste clip|||Ausklang nach letztem Clip|||Fin d’effet après le dernier clip|||Cola tras el último clip
+Tail (seconds)|||Uitklank (seconden)|||Ausklang (Sekunden)|||Fin d’effet (secondes)|||Cola (segundos)
+Noise Reduction|||Ruisreductie|||Rauschminderung|||Réduction du bruit|||Reducción de ruido
+Noise Profile|||Ruisprofiel|||Rauschprofil|||Profil de bruit|||Perfil de ruido
+Capture Noise Profile|||Ruisprofiel vastleggen|||Rauschprofil erfassen|||Capturer le profil de bruit|||Capturar perfil de ruido
+Capture from selection|||Uit selectie vastleggen|||Aus Auswahl erfassen|||Capturer depuis la sélection|||Capturar de la selección
+Load Profile|||Profiel laden|||Profil laden|||Charger le profil|||Cargar perfil
+Save Profile|||Profiel opslaan|||Profil speichern|||Enregistrer le profil|||Guardar perfil
+Maximum noise reduction|||Maximale ruisreductie|||Maximale Rauschminderung|||Réduction maximale du bruit|||Reducción máxima de ruido
+Sensitivity|||Gevoeligheid|||Empfindlichkeit|||Sensibilité|||Sensibilidad
+Smoothing|||Egalisatie|||Glättung|||Lissage|||Suavizado
+Keep removed noise only (instead of cleaned audio)|||Alleen verwijderde ruis behouden (in plaats van schone audio)|||Nur entferntes Rauschen behalten (statt bereinigtem Audio)|||Garder seulement le bruit retiré (au lieu de l’audio nettoyé)|||Conservar solo el ruido eliminado (en lugar del audio limpio)
+Gentle|||Zacht|||Sanft|||Doux|||Suave
+Balanced|||Gebalanceerd|||Ausgewogen|||Équilibré|||Equilibrado
+Strong|||Sterk|||Stark|||Fort|||Intenso
+Click Removal|||Klikverwijdering|||Klickentfernung|||Suppression des clics|||Eliminación de clics
+Click sensitivity|||Klikgevoeligheid|||Klickempfindlichkeit|||Sensibilité aux clics|||Sensibilidad a clics
+Threshold multiplier (higher = fewer repairs)|||Drempelfactor (hoger = minder herstel)|||Schwellenfaktor (höher = weniger Korrekturen)|||Multiplicateur du seuil (plus élevé = moins de corrections)|||Multiplicador de umbral (mayor = menos correcciones)
+Minimum jump level|||Minimaal sprongniveau|||Minimaler Sprungpegel|||Niveau minimal du saut|||Nivel mínimo de salto
+Maximum click width|||Maximale klikduur|||Maximale Klickdauer|||Durée maximale du clic|||Duración máxima del clic
+Conservative|||Terughoudend|||Zurückhaltend|||Prudent|||Conservador
+Small clicks|||Kleine klikjes|||Kleine Klicks|||Petits clics|||Clics pequeños
+Wider clicks|||Langere klikken|||Längere Klicks|||Clics plus longs|||Clics más largos
+Time/Pitch|||Tijd/toonhoogte|||Zeit/Tonhöhe|||Durée/hauteur|||Tiempo/tono
+Stretch|||Tijdsduur aanpassen|||Zeitdehnung|||Étirement temporel|||Estirar duración
+Pitch Shift|||Toonhoogte verschuiven|||Tonhöhenverschiebung|||Transposition|||Cambio de tono
+Length (%)|||Lengte (%)|||Länge (%)|||Durée (%)|||Duración (%)
+Semitones|||Halve tonen|||Halbtöne|||Demi-tons|||Semitonos
+semitones|||halve tonen|||Halbtöne|||demi-tons|||semitonos
+Fine|||Nauwkeurig|||Fein|||Précis|||Preciso
+Fast|||Snel|||Schnell|||Rapide|||Rápido
+Quality|||Kwaliteit|||Qualität|||Qualité|||Calidad
+Preserve formants|||Formanten behouden|||Formanten erhalten|||Préserver les formants|||Conservar formantes
+Tempo|||Tempo|||Tempo|||Tempo|||Tempo
+Source tempo|||Brontempo|||Quelltempo|||Tempo d’origine|||Tempo de origen
+Target tempo|||Doeltempo|||Zieltempo|||Tempo cible|||Tempo de destino
+Special|||Speciaal|||Spezial|||Spécial|||Especial
+Distortion|||Vervorming|||Verzerrung|||Distorsion|||Distorsión
+Drive|||Aansturing|||Ansteuerung|||Saturation d’entrée|||Excitación
+Drive (dB)|||Aansturing (dB)|||Ansteuerung (dB)|||Saturation d’entrée (dB)|||Excitación (dB)
+Ceiling|||Bovengrens|||Obergrenze|||Plafond|||Techo
+Soft clip|||Zacht begrenzen|||Weich begrenzen|||Écrêtage doux|||Recorte suave
+Hard clip|||Hard begrenzen|||Hart begrenzen|||Écrêtage dur|||Recorte duro
+Wavefold|||Golfvouwen|||Wellenfaltung|||Repliement d’onde|||Plegado de onda
+Bit crush|||Bitdiepte verlagen|||Bitreduktion|||Réduction de résolution|||Reducción de bits
+Bit depth (Bit crush)|||Bitdiepte (bitreductie)|||Bittiefe (Bitreduktion)|||Résolution (réduction de bits)|||Profundidad de bits (reducción)
+High quality (oversampling)|||Hoge kwaliteit (oversampling)|||Hohe Qualität (Oversampling)|||Haute qualité (suréchantillonnage)|||Alta calidad (sobremuestreo)
+Effect mix|||Effectmenging|||Effektmischung|||Mélange d’effet|||Mezcla de efecto
+Subtle warmth|||Subtiele warmte|||Dezente Wärme|||Chaleur subtile|||Calidez sutil
+Crunch|||Krakende vervorming|||Kräftige Verzerrung|||Saturation marquée|||Saturación marcada
+Lo-fi|||Lage resolutie|||Niedrige Auflösung|||Basse fidélité|||Baja fidelidad
+Convolution|||Convolutie|||Faltung|||Convolution|||Convolución
+Impulse Response|||Impulsrespons|||Impulsantwort|||Réponse impulsionnelle|||Respuesta al impulso
+Choose Impulse Response|||Impulsrespons kiezen|||Impulsantwort auswählen|||Choisir la réponse impulsionnelle|||Elegir respuesta al impulso
+Normalize impulse energy|||Impulsenergie normaliseren|||Impulsenergie normalisieren|||Normaliser l’énergie de la réponse|||Normalizar energía del impulso
+Keep full response tail|||Volledige uitklank behouden|||Vollständigen Ausklang behalten|||Conserver toute la fin de la réponse|||Conservar cola completa de la respuesta
+VST3 Plug-in|||VST3-plug-in|||VST3-Plug-in|||Plug-in VST3|||Complemento VST3
+VST3 Track Effect|||VST3-spooreffect|||VST3-Spureffekt|||Effet de piste VST3|||Efecto VST3 de pista
+Add VST3 Bundle|||VST3-bundel toevoegen|||VST3-Bundle hinzufügen|||Ajouter un paquet VST3|||Añadir paquete VST3
+Parameter|||Parameter|||Parameter|||Paramètre|||Parámetro
+Normalized value|||Genormaliseerde waarde|||Normierter Wert|||Valeur normalisée|||Valor normalizado
+Preset|||Voorinstelling|||Vorgabe|||Préréglage|||Preajuste
+Custom|||Aangepast|||Benutzerdefiniert|||Personnalisé|||Personalizado
+Default|||Standaard|||Standard|||Par défaut|||Predeterminado
+Choose a preset|||Kies een voorinstelling|||Vorgabe auswählen|||Choisir un préréglage|||Elegir un preajuste
+Preview|||Voorbeeld|||Vorschau|||Écouter|||Escuchar
+Stop Preview|||Voorbeeld stoppen|||Vorschau stoppen|||Arrêter l’écoute|||Detener escucha

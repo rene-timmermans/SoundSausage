@@ -2,7 +2,8 @@
 from pathlib import Path
 
 from PySide6.QtCore import Qt, QPointF, QRectF
-from PySide6.QtGui import QGuiApplication, QIcon, QPainter, QPainterPath, QPen, QPixmap, QPolygonF
+from PySide6.QtGui import QGuiApplication, QIcon, QPainterPath, QPen, QPixmap, QPolygonF
+from .i18n_widgets import QPainter
 
 
 ICON_ACTIONS = {"new", "open", "close_file", "save", "save_session", "save_session_as", "undo", "redo",
@@ -319,6 +320,10 @@ def draw(p, name, color):
         path = QPainterPath(QPointF(5, 5)); path.cubicTo(24, -1, 26, 25, 7, 21); p.drawPath(path)
         line(5, 5, 5, 11); line(5, 5, 11, 5); line(7, 10, 13, 14); line(13, 14, 7, 18)
     elif name == "exit": rect(3, 3, 10, 18); line(8, 12, 23, 12); line(19, 8, 23, 12); line(19, 16, 23, 12)
+    elif name == "language":
+        p.drawEllipse(QRectF(2, 2, 20, 20))
+        p.drawEllipse(QRectF(7, 2, 10, 20))
+        line(2, 12, 22, 12); line(5, 6, 19, 6); line(5, 18, 19, 18)
     elif name == "plugin":
         rect(5, 6, 14, 12); line(9, 2, 9, 6); line(15, 2, 15, 6)
         line(12, 18, 12, 22); line(9, 12, 15, 12); line(12, 9, 12, 15)

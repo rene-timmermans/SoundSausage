@@ -3,11 +3,11 @@ import math
 
 import numpy as np
 from PySide6.QtCore import Qt, QPointF, QRectF
-from PySide6.QtGui import QPainter, QPen, QPolygonF
-from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QFormLayout,
-    QLabel, QComboBox, QCheckBox, QSlider, QPushButton,
-)
+from PySide6.QtGui import QPen, QPolygonF
+from .i18n_widgets import QPainter
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
+from .i18n_widgets import QSlider
+from .i18n_widgets import QWidget, QFormLayout, QLabel, QComboBox, QCheckBox, QPushButton
 
 from .amplitude_ui import EffectDialog, spin
 from .filters import GRAPHIC_CENTRES, design, response, frequency_limit
@@ -180,7 +180,7 @@ class ParametricEqualizerDialog(FrequencyDialog):
             q.setToolTip("Bell bandwidth. Shelves use a fixed monotonic slope.")
             for column, control in enumerate((enabled, freq, gain, q)):
                 grid.addWidget(control, i+1, column)
-                control.setAccessibleName(f"{enabled.text()} {('enabled', 'frequency', 'gain', 'Q')[column]}")
+                control.setAccessibleName(f"Parametric band {i+1}: {('enabled', 'frequency', 'gain', 'Q')[column]}")
             def toggle(value, f=freq, g=gain, qfield=q, k=kind):
                 f.setEnabled(value); g.setEnabled(value); qfield.setEnabled(value and k == "bell")
                 self.changed()

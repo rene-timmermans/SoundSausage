@@ -1,0 +1,54 @@
+Buffer frames|||Bufferframes|||Pufferframes|||Trames du tampon|||Tramas del búfer
+Buffer offset|||Bufferverschuiving|||Pufferversatz|||Décalage du tampon|||Desplazamiento del búfer
+Legacy left gain|||Oude linkerversterking|||Alte linke Verstärkung|||Ancien gain gauche|||Ganancia izquierda antigua
+Legacy right gain|||Oude rechterversterking|||Alte rechte Verstärkung|||Ancien gain droit|||Ganancia derecha antigua
+Media channels|||Bronkanalen|||Quellkanäle|||Canaux source|||Canales de origen
+Media frames|||Bronframes|||Quellframes|||Trames source|||Tramas de origen
+Mix begin|||Mixbegin|||Mischbeginn|||Début du mixage|||Inicio de mezcla
+Mix end|||Mixeinde|||Mischende|||Fin du mixage|||Fin de mezcla
+Mix the left and right channels of a stereo waveform|||Meng het linker- en rechterkanaal van een stereogolfvorm|||Linken und rechten Kanal einer Stereowellenform mischen|||Mélanger les canaux gauche et droit d'une forme d'onde stéréo|||Mezclar los canales izquierdo y derecho de una forma de onda estéreo
+Device: {0}|||Apparaat: {0}|||Gerät: {0}|||Périphérique : {0}|||Dispositivo: {0}
+Parametric band {0}: {1}|||Parametrische band {0}: {1}|||Parametrisches Band {0}: {1}|||Bande paramétrique {0} : {1}|||Banda paramétrica {0}: {1}
+Peak: {0} Hz · {1} dBFS     |     Hann window · {2} frames · channel power average|||Piek: {0} Hz · {1} dBFS     |     Hann-venster · {2} frames · gemiddeld kanaalvermogen|||Spitze: {0} Hz · {1} dBFS     |     Hann-Fenster · {2} Frames · gemittelte Kanalleistung|||Crête : {0} Hz · {1} dBFS     |     Fenêtre de Hann · {2} trames · puissance moyenne des canaux|||Pico: {0} Hz · {1} dBFS     |     Ventana de Hann · {2} tramas · potencia media de los canales
+Recording — {0}|||Opnemen — {0}|||Aufnahme — {0}|||Enregistrement — {0}|||Grabación — {0}
+Selection {0}|||Selectie {0}|||Auswahl {0}|||Sélection {0}|||Selección {0}
+View {0}|||Weergave {0}|||Ansicht {0}|||Vue {0}|||Vista {0}
+Timeline position|||Tijdlijnpositie|||Zeitachsenposition|||Position sur la ligne du temps|||Posición en la línea de tiempo
+Toolbar|||Werkbalk|||Werkzeugleiste|||Barre d'outils|||Barra de herramientas
+Track count|||Aantal sporen|||Spuranzahl|||Nombre de pistes|||Número de pistas
+Track pan|||Spoorbalans|||Spurpanorama|||Panoramique de la piste|||Panorámica de pista
+Track tail|||Spooruitklank|||Spurnachklang|||Queue d'effet de la piste|||Cola de efecto de pista
+Track volume|||Spoorvolume|||Spurlautstärke|||Volume de la piste|||Volumen de pista
+Track {0}|||Spoor {0}|||Spur {0}|||Piste {0}|||Pista {0}
+Untitled waveform|||Naamloze golfvorm|||Unbenannte Wellenform|||Forme d'onde sans titre|||Forma de onda sin título
+Unknown EQ settings: |||Onbekende EQ-instellingen: |||Unbekannte EQ-Einstellungen: |||Réglages d'égalisation inconnus : |||Ajustes de ecualización desconocidos: 
+Unknown delay settings: |||Onbekende vertragingsinstellingen: |||Unbekannte Verzögerungseinstellungen: |||Réglages de délai inconnus : |||Ajustes de retardo desconocidos: 
+Voice presence|||Stempresentie|||Stimmpräsenz|||Présence vocale|||Presencia vocal
+Wet (convolved)|||Effect (convolutie)|||Effekt (Faltung)|||Effet (convolution)|||Efecto (convolución)
+Wave Block Properties|||Eigenschappen audioclip|||Audioclip-Eigenschaften|||Propriétés du clip audio|||Propiedades del clip de audio
+WAV impulse responses (*.wav *.wave);;All files (*)|||WAV-impulsresponsen (*.wav *.wave);;Alle bestanden (*)|||WAV-Impulsantworten (*.wav *.wave);;Alle Dateien (*)|||Réponses impulsionnelles WAV (*.wav *.wave);;Tous les fichiers (*)|||Respuestas al impulso WAV (*.wav *.wave);;Todos los archivos (*)
+Waveform audio (*.wav *.WAV);;All files (*)|||Golfvormaudio (*.wav *.WAV);;Alle bestanden (*)|||Wellenform-Audio (*.wav *.WAV);;Alle Dateien (*)|||Audio de forme d'onde (*.wav *.WAV);;Tous les fichiers (*)|||Audio de forma de onda (*.wav *.WAV);;Todos los archivos (*)
+float32 mix|||float32-mix|||Float32-Mischung|||Mixage float32|||Mezcla float32
+frames|||frames|||Frames|||trames|||tramas
+{0} (clip copy)|||{0} (clipkopie)|||{0} (Clipkopie)|||{0} (copie du clip)|||{0} (copia del clip)
+{0} Hz band gain|||Versterking band {0} Hz|||Verstärkung des {0}-Hz-Bands|||Gain de la bande {0} Hz|||Ganancia de banda de {0} Hz
+{0} Hz gain (dB)|||Versterking {0} Hz (dB)|||Verstärkung bei {0} Hz (dB)|||Gain à {0} Hz (dB)|||Ganancia a {0} Hz (dB)
+{0} Line Point|||Lijnpunt {0}|||{0}-Linienpunkt|||Point de courbe {0}|||Punto de curva de {0}
+{0} by {1}; click to add or drag points, Delete to remove|||{0} per {1}; klik om punten toe te voegen of versleep ze, Delete verwijdert|||{0} nach {1}; klicken zum Hinzufügen, Punkte ziehen, Entf zum Entfernen|||{0} selon {1} ; cliquer pour ajouter, glisser les points, Suppr pour retirer|||{0} por {1}; pulsa para añadir o arrastra puntos, Supr para eliminar
+{0} frames = 1 second|||{0} frames = 1 seconde|||{0} Frames = 1 Sekunde|||{0} trames = 1 seconde|||{0} tramas = 1 segundo
+{0} is outside the supported range.|||{0} valt buiten het ondersteunde bereik.|||{0} liegt außerhalb des unterstützten Bereichs.|||{0} est hors de la plage prise en charge.|||{0} está fuera del intervalo admitido.
+{0} must be between {1} and {2}.|||{0} moet tussen {1} en {2} liggen.|||{0} muss zwischen {1} und {2} liegen.|||{0} doit être compris entre {1} et {2}.|||{0} debe estar entre {1} y {2}.
+{0} output from {1}|||{0}-uitvoer vanaf {1}|||{0}-Ausgabe ab {1}|||Sortie {0} depuis {1}|||Salida {0} desde {1}
+{0} {1} · {2} s in clip|||{0} {1} · {2} s in clip|||{0} {1} · {2} s im Clip|||{0} {1} · {2} s dans le clip|||{0} {1} · {2} s en el clip
+{0} · {1} s · {2} channel(s)|||{0} · {1} s · {2} kanaal/kanalen|||{0} · {1} s · {2} Kanal/Kanäle|||{0} · {1} s · {2} canal/canaux|||{0} · {1} s · {2} canal(es)
+Tijd/toonhoogte analyseren|||Tijd/toonhoogte analyseren|||Zeit/Tonhöhe analysieren|||Analyse du temps/de la hauteur|||Analizando tiempo/tono|||Analysing time/pitch
+Tijd/toonhoogte toepassen|||Tijd/toonhoogte toepassen|||Zeit/Tonhöhe anwenden|||Application du temps/de la hauteur|||Aplicando tiempo/tono|||Applying time/pitch
+Toon genereren|||Toon genereren|||Ton erzeugen|||Génération du son|||Generando tono|||Generating tone
+VST3-plug-in onderzoeken|||VST3-plug-in onderzoeken|||VST3-Plug-in untersuchen|||Analyse du plug-in VST3|||Analizando complemento VST3|||Inspecting VST3 plug-in
+Vervorming toepassen|||Vervorming toepassen|||Verzerrung anwenden|||Application de la distorsion|||Aplicando distorsión|||Applying distortion
+Verwerken|||Verwerken|||Verarbeiten|||Traitement|||Procesando|||Processing
+Verwijderen|||Verwijderen|||Entfernen|||Supprimer|||Eliminar|||Remove
+WAV openen|||WAV openen|||WAV öffnen|||Ouverture du WAV|||Abriendo WAV|||Opening WAV
+WAV opslaan|||WAV opslaan|||WAV speichern|||Enregistrement du WAV|||Guardando WAV|||Saving WAV
+Werk herstellen|||Werk herstellen|||Arbeit wiederherstellen|||Restauration du travail|||Recuperando trabajo|||Recovering work
+Werkruimte reserveren|||Werkruimte reserveren|||Arbeitsbereich reservieren|||Réservation de l'espace de travail|||Reservando espacio de trabajo|||Reserving workspace

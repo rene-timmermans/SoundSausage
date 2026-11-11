@@ -2,8 +2,11 @@ import math
 
 import numpy as np
 from PySide6.QtCore import Qt, QRectF, QPointF
-from PySide6.QtGui import QPainter, QColor, QPen, QPolygonF
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QWidget, QDialogButtonBox
+from PySide6.QtGui import QColor, QPen, QPolygonF
+from .i18n_widgets import QPainter
+from PySide6.QtWidgets import QVBoxLayout
+from .i18n_widgets import QDialogButtonBox
+from .i18n_widgets import QDialog, QLabel, QWidget
 
 from .theme import colors
 
