@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from copy import deepcopy
 from itertools import count
+from pathlib import Path
 
 import numpy as np
 
@@ -255,6 +256,12 @@ class Document:
         start, end = self.effect_range
         if start == end:
             return
+        if name == "convolution":
+            from .special import file_digest
+            settings = dict(settings)
+            if not settings.get("ir_path"): raise AudioError("Choose an impulse response first.")
+            settings["ir_path"] = str(Path(settings["ir_path"]).resolve())
+            if settings.get("ir_sha256") is None: settings["ir_sha256"] = file_digest(settings["ir_path"])
         result = self.dsp.process_blocks(name, self.view(start, end), self.sample_rate, **settings)
         label = {"gain": "Amplify / Fade", "channel_mix": "Channel Mixer",
                  "dynamics": "Dynamics Processing", "graphic_eq": "Graphic Equalizer",

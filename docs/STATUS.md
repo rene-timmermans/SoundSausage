@@ -1,4 +1,4 @@
-# SoundSausage 0.12.0
+# SoundSausage 0.13.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -22,6 +22,8 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Ruisprofielen opnemen/laden/bewaren, ruisreductie en korte tikken interpoleren.
 - Lengte veranderen met behoud van toonhoogte, toonhoogte verschuiven met behoud van duur.
 - Tempoverhouding, Fine/Fast-kwaliteit en formantbehoud; cuepunten volgen gewijzigde timing.
+- Soft/hard clip, wavefold en bit crush, met menging en optionele oversampling.
+- FFT-convolutie met WAV-responsen, energienormalisatie en optionele uitklank.
 - DC-offset verwijderen bij normaliseren; onafhankelijke of gekoppelde stereokanalen waar van toepassing.
 - Multitrack met maximaal 32 sporen, clips verplaatsen, trimmen en dupliceren.
 - Volume, pan, mute/solo en bewerkbare volume- en panlijnen per clip.
@@ -40,15 +42,16 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 
 ## Beperkingen
 
-- Vervorming, convolutie en externe plug-ins zijn nog niet beschikbaar.
+- Externe plug-ins zijn nog niet beschikbaar.
 - Amplitude-, EQ-, filter-, delay- en galmeffecten bewerken de golfvorm; voor een multitrackclip open je eerst een bewerkkopie. Het zijn nog geen realtime spooreffecten.
+- Convolutie vereist een ongewijzigd responsbestand voor herhalen; stereo is kanaalgewijs.
+- Impulsresponsen zijn begrensd tot 10 s / 524.288 uitvoersamples en 32 MiB per bestand.
 - Tijd-/toonhoogtebewerking vraagt minimaal 50 ms (ten minste 64 samples) en analyseert de volledige selectie.
 - Ruisreductie richt zich op constante achtergrond; sterke instellingen kunnen zachte details aantasten.
 - Click Removal behandelt korte geïsoleerde tikken, geen langdurige kraken of clipping.
 - Galm en echo hebben begrensde, optionele uitklank; extreme feedback kan langer dan 60 seconden doorlopen.
 - EQ en filters veranderen fase; korte selecties kunnen aan de randen een overgang geven.
 - Dynamics gebruikt piekdetectie zonder vooruitblik. Exact dezelfde uitkomst als historische effecten is niet aangetoond.
-- Nog niet beschikbare effecten staan uitgeschakeld in de menu's.
 - SES-import ondersteunt nog geen automation of cues. Opslaan gebeurt als CELP.
 - Sessies bewaren audio op één samplerate; geïmporteerde audio wordt daarnaartoe omgezet.
 - Grote bewerkingen vragen vrije schijfruimte voor bronkopieën, resultaten en Undo.

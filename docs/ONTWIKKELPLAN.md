@@ -61,7 +61,7 @@ Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 - [x] Delay, echo en galm — 0.10.0, met geteste installatiepakketten.
 - [x] Ruisreductie en klikverwijdering — 0.11.0, met geteste installatiepakketten.
 - [x] Tijd- en toonhoogtebewerking — 0.12.0, met geteste installatiepakketten.
-- [ ] Overige aangeboden tools, waaronder vervorming en convolutie.
+- [ ] Vervorming en convolutie — gebouwd voor 0.13.0; distributiecontroles volgen.
 
 Deze vijf groepen vullen de eerder afgeronde Amplitude-groep aan.
 

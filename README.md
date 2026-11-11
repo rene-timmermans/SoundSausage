@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.12.0**.
+De huidige versie is **0.13.0**.
 
 ## Wat het kan
 
@@ -21,13 +21,14 @@ De huidige versie is **0.12.0**.
 - Delay, echo en galm, met presets, luistervoorbeelden en optionele uitklank.
 - Ruisprofielen opnemen en bewaren, ruis verminderen en korte tikken herstellen.
 - Speelduur en toonhoogte onafhankelijk aanpassen, met formantbehoud voor zang.
+- Zachte of harde vervorming, wavefold en bit crush, plus convolutie met een impulsrespons.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
 - Projecten opslaan met alle gebruikte audio en een complete mix exporteren.
 - Eenvoudige oudere sessies importeren.
 - Inzoomen op de golfvorm, afspelen in een lus en frequenties analyseren.
 
-Geavanceerde effecten, gelijktijdig opnemen en afspelen en volledige ondersteuning voor oude sessies volgen later.
+Realtime spooreffecten, gelijktijdig opnemen en afspelen en volledige ondersteuning voor oude sessies volgen later.
 Zie [status en beperkingen](docs/STATUS.md).
 
 ## Installeren en starten
@@ -78,6 +79,8 @@ De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handl
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.13.0** Vier vervormingsvormen met presets, menging en optionele oversampling. Convolutie met WAV-impulsresponsen en optionele uitklank. Zie [vervorming en convolutie](docs/VERVORMING_CONVOLUTIE.md).
 
 **0.12.0** Stretch past de lengte aan met behoud van toonhoogte; Pitch Shift verschuift de toonhoogte met behoud van lengte. Met tempoverhouding, kwaliteitskeuze en optioneel formantbehoud. Zie [tijd en toonhoogte](docs/TIJD_TOONHOOGTE.md).
 

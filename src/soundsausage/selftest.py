@@ -12,6 +12,7 @@ from .session import Session
 from .project import save_project, load_project
 from .amplitude_ui import ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .space_ui import DelayDialog, EchoDialog, ReverbDialog
+from .special_ui import DistortionDialog, ConvolutionDialog
 from .time_pitch_ui import StretchDialog, PitchShiftDialog
 from .restoration_ui import NoiseReductionDialog, ClickRemovalDialog
 from .restoration import learn_profile
@@ -70,18 +71,22 @@ def run(window):
     shifted = doc.dsp.process_blocks("pitch_shift", pitch_source, 8000, semitones=12)
     assert shifted.shape == pitch_source.shape and np.isfinite(shifted).all()
     window.noise_profile = learn_profile(np.random.default_rng(5).normal(0, .01, (2000, 2)).astype(np.float32), 8000)
-    for cls in (StretchDialog, PitchShiftDialog, NoiseReductionDialog, ClickRemovalDialog, DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
-        dialog = cls(doc, window, no_audio=True)
-        try:
-            if isinstance(dialog, (DelayDialog, EchoDialog, ReverbDialog)):
-                dialog.keep_tail.setChecked(True)
-                dialog.tail.setValue(.1)
-            dialog.show()
-            assert not dialog.grab().isNull()
-            assert np.isfinite(dialog.preview_samples()).all()
-        finally:
-            dialog.reject()
-            dialog.deleteLater()
+    with tempfile.TemporaryDirectory(prefix="soundsausage-ir-check-") as response_folder:
+        response_path = Path(response_folder)/"Response.wav"
+        write_wav(response_path, np.array([[1], [.25]], np.float32), 8000, "float32")
+        for cls in (DistortionDialog, ConvolutionDialog, StretchDialog, PitchShiftDialog, NoiseReductionDialog, ClickRemovalDialog, DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
+            dialog = cls(doc, window, no_audio=True)
+            try:
+                if isinstance(dialog, ConvolutionDialog): dialog.use_impulse(response_path)
+                if isinstance(dialog, (DelayDialog, EchoDialog, ReverbDialog)):
+                    dialog.keep_tail.setChecked(True)
+                    dialog.tail.setValue(.1)
+                dialog.show()
+                assert not dialog.grab().isNull()
+                assert np.isfinite(dialog.preview_samples()).all()
+            finally:
+                dialog.reject()
+                dialog.deleteLater()
     manual = ManualDialog(window)
     try:
         assert "Channel Mixer" in manual.browser.toPlainText()

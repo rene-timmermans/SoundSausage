@@ -26,6 +26,7 @@ from . import chrome, metadata, storage
 from .errors import OperationCancelled
 from .progress_ui import long_operation
 from .transport import TransportPanel
+from .special_ui import DistortionDialog, ConvolutionDialog
 from .time_pitch_ui import StretchDialog, PitchShiftDialog
 from .restoration_ui import NoiseReductionDialog, ClickRemovalDialog
 from .restoration import learn_profile
@@ -255,6 +256,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.actions["channel_mix"].setToolTip("Mix the left and right channels of a stereo waveform")
         self.action("dynamics", "Dynamics Processing…", lambda: self.amplitude_dialog(DynamicsDialog))
         self.action("envelope", "Envelope…", lambda: self.amplitude_dialog(EnvelopeDialog))
+        self.action("distortion", "Distortion…", lambda: self.amplitude_dialog(DistortionDialog))
+        self.action("convolution", "Convolution…", lambda: self.amplitude_dialog(ConvolutionDialog))
         self.action("stretch", "Stretch…", lambda: self.amplitude_dialog(StretchDialog))
         self.action("pitch_shift", "Pitch Shift…", lambda: self.amplitude_dialog(PitchShiftDialog))
         self.action("noise_profile", "Capture Noise Profile", self.capture_noise_profile)
@@ -361,7 +364,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.detail_label.setText(f" {clock_text(doc.duration)} · {doc.frames:,} frames ")
         self.selection_changed(*doc.selection)
         has_audio = doc.frames > 0
-        for key in ("stretch", "pitch_shift", "noise_profile", "noise_reduction", "click_removal", "delay", "echo", "reverb", "graphic_eq", "parametric_eq", "filter", "amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
+        for key in ("distortion", "convolution", "stretch", "pitch_shift", "noise_profile", "noise_reduction", "click_removal", "delay", "echo", "reverb", "graphic_eq", "parametric_eq", "filter", "amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
             self.actions[key].setEnabled(has_audio)
         self.actions["channel_mix"].setEnabled(has_audio and doc.channels == 2)
         self.actions["play"].setEnabled(has_audio and not self.no_audio)

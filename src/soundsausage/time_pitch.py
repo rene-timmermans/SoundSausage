@@ -72,11 +72,11 @@ def process_blocks(name, source, rate, *, time_ratio=1, semitones=0, preserve_fo
     if semitones:
         options |= 0x02000000
         if preserve_formants: options |= 0x01000000
-    state = lib.rubberband_new(rate, channels, options, time_ratio, 2**(semitones/12))
-    if not state: raise RuntimeError('Rubber Band could not allocate its processing state.')
     chunk_size = 4096  # Fixed grid gives Preview and Apply identical analysis/input.
     pending = np.empty((65536, channels), np.float32); filled = written = produced = 0
     output = np.empty((channels, 8192), np.float32)
+    state = lib.rubberband_new(rate, channels, options, time_ratio, 2**(semitones/12))
+    if not state: raise RuntimeError('Rubber Band could not allocate its processing state.')
 
     def drain():
         nonlocal filled, written, produced

@@ -72,11 +72,6 @@ def create_menus(window):
     window.menus["amplitude"] = amplitude
     add(amplitude, ("amplify", "channel_mix", "dynamics", "envelope"))
 
-    def unavailable(target, label):
-        action = target.addAction(label)
-        action.setEnabled(False)
-        action.setToolTip("Not available yet")
-
     add(amplitude, ("normalize", None, "fade_in", "fade_out"))
     filters = transform.addMenu("Filters")
     window.menus["filters"] = filters
@@ -90,13 +85,9 @@ def create_menus(window):
     timing = transform.addMenu("Time/Pitch")
     window.menus["time_pitch"] = timing
     add(timing, ("stretch", "pitch_shift"))
-    for name, items in (
-        ("Special", ("Distortion…", "Convolution…")),
-    ):
-        group = transform.addMenu(name)
-        group.setToolTipsVisible(True)
-        for item in items:
-            unavailable(group, item)
+    special = transform.addMenu("Special")
+    window.menus["special"] = special
+    add(special, ("distortion", "convolution"))
     generate = menu("generate", "&Generate")
     add(generate, ("tone", "generate_silence"))
     analyze = menu("analyze", "&Analyze")

@@ -87,7 +87,7 @@ Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
 - [x] Delay, echo en galm — gepubliceerd in 0.10.0.
 - [x] Ruisreductie en klikverwijdering — gepubliceerd in 0.11.0.
 - [x] Tijd-/toonhoogtebewerking — gepubliceerd in 0.12.0.
-- [ ] Overige tools, waaronder vervorming en convolutie.
+- [ ] Vervorming en convolutie: gebouwd voor 0.13.0; distributiecontroles volgen.
 
 De eerste groep is afgerond in [release 0.9.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.9.0).
 Alle 258 controles slagen in Debian, Fedora en Arch. De geïnstalleerde pakketten
