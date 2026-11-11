@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.17.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.17.2. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 ## 1. Langue et aide
 
@@ -16,7 +16,7 @@ Ouvrez un WAV ou MP3 par **Fichier → Ouvrir**. **Espace** démarre ou arrête 
 
 Les fenêtres et les échelles des graphiques s’adaptent à la taille de police du bureau et à la langue choisie. Si un formulaire dépasse l’écran, faites défiler ses réglages ; les boutons de validation et d’annulation restent accessibles.
 
-Une fine ligne horizontale sépare gauche et droite dans la forme d’onde stéréo et la vue d’enregistrement en direct.
+Deux fines lignes horizontales marquent le bord inférieur du canal gauche et le bord supérieur du canal droit. Elles s’arrêtent aux limites du graphique, également pendant l’enregistrement en direct.
 
 ## 3. Fichiers, projets et récupération
 

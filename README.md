@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.17.1**.
+De huidige versie is **0.17.2**.
 
 ## Wat het kan
 
@@ -96,6 +96,8 @@ De taalkeuze blijft bewaard. De handleidingen zijn ook rechtstreeks te lezen:
 [Deutsch](docs/manual/de.md), [Français](docs/manual/fr.md), [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**0.17.2** Twee dunne randen sluiten de linker golfvorm af en openen de rechter golfvorm, begrensd tot het tekenvlak.
 
 **0.17.1** Volledig vertaalde formaatkeuze bij opslaan en een aangepast opnamevenster.
 

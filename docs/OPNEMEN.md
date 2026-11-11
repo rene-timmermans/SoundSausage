@@ -15,7 +15,7 @@ beginwaarde en een fade-in van 5 ms. Daarmee kan een inschakelklik buiten de
 opname blijven. Kies 0 ms om het volledige begin te bewaren. De keuze blijft
 bewaard; pauzeren en hervatten herhalen de uitsnede niet. Klok, meters en maximale
 duur tellen alleen de bewaarde audio. Met begeleiding telt de uitsnede mee in
-de clippositie. Een dunne horizontale lijn scheidt de stereokanalen.
+de clippositie. Twee dunne horizontale lijnen begrenzen de stereokanalen binnen het tekenvlak: de onderrand van links en de bovenrand van rechts.
 
 **Opname starten** opent de microfoon. De klok en meters volgen vastgelegde
 frames, de live golfvorm toont twintig seconden. **P** pauzeert en hervat. **Stoppen**,

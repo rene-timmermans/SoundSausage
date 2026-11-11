@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.17.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.17.2. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 ## 1. Sprache und Hilfe
 
@@ -16,7 +16,7 @@ Eine WAV- oder MP3-Datei mit **Datei → Öffnen** öffnen. **Leertaste** starte
 
 Fenster und Diagrammskalen passen sich an die Schriftgröße des Desktops und die gewählte Sprache an. Ist ein Formular zu groß für den Bildschirm, durch die Einstellungen scrollen; die Schaltflächen zum Bestätigen und Abbrechen bleiben erreichbar.
 
-Eine dünne horizontale Linie trennt links und rechts in der Stereowellenform und der Liveaufnahme.
+Zwei dünne horizontale Linien markieren die Unterkante des linken und die Oberkante des rechten Kanals. Sie enden an den Seiten des Wellenformbereichs, auch bei der Liveaufnahme.
 
 ## 3. Dateien, Projekte und Wiederherstellung
 

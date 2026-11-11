@@ -16,8 +16,9 @@ instellingen, voorkeuren, live meters, invoegen/Undo en begeleiding bij een
 beschikbare invoer als invoer na het verlopen van de bijbehorende afspeeltijd.
 De geïnstalleerde invoerzelftest gebruikt eveneens de uitsnede.
 
-Een cosmetische lijn van één schermpixel scheidt de stereokanalen over de
-volle breedte van de golfvorm en de live opnameweergave. De bestaande controles
+Twee cosmetische lijnen van één schermpixel begrenzen de stereokanalen:
+de onderrand van links en de bovenrand van rechts, met een smalle tussenruimte.
+Ze blijven binnen het tekenvlak van de golfvorm en de live opnameweergave. De bestaande controles
 op kanaalselectie en golfvormcontinuïteit blijven actief.
 
 ## MP3
@@ -75,3 +76,13 @@ op alle vijf doelen, inclusief Ubuntu 26.04 en Rolling. Alle distributielogs en
 de publicatielog bevatten geen onverwachte callback- of bufferfouten.
 [Distributiebouw 0.17.1](https://github.com/rene-timmermans/SoundSausage/actions/runs/43071990484)
 en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.17.1).
+
+## Kanaalranden — 0.17.2
+
+De kanaalranden volgen de onderkant van links en bovenkant van rechts. De lijnen
+beginnen en eindigen bij het tekenvlak; de buitenmarges en amplitude-as blijven
+vrij. Ook de live opnameweergave heeft twee kanaalranden met een tussenruimte.
+Visuele controle en de 24 bestaande kanaalselectie-, opname- en indelingscontroles
+slagen. Een aparte rastercontrole bij 150% schaal bevestigt twee lijnen van
+één fysieke pixel, een vrije tussenruimte en vrije buitenmarges in beide
+weergaven. Definitieve distributiecontroles volgen vóór publicatie.

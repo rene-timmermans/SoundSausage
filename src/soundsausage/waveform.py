@@ -209,8 +209,8 @@ class Waveform(QWidget):
         if channels==2:
             separator=QPen(blend(c.plot,c.plot_text,.55),1);separator.setCosmetic(True)
             painter.setPen(separator)
-            y=round(rect.center().y())+.5
-            painter.drawLine(QPointF(0,y),QPointF(self.width(),y))
+            for y in (self.channel_rect(0).bottom(),self.channel_rect(1).top()):
+                painter.drawLine(QPointF(rect.left(),y),QPointF(rect.right(),y))
         painter.setPen(c.text)
         labels = []
         for time, x in ticks:

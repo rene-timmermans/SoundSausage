@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.17.1. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.17.2. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -34,8 +34,9 @@ Importeer de WAV- of MP3-bestanden, verschuif de clips en maak een eindmix met *
 SoundSausage heeft twee weergaven. **Golfvorm bewerken** bewerkt één opname.
 **Multitrackweergave** combineert clips op meerdere sporen. Wissel met de knoppen
 bovenaan, via **Beeld**, of met **Tab**. De golfvorm en de multitracksessie kunnen
-naast elkaar blijven bestaan; wisselen van weergave sluit ze niet. Een dunne
-horizontale lijn scheidt links en rechts in de stereo- en live opnameweergave.
+naast elkaar blijven bestaan; wisselen van weergave sluit ze niet. Twee dunne
+horizontale lijnen begrenzen de kanalen: de onderrand van links en de bovenrand
+van rechts. Ze lopen alleen binnen het tekenvlak, ook bij live opname.
 
 Bovenaan staan menu's en werkbalken. Een korte aanwijzing verschijnt wanneer je
 de muis boven een knop houdt. **Opties → Werkbalkteksten tonen** toont ook namen

@@ -1,2 +1,2 @@
 """SoundSausage: a native Linux waveform and multitrack editor."""
-__version__ = "0.17.1"
+__version__ = "0.17.2"

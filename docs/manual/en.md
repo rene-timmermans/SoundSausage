@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.17.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.17.2. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -16,7 +16,7 @@ Open a WAV or MP3 with **File → Open**. Press **Space** to listen or stop. Dra
 
 Windows and graph scales adapt to the desktop font size and chosen language. If a form is too large for the screen, scroll through its settings; confirmation and cancel buttons remain accessible.
 
-A thin horizontal line separates left and right in the stereo waveform and live recording view.
+Two thin horizontal lines mark the bottom edge of the left channel and the top edge of the right channel. They end at the sides of the waveform plot, also during live recording.
 
 ## 3. Files, projects and recovery
 

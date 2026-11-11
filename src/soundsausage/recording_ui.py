@@ -159,9 +159,11 @@ class LivePlot(QWidget):
         view=self.view;span=max(1,view.rate*20);start=max(0,view.frames-span)
         line=self.fontMetrics().height()+2
         width=max(1,self.width()-18);height=max(1,self.height()-line-4)
+        gap=8 if view.channels==2 else 0
+        channel_height=max(1,(height-gap)/view.channels)
         for channel in range(view.channels):
-            center=(channel+.5)*height/view.channels
-            scale=height/view.channels*.44
+            center=channel*(channel_height+gap)+channel_height/2
+            scale=channel_height*.44
             p.setPen(QPen(c.plot_grid,1));p.drawLine(QPointF(9,center),QPointF(9+width,center))
             p.setPen(QPen(c.waveform,1))
             for a,b,low,high in view.bins:
@@ -171,7 +173,8 @@ class LivePlot(QWidget):
                            QPointF(x,center-min(1.08,max(-1.08,float(low[channel])))*scale))
         if view.channels==2:
             separator=QPen(blend(c.plot,c.plot_text,.55),1);separator.setCosmetic(True);p.setPen(separator)
-            p.drawLine(QPointF(0,round(height/2)+.5),QPointF(self.width(),round(height/2)+.5))
+            for y in (channel_height,channel_height+gap):
+                p.drawLine(QPointF(9,y),QPointF(9+width,y))
         p.setPen(c.plot_text)
         p.drawText(QRectF(9,height+2,width,line),Qt.AlignmentFlag.AlignLeft,clock_text(start/view.rate))
         p.drawText(QRectF(9,height+2,width,line),Qt.AlignmentFlag.AlignRight,clock_text((start+span)/view.rate))
