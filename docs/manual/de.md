@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.17.2. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.18.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 ## 1. Sprache und Hilfe
 
@@ -63,6 +63,14 @@ Klicken setzt den Cursor, Ziehen einen Zeitbereich. In Stereo innerhalb L oder R
 **Ausschneiden / Strg+X** entfernt und kopiert, **Kopieren / Strg+C** kopiert, **Einfügen / Strg+V** ersetzt die Auswahl oder fügt am Cursor ein. **Einmischen / Strg+M** addiert Zwischenablageaudio dort und kann Spitzen erhöhen. **Entf** entfernt den Bereich; **Zuschneiden / Strg+T** behält nur ihn. **Strg+Z / Strg+Umschalt+Z** zurück/wiederholen. Einfügen wandelt die Rate, ohne die Zwischenablage zu ändern. Bei beiden Kanälen muss die Anzahl passen. Links/rechts kopieren oder Auswahlspeichern erzeugt Mono; normales Speichern erhält immer die ganze Stereowellenform.
 
 Stereo hat eine gemeinsame Zeitachse. Längenänderungen (Schneiden/Löschen/Zuschneiden, Dehnen, Einfügen, Nachklang) benötigen beide Kanäle. Mono in einen Stereokanal einfügen muss den Bereich exakt ersetzen; gemischtes Einfügen muss in der bestehenden Dauer bleiben. **Stille** leert einen Kanal ohne den anderen zu verschieben. Tonhöhenverschiebung, Delay, Echo, Hall und Faltung können einen Kanal bei gleicher Dauer bearbeiten. Aufnahme in bestehendes Stereo benötigt beide Kanäle. Rückgängig/Wiederherstellung behalten die Kanalwahl.
+
+### Einzelne Samples bearbeiten
+
+Mit **+** oder **Strg+Mausrad** einzoomen, bis quadratische Samplepunkte erscheinen (mindestens acht Bildschirmpixel Abstand). Die horizontale Achse zeigt dann Sample-Indizes ab 0. Einen Punkt vertikal ziehen, um nur dieses Sample in diesem Kanal zu ändern. Die Sampleposition bleibt fest, auch wenn der Zeiger andere Punkte oder Kanäle überquert. Ziehen zeigt eine Vorschau; Loslassen bestätigt, **Escape** bricht ab. **Umschalt+Ziehen** wählt weiterhin Audio aus.
+
+Doppel- oder Rechtsklick auf einen Punkt öffnet **Sample bearbeiten**. **Bearbeiten → Sample bearbeiten** ist bei jeder Zoomstufe verfügbar. Das Fenster beginnt am Cursor und im ersten gewählten Kanal; Index und Kanal sind einstellbar. Werte normalisiert oder als 8, 16 oder 24 Bit mit Vorzeichen anzeigen. Null ist Stille; −1/+1 sind der normale Vollpegel. −16384 in der 16-Bit-Anzeige entspricht beispielsweise −0,5 normalisiert. Ein anderer Anzeigebereich ändert weder Audio noch Dateiformat. **OK** übernimmt einen Wert; **Abbrechen** erhält das Original.
+
+Jedes abgeschlossene Ziehen und jeder bestätigte Wert ist ein Schritt Rückgängig/Wiederherstellen. Alle anderen Samples, der andere Kanal, Dauer und Metadaten bleiben erhalten. Ziehen ist auf −1 … +1 begrenzt; bestehende Float-Pegel darüber bleiben numerisch verfügbar. Wiedergabe stoppt beim Bearbeitungsbeginn; während der Aufnahme ist Bearbeiten gesperrt. Mehrspurclips über eine Wellenformkopie bearbeiten und ausdrücklich auf den Clip anwenden. Nach jeder Korrektur hören; bei mehreren betroffenen Samples die Punkte einzeln dem umgebenden Verlauf annähern. Ein abrupter Sprung auf null kann selbst klicken. WAV float32 bewahrt die internen Werte exakt; MP3-Speichern komprimiert die gesamte Datei erneut verlustbehaftet.
 
 ## 7. Effekte anwenden
 

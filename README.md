@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.17.2**.
+De huidige versie is **0.18.0**.
 
 ## Wat het kan
 
@@ -17,6 +17,7 @@ De huidige versie is **0.17.2**.
 - Mono of stereo opnemen via microfoon of audio-interface, met apparaatkeuze en live meters.
 - Een instelbaar opnamebegin overslaan, met een korte fade-in tegen een harde overgang.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
+- Afzonderlijke samplepunten verslepen of exact invoeren voor plaatselijke correcties van tikjes.
 - Links of rechts afzonderlijk selecteren en bewerken met behoud van het andere kanaal.
 - Volume aanpassen, fades toepassen, normaliseren, omkeren en stilte toevoegen.
 - Stereokanalen mengen, dynamiek bewerken en een volumeverloop tekenen, met luistervoorbeelden.
@@ -96,6 +97,8 @@ De taalkeuze blijft bewaard. De handleidingen zijn ook rechtstreeks te lezen:
 [Deutsch](docs/manual/de.md), [Français](docs/manual/fr.md), [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**0.18.0** Directe samplebewerking bij sterke vergroting: punten verslepen, exacte waarden invoeren en iedere correctie ongedaan maken.
 
 **0.17.2** Twee dunne randen sluiten de linker golfvorm af en openen de rechter golfvorm, begrensd tot het tekenvlak.
 

@@ -20,11 +20,18 @@ from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, Filte
 from .icons import application_icon, mascot_icon
 from .resample import resample
 from .manual import ManualDialog
+from .sample_ui import SampleDialog
 
 
 def run(window):
     original = np.array([[.25, -.5], [.5, .125], [-.25, .375]], np.float32)
     doc = Document(original, 8000, dsp=window.document.dsp)
+    doc.set_sample(1, 1, -.25)
+    changed = original.copy(); changed[1, 1] = -.25
+    np.testing.assert_array_equal(doc.read(), changed)
+    doc.undo(); np.testing.assert_array_equal(doc.read(), original)
+    doc.redo(); np.testing.assert_array_equal(doc.read(), changed)
+    doc.undo()
     doc.apply("channel_mix", matrix=((0, 1), (1, 0)))
     np.testing.assert_array_equal(doc.read(), original[:, ::-1])
     doc.undo()
@@ -73,6 +80,7 @@ def run(window):
             disk_doc=Document(mapped,8000,dsp=doc.dsp)
             disk_doc.select_channels((1,))
             disk_doc.apply("invert")
+            disk_doc.set_sample(1, 1, .0625)
             empty_session=Session(8000,1,dsp=doc.dsp)
             manager=Recovery();manager.checkpoint(disk_doc,empty_session)
             recovered,_,_,_=restore(manager.owner,dsp=doc.dsp)
@@ -119,12 +127,20 @@ def run(window):
             assert len(manual.browser.toPlainText().split())>3000
             assert tr('Channel Mixer') in manual.browser.toPlainText()
             assert tr('Audio Hardware') in manual.browser.toPlainText()
+            assert tr('Edit Sample') in manual.browser.toPlainText()
+            sample_dialog = SampleDialog(doc, 1, 1, window)
+            try:
+                sample_dialog.show()
+                assert not sample_dialog.grab().isNull()
+                assert sample_dialog.sample_edit() == (1, 1, float(doc.view(1, 2)[0, 1]))
+            finally:
+                sample_dialog.reject(); sample_dialog.deleteLater()
             assert len(catalogue(code))>1200
             assert code=='en' or install_language().qt_translator is not None, f'Missing Qt translation: {code}'
     finally:
         install_language().set_language(previous_language,persist=False)
         manual.close();manual.deleteLater()
-    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, MP3, projects, disk buffers, recovery, recording files, icons, effects, track inserts, isolated VST3 host, manual)")
+    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, MP3, sample editing, projects, disk buffers, recovery, recording files, icons, effects, track inserts, isolated VST3 host, manual)")
 
 
 def run_audio(window):

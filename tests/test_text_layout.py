@@ -28,11 +28,12 @@ from soundsausage.manual import ManualDialog
 from soundsausage.recording_ui import RecordDialog
 from soundsausage.trackfx_ui import TrackEffectsDialog
 from soundsausage.plugins_ui import PluginDialog
+from soundsausage.sample_ui import SampleDialog
 
 EFFECTS=(AmplifyDialog,ChannelMixerDialog,DynamicsDialog,EnvelopeDialog,NormalizeDialog,
          GraphicEqualizerDialog,ParametricEqualizerDialog,FilterDialog,DelayDialog,EchoDialog,ReverbDialog,
          NoiseReductionDialog,ClickRemovalDialog,StretchDialog,PitchShiftDialog,DistortionDialog,ConvolutionDialog)
-OTHERS=(AboutDialog,ManualDialog,AudioHardwareDialog,RecordDialog,TrackEffectsDialog,PluginDialog,SpectrumDialog)
+OTHERS=(AboutDialog,ManualDialog,AudioHardwareDialog,RecordDialog,TrackEffectsDialog,PluginDialog,SpectrumDialog,SampleDialog)
 
 
 def visible_label_errors(dialog):
@@ -82,10 +83,11 @@ class TextLayoutTests(unittest.TestCase):
         elif cls is TrackEffectsDialog:dialog=cls(w.multitrack,w.session.selected_track)
         elif cls is PluginDialog:dialog=cls(w.session,w)
         elif cls is SpectrumDialog:dialog=cls(self.data,8000,w)
+        elif cls is SampleDialog:dialog=cls(w.document,0,0,w)
         else:dialog=cls(w)
         self.dialogs.append(dialog);return dialog
 
-    def test_all_twenty_four_dialog_types_fit_labels_in_five_languages_and_three_fonts(self):
+    def test_all_dialog_types_fit_labels_in_five_languages_and_three_fonts(self):
         for point in (9,11,14):
             self.app.setFont(QFont('DejaVu Sans',point));self.settle()
             for code in ('nl','en','de','fr','es'):

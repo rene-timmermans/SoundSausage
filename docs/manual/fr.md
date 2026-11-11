@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.17.2. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.18.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 ## 1. Langue et aide
 
@@ -63,6 +63,14 @@ Cliquez pour placer le curseur, glissez pour sélectionner. En stéréo, glissez
 **Couper / Ctrl+X** retire et copie ; **Copier / Ctrl+C** copie ; **Coller / Ctrl+V** remplace la sélection ou insère au curseur. **Collage mixé / Ctrl+M** additionne l'audio du presse-papiers et peut augmenter les crêtes. **Suppr** retire l'intervalle ; **Rogner / Ctrl+T** garde uniquement celui-ci. **Ctrl+Z / Ctrl+Maj+Z** annule/rétablit. Le collage convertit la fréquence sans changer le presse-papiers. Pour les deux canaux, le nombre doit correspondre. Copier/exporter gauche ou droite donne du mono ; l'enregistrement normal garde toute la stéréo.
 
 La stéréo partage une ligne temporelle : couper/supprimer/rogner, étirer, insérer ou ajouter une queue exige les deux canaux. Coller du mono dans un canal stéréo doit remplacer exactement l'intervalle ; le collage mixé doit rester dans la durée existante. **Silence** vide un canal sans déplacer l'autre. Transposition, délai, écho, réverbération et convolution peuvent traiter un canal à durée fixe. Enregistrer dans une stéréo existante exige aussi les deux. Annulation/récupération gardent le choix de canaux.
+
+### Modifier des échantillons individuels
+
+Zoomez avec **+** ou **Ctrl+molette** jusqu’aux points carrés (au moins huit pixels entre échantillons). L’axe horizontal indique alors les indices à partir de 0. Glissez un point verticalement pour modifier uniquement cet échantillon de ce canal. Sa position reste fixe, même si le pointeur traverse d’autres points ou canaux. Le déplacement donne un aperçu ; relâcher valide, **Échap** annule. **Maj+glisser** permet toujours de sélectionner l’audio.
+
+Un double-clic ou clic droit sur un point ouvre **Modifier un échantillon**. **Édition → Modifier un échantillon** fonctionne à tout niveau de zoom. La position initiale est celle du curseur dans le premier canal sélectionné ; indice et canal sont modifiables. Affichez une valeur normalisée ou en 8, 16 ou 24 bits signés. Zéro est le silence ; −1/+1 représentent le niveau maximal normal. Par exemple, −16384 en affichage 16 bits correspond à −0,5 normalisé. Changer la plage d’affichage ne change ni l’audio ni l’encodage. **OK** applique une valeur ; **Annuler** préserve l’original.
+
+Chaque déplacement terminé ou valeur confirmée forme une étape Annuler/Rétablir. Tous les autres échantillons, l’autre canal, la durée et les métadonnées restent inchangés. Le glissement est limité à −1 … +1 ; les crêtes flottantes existantes restent accessibles numériquement. La lecture s’arrête au début d’une correction ; l’édition est bloquée pendant l’enregistrement. Pour une région multipiste, modifiez sa copie en forme d’onde puis appliquez-la explicitement à la région. Écoutez après chaque correction ; pour un clic de plusieurs échantillons, rapprochez chaque point du tracé voisin. Une transition brutale vers zéro peut créer un clic. WAV float32 conserve exactement les valeurs internes ; enregistrer en MP3 recompresse tout le fichier avec pertes.
 
 ## 7. Appliquer des effets
 

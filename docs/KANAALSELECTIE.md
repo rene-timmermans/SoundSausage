@@ -65,3 +65,12 @@ afzonderlijke samples met elkaar verbonden. Verder uitgezoomd toont de app de
 minimale en maximale uitslagen per schermkolom, met behoud van pieken. Dit werkt
 ook op multitrackclips en verandert de geluidsdata niet. Functies in de menu's
 hebben eigen iconen die het Linux-palet en de accentkleur volgen.
+
+## Afzonderlijke samples corrigeren
+
+Vanaf acht schermpixels per sample verschijnen vierkante punten. Sleep een punt
+verticaal om één sample in dat kanaal te wijzigen; Escape annuleert en loslaten
+bevestigt als één Undo-stap. Shift+slepen blijft selecteren. Dubbelklik of klik
+met rechts voor de exacte waarde. Bewerken → Sample bewerken is bij iedere
+vergroting beschikbaar. Zie de [handleiding](HANDLEIDING.md) voor waarden,
+weergavebereiken en het bewaren van correcties.

@@ -306,6 +306,11 @@ def draw(p, name, color):
     elif name == "convert_rate":
         for x in (3, 8, 13, 18, 23): line(x, 14, x, 22)
         line(3, 6, 21, 6); line(3, 6, 7, 2); line(21, 6, 17, 10)
+    elif name == "edit_sample":
+        p.drawPolyline(QPolygonF([QPointF(2, 17), QPointF(8, 9), QPointF(15, 15), QPointF(22, 6)]))
+        for x, y in ((2, 17), (8, 9), (15, 15), (22, 6)): rect(x-1, y-1, 2, 2)
+        line(7, 2, 7, 5); line(5, 4, 7, 2); line(9, 4, 7, 2)
+        line(7, 15, 7, 22); line(5, 20, 7, 22); line(9, 20, 7, 22)
     elif name == "audio_hardware":
         rect(3, 6, 18, 15); p.drawEllipse(QRectF(6, 9, 4, 4)); p.drawEllipse(QRectF(14, 9, 4, 4))
         line(7, 16, 17, 16); line(8, 2, 8, 6); line(16, 2, 16, 6)

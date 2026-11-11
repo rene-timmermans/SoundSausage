@@ -225,6 +225,23 @@ class Document:
             raise AudioError("Select the audio to copy first.")
         return Clip(self.effect_view(*self.selection), self.sample_rate, metadata.crop(self.metadata,*self.selection))
 
+    def set_sample(self, frame, channel, value):
+        """Change one scalar only, sharing every untouched audio piece with Undo."""
+        if type(frame) is not int or not 0 <= frame < self.frames or type(channel) is not int or not 0 <= channel < self.channels:
+            raise AudioError("The sample position or channel is outside the document.")
+        value = float(value)
+        if not np.isfinite(value) or abs(value) > float(np.finfo(np.float32).max):
+            raise AudioError("The sample value must be a finite 32-bit number.")
+        row = self.read(frame, frame + 1)
+        value = np.float32(value)
+        if row[0, channel] == value:
+            return
+        row[0, channel] = value
+        pieces = self._slices(0, frame) + (_freeze(row),) + self._slices(frame + 1, self.frames)
+        cursor = self.cursor
+        self._commit(pieces, self.selection, "Edit Sample")
+        self.cursor = cursor
+
     def delete(self):
         if not self.selected:
             return

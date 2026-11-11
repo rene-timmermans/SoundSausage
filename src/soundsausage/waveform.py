@@ -9,6 +9,7 @@ from .i18n_widgets import QWidget
 from .theme import colors, blend, readable
 from .peaks import piece_peaks
 from .plot_layout import text_width, separated_labels
+from .i18n import tr
 
 
 def envelope_polygon(minimum, maximum, channel, left, width, center, scale, clamp=1.08):
@@ -37,6 +38,9 @@ def clock_text(seconds):
 class Waveform(QWidget):
     selection_changed = Signal(object, object)
     view_changed = Signal(object, object)
+    sample_edit_started = Signal()
+    sample_edited = Signal(object, object, float)
+    sample_edit_requested = Signal(object, object)
 
     def __init__(self, document, parent=None):
         super().__init__(parent)
@@ -48,13 +52,16 @@ class Waveform(QWidget):
         self._anchor_channel = None
         self._keep_channels = False
         self._cache = None
+        self.sample_editable = True
+        self._sample_drag = None
         self.setMinimumSize(500, 230)
         self.setMouseTracking(True)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setCursor(Qt.CursorShape.IBeamCursor if document.frames else Qt.CursorShape.ArrowCursor)
-        self.setToolTip("Drag inside L or R to select that channel; drag across both for stereo. Double-click selects visible audio. Ctrl+wheel zooms; wheel scrolls.")
+        self.setToolTip("Drag inside L or R to select that channel; drag across both for stereo. Double-click selects visible audio. Ctrl+wheel zooms; wheel scrolls. Zoom in until sample points appear: drag a point vertically to edit it, or double-click for its exact value. Shift+drag selects audio; Escape cancels a sample drag.")
 
     def set_document(self, document, fit=True):
+        self._sample_drag = None
         self.document = document
         self.setCursor(Qt.CursorShape.IBeamCursor if document.frames else Qt.CursorShape.ArrowCursor)
         self.playhead = None
@@ -67,11 +74,12 @@ class Waveform(QWidget):
 
     def plot_rect(self):
         metrics = self.fontMetrics()
-        right = max(61, text_width(metrics, "−32768") + 6)
+        right = max(61, text_width(metrics, "−32768") + 6, text_width(metrics, tr("samples")) + 6)
         bottom = max(29, metrics.height() + 8)
         return QRectF(9, 7, max(1, self.width() - 9 - right), max(1, self.height() - 7 - bottom))
 
     def set_view(self, start, end):
+        self._sample_drag = None
         total = max(1, self.document.frames)
         length = min(total, max(1, int(end) - int(start)))
         self.view_start = max(0, min(int(start), total - length))
@@ -116,6 +124,39 @@ class Waveform(QWidget):
         rect = self.plot_rect(); height = (rect.height()-8*(self.document.channels-1))/self.document.channels
         return QRectF(rect.left(), rect.top()+channel*(height+8), rect.width(), height)
 
+    def sample_points_visible(self):
+        return bool(self.document.frames and self.plot_rect().width() / (self.view_end - self.view_start) >= 8)
+
+    def sample_y(self, channel, value):
+        lane = self.channel_rect(channel)
+        return lane.center().y() - min(1.08, max(-1.08, float(value))) * lane.height() * .45
+
+    def sample_at(self, position):
+        if not self.sample_editable or not self.sample_points_visible() or not self.plot_rect().contains(position):
+            return None
+        channel = self.channel_at(position.y())
+        frame = self.frame_at(position.x())
+        if channel is None or not self.view_start <= frame < min(self.view_end, self.document.frames):
+            return None
+        value = float(self.document.view(frame, frame + 1)[0, channel])
+        if abs(position.x() - self.x_at(frame)) <= 5 and abs(position.y() - self.sample_y(channel, value)) <= 6:
+            return frame, channel, value
+
+    def cancel_sample_drag(self):
+        self._sample_drag = None
+        self.update()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape and self._sample_drag is not None:
+            self.cancel_sample_drag()
+            event.accept()
+        else:
+            super().keyPressEvent(event)
+
+    def focusOutEvent(self, event):
+        self.cancel_sample_drag()
+        super().focusOutEvent(event)
+
     def _peaks(self, columns):
         start = min(self.view_start, self.document.frames)
         end = min(self.view_end, self.document.frames)
@@ -149,11 +190,17 @@ class Waveform(QWidget):
         raw_step = visible_seconds / max(2, rect.width() / 85)
         power = 10 ** math.floor(math.log10(max(raw_step, 1e-9)))
         step = next((n * power for n in (1, 2, 5, 10) if n * power >= raw_step), 10 * power)
-        first = math.ceil((self.view_start / self.document.sample_rate) / step) * step
+        sample_axis = self.sample_points_visible()
+        if sample_axis:
+            raw = (self.view_end-self.view_start) / max(2, rect.width()/85)
+            power = 10 ** math.floor(math.log10(max(1, raw)))
+            step = next(n*power for n in (1, 2, 5, 10) if n*power >= raw)
+        unit = 1 if sample_axis else self.document.sample_rate
+        first = math.ceil((self.view_start / unit) / step) * step
         ticks = []
         time = first
-        while time <= self.view_end / self.document.sample_rate + step * 1e-6 and len(ticks) < 100:
-            ticks.append((time, self.x_at(time * self.document.sample_rate)))
+        while time <= self.view_end / unit + step * 1e-6 and len(ticks) < 100:
+            ticks.append((time, self.x_at(time * unit)))
             time += step
         if not self.document.frames:
             ticks = [(0, rect.left())]
@@ -185,6 +232,10 @@ class Waveform(QWidget):
             painter.drawText(badge, Qt.AlignmentFlag.AlignCenter, "L" if channel == 0 else "R")
         if self.document.frames:
             minimum, maximum, envelope = self._peaks(max(1, int(rect.width())))
+            if self._sample_drag is not None:
+                frame, channel, value = self._sample_drag
+                minimum = minimum.copy()
+                minimum[frame-self.view_start, channel] = value
             painter.save()
             painter.setClipRect(rect)
             painter.setPen(QPen(c.waveform, 1))
@@ -200,7 +251,12 @@ class Waveform(QWidget):
                     points = QPolygonF([QPointF(self.x_at(self.view_start + i), center - min(1.08, max(-1.08, float(row[channel]))) * scale)
                                         for i, row in enumerate(minimum)])
                     painter.drawPolyline(points)
-                    if len(points) == 1:
+                    if self.sample_points_visible():
+                        painter.setBrush(c.waveform)
+                        for point in points:
+                            painter.drawRect(QRectF(point.x()-2, point.y()-2, 4, 4))
+                        painter.setBrush(Qt.BrushStyle.NoBrush)
+                    elif len(points) == 1:
                         painter.drawEllipse(points[0], 2, 2)
             painter.restore()
         else:
@@ -214,13 +270,13 @@ class Waveform(QWidget):
         painter.setPen(c.text)
         labels = []
         for time, x in ticks:
-            label = f"{time:.3f}" if step < 0.1 else f"{time:.1f}"
+            label = str(round(time)) if sample_axis else f"{time:.3f}" if step < 0.1 else f"{time:.1f}"
             width = text_width(self.fontMetrics(), label)
             left = max(rect.left(), min(x - width / 2, rect.right() - width))
             labels.append((QRectF(left, rect.bottom() + 4, width, line), label))
         for area, text in separated_labels(labels):
             painter.drawText(area, Qt.AlignmentFlag.AlignCenter, text)
-        painter.drawText(QRectF(rect.right() + 4, rect.bottom() + 4, amplitude_width, line), Qt.AlignmentFlag.AlignLeft, "sec")
+        painter.drawText(QRectF(rect.right() + 4, rect.bottom() + 4, amplitude_width, line), Qt.AlignmentFlag.AlignLeft, "samples" if sample_axis else "sec")
         cursor = self.document.cursor if self.playhead is None else self.playhead
         if self.view_start <= cursor <= self.view_end:
             painter.setPen(QPen(c.plot_text if self.playhead is None else readable(c.accent, c.plot, 3.0), 1))
@@ -234,6 +290,19 @@ class Waveform(QWidget):
         self.update()
 
     def mousePressEvent(self, event):
+        sample = self.sample_at(event.position())
+        if sample is not None and not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
+            if event.button() == Qt.MouseButton.RightButton:
+                self.sample_edit_requested.emit(sample[0], sample[1])
+                event.accept()
+                return
+            if event.button() == Qt.MouseButton.LeftButton:
+                self.setFocus()
+                self.sample_edit_started.emit()
+                self._sample_drag = sample
+                self._anchor = None
+                event.accept()
+                return
         if event.button() == Qt.MouseButton.LeftButton:
             frame = self.frame_at(event.position().x())
             self._keep_channels = bool(event.modifiers() & Qt.KeyboardModifier.ShiftModifier)
@@ -245,6 +314,15 @@ class Waveform(QWidget):
             self.setFocus()
 
     def mouseMoveEvent(self, event):
+        if self._sample_drag is not None and event.buttons() & Qt.MouseButton.LeftButton:
+            frame, channel, _ = self._sample_drag
+            lane = self.channel_rect(channel)
+            value = min(1.0, max(-1.0, (lane.center().y()-event.position().y())/(lane.height()*.45)))
+            self._sample_drag = frame, channel, value
+            self.update()
+            return
+        self.setCursor(Qt.CursorShape.SizeVerCursor if self.sample_at(event.position()) is not None else
+                       Qt.CursorShape.IBeamCursor if self.document.frames else Qt.CursorShape.ArrowCursor)
         if self._anchor is not None and event.buttons() & Qt.MouseButton.LeftButton:
             channel = self.channel_at(event.position().y())
             if not self._keep_channels:
@@ -252,12 +330,22 @@ class Waveform(QWidget):
             self._select(self._anchor, self.frame_at(event.position().x()))
 
     def mouseReleaseEvent(self, event):
+        if self._sample_drag is not None and event.button() == Qt.MouseButton.LeftButton:
+            sample = self._sample_drag
+            self._sample_drag = None
+            self.sample_edited.emit(*sample)
+            self.update()
         self._anchor = None
         self._anchor_channel = None
         self._keep_channels = False
 
     def mouseDoubleClickEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
+            sample = self.sample_at(event.position())
+            if sample is not None and not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
+                self.cancel_sample_drag()
+                self.sample_edit_requested.emit(sample[0], sample[1])
+                return
             channel = self.channel_at(event.position().y())
             self.document.select_channels(None if channel is None else (channel,))
             self._select(self.view_start, min(self.document.frames, self.view_end))

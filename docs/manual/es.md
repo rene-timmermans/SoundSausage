@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.17.2. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.18.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 ## 1. Idioma y ayuda
 
@@ -63,6 +63,14 @@ Pulsa para situar el cursor y arrastra para seleccionar. En estéreo, arrastra d
 **Cortar / Ctrl+X** elimina y copia; **Copiar / Ctrl+C** copia; **Pegar / Ctrl+V** reemplaza la selección o inserta en el cursor. **Pegar mezclando / Ctrl+M** suma el audio del portapapeles y puede elevar los picos. **Supr** elimina el intervalo; **Recortar / Ctrl+T** conserva solo ese intervalo. **Ctrl+Z / Ctrl+Mayús+Z** deshace/rehace. Pegar convierte el muestreo sin cambiar el portapapeles. Con ambos canales debe coincidir su número. Copiar/exportar izquierda o derecha produce mono; guardar normalmente conserva toda la forma estéreo.
 
 El estéreo comparte una línea temporal: cortar/eliminar/recortar, estirar, insertar o añadir colas requiere ambos canales. Pegar mono en un canal estéreo debe reemplazar exactamente ese intervalo; la mezcla pegada debe quedar dentro de la duración existente. **Silencio** vacía un canal sin desplazar el otro. Cambio de tono, retardo, eco, reverberación y convolución pueden tratar un canal conservando duración. Grabar en una forma estéreo existente también requiere ambos. Deshacer y recuperar conservan la elección de canales.
+
+### Editar muestras individuales
+
+Amplíe con **+** o **Ctrl+rueda** hasta ver los puntos cuadrados (al menos ocho píxeles entre muestras). El eje horizontal muestra índices desde 0. Arrastre un punto verticalmente para cambiar solo esa muestra de ese canal. Su posición queda fija aunque el puntero cruce otros puntos o canales. El arrastre muestra una vista previa; soltar confirma y **Escape** cancela. **Mayús+arrastrar** sigue seleccionando audio.
+
+Un doble clic o clic derecho abre **Editar muestra**. **Editar → Editar muestra** funciona con cualquier ampliación. Empieza en el cursor y el primer canal elegido; el índice y canal se pueden cambiar. Introduzca un valor normalizado o muéstrelo como 8, 16 o 24 bits con signo. Cero es silencio; −1/+1 son el nivel máximo normal. Por ejemplo, −16384 en la vista de 16 bits equivale a −0,5 normalizado. Cambiar el rango mostrado no modifica audio ni formato. **Aceptar** aplica un valor; **Cancelar** conserva el original.
+
+Cada arrastre terminado o valor confirmado forma un paso Deshacer/Rehacer. Las demás muestras, el otro canal, la duración y los metadatos se conservan. Arrastrar está limitado a −1 … +1; los picos flotantes existentes siguen disponibles numéricamente. La reproducción se detiene al empezar una corrección; la edición queda bloqueada al grabar. Para clips multipista, edite una copia de forma de onda y aplíquela expresamente al clip. Escuche tras cada corrección; para un clic de varias muestras, acerque cada punto a la onda contigua. Un salto brusco a cero puede crear otro clic. WAV float32 conserva los valores internos exactos; guardar como MP3 recomprime todo el archivo con pérdidas.
 
 ## 7. Aplicar efectos
 

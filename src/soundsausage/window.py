@@ -20,6 +20,7 @@ from .recording_ui import RecordingActions,RecordingView
 from .playback import Playback
 from .audio_devices import AudioDevices, AudioHardwareDialog
 from .waveform import Waveform, clock_text
+from .sample_ui import SampleDialog
 from .multitrack import MultitrackEditor
 from .session_actions import SessionActions
 from . import chrome, metadata, storage
@@ -284,6 +285,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.action("trim", "Tri&m", lambda: self.edit(self.document.trim), "Ctrl+T")
         self.action("select_all", "Select &Entire Wave", self.select_all, "Ctrl+A")
         self.action("select_range", "Set Selection…", self.select_range)
+        self.action("edit_sample", "Edit Sample…", self.edit_sample_dialog)
         self.channel_actions = QActionGroup(self)
         for key, label, channel, shortcut in (("channels_both", "Both (L+R)", None, "Alt+B"),
                 ("channels_left", "Left (L)", (0,), "Alt+L"), ("channels_right", "Right (R)", (1,), "Alt+R")):
@@ -368,6 +370,9 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.waveform = Waveform(self.document)
         self.waveform.selection_changed.connect(self.selection_changed)
         self.waveform.view_changed.connect(self.view_changed)
+        self.waveform.sample_edit_started.connect(self.player.stop)
+        self.waveform.sample_edited.connect(self.edit_sample)
+        self.waveform.sample_edit_requested.connect(self.edit_sample_dialog)
         self.scroll.valueChanged.connect(self.scroll_view)
         wave_layout.addWidget(self.waveform, 1)
         self.multitrack = MultitrackEditor(self.session)
@@ -430,6 +435,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         for key in ("distortion", "convolution", "stretch", "pitch_shift", "noise_profile", "noise_reduction", "click_removal", "delay", "echo", "reverb", "graphic_eq", "parametric_eq", "filter", "amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
             self.actions[key].setEnabled(has_audio)
         self.actions["channel_mix"].setEnabled(has_audio and doc.channels == 2)
+        self.actions["edit_sample"].setEnabled(has_audio and self.mode == "waveform")
         self.actions["play"].setEnabled(has_audio and not self.no_audio)
         self.actions["undo"].setEnabled(bool(doc.undo_stack))
         self.actions["redo"].setEnabled(bool(doc.redo_stack))
@@ -542,6 +548,22 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             self.multitrack.remove_clip()
         else:
             self.edit(self.document.delete)
+
+    def edit_sample(self, frame, channel, value):
+        if self.mode == "waveform" and not self.recording_busy:
+            self.edit(lambda: self.document.set_sample(frame, channel, value))
+
+    def edit_sample_dialog(self, frame=None, channel=None):
+        if self.mode != "waveform" or self.recording_busy or not self.document.frames:
+            return
+        self.player.stop()
+        doc = self.document
+        frame = min(doc.frames-1, doc.cursor) if frame is None else frame
+        channel = doc.selected_channels[0] if channel is None else channel
+        dialog = SampleDialog(doc, frame, channel, self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.edit_sample(*dialog.sample_edit())
+        dialog.deleteLater()
 
     def effect(self, name, **settings):
         self.edit(lambda: self.document.apply(name, **settings))

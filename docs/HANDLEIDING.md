@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.17.2. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.18.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -371,6 +371,39 @@ afzonderlijke samples met elkaar verbonden. Verder uitgezoomd toont de app de
 minimale en maximale uitslagen per schermkolom, met behoud van pieken. Dit werkt
 ook op multitrackclips en verandert de geluidsdata niet. Functies in de menu's
 hebben eigen iconen die het Linux-palet en de accentkleur volgen.
+
+### Afzonderlijke samples bewerken
+
+Zoom met **+** of **Ctrl+muiswiel** in op een tikje totdat de vierkante
+samplepunten zichtbaar zijn (vanaf acht schermpixels tussen samples). De as
+onder de golfvorm toont dan sample-indexen, geteld vanaf 0. Sleep een punt
+verticaal om uitsluitend die sample in dat kanaal te wijzigen. De horizontale
+positie blijft vast; ook wanneer de muis andere punten of het andere kanaal
+passeert. Tijdens het slepen zie je een voorbeeld; loslaten bevestigt de
+correctie. **Escape** annuleert zonder iets te wijzigen. Met **Shift+slepen**
+kun je ook tussen de samplepunten gewoon audio selecteren.
+
+Dubbelklik of klik met rechts op een punt voor **Sample bewerken**. Je kunt
+ook **Bewerken → Sample bewerken** kiezen, ongeacht het zoomniveau. Het venster
+begint bij de cursor en het eerste gekozen kanaal; sample-index en kanaal zijn
+aanpasbaar. Voer de waarde genormaliseerd in, of toon die als 8-, 16- of 24-bit
+met teken. Nul is stilte; −1 en +1 zijn het normale volledige uitvoerniveau.
+Bijvoorbeeld: −16384 in de 16-bitweergave is −0,5 genormaliseerd. Wisselen van
+weergavebereik verandert de audio of het bestandsformaat niet. **OK** past de
+waarde toe; **Annuleren** behoudt het origineel.
+
+Elke sleepbeweging of bevestigde waarde vormt één stap **Ongedaan maken** /
+**Opnieuw**. Alle andere samples, het andere kanaal, duur en metadata blijven
+behouden. Slepen is begrensd tot −1 … +1; bestaande pieken boven dit bereik
+blijven numeriek beschikbaar. Tijdens opnemen is samplebewerking geblokkeerd;
+bij het beginnen van een correctie stopt afspelen. Bewerk een multitrackclip
+via de golfvormkopie en pas die daarna expliciet toe op de clip.
+
+Beluister het korte fragment na iedere correctie. Voor een tikje van meerdere
+samples kun je de betrokken punten één voor één naar het verloop van de
+omliggende golf brengen. Een grote sprong naar nul kan zelf een tik veroorzaken.
+Bewaar bij voorkeur als WAV float32 om de interne correctie exact te behouden;
+MP3 opnieuw opslaan comprimeert het gehele bestand opnieuw met kwaliteitsverlies.
 
 ## 5. Effecten toepassen
 

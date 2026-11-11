@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.17.2. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.18.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -63,6 +63,14 @@ Click for a cursor; drag for a time range. In stereo, drag inside L or R to sele
 **Cut / Ctrl+X** removes and copies; **Copy / Ctrl+C** copies; **Paste / Ctrl+V** replaces the selection or inserts at the cursor. **Mix Paste / Ctrl+M** adds clipboard audio from that position and may raise peaks. **Delete** removes the range; **Trim / Ctrl+T** keeps only it. **Ctrl+Z / Ctrl+Shift+Z** undo/redo. Pasting converts sample rate, leaving the clipboard intact. With both channels, channel counts must match. Left/right Copy or Save Selection produces mono, while Save/Save As always retains the full stereo waveform.
 
 A stereo waveform shares one timeline: duration-changing edits (cut/delete/trim, Stretch, insertion and added tails) require both channels. A mono paste into one stereo channel must exactly replace that range; Mix Paste must stay inside the existing duration. **Silence** clears one selected channel without moving the other. Pitch Shift, delay, echo, reverb and convolution can change one channel while preserving length. Recording into an existing stereo waveform also requires both channels. Undo/recovery retain channel choice.
+
+### Editing individual samples
+
+Zoom with **+** or **Ctrl+wheel** until square sample points appear (at least eight screen pixels apart). The horizontal axis now shows sample indices starting at 0. Drag a point vertically to change only that sample in that channel. Its sample position stays fixed even when the pointer crosses other points or channels. Dragging previews the change; release commits it, **Escape** cancels. **Shift+drag** still selects audio.
+
+Double-click or right-click a point for **Edit Sample**, or use **Edit → Edit Sample** at any zoom level. It starts at the cursor and first selected channel; the index and channel can be changed. Enter a normalized value or display it as signed 8-, 16- or 24-bit. Zero is silence; −1/+1 are normal full scale. For example, −16384 in the 16-bit display equals −0.5 normalized. Switching display ranges changes neither audio nor file encoding. **OK** applies one value; **Cancel** preserves the original.
+
+Each completed drag or accepted value is one Undo/Redo step. Every other sample, the other channel, duration and metadata remain intact. Dragging is limited to −1 … +1; existing float headroom remains available numerically. Playback stops when editing begins; editing is locked during recording. For multitrack clips, edit a waveform copy and explicitly apply it back to the clip. Listen after each correction: for a click spanning several samples, adjust each point towards the surrounding waveform. An abrupt jump to zero can itself click. Save as WAV float32 for an exact internal-value round trip; MP3 saving recompresses the whole file with loss.
 
 ## 7. Applying effects
 

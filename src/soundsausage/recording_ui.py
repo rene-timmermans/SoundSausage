@@ -249,6 +249,8 @@ class RecordingActions:
     def update_recording_actions(self):
         if 'record' not in self.actions:return
         busy=self.recording_busy
+        self.waveform.sample_editable = not busy
+        if busy: self.waveform.cancel_sample_drag()
         if hasattr(self, 'channel_choice'): self.channel_choice.setEnabled(not busy and self.document.channels == 2)
         self.actions['record'].setChecked(busy)
         self.actions['record'].setText('Stop Recording' if busy else 'Record…')

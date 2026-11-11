@@ -73,7 +73,7 @@ def create_menus(window):
     channels = edit.addMenu("Select Channels")
     window.menus["channels"] = channels
     add(channels, ("channels_both", "channels_left", "channels_right"))
-    add(edit, (None, "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
+    add(edit, (None, "edit_sample", "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
     view = menu("view", "&View")
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
     transform = menu("transform", "&Transform")

@@ -255,3 +255,12 @@ bevat de definitieve installatiepakketten. Alle 406 controles slagen in Debian,
 Fedora en Arch; de vier geïnstalleerde zelftests slagen op alle vijf doelen,
 inclusief Ubuntu 26.04 en Rolling.
 [Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43075533132).
+
+## Directe samplebewerking — 0.18.0
+
+- [x] Samplepunten bij sterke vergroting en vaste samplepositie tijdens verticaal slepen.
+- [x] Exacte invoer per index/kanaal, genormaliseerd of in 8-/16-/24-bitweergave.
+- [x] Eén Undo-stap per correctie; omliggende samples, het andere kanaal en metadata behouden.
+- [x] Annuleren, selectie met Shift en vergrendeling tijdens opnemen.
+- [x] Vijf interfacetalen en offlinehandleidingen bijwerken.
+- [ ] Definitieve controles en installatiepakketten voor 0.18.0.
