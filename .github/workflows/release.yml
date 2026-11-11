@@ -104,13 +104,18 @@ jobs:
         env:
           UBUNTU_IMAGE: ${{ matrix.image }}
         run: |
+          cat /etc/resolv.conf
           docker run --rm -i --network host \
             -e SOUNDSAUSAGE_LANGUAGE -e QT_QPA_PLATFORM -e QT_AUDIO_BACKEND \
             -e PULSE_SERVER -e SOUNDSAUSAGE_AUDIO_TEST \
+            -v /etc/resolv.conf:/etc/resolv.conf:ro \
             -v "$PWD:/packages:ro" "$UBUNTU_IMAGE" sh -eu <<'UBUNTU_CHECK'
           cd /packages
+          cat /etc/resolv.conf
+          getent ahostsv4 archive.ubuntu.com
+          getent ahostsv4 security.ubuntu.com
           for attempt in 1 2 3; do
-            if apt-get -o APT::Update::Error-Mode=any -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update; then
+            if apt-get -o APT::Update::Error-Mode=any -o Acquire::ForceIPv4=true -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update; then
               break
             fi
             test "$attempt" -lt 3 || exit 1
