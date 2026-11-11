@@ -104,21 +104,18 @@ jobs:
         env:
           UBUNTU_IMAGE: ${{ matrix.image }}
         run: |
-          ubuntu_archive_address=$(getent ahostsv4 archive.ubuntu.com | awk 'NR == 1 {print $1}')
-          ubuntu_security_address=$(getent ahostsv4 security.ubuntu.com | awk 'NR == 1 {print $1}')
-          test -n "$ubuntu_archive_address"
-          test -n "$ubuntu_security_address"
+          ubuntu_mirror_address=$(getent ahostsv4 mirrors.edge.kernel.org | awk 'NR == 1 {print $1}')
+          test -n "$ubuntu_mirror_address"
           docker run --rm -i --network host \
-            --add-host "archive.ubuntu.com:$ubuntu_archive_address" \
-            --add-host "security.ubuntu.com:$ubuntu_security_address" \
+            --add-host "mirrors.edge.kernel.org:$ubuntu_mirror_address" \
             -e SOUNDSAUSAGE_LANGUAGE -e QT_QPA_PLATFORM -e QT_AUDIO_BACKEND \
             -e PULSE_SERVER -e SOUNDSAUSAGE_AUDIO_TEST \
             -v /etc/resolv.conf:/etc/resolv.conf:ro \
             -v "$PWD:/packages:ro" "$UBUNTU_IMAGE" sh -eu <<'UBUNTU_CHECK'
           cd /packages
           cat /etc/resolv.conf
-          getent ahostsv4 archive.ubuntu.com
-          getent ahostsv4 security.ubuntu.com
+          getent ahostsv4 mirrors.edge.kernel.org
+          sed -i -E 's|https?://(archive|security)\.ubuntu\.com/ubuntu/?|http://mirrors.edge.kernel.org/ubuntu/|g' /etc/apt/sources.list.d/ubuntu.sources
           for attempt in 1 2 3; do
             if apt-get -o APT::Update::Error-Mode=any -o Acquire::ForceIPv4=true -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update; then
               break
