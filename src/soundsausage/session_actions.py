@@ -51,6 +51,7 @@ class SessionActions:
         self.action("mixdown", "Mix Down Session…", self.mixdown)
 
     def set_mode(self, mode):
+        if self.recording_busy:return
         if mode not in ("waveform", "multitrack"):
             return
         self.player.stop()
@@ -151,11 +152,9 @@ class SessionActions:
         return True
 
     def open_session_dialog(self):
-        if not self.confirm_session_discard():
-            return
         path, _ = QFileDialog.getOpenFileName(self, "Open Multitrack Session", "", "Supported projects (*.celp *.ses *.SES);;SoundSausage Project (*.celp);;Legacy session (*.ses *.SES)")
         if path:
-            self.load_session_path(path)
+            self.open_selected_path(path)
 
     @long_operation
     def load_session_path(self, path):

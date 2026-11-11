@@ -55,10 +55,26 @@ bewaard; afgeleide metingen worden niet opnieuw berekend. Zie
 [lange bestanden en herstel](LANGE_BESTANDEN.md) voor ruimtegebruik en grenzen.
 De hoorbare controle uit fase 1 blijft open.
 
-## 3. Dagelijkse werkwijze — eerstvolgende fase
+## 3. Dagelijkse werkwijze — actief (0.8.0)
 
-Opnemen en de volledige keten van openen, bewerken, multitrack, opslaan,
-heropenen en exporteren toetsen.
+- [x] Opnemen van mono/stereo met blijvende keuze van ingang.
+- [x] Live golfvorm, meters en klok, pauze/hervatten en Stop als één Undo-stap.
+- [x] Nieuwe golfvorm, invoegen/vervangen en nieuw blok op het gekozen spoor.
+- [x] Behoud van de take bij apparaatverlies, schrijffout of geannuleerde verwerking.
+- [x] Onderbroken opname apart herstellen; andere actieve instanties overslaan.
+- [x] Opnemen → effect → multitrack → opslaan → heropenen → WAV-export toetsen.
+- [x] Afspeelcursor na Stop behouden voor hervatten of opnemen op die positie.
+- [x] Handleiding en praktische opnamevoorbeelden bijwerken.
+- [ ] Definitieve distributiecontroles en installatiepakketten voor 0.8.0.
+- [ ] Fysieke opname-/afspeelcontrole.
+
+Lokaal slagen 236 controles, met vier virtuele audiobackendcontroles overgeslagen
+omdat de host-audioserver vanuit de ontwikkelomgeving niet bereikbaar is.
+De distributiebouw controleert die in-/uitvoer met private virtuele apparaten.
+Ook de 160 MiB geheugencontrole bevat nu een opnamebestand en toevoegen aan de
+editor; de extra resident geheugengroei bleef ongeveer 17 MiB in dat scenario.
+Gelijktijdig opnemen en terugluisteren, punch-in/out en latencycompensatie blijven
+vervolgmogelijkheden. De fysieke controle uit fase 1 blijft eveneens zichtbaar.
 
 ## 4. Effecten en tools — gepland
 

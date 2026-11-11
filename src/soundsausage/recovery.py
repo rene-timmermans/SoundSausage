@@ -106,13 +106,18 @@ def candidates():
     result=[]
     root=storage.cache_root()
     if not root.exists():return result
-    for path in sorted(root.glob('*/recovery.json'),key=lambda p:p.stat().st_mtime,reverse=True):
+    def modified(path):
+        try:return path.stat().st_mtime
+        except OSError:return 0
+    for path in sorted(list(root.glob('*/recovery.json'))+list(root.glob('*/recording.json')),key=modified,reverse=True):
         if str(path.parent.resolve()) in storage._workspaces:
             continue
         try:
             owner=storage.Workspace(root,existing=path.parent)
         except (AudioError,OSError):
             continue
+        if not path.is_file():
+            owner.close();continue
         result.append(owner)
     return result
 
@@ -207,6 +212,12 @@ def restore(owner,dsp=None):
 
 def discard(owner):
     path=owner.path/'recovery.json'
+    if (owner.path/"recording.json").exists():
+        (owner.path/"recording.json").unlink(missing_ok=True)
+        for buffer in owner.path.glob("*.buffer"):
+            if buffer.resolve() not in storage._pinned_paths:buffer.unlink(missing_ok=True)
+        owner.close()
+        return
     path.unlink(missing_ok=True)
     _pins.pop(str(path),None);_publish_pins()
     owner.close()
@@ -233,11 +244,12 @@ def collect_orphans():
         try:owner=storage.Workspace(root,existing=folder)
         except (AudioError,OSError):continue
         try:
-            if not (folder/'recovery.json').exists():
+            if not (folder/'recovery.json').exists() and not (folder/'recording.json').exists():
                 for path in folder.glob('*.buffer'):
                     if path.resolve() not in keep:path.unlink(missing_ok=True)
                 if not any(folder.glob('*.buffer')):
                     (folder/'recovery.tmp').unlink(missing_ok=True)
+                    (folder/'recording.tmp').unlink(missing_ok=True)
                     (folder/'.lock').unlink(missing_ok=True)
                     try:folder.rmdir()
                     except OSError:pass

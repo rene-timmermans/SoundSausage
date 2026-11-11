@@ -268,7 +268,7 @@ class Session:
         peaks.prepare(data)
         return Media(identifier(), text(name), data, rate, metadata)
 
-    def import_audio(self, items, track_id=None, start=None):
+    def import_audio(self, items, track_id=None, start=None, *, label="Import Audio"):
         """Import (samples, sample_rate, name) tuples into successive tracks atomically."""
         if not items:
             return []
@@ -308,7 +308,7 @@ class Session:
             tracks[target + i] = replace(tracks[target + i], clips=(*tracks[target + i].clips, clip))
             result.append(clip.id)
         self._media.update({media.id: media for media in prepared})
-        self._commit(tracks, "Import Audio", rate=rate, selected_clip=result[0], selected_track=tracks[target].id)
+        self._commit(tracks, label, rate=rate, selected_clip=result[0], selected_track=tracks[target].id)
         return result
 
     def _validate_clip(self, clip):

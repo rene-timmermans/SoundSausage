@@ -16,6 +16,7 @@ from .about import AboutDialog
 from .manual import ManualDialog
 from .audio import AudioError, AmbiguousWavError, read_wav, write_wav, tone
 from .document import Document
+from .recording_ui import RecordingActions,RecordingView
 from .playback import Playback
 from .audio_devices import AudioDevices, AudioHardwareDialog
 from .waveform import Waveform, clock_text
@@ -142,7 +143,7 @@ class AmplifyDialog(EffectDialog):
         super().accept()
 
 
-class MainWindow(SessionActions, QMainWindow):
+class MainWindow(RecordingActions, SessionActions, QMainWindow):
     def __init__(self, document=None, no_audio=False):
         super().__init__()
         self.setWindowIcon(application_icon())
@@ -156,6 +157,7 @@ class MainWindow(SessionActions, QMainWindow):
         self.no_audio = no_audio
         self.audio_devices = AudioDevices(self)
         self.player = Playback(self, devices=self.audio_devices)
+        self.init_recording()
         self.player.state_changed.connect(self.playback_state)
         self.player.position.connect(self.playback_position)
         self.player.failed.connect(lambda message: self.error("Playback", message))
@@ -187,13 +189,15 @@ class MainWindow(SessionActions, QMainWindow):
                 action.changed.connect(partial(self.update_button_icon, key, button))
 
     def update_button_icon(self, key, button):
-        button.setIcon(make_icon(key, colors(), key in PRIMARY_ACTIONS, button.isCheckable()))
+        icon_key="stop" if key=="play" and self.recording_busy else key
+        button.setIcon(make_icon(icon_key, colors(), key in PRIMARY_ACTIONS, button.isCheckable()))
 
     def apply_theme(self):
         c = colors()
         for key in ICON_ACTIONS:
             # Menus have neutral backgrounds; their icons use the readable accent.
-            self.actions[key].setIcon(make_icon(key, c))
+            icon_key="stop" if key=="play" and self.recording_busy else key
+            self.actions[key].setIcon(make_icon(icon_key, c))
         for toolbar in self.findChildren(QToolBar):
             overflow = toolbar.findChild(QToolButton, "qt_toolbar_ext_button")
             if overflow is not None:
@@ -259,8 +263,8 @@ class MainWindow(SessionActions, QMainWindow):
         self.action("audio_hardware", "Audio Hardware…", self.audio_hardware)
         self.actions["audio_hardware"].setEnabled(not self.no_audio)
         self.action("play", "Play / Stop", self.toggle_play, "Space", standard.SP_MediaPlay)
-        self.action("pause", "Pause / Resume", self.player.toggle_pause, "P", standard.SP_MediaPause)
-        self.action("stop", "Stop", self.player.stop, "Esc", standard.SP_MediaStop)
+        self.action("pause", "Pause / Resume", self.toggle_pause, "P", standard.SP_MediaPause)
+        self.action("stop", "Stop", self.stop_transport, "Esc", standard.SP_MediaStop)
         self.action("loop", "Loop", lambda: None)
         self.actions["loop"].setCheckable(True)
         self.actions["loop"].toggled.connect(lambda value: setattr(self.player, "loop", value))
@@ -304,6 +308,8 @@ class MainWindow(SessionActions, QMainWindow):
         self.editor_stack = QStackedWidget()
         self.editor_stack.addWidget(wave_page)
         self.editor_stack.addWidget(self.multitrack)
+        self.recording_view=RecordingView(self)
+        self.editor_stack.addWidget(self.recording_view)
         layout.addWidget(self.editor_stack, 1)
         self.transport = TransportPanel(self.actions, self)
         self.time_label = self.transport.time_label
@@ -360,6 +366,7 @@ class MainWindow(SessionActions, QMainWindow):
             self.actions[key].setEnabled(has_audio)
         self.sync_view_fields()
         self.checkpoint_recovery()
+        self.update_recording_actions()
 
     def selection_changed(self, start, end):
         if self.recovery is not None:
@@ -368,7 +375,7 @@ class MainWindow(SessionActions, QMainWindow):
         self.fields["Begin"].setText(clock_text(start / doc.sample_rate))
         self.fields["End"].setText(clock_text(end / doc.sample_rate))
         self.fields["Length"].setText(clock_text((end - start) / doc.sample_rate))
-        if self.player.state == "Stopped":
+        if self.player.state == "Stopped" and not self.recording_busy:
             self.time_label.setText(clock_text(doc.cursor / doc.sample_rate))
         for key in ("cut", "copy", "delete", "trim", "zero", "save_selection", "zoom_selection"):
             self.actions[key].setEnabled(end > start)
@@ -407,6 +414,7 @@ class MainWindow(SessionActions, QMainWindow):
 
     @long_operation
     def edit(self, operation):
+        if self.recording_busy:return
         self.player.stop()
         previous_frames = self.active_model().frames
         try:
@@ -566,11 +574,15 @@ class MainWindow(SessionActions, QMainWindow):
     def open_dialog(self):
         if self.mode == "multitrack":
             return self.open_session_dialog()
-        if not self._confirm_discard():
-            return
         path, _ = QFileDialog.getOpenFileName(self, "Open a Waveform", "", "Waveform audio (*.wav *.WAV);;All files (*)")
         if path:
-            self.load_path(path)
+            self.open_selected_path(path)
+
+    def open_selected_path(self,path):
+        if self.recording_busy:return False
+        project=Path(path).suffix.lower() in (".celp",".ses")
+        if not (self.confirm_session_discard() if project else self._confirm_discard()):return False
+        return self.load_path(path)
 
     @long_operation
     def read_audio_file(self, path):
@@ -709,6 +721,9 @@ class MainWindow(SessionActions, QMainWindow):
 
     @long_operation
     def toggle_play(self):
+        if self.recorder.active:
+            self.stop_recording()
+            return
         if self.no_audio:
             return
         if self.player.state != "Stopped":
@@ -726,6 +741,9 @@ class MainWindow(SessionActions, QMainWindow):
                 self.error("Playback", error)
 
     def playback_state(self, state):
+        if self.recording_busy:
+            self.update_recording_actions()
+            return
         if not hasattr(self, "state_label"):
             return
         self.state_label.setText(state)
@@ -740,6 +758,7 @@ class MainWindow(SessionActions, QMainWindow):
 
     def playback_position(self, frame):
         frame = min(frame, self.active_model().frames)
+        self.active_model().cursor = frame
         self.time_label.setText(clock_text(frame / self.active_model().sample_rate))
         self.active_view().playhead = frame
         self.active_view().update()
@@ -838,7 +857,8 @@ class MainWindow(SessionActions, QMainWindow):
             try:
                 box = QMessageBox(self)
                 box.setWindowTitle("Werk herstellen")
-                box.setText("Er is werk gevonden uit een vorige, onverwacht beëindigde sessie.")
+                interrupted=(owner.path/"recording.json").exists()
+                box.setText("Er is een onderbroken opname gevonden." if interrupted else "Er is werk gevonden uit een vorige, onverwacht beëindigde sessie.")
                 box.setInformativeText("Herstel de laatst vastgelegde stand. De oorspronkelijke bestanden blijven behouden. Undo begint na herstel opnieuw.")
                 recover = box.addButton("Herstellen",QMessageBox.ButtonRole.AcceptRole)
                 remove = box.addButton("Verwijderen",QMessageBox.ButtonRole.DestructiveRole)
@@ -848,18 +868,20 @@ class MainWindow(SessionActions, QMainWindow):
                 if box.clickedButton() is remove:
                     discard(owner)
                 elif box.clickedButton() is recover:
-                    if self._confirm_discard() and self.confirm_session_discard():
-                        self.restore_recovery(owner)
+                    if self._confirm_discard() and (interrupted or self.confirm_session_discard()):
+                        if interrupted:self.restore_recorded_take(owner)
+                        else:self.restore_recovery(owner)
             except (ValueError,OSError,RuntimeError) as error:
                 self.error("Werk herstellen",error)
             finally:
                 owner.close()
 
     def closeEvent(self, event):
-        if self._confirm_discard() and self.confirm_session_discard():
+        if self.confirm_recording_close() and self._confirm_discard() and self.confirm_session_discard():
             if self._manual_dialog is not None:
                 self._manual_dialog.close()
             self.player.shutdown()
+            self.recorder.shutdown()
             if self.recovery is not None:
                 self._recovery_timer.stop()
                 self.recovery.close()

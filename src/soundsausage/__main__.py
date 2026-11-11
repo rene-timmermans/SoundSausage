@@ -14,12 +14,13 @@ def main():
     parser = argparse.ArgumentParser(description="SoundSausage waveform and multitrack editor")
     parser.add_argument("waveform", nargs="?", help="WAV or .celp project to open")
     parser.add_argument("--multitrack", action="store_true", help="Start in multitrack view")
-    parser.add_argument("--no-audio", action="store_true", help="Disable playback for headless or restricted environments")
+    parser.add_argument("--no-audio", action="store_true", help="Disable playback and recording for headless or restricted environments")
     parser.add_argument("--selftest", action="store_true", help="Check the installation without playing audio, then exit")
     parser.add_argument("--audio-selftest", action="store_true", help="Check the selected audio output with silence, then exit")
+    parser.add_argument("--input-selftest", action="store_true", help="Check the selected input by briefly recording and discarding audio, then exit")
     parser.add_argument("--screenshot", type=Path, help="Render the window to a PNG and exit; does not start audio")
     args = parser.parse_args()
-    if args.screenshot or args.selftest or args.audio_selftest:
+    if args.screenshot or args.selftest or args.audio_selftest or args.input_selftest:
         os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     app = QApplication([sys.argv[0]])
     app.setApplicationName("SoundSausage")
@@ -29,17 +30,19 @@ def main():
     app.setStyle("Fusion")
     install_theme(app)
     try:
-        window = MainWindow(no_audio=args.no_audio or bool(args.screenshot) or args.selftest or args.audio_selftest)
+        window = MainWindow(no_audio=args.no_audio or bool(args.screenshot) or args.selftest or args.audio_selftest or args.input_selftest)
     except RuntimeError as error:
         print(error, file=sys.stderr)
         return 1
-    if args.selftest or args.audio_selftest:
-        from .selftest import run, run_audio
+    if args.selftest or args.audio_selftest or args.input_selftest:
+        from .selftest import run, run_audio, run_input
         try:
             if args.selftest:
                 run(window)
             if args.audio_selftest:
                 run_audio(window)
+            if args.input_selftest:
+                run_input(window)
             return 0
         except Exception as error:
             print(f"SoundSausage selftest failed: {error}", file=sys.stderr)

@@ -8,11 +8,12 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.7.0**.
+De huidige versie is **0.8.0**.
 
 ## Wat het kan
 
 - WAV-bestanden openen, bewerken en opslaan.
+- Mono of stereo opnemen via microfoon of audio-interface, met apparaatkeuze en live meters.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
 - Volume aanpassen, fades toepassen, normaliseren, omkeren en stilte toevoegen.
 - Stereokanalen mengen, dynamiek bewerken en een volumeverloop tekenen, met luistervoorbeelden.
@@ -22,7 +23,7 @@ De huidige versie is **0.7.0**.
 - Eenvoudige oudere sessies importeren.
 - Inzoomen op de golfvorm, afspelen in een lus en frequenties analyseren.
 
-Opnemen, geavanceerde effecten en volledige ondersteuning voor oude sessies volgen later.
+Geavanceerde effecten, gelijktijdig opnemen en afspelen en volledige ondersteuning voor oude sessies volgen later.
 Zie [status en beperkingen](docs/STATUS.md).
 
 ## Installeren en starten
@@ -58,6 +59,7 @@ Daar staan ook **Channel Mixer**, **Dynamics Processing** en **Envelope**.
 Effecten bewerken de selectie, of de hele golfvorm als er niets geselecteerd is.
 Met **Preview** beluister je de instelling voordat je die toepast. Zie [Amplitude](docs/AMPLITUDE.md).
 Onder de tijdlijn staan het transport, de grote klok, selectie- en weergavetijden en de stereometer.
+Met **R** of de opnameknop kies je een ingang en bestemming. **Stop**, **Esc** of **Spatie** bewaart de take; **P** pauzeert/hervat. Zie de handleiding voor het verschil tussen stoppen en verwerpen.
 Met **Options → Show Toolbar Labels** toon je namen naast de werkbalkiconen. **F11** wisselt naar schermvullende weergave.
 Via **Options → Audio Hardware** kies je het uitvoerapparaat. Verschillende samplerates
 worden bij import en plakken omgezet; **Edit → Convert Sample Rate** zet een golfvorm om.
@@ -68,6 +70,8 @@ De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handl
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.8.0** Mono- en stereo-opname naar een nieuwe golfvorm, de huidige golfvorm of een spoor. Live golfvorm en niveaus, pauzeren, veilig stoppen en herstel van onderbroken opnamen. Stop houdt de afspeelcursor vast. Zie [opnemen](docs/OPNEMEN.md).
 
 **0.7.0** Lange opnamen met opslag en verwerking in blokken, voortgang en annuleren, herstel na onverwacht afsluiten en behoud van WAV-bestandsinformatie. Zie [lange bestanden en herstel](docs/LANGE_BESTANDEN.md).
 

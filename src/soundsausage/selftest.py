@@ -36,6 +36,7 @@ def run(window):
         np.testing.assert_array_equal(read_wav(path / "test.wav").samples, doc.read())
         from . import storage
         from .recovery import Recovery, restore, discard
+        from .capture import Take,recover_take
         previous_cache=os.environ.get("SOUNDSAUSAGE_CACHE_DIR")
         os.environ["SOUNDSAUSAGE_CACHE_DIR"]=str(path/"work")
         manager=None
@@ -48,6 +49,10 @@ def run(window):
             manager=Recovery();manager.checkpoint(disk_doc,empty_session)
             recovered,_,_,_=restore(manager.owner,dsp=doc.dsp)
             np.testing.assert_array_equal(recovered.view(),disk_doc.view())
+            take=Take(8000,2,"Selftest input")
+            take.append(original);take.checkpoint();take.finish()
+            np.testing.assert_array_equal(recover_take(take.owner).samples,original)
+            take.discard()
         finally:
             if manager is not None:manager.close()
             if previous_cache is None:os.environ.pop("SOUNDSAUSAGE_CACHE_DIR",None)
@@ -72,7 +77,7 @@ def run(window):
     finally:
         manual.close()
         manual.deleteLater()
-    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, disk buffers, recovery, icons, effects, manual)")
+    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, disk buffers, recovery, recording files, icons, effects, manual)")
 
 
 def run_audio(window):
@@ -97,3 +102,35 @@ def run_audio(window):
     finally:
         timeout.stop()
         player.shutdown()
+
+
+def run_input(window):
+    """Explicit short input check; never enabled by the ordinary selftest."""
+    from PySide6.QtCore import QEventLoop,QTimer
+    recorder=window.recorder
+    loop=QEventLoop();errors=[];takes=[]
+    recorder.failed.connect(errors.append)
+    recorder.failed.connect(lambda message:loop.quit())
+    recorder.finished.connect(takes.append)
+    recorder.finished.connect(lambda take:loop.quit())
+    # This check does not attach a take to the editor or keep microphone data.
+    recorder.finished.disconnect(window.recording_finished)
+    recorder.failed.disconnect(window.recording_failed)
+    previous_cache=os.environ.get("SOUNDSAUSAGE_CACHE_DIR")
+    timeout=QTimer();timeout.setSingleShot(True);timeout.timeout.connect(loop.quit)
+    folder=tempfile.TemporaryDirectory(prefix="soundsausage-input-check-")
+    try:
+        os.environ["SOUNDSAUSAGE_CACHE_DIR"]=folder.name
+        ok=recorder.start(48000,2,limit_seconds=.25)
+        if ok and recorder.active:
+            timeout.start(7000);loop.exec()
+        if errors or recorder.active or not takes or not takes[0].frames:
+            raise RuntimeError("; ".join(errors) or "Recording input did not produce audio within seven seconds.")
+        assert np.isfinite(takes[0].samples).all()
+        print(f"SoundSausage {__version__}: input selftest OK ({takes[0].description}, {takes[0].rate} Hz, {takes[0].channels} channels)")
+    finally:
+        timeout.stop();recorder.stop(keep=False)
+        for take in takes:take.discard()
+        folder.cleanup()
+        if previous_cache is None:os.environ.pop("SOUNDSAUSAGE_CACHE_DIR",None)
+        else:os.environ["SOUNDSAUSAGE_CACHE_DIR"]=previous_cache

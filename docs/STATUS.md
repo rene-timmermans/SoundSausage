@@ -1,9 +1,13 @@
-# SoundSausage 0.7.0
+# SoundSausage 0.8.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
 ## Beschikbaar
 
+- Mono/stereo opnemen via een gekozen microfoon of audio-interface.
+- Nieuwe golfvorm, invoegen/vervangen in een golfvorm of nieuw blok op het gekozen spoor.
+- Live golfvorm, ingangsniveaus, opnameklok, pauze/hervatten en stoppen als één Undo-stap.
+- Onderbroken opnamen afzonderlijk herstellen zonder bestaande bestanden te overschrijven.
 - WAV openen en opslaan: mono/stereo, PCM 8/16/24/32-bit en float32.
 - De huidige golfvorm of sessie sluiten via File → Close of Ctrl+W, met een keuze voor niet-opgeslagen wijzigingen.
 - Golfvormbewerking met selecties, knippen, plakken, Mix Paste, trimmen en undo/redo.
@@ -27,7 +31,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 
 ## Beperkingen
 
-- Opnemen, tijd-/toonhoogte-effecten, galm, filters, ruisreductie en externe plug-ins zijn nog niet beschikbaar.
+- Tijd-/toonhoogte-effecten, galm, filters, ruisreductie en externe plug-ins zijn nog niet beschikbaar.
 - Amplitude-effecten bewerken de golfvorm; voor een multitrackclip open je eerst een bewerkkopie. Het zijn nog geen realtime spooreffecten.
 - Dynamics gebruikt piekdetectie zonder vooruitblik. Exact dezelfde uitkomst als historische effecten is niet aangetoond.
 - Nog niet beschikbare effecten staan uitgeschakeld in de menu's.
@@ -38,8 +42,9 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Bijzondere metadata wordt letterlijk bewaard; afgeleide meetgegevens worden niet opnieuw berekend.
 - Een eindmix voegt markers of tags uit verschillende bronnen nog niet samen.
 - De audiobackend rapporteert de verwerkte frames; exacte fysieke luidsprekerlatentie en naadloos lussen zijn niet gegarandeerd.
+- Bestaande sporen worden tijdens opname nog niet afgespeeld; punch-in/out en automatische latencycompensatie ontbreken.
 - Uitvoer vereist een door Qt ondersteund mono-/stereoapparaat; multikanaals routering ontbreekt.
-- Virtuele audiocontroles zijn geautomatiseerd; een hoorbare controle op fysieke hardware staat nog open.
+- Virtuele in-/uitvoercontroles zijn geautomatiseerd; opname en terugluisteren op fysieke hardware staan nog open.
 - Dithering en een markereditor ontbreken nog.
 
 Zie de [projectbeschrijving](../README.md), [volume- en panlijnen](ENVELOPES.md) en

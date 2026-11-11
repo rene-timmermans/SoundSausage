@@ -32,11 +32,24 @@ Een grotere limiet alleen is onvoldoende: grote bestanden moeten te openen,
 bewerken, beluisteren en bewaren zijn zonder dat steeds de hele opname in het
 geheugen nodig is. Bevestigde bewerkingen blijven één stap in Undo/Redo.
 
-## 3. De dagelijkse werkwijze afronden — eerstvolgend
+## 3. De dagelijkse werkwijze afronden — actief (0.8.0)
 
 Openen, opnemen, bewerken, meerdere sporen combineren, opslaan, heropenen en
 exporteren moeten samen soepel werken. De volledige keten krijgt controles
 met echte geluidsapparaten, naast automatische tests.
+
+- [x] Mono/stereo-opname met ingangskeuze en live overzicht.
+- [x] Nieuwe golfvorm, invoegen/vervangen en opnemen op een spoor.
+- [x] Pauzeren, veilig stoppen, annuleren en behoud bij apparaat-/schijffouten.
+- [x] Herstel van een onderbroken take.
+- [x] De hele keten van opname tot heropend project en WAV-eindmix automatisch toetsen.
+- [x] De handleiding voor opname en dagelijks werken aanvullen.
+- [ ] Definitieve virtuele in-/uitvoer- en pakketcontroles voor 0.8.0.
+- [ ] Opnemen en terugluisteren met fysieke microfoon en uitvoer controleren.
+
+De functionaliteit is gebouwd; de fysieke controle blijft open totdat die is
+bevestigd. Gelijktijdig opnemen en afspelen, punch-in/out en automatische
+latencycompensatie zijn vervolgmogelijkheden, geen huidige functies.
 
 ## 4. Overige effecten en tools
 
@@ -47,8 +60,7 @@ Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 ## Open punten blijven zichtbaar
 
 De actuele afvinklijst staat in [voortgang](VOORTGANG.md). Nog openstaande
-controles worden bij een nieuwe fase meegenomen. Opnemen, realtime
-spooreffecten, multikanaals routering en naadloze lussen gelden pas als
+controles worden bij een nieuwe fase meegenomen. Realtime spooreffecten, multikanaals routering en naadloze lussen gelden pas als
 beschikbaar wanneer ze daadwerkelijk zijn gebouwd en gecontroleerd.
 
 De handleiding blijft via Help en F1 bereikbaar en beschrijft alle beschikbare

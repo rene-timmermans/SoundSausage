@@ -77,6 +77,8 @@ class PlaybackTests(unittest.TestCase):
         self.outputs = [Device()]
         self.query = patch.object(self.devices, "outputs", side_effect=lambda: self.outputs)
         self.query.start()
+        self.input_query=patch.object(self.devices,"inputs",return_value=[])
+        self.input_query.start()
         self.player = Playback(devices=self.devices, sink_factory=Sink)
         self.errors, self.positions = [], []
         self.player.failed.connect(self.errors.append)
@@ -85,7 +87,7 @@ class PlaybackTests(unittest.TestCase):
 
     def tearDown(self):
         self.player.shutdown(); self.player.deleteLater(); self.devices.deleteLater()
-        self.app.processEvents(); self.query.stop()
+        self.app.processEvents(); self.query.stop(); self.input_query.stop()
 
     def test_lazy_startup_does_not_query_or_open_audio_devices(self):
         self.devices.outputs.assert_not_called()

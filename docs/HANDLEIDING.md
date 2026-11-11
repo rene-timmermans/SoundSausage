@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.7.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.8.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -152,6 +152,70 @@ per apparaat verschillen. Instellingen wijzigen stopt het afspelen en voorbeelde
 Als een gekozen apparaat verdwijnt, kies je opnieuw een beschikbare uitgang en
 start je het afspelen. Controleer bij ontbrekend geluid ook het systeemvolume,
 de systeemuitgang en eventuele Mute- of Solo-knoppen in multitrack.
+
+## 3a. Opnemen
+
+### Een opname maken
+
+1. Sluit een microfoon of audio-interface aan. Kies de ingang onder
+   **Options → Audio Hardware → Recording device**. De keuze blijft bewaard.
+2. Druk op **R** of de ronde opnameknop. Controleer **Input** in het opnamevenster.
+3. Kies **Destination**. **New waveform** maakt een losse opname. Bij een bestaande
+   golfvorm kun je **Insert at cursor** kiezen, of **Replace selection** wanneer
+   er een selectie is. In multitrack wordt een nieuw blok op het gekozen spoor
+   toegevoegd, vanaf de cursor. Bestaande blokken blijven behouden.
+4. Kies **Mono** of **Stereo**. **First input channel** kiest één ingang bij mono
+   of de eerste van een opeenvolgend paar bij stereo. Een monoapparaat kan op
+   beide stereokanalen worden opgenomen. Het invoegdoel bepaalt samplerate en,
+   bij een bestaande golfvorm, kanaalaantal. Een andere apparaatrate wordt na
+   Stop omgezet. **Maximum duration** kan automatisch stoppen; **Until Stop**
+   blijft doorlopen totdat je zelf stopt of de schijf geen ruimte meer heeft.
+5. Kies **Start Recording**. De live golfvorm toont de laatste twintig seconden;
+   de grote klok toont de totale vastgelegde duur. De meters tonen het ingangsniveau.
+6. **P** pauzeert en hervat. Pauzetijd komt niet in de opname. **Stop**, **Esc**,
+   **Spatie** of de opnameknop stopt en bewaart de take in het gekozen doel.
+
+Bij het invoegen of vervangen is de gehele opname één Undo-stap. Ook een nieuw
+opgenomen blok in multitrack is met Undo te verwijderen. Een nieuwe golfvorm
+is pas als bestand bewaard nadat je **Save** of **Save As** kiest.
+
+**Discard Recording** verwijdert uitsluitend de lopende take en vraagt om een
+bevestiging. Tijdens opname staan andere bewerkingen uit. Sluiten vraagt of de
+opname moet worden gestopt en behouden, verworpen of doorgezet. Daarna gelden
+de gewone vragen voor niet-opgeslagen werk.
+
+### Ingang en herstel
+
+De microfoon wordt pas geopend na **Start Recording**. SoundSausage speelt het
+ingangssignaal niet door de luidsprekers. Bestaande sporen worden tijdens opnemen
+nog niet afgespeeld. Neem de takes afzonderlijk op en combineer ze daarna in
+multitrack. Voor luisteren gebruik je na Stop de gewone afspeelknoppen.
+
+Is een specifiek gekozen USB-apparaat verdwenen, kies dan een beschikbare ingang.
+Tijdens een opname leidt apparaatverlies niet naar een andere microfoon: de app
+stopt en behoudt de vastgelegde audio. Het ingangsniveau regel je op de microfoon,
+audio-interface of in de geluidsinstellingen van Linux. Verhoog het zo nodig
+voordat je begint; vervorming door een overstuurde ingang is achteraf niet te herstellen.
+
+Opnamen worden in blokken naar een eigen werkbestand geschreven. Er is voldoende
+vrije schijfruimte nodig voor de take, het resultaat en Undo. De opname krijgt
+ongeveer iedere seconde een herstelpunt. Na onverwacht afsluiten biedt de volgende
+start de onderbroken opname apart aan. **File → Recover Work** kan dat later ook.
+Herstellen opent de laatst vastgelegde audio als nieuwe golfvorm, zonder de
+bronbestanden of de multitracksessie te overschrijven. Bij een schrijffout kan
+het laatste herstelpunt iets ouder zijn dan de klok aangaf.
+
+Annuleer je de verwerking ná Stop, bijvoorbeeld een langere omzetting, dan blijft
+de take voor herstel bewaard. Het eerdere document is dan niet aangepast.
+
+### Een dagelijkse werkwijze
+
+Een bruikbare volgorde is: opnemen of WAV openen → een fragment selecteren →
+eventueel Normalize, fade of een ander Amplitude-effect toepassen → opslaan →
+in multitrack invoegen → verdere takes op een spoor opnemen → clips verschuiven
+of hun volume/pan aanpassen → het project bewaren → een WAV-eindmix maken.
+Bewaar het project ook als je later nog afzonderlijke sporen wilt veranderen.
+Heropen het project om verder te werken; een eindmix bevat alleen de gecombineerde audio.
 
 ## 4. Selecteren en de golfvorm bewerken
 
@@ -434,6 +498,7 @@ kunt volgen.
 | Delete | Selectie, clip of lijnpunt verwijderen, afhankelijk van de actieve bewerking |
 | Ctrl+A / F4 | Alles selecteren / selectie naar nuldoorgangen aanpassen |
 | Spatie / P / Esc | Afspelen of stoppen / pauzeren of hervatten / stoppen |
+| R | Opname instellen; tijdens opnemen stoppen en de take behouden |
 | Home / End | Naar begin / einde |
 | + / − | Inzoomen / uitzoomen |
 | Ctrl+0 / Ctrl+Shift+A | Hele opname tonen / selectie vullen |
@@ -446,6 +511,8 @@ golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
 
 ## 12. Problemen en work in progress
 
+- **Geen ingangsniveau:** controleer Input, het gekozen kanaal en het microfoonvolume
+  in de geluidsinstellingen. Start een nieuwe take na het aansluiten van een apparaat.
 - **Geen geluid:** controleer Audio Hardware, systeemvolume, Mute en Solo.
   Kies bij een verdwenen apparaat een beschikbare uitgang en start opnieuw.
 - **Vervorming of rode pieken:** verlaag volume of versterking; opgetelde clips
@@ -460,7 +527,7 @@ golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
   blijven beschikbaar. Verwijder de betreffende kopie alleen wanneer je die niet
   meer wilt bewaren.
 
-Opnemen, een markereditor en realtime spooreffecten zijn nog in ontwikkeling.
+Gelijktijdig opnemen en afspelen, een markereditor en realtime spooreffecten zijn nog in ontwikkeling.
 Ook EQ/filters, delay/galm, ruisreductie, tijd-/toonhoogtebewerking en externe
 plug-ins volgen later. Uitgeschakelde opdrachten bieden daarvoor nog geen werking.
 

@@ -7,6 +7,8 @@ from pathlib import Path
 from PySide6.QtMultimedia import QAudioFormat
 from soundsausage.audio import wav_header,read_wav,write_wav
 from soundsausage.document import Document
+from soundsausage.capture import Take
+from soundsausage import storage
 from soundsausage.session import Session
 from soundsausage.project import save_project,load_project
 from soundsausage.recovery import Recovery
@@ -39,6 +41,14 @@ with tempfile.TemporaryDirectory() as folder:
     for start in range(0,len(output),65536):
         part=output[start:min(start+65536,len(output))]
     mark('playback-encode')
+    take=Take(48000,2,'Memory check input')
+    source=doc.view()
+    for a in range(0,len(source),storage.BLOCK_FRAMES):
+        take.append(source[a:a+storage.BLOCK_FRAMES])
+    take.finish();mark('recording-file')
+    recorded=Document(take.samples,take.rate)
+    mark('recording-apply');take.discard()
+    assert recorded.frames==frames
 print(json.dumps({'decoded_mib':160,'baseline_mib':round(baseline/1024,1),'extra_resident_mib':stages}))
 if max(stages.values())>80:
     raise SystemExit('Resident audio memory grew beyond the bounded-workflow allowance of 80 MiB.')

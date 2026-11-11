@@ -155,7 +155,8 @@ def allocate(shape, *, zero=False, force_disk=False, owner=None):
 def release_pages(array):
     """Drop mapped pages after a bounded pass; the backing file remains intact."""
     owner = root_array(array)
-    if getattr(owner, "_ss_lease", None) is not None:
+    if (getattr(owner, "_ss_lease", None) is not None or
+            (isinstance(owner,np.memmap) and not owner.flags.writeable)):
         try:
             import mmap
             owner._mmap.madvise(mmap.MADV_DONTNEED)
