@@ -29,7 +29,7 @@ class RecordDialog(QDialog):
         if window.mode=='multitrack':
             name=window.session.tracks[window.session.track_index(window.session.selected_track)].name
             self.target.addItem('New clip on '+name,'multitrack')
-        elif window.document.frames:
+        elif window.document.frames and not window.document.partial_channels:
             self.target.addItem('Insert at cursor','insert')
             if window.document.selected:self.target.addItem('Replace selection','replace')
         self.target.addItem('New waveform','new')
@@ -179,6 +179,8 @@ class RecordingActions:
     def start_recording(self,target='new',rate=44100,channels=2,first_channel=0,input_id=None,limit_seconds=None):
         if self.recording_busy:return False
         if target not in ('new','insert','replace','multitrack'):raise AudioError('Invalid recording destination.')
+        if target in ('insert','replace') and self.document.partial_channels:
+            raise AudioError('Choose Both channels to record into an existing stereo waveform.')
         if target=='new' and not self._confirm_discard():return False
         if target in ('insert','replace') and (rate!=self.document.sample_rate or channels!=self.document.channels):
             raise AudioError('Recording into a waveform requires its sample rate and channel count.')
@@ -203,6 +205,7 @@ class RecordingActions:
     def update_recording_actions(self):
         if 'record' not in self.actions:return
         busy=self.recording_busy
+        if hasattr(self, 'channel_choice'): self.channel_choice.setEnabled(not busy and self.document.channels == 2)
         self.actions['record'].setChecked(busy)
         self.actions['record'].setText('Stop Recording' if busy else 'Record…')
         self.actions['record'].setEnabled(not self.no_audio and not self._applying_recording)

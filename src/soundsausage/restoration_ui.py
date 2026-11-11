@@ -12,7 +12,7 @@ class NoiseReductionDialog(EffectDialog):
     def __init__(self, document, parent=None, no_audio=False):
         super().__init__(document, parent, no_audio)
         self.setWindowTitle('Noise Reduction'); self.setMinimumWidth(570)
-        self.profile = getattr(parent, 'noise_profile', None)
+        self.profile = document.effect_profile(getattr(parent, 'noise_profile', None))
         layout = QVBoxLayout(self)
         self.profile_label = QLabel(); self.profile_label.setWordWrap(True); layout.addWidget(self.profile_label)
         buttons = QHBoxLayout()
@@ -31,7 +31,7 @@ class NoiseReductionDialog(EffectDialog):
         form.addRow('Smoothing', self.smoothing)
         layout.addLayout(form)
         self.linked = QCheckBox('Link stereo channels (preserve balance)'); self.linked.setChecked(True)
-        self.linked.setVisible(document.channels == 2); layout.addWidget(self.linked)
+        self.linked.setVisible(document.effect_channel_count == 2); layout.addWidget(self.linked)
         self.residual = QCheckBox('Keep removed noise only (instead of cleaned audio)'); layout.addWidget(self.residual)
         note = QLabel('First capture a selection containing only background noise. Then close this window,\n'
                       'select the audio to clean and open Noise Reduction again.\n'
@@ -44,10 +44,10 @@ class NoiseReductionDialog(EffectDialog):
 
     def update_profile(self):
         try:
-            validate_profile(self.profile, self.document.sample_rate, self.document.channels)
+            validate_profile(self.profile, self.document.sample_rate, self.document.effect_channel_count)
             valid = True
             self.profile_label.setText(f"Noise profile: {self.profile['sample_rate']} Hz, "
-                f"{self.document.channels} channel(s), {self.profile['frames']/self.document.sample_rate:.2f} s")
+                f"{self.document.effect_channel_count} channel(s), {self.profile['frames']/self.document.sample_rate:.2f} s")
         except (ValueError, TypeError):
             valid = False
             self.profile_label.setText('No compatible noise profile. Capture one from a noise-only selection or load a saved profile.')
@@ -57,10 +57,12 @@ class NoiseReductionDialog(EffectDialog):
         self.save_button.setEnabled(valid)
 
     def use_profile(self, profile):
-        validate_profile(profile, self.document.sample_rate, self.document.channels)
+        original = profile
+        profile = self.document.effect_profile(profile)
+        validate_profile(profile, self.document.sample_rate, self.document.effect_channel_count)
         self.stop_preview(); self.profile = profile
         if self.parent() is not None:
-            self.parent().noise_profile = profile
+            self.parent().noise_profile = original
         self.update_profile()
 
     @long_operation
@@ -69,7 +71,7 @@ class NoiseReductionDialog(EffectDialog):
         try:
             if not self.document.selected:
                 raise ValueError('Select a short fragment containing only background noise first.')
-            self.use_profile(learn_profile(self.document.view(*self.document.selection), self.document.sample_rate))
+            self.use_profile(learn_profile(self.document.effect_view(*self.document.selection), self.document.sample_rate))
         except OperationCancelled:
             return
         except (ValueError, OSError) as error:
@@ -94,7 +96,7 @@ class NoiseReductionDialog(EffectDialog):
         self.presets.blockSignals(True); self.presets.setCurrentIndex(index); self.presets.blockSignals(False)
 
     def settings(self):
-        validate_profile(self.profile, self.document.sample_rate, self.document.channels)
+        validate_profile(self.profile, self.document.sample_rate, self.document.effect_channel_count)
         return dict(profile=self.profile, reduction_db=self.reduction.value(), sensitivity=self.sensitivity.value(),
                     smoothing=self.smoothing.value(), linked=self.linked.isChecked(), residual=self.residual.isChecked())
 

@@ -34,6 +34,8 @@ class SpaceDialog(EffectDialog):
         form.addRow("Wet (effect)", self.wet)
         form.addRow("Output gain", self.output)
         self.keep_tail = QCheckBox("Add effect tail after the selection")
+        self.keep_tail.setEnabled(not self.document.partial_channels)
+        self.keep_tail.setToolTip("Choose Both channels to add time to a stereo waveform.")
         self.tail = spin(tail_default, .01, 60, " s", 2)
         self.tail.setEnabled(False)
         form.addRow(self.keep_tail, self.tail)
@@ -82,7 +84,7 @@ class DelayDialog(SpaceDialog):
         layout = self.header("Delay", [p[0] for p in self.PRESETS])
         self.add_times(layout)
         self.footer(layout, .5)
-        if document.channels == 1:
+        if document.effect_channel_count == 1:
             self.presets.model().item(4).setEnabled(False)
 
     def add_times(self, layout):
@@ -92,8 +94,8 @@ class DelayDialog(SpaceDialog):
         self.linked = QCheckBox("Same delay for both channels")
         self.linked.setChecked(True)
         self.right_delay.setEnabled(False)
-        form.addRow("Delay (left / mono)", self.delay)
-        if self.document.channels == 2:
+        form.addRow("Delay" if self.document.partial_channels else "Delay (left / mono)", self.delay)
+        if self.document.effect_channel_count == 2:
             form.addRow("Right delay", self.right_delay)
             form.addRow(self.linked)
         else:
@@ -108,7 +110,7 @@ class DelayDialog(SpaceDialog):
 
     def time_settings(self):
         return dict(delay_ms=self.delay.value(), right_delay_ms=self.right_delay.value()
-                    if self.document.channels == 2 and not self.linked.isChecked() else None)
+                    if self.document.effect_channel_count == 2 and not self.linked.isChecked() else None)
 
     def suggested_tail(self):
         times = self.time_settings()
@@ -146,7 +148,7 @@ class EchoDialog(DelayDialog):
         self.feedback = spin(40, 0, 95, " %")
         self.damping = spin(20, 0, 95, " %")
         self.ping_pong = QCheckBox("Alternate repeats between left and right")
-        self.ping_pong.setVisible(document.channels == 2)
+        self.ping_pong.setVisible(document.effect_channel_count == 2)
         form.addRow("Feedback", self.feedback)
         form.addRow("High-frequency damping", self.damping)
         form.addRow(self.ping_pong)
@@ -155,7 +157,7 @@ class EchoDialog(DelayDialog):
         self.damping.valueChanged.connect(self.changed)
         self.ping_pong.toggled.connect(self.changed)
         self.footer(layout, 2)
-        if document.channels == 1:
+        if document.effect_channel_count == 1:
             self.presets.model().item(3).setEnabled(False)
 
     def suggested_tail(self):
@@ -171,7 +173,7 @@ class EchoDialog(DelayDialog):
         _, delay, feedback, damping, ping_pong, wet = self.PRESETS[index-1]
         self.delay.setValue(delay); self.right_delay.setValue(delay); self.linked.setChecked(True)
         self.feedback.setValue(feedback*100); self.damping.setValue(damping*100)
-        self.ping_pong.setChecked(ping_pong and self.document.channels == 2)
+        self.ping_pong.setChecked(ping_pong and self.document.effect_channel_count == 2)
         self.dry.setValue(100); self.wet.setValue(wet*100); self.output.setValue(0)
         self.keep_tail.setChecked(False); self.tail.setValue(min(60, self.suggested_tail()))
         self.presets.setCurrentIndex(index)
@@ -199,7 +201,7 @@ class ReverbDialog(SpaceDialog):
         self.predelay = spin(20, 0, 250, " ms", 2)
         self.damping = spin(40, 0, 95, " %")
         self.width = spin(100, 0, 100, " %")
-        self.width.setEnabled(document.channels == 2)
+        self.width.setEnabled(document.effect_channel_count == 2)
         form.addRow("Room size", self.room)
         form.addRow("Decay (approx. RT60)", self.decay)
         form.addRow("Predelay", self.predelay)

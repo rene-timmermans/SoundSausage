@@ -62,7 +62,11 @@ def create_menus(window):
                "import_audio", "mixdown", None, "recover", None, "exit"))
     edit = menu("edit", "&Edit")
     add(edit, ("undo", "redo", "repeat", None, "cut", "copy", "paste", "mix_paste", "delete", "trim", None,
-               "select_all", "select_range", "zero", None, "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
+               "select_all", "select_range", "zero"))
+    channels = edit.addMenu("Select Channels")
+    window.menus["channels"] = channels
+    add(channels, ("channels_both", "channels_left", "channels_right"))
+    add(edit, (None, "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
     view = menu("view", "&View")
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
     transform = menu("transform", "&Transform")

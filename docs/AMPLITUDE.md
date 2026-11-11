@@ -58,7 +58,7 @@ historische effectalgoritmen.
 ## Envelope
 
 Teken het volumeverloop over de lengte van de selectie: 0% positie is het begin,
-100% het einde. Versterking loopt van 0% (stilte) tot 200%. Beide kanalen volgen
+100% het einde. Versterking loopt van 0% (stilte) tot 200%. De gekozen kanalen volgen
 dezelfde curve. Klik en sleep punten, bewerk ze numeriek of kies een preset.
 Logaritmische interpolatie werkt alleen met positieve versterkingswaarden.
 
@@ -78,3 +78,10 @@ Mengen, versterken en dynamiek kunnen waarden boven 0 dBFS opleveren. De
 interne audio blijft ongeclipt; normaliseer of verlaag de versterking voor
 export naar PCM. Een stereo-effect op een multitrackclip bewerk je via
 **Edit Copy in Waveform**, gevolgd door **Apply Waveform to Clip**.
+
+## Links of rechts bewerken
+
+Kies Left of Right boven de golfvorm of sleep binnen één golf. Amplitude werkt
+dan op dat kanaal; Preview houdt de stereocontext en het andere kanaal blijft
+ongewijzigd. Channel Mixer kan beide ingangen gebruiken maar schrijft alleen de
+gekozen uitgang. Zie [kanaalselectie](KANAALSELECTIE.md).

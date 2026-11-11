@@ -30,7 +30,7 @@ def file_digest(path):
     return digest.hexdigest()
 
 
-def load_impulse(path, rate, channels, expected_digest=None):
+def load_impulse(path, rate, channels, expected_digest=None, ir_channel=None):
     digest = file_digest(path)
     if expected_digest is not None and expected_digest != digest:
         raise ValueError('The impulse-response file has changed. Choose it again before applying or repeating Convolution.')
@@ -39,8 +39,10 @@ def load_impulse(path, rate, channels, expected_digest=None):
     if not wanted or wanted > min(IR_MAX_FRAMES, 10*rate):
         raise ValueError('The impulse response must be non-empty and at most 10 seconds / 524288 output samples.')
     if audio.samples.shape[1] == 2 and channels == 1:
-        raise ValueError('Choose a mono impulse response for a mono waveform.')
-    samples = resample(audio.samples, audio.sample_rate, rate) if audio.sample_rate != rate else audio.samples
+        if ir_channel not in (0, 1): raise ValueError('Choose a mono impulse response for a mono waveform.')
+        chosen = audio.samples[:, ir_channel:ir_channel+1]
+    else: chosen = audio.samples
+    samples = resample(chosen, audio.sample_rate, rate) if audio.sample_rate != rate else chosen
     if not np.any(samples): raise ValueError('The impulse response contains only silence.')
     if file_digest(path) != digest:
         raise ValueError('The impulse-response file changed while opening it.')
@@ -94,12 +96,12 @@ def distortion(source, rate, *, kind='soft', drive_db=12, ceiling=.9, bits=8,
 
 
 def convolution(source, rate, *, ir_path, ir_sha256=None, normalize=True, dry=1, wet=.3,
-                output_db=0, keep_tail=False, limit=None, block_frames=262144):
+                output_db=0, keep_tail=False, ir_channel=None, limit=None, block_frames=262144):
     rate = int(number(rate, 1000, 384000, 'Sample rate'))
     dry = number(dry, 0, 1, 'Dry level'); wet = number(wet, 0, 1, 'Wet level')
     gain = 10**(number(output_db, -24, 24, 'Output gain (dB)')/20)
     if not isinstance(normalize, bool) or not isinstance(keep_tail, bool): raise ValueError('Invalid convolution switch.')
-    impulse, _ = load_impulse(ir_path, rate, source.shape[1], ir_sha256)
+    impulse, _ = load_impulse(ir_path, rate, source.shape[1], ir_sha256, ir_channel)
     energies = np.zeros(impulse.shape[1])
     for a, b in blocks(len(impulse), 65536):
         energies += np.sum(np.asarray(impulse[a:b], np.float64)**2, axis=0)

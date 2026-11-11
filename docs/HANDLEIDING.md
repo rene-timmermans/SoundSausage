@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.13.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.14.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -221,11 +221,13 @@ Heropen het project om verder te werken; een eindmix bevat alleen de gecombineer
 
 Klik in de golfvorm om de cursor te plaatsen. Sleep met de linkermuisknop om een
 fragment te selecteren. **Shift+klik** breidt de selectie vanaf het bestaande
-begin uit. **Ctrl+A** selecteert alles.
+begin uit en houdt de kanaalkeuze vast. **Ctrl+A** selecteert de hele duur in de
+huidige kanaalkeuze.
 
 **Edit → Set Selection** voert begin en einde precies in. Deze velden gebruiken
 frames: bij 44.100 Hz zijn 44.100 frames één seconde. **F4** verplaatst de grenzen
-van een selectie naar binnen, naar nuldoorgangen in het eerste kanaal. Dat kan
+van een selectie naar binnen, naar nuldoorgangen in het gekozen kanaal
+(bij Both in links). Dat kan
 een abrupte overgang verminderen; luister het resultaat altijd na.
 
 | Opdracht | Wat gebeurt er? |
@@ -238,15 +240,84 @@ een abrupte overgang verminderen; luister het resultaat altijd na.
 | Trim | Houdt alleen de selectie over |
 | Undo / Redo | Maakt de laatste bewerking ongedaan of voert haar opnieuw uit |
 
-Plakken zet de samplerate zo nodig om. Het klembord blijft ongewijzigd. Het
-aantal kanalen moet voor plakken nog wel gelijk zijn: mono en stereo worden
-hierbij niet automatisch onderling omgezet. Mix Paste kan luider uitvallen
-doordat twee signalen worden opgeteld.
+Plakken zet de samplerate zo nodig om. Het klembord blijft ongewijzigd. Bij Both
+moet het aantal kanalen overeenkomen. Bij Left of Right kan mono-audio het
+geselecteerde tijdvak van dat kanaal vervangen. Meer hierover staat hieronder.
+Mix Paste kan luider uitvallen doordat twee signalen worden opgeteld.
+
+## 4a. Links, rechts en stereo kiezen
+
+Een stereogolfvorm heeft een linker kanaal **L** boven en een rechter kanaal
+**R** onder. Je kunt hetzelfde tijdvak voor beide kanalen kiezen of slechts
+één kanaal bewerken.
+
+- Sleep binnen L om alleen links te selecteren, of binnen R voor alleen rechts.
+- Sleep van de ene golf naar de andere om beide kanalen te selecteren.
+- Kies boven de golfvorm **Channels → Both (L+R), Left (L) of Right (R)** om
+  een bestaand tijdvak op andere kanalen te richten.
+- Dezelfde keuze staat onder **Edit → Select Channels**. **Alt+B**, **Alt+L**
+  en **Alt+R** kiezen beide, links en rechts.
+
+Het geselecteerde kanaal heeft een gekleurd L/R-label. Een geselecteerd tijdvak
+is alleen in de gekozen kanalen ingekleurd. **Shift** houdt bij het verlengen
+van een selectie de kanaalkeuze vast. Dubbelklikken kiest het zichtbare tijdvak
+in het aangeklikte kanaal. **Ctrl+A** selecteert de hele duur in de huidige
+kanaalkeuze. Bij mono is er één kanaal en staat de extra keuze niet in beeld.
+
+### Een effect op één kanaal
+
+Kies bijvoorbeeld Right, selecteer een fragment en open Amplify / Fade of
+Normalize. Het effectvenster vermeldt de gekozen kanalen. Met Preview hoor je
+het resultaat in stereocontext: het andere kanaal blijft ongewijzigd. OK past
+alleen het gekozen kanaal toe; Ctrl+Z herstelt de audio én de bijbehorende keuze.
+F2 herhaalt de laatste instellingen op de kanalen die op dat moment gekozen zijn.
+
+Zonder tijdselectie werkt een effect op de hele duur van het gekozen kanaal.
+Normalize en Dynamics analyseren daarbij alleen dat kanaal. Channel Mixer kan
+beide kanalen als invoer gebruiken, maar wijzigt alleen de gekozen uitgang.
+Bij een stereo-ruisprofiel of stereo-impulsrespons wordt het bijbehorende kanaal
+gebruikt. Frequentieanalyse volgt eveneens de gekozen kanalen.
+
+Een stereobestand heeft een gedeelde tijdas. Kies **Both** voor bewerkingen die
+de duur veranderen, zoals Stretch, knippen, verwijderen, trimmen of het toevoegen
+van een uitklank. De uitklankopties zijn bij een enkel gekozen stereokanaal uit.
+Delay, echo, galm en convolutie kunnen wel op één kanaal werken met behoud van
+de bestaande lengte. Pitch Shift kan één kanaal wijzigen zonder duurverandering.
+Met Silence kun je een fragment in één kanaal leegmaken terwijl de andere golf
+precies blijft staan. Gezamenlijke cuepunten verschuiven niet door een bewerking
+die slechts één kanaal omkeert.
+
+### Kopiëren en bewaren
+
+Copy en Save Selection leveren bij Left of Right mono-audio uit dat kanaal.
+Save en Save As blijven de volledige stereogolfvorm bewaren. Je kunt mono-audio
+in één stereokanaal plakken wanneer die precies de geselecteerde duur vervangt.
+Mix Paste kan binnen de bestaande opnameduur op één kanaal mengen. Invoegen of
+anders verlengen vereist Both. De niet-gekozen samples blijven exact behouden.
+
+Opnemen in een bestaande stereogolfvorm vereist Both. Bij een enkel gekozen
+kanaal kan Record een nieuwe golfvorm maken. De kanaalkeuze is tijdens opnemen
+vergrendeld. Undo/Redo en herstel bewaren de keuze; oudere herstelkopieën openen
+met beide kanalen gekozen. Afspelen blijft in de bestaande stereocontext.
+
+### Zoomen en functie-iconen
+
+**Zoom Full** toont de gehele opname; het vergrootglas heeft markeringen naar
+de buitenste grenzen. **Zoom to Selection** vult het beeld met het geselecteerde
+tijdvak; het vergrootglas bevat een gemarkeerd selectievak. De knoppen hebben
+verschillende iconen en aanwijzingen bij de muis.
+
+De golfvorm blijft bij tussenliggende zoomniveaus doorlopend. Dichtbij worden
+afzonderlijke samples met elkaar verbonden. Verder uitgezoomd toont de app de
+minimale en maximale uitslagen per schermkolom, met behoud van pieken. Dit werkt
+ook op multitrackclips en verandert de geluidsdata niet. Functies in de menu's
+hebben eigen iconen die het Linux-palet en de accentkleur volgen.
 
 ## 5. Effecten toepassen
 
-Een golfvormeffect werkt op de selectie. Zonder selectie wordt de hele opname
-bewerkt. De opdrachten staan onder **Transform**. Voor effecten op een
+Een golfvormeffect werkt op het gekozen tijdvak en de gekozen kanalen. Zonder
+tijdselectie wordt de hele duur van die kanalen bewerkt. Het andere kanaal blijft
+ongewijzigd en is bij Preview wel hoorbaar in de bestaande stereocontext. De opdrachten staan onder **Transform**. Voor effecten op een
 multitrackclip gebruik je eerst **Edit Copy in Waveform**; verderop staat hoe je
 het resultaat terugplaatst.
 
@@ -256,8 +327,8 @@ Een instelling wijzigen of het venster sluiten stopt het ook. **OK** past toe;
 **Cancel** laat de opname zoals ze was. **Ctrl+Z** draait de toepassing terug.
 
 **F2** of **Edit → Repeat Last Command** herhaalt het laatste golfvormeffect met
-dezelfde instellingen op de nieuwe selectie. Controleer het geselecteerde
-bereik voordat je herhaalt.
+dezelfde instellingen op de nieuwe selectie en de huidige kanaalkeuze. Controleer
+het tijdvak en de kanalen voordat je herhaalt.
 
 ### Amplify / Fade
 
@@ -320,7 +391,7 @@ attack kunnen korte pieken erdoorheen komen. Er is nog geen vooruitblik.
 
 **Transform → Amplitude → Envelope** tekent een volumeverloop over het fragment.
 De positie loopt van 0% aan het begin tot 100% aan het einde. Versterking loopt
-van 0% voor stilte tot 200%; 100% is onveranderd. Beide kanalen volgen dezelfde lijn.
+van 0% voor stilte tot 200%; 100% is onveranderd. De gekozen kanalen volgen dezelfde lijn.
 
 Klik en sleep punten, of wijzig positie en versterking onder de curve.
 Binnenpunten kun je verwijderen. Presets bieden fades, een fade aan beide
@@ -417,7 +488,7 @@ Band-pass en Notch gebruiken **Q** in plaats van de hellingkeuze.
 knipt pieken niet automatisch af. De grafiek toont de gezamenlijke frequentie-
 respons inclusief Output gain, binnen een weergave van −36 tot +36 dB.
 
-Dezelfde instellingen gelden voor links en rechts, zonder kanalen te mengen.
+Dezelfde instellingen gelden voor de gekozen kanalen, zonder ze te mengen.
 Filtergeheugen loopt door tussen verwerkingsblokken, ook bij lange bestanden.
 Iedere bewerking begint bij het begin van de selectie met leeg filtergeheugen
 en houdt de bestaande lengte aan. Een heel korte of abrupt begrensde selectie
@@ -555,8 +626,9 @@ draait terug. **F2** herhaalt de instellingen, inclusief het gebruikte ruisprofi
 Een profiel beschrijft het gemiddelde frequentiebeeld van maximaal de eerste
 30 seconden van de gekozen ruisselectie. De minimumduur hangt van de samplerate
 af en wordt gemeld bij een te korte selectie. Het profiel blijft tijdens deze
-appsessie beschikbaar. Het moet dezelfde samplerate en hetzelfde aantal kanalen
-hebben als de te bewerken opname.
+appsessie beschikbaar. De samplerate moet overeenkomen. Het aantal kanalen
+moet passen bij de gekozen kanalen. Bij Left of Right kan een stereoprofiel
+het bijbehorende kanaal leveren; een monoprofilering kan op één kanaal werken.
 
 **Save Profile** bewaart het als `.ssnoise`; **Load Profile** opent zo'n bestand.
 Daarmee kun je een profiel later opnieuw gebruiken. Het bevat een ruisspectrum,
@@ -719,7 +791,9 @@ van een meetrespons behouden moet blijven. Het garandeert geen piekbegrenzing.
 Een monorespons werkt op mono of op beide kanalen van stereo. Een stereorespons
 werkt per kanaal op een stereogolfvorm; hij maakt van een monogolfvorm geen stereo
 en bevat geen complete matrixroutering tussen kanalen. Een afwijkende samplerate
-van de respons wordt automatisch omgezet.
+van de respons wordt automatisch omgezet. Bij Left of Right wordt het
+bijbehorende kanaal van een stereorespons gebruikt. Een uitklank toevoegen
+vraagt bij stereo Both.
 
 Zonder **Keep full response tail** blijft de oorspronkelijke lengte gelijk.
 Met de optie wordt de volledige uitklank van de respons toegevoegd, precies de
@@ -885,7 +959,8 @@ kunt volgen.
 | Ctrl+X / Ctrl+C / Ctrl+V | Knippen / kopiëren / plakken in de golfvorm |
 | Ctrl+M / Ctrl+T | Mix Paste / selectie behouden |
 | Delete | Selectie, clip of lijnpunt verwijderen, afhankelijk van de actieve bewerking |
-| Ctrl+A / F4 | Alles selecteren / selectie naar nuldoorgangen aanpassen |
+| Ctrl+A / F4 | Hele duur in gekozen kanalen / selectie naar nuldoorgangen aanpassen |
+| Alt+B / Alt+L / Alt+R | Beide kanalen / links / rechts kiezen |
 | Spatie / P / Esc | Afspelen of stoppen / pauzeren of hervatten / stoppen |
 | R | Opname instellen; tijdens opnemen stoppen en de take behouden |
 | Home / End | Naar begin / einde |
@@ -908,7 +983,8 @@ golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
   en Mix Paste kunnen samen boven het uitvoerniveau komen.
 - **Plakken lukt niet:** controleer of bron en doel beide mono of beide stereo zijn.
 - **Een effect is grijs:** open een golfvorm of een bewerkkopie; Channel Mixer
-  vereist stereo. De overige effecten vereisen een geopende golfvorm of bewerkkopie.
+  vereist stereo. Stretch en bewerkingen die de duur veranderen vragen Both.
+  De overige effecten vereisen een geopende golfvorm of bewerkkopie.
 - **Lijnpunten in plaats van clips verplaatsen:** kies Move Clips.
 - **Onvoldoende werkruimte:** maak schijfruimte vrij voor bronkopieën, resultaten
   en Undo. Verwijder geen werkbestanden terwijl SoundSausage actief is.

@@ -39,7 +39,8 @@ class EffectDialog(QDialog):
         self.player.state_changed.connect(self.preview_state)
 
     def add_footer(self, layout):
-        note = QLabel("Applies to the selection, or the whole waveform if nothing is selected.\n"
+        note = QLabel(f"Channels: {self.document.channel_label}. "
+                      "Applies to the selection, or the whole waveform if nothing is selected.\n"
                       "Preview plays the first 8 seconds without changing the waveform.")
         note.setWordWrap(True)
         layout.addWidget(note)
@@ -72,9 +73,7 @@ class EffectDialog(QDialog):
             self.player.stop()
 
     def preview_samples(self):
-        return self.document.dsp.process_blocks(self.effect_name,
-            self.document.view(*self.document.effect_range), self.document.sample_rate,
-            limit=8 * self.document.sample_rate, **self.settings())
+        return self.document.preview_effect(self.effect_name, limit=8*self.document.sample_rate, **self.settings())
 
     @long_operation
     def preview(self):
@@ -144,6 +143,8 @@ class ChannelMixerDialog(EffectDialog):
             self.weights.append(weights)
             self.sliders.append(sliders)
             self.invert.append(invert)
+            if document.partial_channels and output not in document.selected_channels:
+                group.setEnabled(False)
             layout.addWidget(group)
         note = QLabel("Negative percentages invert an input's polarity. Mono mixes keep two channels.\n"
                       "Mixing can raise the level above 0 dBFS; lower the percentages if needed.")
@@ -414,7 +415,7 @@ class DynamicsDialog(CurveDialog):
         layout.addLayout(form)
         self.linked = QCheckBox("Link stereo channels (preserve stereo balance)")
         self.linked.setChecked(True)
-        self.linked.setVisible(document.channels == 2)
+        self.linked.setVisible(document.effect_channel_count == 2)
         layout.addWidget(self.linked)
         note = QLabel("Peak detection with attack/release. No look-ahead; a slower attack lets transients through.")
         note.setWordWrap(True)
@@ -460,7 +461,7 @@ class NormalizeDialog(EffectDialog):
         layout.addLayout(form)
         self.linked = QCheckBox("Normalize left / right equally")
         self.linked.setChecked(True)
-        self.linked.setVisible(document.channels == 2)
+        self.linked.setVisible(document.effect_channel_count == 2)
         self.remove_dc = QCheckBox("Remove DC offset before normalizing")
         layout.addWidget(self.linked)
         layout.addWidget(self.remove_dc)

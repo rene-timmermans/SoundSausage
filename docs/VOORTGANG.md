@@ -115,3 +115,18 @@ zijn nu beschikbaar, met bijgewerkte handleiding en installatiepakketten.
 Elke groep krijgt een afzonderlijke bruikbare release.
 Amplitude is beschikbaar sinds 0.5.0 en dient ook als controle voor de nieuwe
 audiobasis. Uitgebreide oude SES-compatibiliteit en externe plug-ins volgen later.
+
+## Bediening en golfvormweergave — 0.14.0
+
+- [x] Doorlopende min/max-contour bij tussenliggende zoomniveaus, ook op clips.
+- [x] Links/rechts kiezen door slepen en Both/Left/Right, met menu en sneltoetsen.
+- [x] Effecten en luistervoorbeelden met exact behoud van het andere kanaal.
+- [x] Kanaalkeuze in Undo/Redo en herstel; kopiëren en export van één kanaal.
+- [x] Gedeelde stereotiming bewaken bij knippen, uitklank en opname.
+- [x] Verschillende zoomiconen en eigen iconen voor alle menufuncties.
+- [x] Volledige handleiding aanvullen.
+- [ ] Distributiecontroles en installatiepakketten voor 0.14.0.
+
+De vijf effectgroepen blijven afgerond. Deze versie verfijnt de dagelijkse
+bediening. Zie [kanaalselectie](KANAALSELECTIE.md) en de
+[regressiecontroles](validation/channel-zoom.md).

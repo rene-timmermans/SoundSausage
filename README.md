@@ -8,13 +8,14 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.13.0**.
+De huidige versie is **0.14.0**.
 
 ## Wat het kan
 
 - WAV-bestanden openen, bewerken en opslaan.
 - Mono of stereo opnemen via microfoon of audio-interface, met apparaatkeuze en live meters.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
+- Links of rechts afzonderlijk selecteren en bewerken met behoud van het andere kanaal.
 - Volume aanpassen, fades toepassen, normaliseren, omkeren en stilte toevoegen.
 - Stereokanalen mengen, dynamiek bewerken en een volumeverloop tekenen, met luistervoorbeelden.
 - Grafische en parametrische EQ, hoog-/laagdoorlaat-, banddoorlaat- en notchfilters.
@@ -61,7 +62,9 @@ Met **Volume Line** en **Pan Line** teken je de lijnen op een clip.
 
 De effecten staan onder **Transform**; versterken en normaliseren vind je in **Amplitude**.
 Daar staan ook **Channel Mixer**, **Dynamics Processing** en **Envelope**.
-Effecten bewerken de selectie, of de hele golfvorm als er niets geselecteerd is.
+Effecten bewerken het gekozen tijdvak en de gekozen kanalen. Sleep in één golf voor links
+of rechts, of over beide golven voor stereo. De keuze staat ook boven de golfvorm.
+Zie [kanaalselectie en zoomen](docs/KANAALSELECTIE.md).
 Met **Preview** beluister je de instelling voordat je die toepast. Zie [Amplitude](docs/AMPLITUDE.md).
 Onder **Filters** staan de grafische en parametrische EQ en de filters, met presets
 en een grafiek van de gezamenlijke frequentierespons. Zie [EQ en filters](docs/FILTERS.md).
@@ -79,6 +82,8 @@ De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handl
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.14.0** Links en rechts afzonderlijk selecteren en bewerken, met kanaalkeuze, luistervoorbeelden en Undo/Redo. Doorlopende golfvorm bij zoomen, verschillende zoomiconen en eigen iconen voor de menufuncties.
 
 **0.13.0** Vier vervormingsvormen met presets, menging en optionele oversampling. Convolutie met WAV-impulsresponsen en optionele uitklank. Zie [vervorming en convolutie](docs/VERVORMING_CONVOLUTIE.md).
 

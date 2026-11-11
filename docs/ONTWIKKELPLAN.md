@@ -71,6 +71,14 @@ blijven afzonderlijke vervolgstappen.
 Iedere groep krijgt meetbare audiocontroles, Undo/Redo, bediening voor selecties
 en lange bestanden, bijgewerkte uitleg en een geteste release.
 
+## Bediening na de effectgroepen
+
+Versie 0.14.0 verfijnt de golfvormweergave tijdens zoomen en maakt links/rechts
+afzonderlijk selecteerbaar voor effecten. Kanaalkeuze, Undo/Redo, herstel,
+mono-export en de gedeelde stereotijdas horen bij deze uitbreiding. Alle
+menufuncties krijgen eigen iconen; de beide zoomfuncties blijven herkenbaar.
+De vijf effectgroepen blijven afgerond. Zie [voortgang](VOORTGANG.md).
+
 ## Open punten blijven zichtbaar
 
 De actuele afvinklijst staat in [voortgang](VOORTGANG.md). Nog openstaande

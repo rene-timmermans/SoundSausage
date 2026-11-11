@@ -53,7 +53,9 @@ van een meetrespons behouden moet blijven. Het garandeert geen piekbegrenzing.
 Een monorespons werkt op mono of op beide kanalen van stereo. Een stereorespons
 werkt per kanaal op een stereogolfvorm; hij maakt van een monogolfvorm geen stereo
 en bevat geen complete matrixroutering tussen kanalen. Een afwijkende samplerate
-van de respons wordt automatisch omgezet.
+van de respons wordt automatisch omgezet. Bij Left of Right wordt het
+bijbehorende kanaal van een stereorespons gebruikt. Een uitklank toevoegen
+vraagt bij stereo Both.
 
 Zonder **Keep full response tail** blijft de oorspronkelijke lengte gelijk.
 Met de optie wordt de volledige uitklank van de respons toegevoegd, precies de

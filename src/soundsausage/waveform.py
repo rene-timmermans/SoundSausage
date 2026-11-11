@@ -9,6 +9,20 @@ from .theme import colors, blend, readable
 from .peaks import piece_peaks
 
 
+def envelope_polygon(minimum, maximum, channel, left, width, center, scale, clamp=1.08):
+    """Join neighbouring min/max columns, including offset and very thin signals."""
+    count = len(minimum)
+    if not count:
+        return QPolygonF()
+    def points(values):
+        result = [QPointF(left+i*width/count, center-min(clamp, max(-clamp, float(row[channel])))*scale)
+                  for i, row in enumerate(values)]
+        # The last bin covers the right edge too, rather than leaving one blank pixel.
+        result.append(QPointF(left+width, result[-1].y()))
+        return result
+    return QPolygonF(points(maximum) + list(reversed(points(minimum))))
+
+
 def clock_text(seconds):
     seconds = max(0.0, seconds)
     minutes, rest = divmod(seconds, 60)
@@ -29,12 +43,14 @@ class Waveform(QWidget):
         self.view_end = max(1, document.frames)
         self.playhead = None
         self._anchor = None
+        self._anchor_channel = None
+        self._keep_channels = False
         self._cache = None
         self.setMinimumSize(500, 230)
         self.setMouseTracking(True)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setCursor(Qt.CursorShape.IBeamCursor if document.frames else Qt.CursorShape.ArrowCursor)
-        self.setToolTip("Drag to select audio. Double-click selects the visible audio. Ctrl+wheel zooms; wheel scrolls.")
+        self.setToolTip("Drag inside L or R to select that channel; drag across both for stereo. Double-click selects visible audio. Ctrl+wheel zooms; wheel scrolls.")
 
     def set_document(self, document, fit=True):
         self.document = document
@@ -86,13 +102,27 @@ class Waveform(QWidget):
         rect = self.plot_rect()
         return rect.left() + (frame - self.view_start) / (self.view_end - self.view_start) * rect.width()
 
+    def channel_at(self, y):
+        if self.document.channels == 1: return 0
+        rect = self.plot_rect(); middle = rect.center().y()
+        return None if abs(y-middle) <= 4 else 0 if y < middle else 1
+
+    def channel_rect(self, channel):
+        rect = self.plot_rect(); height = (rect.height()-8*(self.document.channels-1))/self.document.channels
+        return QRectF(rect.left(), rect.top()+channel*(height+8), rect.width(), height)
+
     def _peaks(self, columns):
         start = min(self.view_start, self.document.frames)
         end = min(self.view_end, self.document.frames)
         key = (self.document.revision, start, end, columns)
         if self._cache is not None and self._cache[0] == key:
             return self._cache[1]
-        result = piece_peaks(self.document._slices(start,end), end-start, self.document.channels, columns)
+        pieces = self.document._slices(start, end)
+        if end-start <= columns*4:
+            data = np.concatenate(pieces) if pieces else np.empty((0, self.document.channels), np.float32)
+            result = (data, data, False)
+        else:
+            result = piece_peaks(pieces, end-start, self.document.channels, columns)
         self._cache = (key, result)
         return result
 
@@ -124,7 +154,9 @@ class Waveform(QWidget):
         if b > a:
             left, right = max(rect.left(), self.x_at(a)), min(rect.right(), self.x_at(b))
             if right > left:
-                painter.fillRect(QRectF(left, rect.top(), right - left, rect.height()), blend(c.plot, c.accent, 0.26))
+                for channel in self.document.selected_channels:
+                    lane = self.channel_rect(channel)
+                    painter.fillRect(QRectF(left, lane.top(), right-left, lane.height()), blend(c.plot, c.accent, 0.26))
         for channel in range(channels):
             top = rect.top() + channel * (channel_height + gap)
             center = top + channel_height / 2
@@ -140,7 +172,10 @@ class Waveform(QWidget):
             painter.drawText(QRectF(rect.right() + 5, center - 8, 49, 17), Qt.AlignmentFlag.AlignLeft, "0")
             painter.drawText(QRectF(rect.right() + 5, top + channel_height - 17, 49, 17), Qt.AlignmentFlag.AlignLeft, "−32768")
             painter.setPen(c.plot_text)
-            painter.drawText(QRectF(rect.left() + 5, top + 3, 35, 16), Qt.AlignmentFlag.AlignLeft, "L" if channel == 0 else "R")
+            badge = QRectF(rect.left()+3, top+2, 21, 19)
+            if channel in self.document.selected_channels:
+                painter.fillRect(badge, c.accent); painter.setPen(c.accent_text)
+            painter.drawText(badge, Qt.AlignmentFlag.AlignCenter, "L" if channel == 0 else "R")
         if self.document.frames:
             minimum, maximum, envelope = self._peaks(max(1, int(rect.width())))
             painter.save()
@@ -151,10 +186,9 @@ class Waveform(QWidget):
                 center = top + channel_height / 2
                 scale = channel_height * 0.45
                 if envelope:
-                    for i in range(len(minimum)):
-                        x = rect.left() + i * rect.width() / len(minimum)
-                        painter.drawLine(QPointF(x, center - min(1.08, max(-1.08, float(maximum[i, channel]))) * scale),
-                                         QPointF(x, center - min(1.08, max(-1.08, float(minimum[i, channel]))) * scale))
+                    painter.setBrush(c.waveform)
+                    painter.drawPolygon(envelope_polygon(minimum, maximum, channel, rect.left(), rect.width(), center, scale))
+                    painter.setBrush(Qt.BrushStyle.NoBrush)
                 else:
                     points = QPolygonF([QPointF(self.x_at(self.view_start + i), center - min(1.08, max(-1.08, float(row[channel]))) * scale)
                                         for i, row in enumerate(minimum)])
@@ -186,19 +220,30 @@ class Waveform(QWidget):
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             frame = self.frame_at(event.position().x())
+            self._keep_channels = bool(event.modifiers() & Qt.KeyboardModifier.ShiftModifier)
+            self._anchor_channel = self.channel_at(event.position().y())
+            if not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
+                self.document.select_channels(None if self._anchor_channel is None else (self._anchor_channel,))
             self._anchor = self.document.selection[0] if event.modifiers() & Qt.KeyboardModifier.ShiftModifier else frame
             self._select(self._anchor, frame)
             self.setFocus()
 
     def mouseMoveEvent(self, event):
         if self._anchor is not None and event.buttons() & Qt.MouseButton.LeftButton:
+            channel = self.channel_at(event.position().y())
+            if not self._keep_channels:
+                self.document.select_channels((channel,) if channel is not None and channel == self._anchor_channel else None)
             self._select(self._anchor, self.frame_at(event.position().x()))
 
     def mouseReleaseEvent(self, event):
         self._anchor = None
+        self._anchor_channel = None
+        self._keep_channels = False
 
     def mouseDoubleClickEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
+            channel = self.channel_at(event.position().y())
+            self.document.select_channels(None if channel is None else (channel,))
             self._select(self.view_start, min(self.document.frames, self.view_end))
 
     def wheelEvent(self, event):

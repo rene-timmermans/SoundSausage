@@ -18,6 +18,7 @@ from .session import bounded_fades
 from .theme import colors, blend, readable
 from .icons import make_icon
 from .envelope_ui import EnvelopeTimeline
+from .waveform import envelope_polygon
 
 
 HEADER = 184
@@ -260,11 +261,9 @@ class Timeline(EnvelopeTimeline, QWidget):
                 for channel in range(channels):
                     center = rect.top() + 23 + (channel + 0.5) * wave_height / channels
                     scale = wave_height / channels * 0.43
-                    for i in range(len(minimum)):
-                        x = left + i * (right - left) / len(minimum)
-                        high = min(1.1, max(-1.1, float(maximum[i, channel])))
-                        low = min(1.1, max(-1.1, float(minimum[i, channel])))
-                        painter.drawLine(QPointF(x, center - high * scale), QPointF(x, center - low * scale))
+                    painter.setBrush(QColor("#8a9b93") if inactive else c.waveform)
+                    painter.drawPolygon(envelope_polygon(minimum, maximum, channel, left, right-left, center, scale, 1.1))
+                    painter.setBrush(Qt.BrushStyle.NoBrush)
             self.draw_envelopes(painter, clip, row, accent_on_plot)
             painter.setPen(QPen(accent_on_plot if selected else QColor("#7aa79a"), 2 if selected else 1))
             painter.drawRect(rect)

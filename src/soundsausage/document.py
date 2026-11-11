@@ -32,6 +32,7 @@ class Snapshot:
     label: str
     sample_rate: int
     metadata: tuple = ()
+    selected_channels: tuple = ()
 
 
 def _freeze(samples):
@@ -54,6 +55,7 @@ class Document:
         self.dsp = dsp or Dsp()
         self._pieces = (_freeze(samples),) if len(samples) else ()
         self.selection = (0, 0)
+        self.selected_channels = tuple(range(self.channels))
         self.cursor = 0
         self._state_id = next(_state_ids)
         self._saved_state_id = self._state_id
@@ -81,6 +83,39 @@ class Document:
     @property
     def effect_range(self):
         return self.selection if self.selected else (0, self.frames)
+
+    @property
+    def partial_channels(self):
+        return len(self.selected_channels) != self.channels
+
+    @property
+    def effect_channel_count(self):
+        return len(self.selected_channels)
+
+    @property
+    def channel_label(self):
+        return "Mono" if self.channels == 1 else "Both (L+R)" if not self.partial_channels else "Left (L)" if self.selected_channels == (0,) else "Right (R)"
+
+    def select_channels(self, channels=None):
+        channels = tuple(range(self.channels)) if channels is None else tuple(channels)
+        if not channels or any(type(c) is not int or c not in range(self.channels) for c in channels) or tuple(sorted(set(channels))) != channels:
+            raise AudioError("Invalid channel selection.")
+        self.selected_channels = channels
+
+    def effect_view(self, start=0, end=None):
+        source = self.view(start, end)
+        return source[:, self.selected_channels[0]:self.selected_channels[0]+1] if self.partial_channels else source
+
+    def effect_profile(self, profile):
+        if self.partial_channels and isinstance(profile, dict):
+            power = np.asarray(profile.get("power", ()))
+            if power.ndim == 2 and power.shape[1] == self.channels:
+                return dict(profile, power=power[:, self.selected_channels[0]:self.selected_channels[0]+1].tolist())
+        return profile
+
+    def _require_linked_timing(self):
+        if self.partial_channels:
+            raise AudioError("Select Both channels to change stereo duration. Use Silence to clear only the selected channel.")
 
     def mark_saved(self):
         self._saved_state_id = self._state_id
@@ -131,7 +166,7 @@ class Document:
         return storage.copy_array(self.view(start,end))
 
     def _snapshot(self, label):
-        return Snapshot(self._pieces, self.selection, self.cursor, self._state_id, label, self.sample_rate, self.metadata)
+        return Snapshot(self._pieces, self.selection, self.cursor, self._state_id, label, self.sample_rate, self.metadata, self.selected_channels)
 
     def _restore(self, snapshot):
         self._pieces = snapshot.pieces
@@ -140,6 +175,7 @@ class Document:
         self._state_id = snapshot.state_id
         self.sample_rate = snapshot.sample_rate
         self.metadata = snapshot.metadata
+        self.select_channels(snapshot.selected_channels or None)
         self.revision += 1
 
     @staticmethod
@@ -187,15 +223,17 @@ class Document:
     def copy(self):
         if not self.selected:
             raise AudioError("Select the audio to copy first.")
-        return Clip(self.view(*self.selection), self.sample_rate, metadata.crop(self.metadata,*self.selection))
+        return Clip(self.effect_view(*self.selection), self.sample_rate, metadata.crop(self.metadata,*self.selection))
 
     def delete(self):
         if not self.selected:
             return
+        self._require_linked_timing()
         a, b = self.selection
         self.replace(a, b, np.empty((0, self.channels), dtype=np.float32), "Delete")
 
     def cut(self):
+        self._require_linked_timing()
         clip = self.copy()
         a, b = self.selection
         self.replace(a, b, np.empty((0, self.channels), dtype=np.float32), "Cut")
@@ -204,8 +242,10 @@ class Document:
     def paste(self, clip, mix=False):
         if clip is None:
             return
+        if self.partial_channels:
+            return self._paste_channel(clip, mix)
         if clip.samples.shape[1] != self.channels:
-            raise AudioError("Clipboard audio has a different channel count. Mono/stereo conversion is not available for paste yet.")
+            raise AudioError("Clipboard audio has a different channel count. Choose Left or Right to paste mono audio into a stereo waveform.")
         samples = resample(clip.samples, clip.sample_rate, self.sample_rate) if clip.sample_rate != self.sample_rate else clip.samples
         source_metadata = metadata.resample(clip.metadata,clip.sample_rate,self.sample_rate,len(samples)) if clip.sample_rate != self.sample_rate else clip.metadata
         start, end = self.selection if self.selected else (self.cursor, self.cursor)
@@ -244,6 +284,7 @@ class Document:
         self.cursor = cursor
 
     def trim(self):
+        self._require_linked_timing()
         if not self.selected:
             raise AudioError("Select the audio to keep first.")
         start, end = self.selection
@@ -262,13 +303,13 @@ class Document:
             if not settings.get("ir_path"): raise AudioError("Choose an impulse response first.")
             settings["ir_path"] = str(Path(settings["ir_path"]).resolve())
             if settings.get("ir_sha256") is None: settings["ir_sha256"] = file_digest(settings["ir_path"])
-        result = self.dsp.process_blocks(name, self.view(start, end), self.sample_rate, **settings)
+        result = self.preview_effect(name, **settings)
         label = {"gain": "Amplify / Fade", "channel_mix": "Channel Mixer",
                  "dynamics": "Dynamics Processing", "graphic_eq": "Graphic Equalizer",
                  "stretch": "Stretch", "pitch_shift": "Pitch Shift", "noise_reduction": "Noise Reduction", "click_removal": "Click Removal",
                  "parametric_eq": "Parametric Equalizer", "filter": "Filters"}.get(name, name.capitalize())
         # Validate before committing: failed or overflowing effects leave the document intact.
-        if name == "reverse":
+        if name == "reverse" and not self.partial_channels:
             new_metadata = metadata.remap(self.metadata, lambda p: start + end - 1 - p if start <= p < end else p)
         elif name == "stretch" and len(result) != end-start:
             extra = len(result)-(end-start)
@@ -287,6 +328,69 @@ class Document:
         self.replace(start, end, result, label, new_metadata=new_metadata)
         # Store immutable settings, independent of a dialog's mutable controls.
         self.last_effect = (name, deepcopy(settings))
+
+    def _merge_channel(self, start, end, processed, channel=0):
+        if len(processed) != end-start:
+            raise AudioError("Select Both channels for an effect that changes stereo duration, or turn off the added tail.")
+        source = self.view(start, end)
+        result = storage.allocate(source.shape)
+        progress(0, len(source), "Gekozen kanaal toepassen")
+        for a, b in blocks(len(source)):
+            result[a:b] = source[a:b]
+            result[a:b, self.selected_channels[0]] = processed[a:b, channel]
+            storage.release_pages(source); storage.release_pages(processed)
+            if isinstance(result, np.memmap): result.flush(); storage.release_pages(result)
+            progress(b, len(source), "Gekozen kanaal toepassen")
+        return storage.seal(result)
+
+    def preview_effect(self, name, *, limit=None, **settings):
+        start, end = self.effect_range
+        if self.partial_channels:
+            if (name == "stretch" and settings.get("time_ratio", 1) != 1 or
+                name in ("delay", "echo", "reverb") and settings.get("tail_seconds", 0) or
+                name == "convolution" and settings.get("keep_tail", False)):
+                self._require_linked_timing()
+            settings = dict(settings)
+            if name == "gain":
+                # F2 can repeat settings recorded with both stereo inputs visible.
+                for key in ("initial", "final"):
+                    values = np.asarray(settings.get(key))
+                    if values.shape == (self.channels,):
+                        settings[key] = float(values[self.selected_channels[0]])
+            if name in ("delay", "echo") and settings.get("right_delay_ms") is not None:
+                if self.selected_channels == (1,):
+                    settings["delay_ms"] = settings["right_delay_ms"]
+                settings["right_delay_ms"] = None
+            if name == "noise_reduction": settings["profile"] = self.effect_profile(settings.get("profile"))
+            if name == "convolution": settings["ir_channel"] = self.selected_channels[0]
+        source = self.view(start, end) if name == "channel_mix" else self.effect_view(start, end)
+        processed = self.dsp.process_blocks(name, source, self.sample_rate, limit=limit, **settings)
+        if self.partial_channels:
+            count = end-start if limit is None else min(end-start, max(0, int(limit)))
+            return self._merge_channel(start, start+count, processed, self.selected_channels[0] if name == "channel_mix" else 0)
+        return processed
+
+    def _paste_channel(self, clip, mix):
+        samples = clip.samples
+        if samples.shape[1] == self.channels:
+            index = self.selected_channels[0]; samples = samples[:, index:index+1]
+        elif samples.shape[1] != 1:
+            raise AudioError("The clipboard does not match the chosen channel.")
+        samples = resample(samples, clip.sample_rate, self.sample_rate) if clip.sample_rate != self.sample_rate else samples
+        start, end = self.selection if self.selected else (self.cursor, self.cursor)
+        if mix:
+            end = start+len(samples)
+            if end > self.frames: self._require_linked_timing()
+            original = self.effect_view(start, end)
+            combined = storage.allocate(samples.shape)
+            for a, b in blocks(len(samples)):
+                combined[a:b] = original[a:b]+samples[a:b]
+                storage.release_pages(original); storage.release_pages(samples)
+                if isinstance(combined, np.memmap): combined.flush(); storage.release_pages(combined)
+                progress(b, len(samples), "Mix Paste")
+            samples = storage.seal(combined)
+        result = self._merge_channel(start, end, samples)
+        self.replace(start, end, result, "Mix Paste" if mix else "Paste", new_metadata=self.metadata)
 
     def repeat(self):
         if self.last_effect:
@@ -314,7 +418,7 @@ class Document:
         progress(0, len(data), "Nuldoorgangen zoeken")
         for a,b in blocks(len(data)):
             lo = max(0,a-1)
-            segment = data[lo:b,0]
+            segment = data[lo:b,self.selected_channels[0]]
             points = np.flatnonzero(segment == 0) + lo
             if len(segment) > 1:
                 x,y = segment[:-1],segment[1:]

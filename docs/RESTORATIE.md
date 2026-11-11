@@ -19,8 +19,9 @@ draait terug. **F2** herhaalt de instellingen, inclusief het gebruikte ruisprofi
 Een profiel beschrijft het gemiddelde frequentiebeeld van maximaal de eerste
 30 seconden van de gekozen ruisselectie. De minimumduur hangt van de samplerate
 af en wordt gemeld bij een te korte selectie. Het profiel blijft tijdens deze
-appsessie beschikbaar. Het moet dezelfde samplerate en hetzelfde aantal kanalen
-hebben als de te bewerken opname.
+appsessie beschikbaar. De samplerate moet overeenkomen. Het aantal kanalen
+moet passen bij de gekozen kanalen. Bij Left of Right kan een stereoprofiel
+het bijbehorende kanaal leveren; een monoprofilering kan op één kanaal werken.
 
 **Save Profile** bewaart het als `.ssnoise`; **Load Profile** opent zo'n bestand.
 Daarmee kun je een profiel later opnieuw gebruiken. Het bevat een ruisspectrum,

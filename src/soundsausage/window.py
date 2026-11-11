@@ -3,7 +3,7 @@ from functools import partial
 
 import numpy as np
 from PySide6.QtCore import Qt, QTimer
-from PySide6.QtGui import QAction, QKeySequence
+from PySide6.QtGui import QAction, QActionGroup, QKeySequence
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QLabel, QToolBar, QToolButton, QStyle, QFileDialog, QMessageBox, QDialog,
@@ -34,7 +34,7 @@ from .space_ui import DelayDialog, EchoDialog, ReverbDialog
 from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog
 from .amplitude_ui import EffectDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .theme import install_theme, colors
-from .icons import ICON_ACTIONS, PRIMARY_ACTIONS, make_icon, application_icon
+from .icons import PRIMARY_ACTIONS, make_icon, application_icon
 
 
 FORMAT_LABELS = {
@@ -68,7 +68,7 @@ class AmplifyDialog(EffectDialog):
 
     def __init__(self, document, parent=None, no_audio=False):
         super().__init__(document, parent, no_audio)
-        channels = document.channels
+        channels = document.effect_channel_count
         self.setWindowTitle("Amplify")
         self.setMinimumWidth(440)
         layout = QVBoxLayout(self)
@@ -82,7 +82,8 @@ class AmplifyDialog(EffectDialog):
             end = spin(100, 0, 10000, 2, " %")
             self.initial.append(start)
             self.final.append(end)
-            grid.addWidget(QLabel("Left" if channel == 0 else "Right"), channel + 1, 0)
+            label = "Mono" if document.channels == 1 else "Left" if document.selected_channels[channel] == 0 else "Right"
+            grid.addWidget(QLabel(label), channel + 1, 0)
             grid.addWidget(start, channel + 1, 1)
             grid.addWidget(end, channel + 1, 2)
         layout.addLayout(grid)
@@ -182,7 +183,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
 
     def bind_button_icons(self):
         self._action_buttons = []
-        by_action = {self.actions[key]: key for key in ICON_ACTIONS}
+        by_action = {action: key for key, action in self.actions.items()}
         for button in self.findChildren(QToolButton):
             action = button.defaultAction()
             key = by_action.get(action)
@@ -200,10 +201,11 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
 
     def apply_theme(self):
         c = colors()
-        for key in ICON_ACTIONS:
+        for key in self.actions:
             # Menus have neutral backgrounds; their icons use the readable accent.
             icon_key="stop" if key=="play" and self.recording_busy else key
             self.actions[key].setIcon(make_icon(icon_key, c))
+            self.actions[key].setIconVisibleInMenu(True)
         for toolbar in self.findChildren(QToolBar):
             overflow = toolbar.findChild(QToolButton, "qt_toolbar_ext_button")
             if overflow is not None:
@@ -211,6 +213,11 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
                 overflow.setToolTip("More actions")
         for key, button in self._action_buttons:
             self.update_button_icon(key, button)
+        for group, glyph in (("amplitude", "amplify"), ("filters", "filter"), ("delay", "echo"),
+                             ("noise", "noise_reduction"), ("time_pitch", "pitch_shift"), ("special", "distortion"), ("channels", "channels_both")):
+            self.menus[group].setIcon(make_icon(glyph, c))
+        for index, key in enumerate(("channels_both", "channels_left", "channels_right")):
+            self.channel_choice.setItemIcon(index, make_icon(key, c))
         self.multitrack.update_theme()
         self.waveform.update()
         self.multitrack.timeline.update()
@@ -246,6 +253,11 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.action("trim", "Tri&m", lambda: self.edit(self.document.trim), "Ctrl+T")
         self.action("select_all", "Select &Entire Wave", self.select_all, "Ctrl+A")
         self.action("select_range", "Set Selection…", self.select_range)
+        self.channel_actions = QActionGroup(self)
+        for key, label, channel, shortcut in (("channels_both", "Both (L+R)", None, "Alt+B"),
+                ("channels_left", "Left (L)", (0,), "Alt+L"), ("channels_right", "Right (R)", (1,), "Alt+R")):
+            action = self.action(key, label, lambda channels=channel: self.choose_channels(channels), shortcut)
+            action.setCheckable(True); self.channel_actions.addAction(action)
         self.action("zero", "Adjust Selection Inward to &Zero Crossings", self.zero_crossings, "F4")
         self.action("zoom_in", "Zoom &In", lambda: self.active_view().zoom(2), "+", standard.SP_ArrowUp)
         self.action("zoom_out", "Zoom &Out", lambda: self.active_view().zoom(0.5), "-", standard.SP_ArrowDown)
@@ -310,7 +322,17 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         wave_layout = QVBoxLayout(wave_page)
         wave_layout.setContentsMargins(0, 0, 0, 0)
         wave_layout.setSpacing(4)
-        wave_layout.addWidget(self.scroll)
+        range_row = QHBoxLayout()
+        range_row.addWidget(self.scroll, 1)
+        self.channel_label_widget = QLabel("Channels")
+        range_row.addWidget(self.channel_label_widget)
+        self.channel_choice = QComboBox()
+        self.channel_choice.setAccessibleName("Selected audio channels")
+        self.channel_choice.addItems(("Both (L+R)", "Left (L)", "Right (R)"))
+        self.channel_choice.setFixedWidth(150)
+        self.channel_choice.currentIndexChanged.connect(lambda index: self.choose_channels((None, (0,), (1,))[index]))
+        range_row.addWidget(self.channel_choice)
+        wave_layout.addLayout(range_row)
         self.waveform = Waveform(self.document)
         self.waveform.selection_changed.connect(self.selection_changed)
         self.waveform.view_changed.connect(self.view_changed)
@@ -398,7 +420,35 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             self.time_label.setText(clock_text(doc.cursor / doc.sample_rate))
         for key in ("cut", "copy", "delete", "trim", "zero", "save_selection", "zoom_selection"):
             self.actions[key].setEnabled(end > start)
+        self.update_channel_controls()
         self.update_session_actions()
+
+    def choose_channels(self, channels):
+        if self.recording_busy or self.mode != "waveform": return
+        if self.document.channels == 1: channels = None
+        self.document.select_channels(channels)
+        self.selection_changed(*self.document.selection)
+        self.waveform.update()
+
+    def update_channel_controls(self):
+        if not hasattr(self, "channel_choice"): return
+        doc = self.document
+        stereo = doc.channels == 2
+        self.channel_choice.setVisible(stereo and doc.frames > 0)
+        self.channel_label_widget.setVisible(stereo and doc.frames > 0)
+        self.channel_choice.setEnabled(stereo and not self.recording_busy)
+        index = 0 if not doc.partial_channels else 1 if doc.selected_channels == (0,) else 2
+        self.channel_choice.blockSignals(True); self.channel_choice.setCurrentIndex(index); self.channel_choice.blockSignals(False)
+        for i, key in enumerate(("channels_both", "channels_left", "channels_right")):
+            self.actions[key].setChecked(i == index)
+            self.actions[key].setEnabled(self.mode == "waveform" and stereo and not self.recording_busy)
+        if self.mode != "waveform": return
+        for key in ("cut", "delete", "trim", "stretch", "tone", "generate_silence"):
+            self.actions[key].setToolTip("Choose Both channels for an operation that changes stereo duration." if doc.partial_channels else "")
+            if doc.partial_channels: self.actions[key].setEnabled(False)
+        if not doc.partial_channels:
+            self.actions["stretch"].setEnabled(doc.frames > 0)
+            self.actions["tone"].setEnabled(True); self.actions["generate_silence"].setEnabled(True)
 
     def view_changed(self, start, end):
         self.scroll.blockSignals(True)
@@ -533,7 +583,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             return
         try:
             self.player.stop()
-            profile = learn_profile(self.document.view(*self.document.selection), self.document.sample_rate)
+            profile = learn_profile(self.document.effect_view(*self.document.selection), self.document.sample_rate)
             self.noise_profile = profile
             self.statusBar().showMessage("Noise profile captured. Select the audio to clean and open Noise Reduction.", 8000)
         except (ValueError, OSError) as error:
@@ -704,7 +754,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         if path is None or not self._metadata_permission():
             return
         try:
-            write_wav(path, self.document.view(*self.document.selection), self.document.sample_rate, encoding,
+            write_wav(path, self.document.effect_view(*self.document.selection), self.document.sample_rate, encoding,
                       metadata=metadata.crop(self.document.metadata,*self.document.selection))
         except (ValueError, OSError) as error:
             self.error("Save Selection", error)
@@ -749,7 +799,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             middle = (start + end) // 2
             a = max(start, middle - 131072)
             b = min(end, a + 262144)
-            SpectrumDialog(self.document.read(a, b), self.document.sample_rate, self).exec()
+            SpectrumDialog(self.document.effect_view(a, b), self.document.sample_rate, self).exec()
 
     @long_operation
     def toggle_play(self):

@@ -47,7 +47,7 @@ class Recovery:
         self._last_key=None
 
     def checkpoint(self,document,session,mode='waveform',editing_clip_id=None):
-        key=(id(document),document.revision,document.dirty,document.selection,document.cursor,
+        key=(id(document),document.revision,document.dirty,document.selection,document.selected_channels,document.cursor,
              str(document.path),id(session),session.revision,session.dirty,session.selection,session.cursor,
              str(session.path),mode,editing_clip_id)
         if key==self._last_key:
@@ -63,7 +63,7 @@ class Recovery:
         with operation():  # Journaling follows a committed edit and cannot cancel that edit.
             doc=dict(pieces=[buffer(piece) for piece in document._pieces],rate=document.sample_rate,
                      channels=document.channels,encoding=document.encoding,path=str(document.path) if document.path else None,
-                     selection=list(document.selection),cursor=document.cursor,dirty=document.dirty,
+                     selection=list(document.selection),selected_channels=list(document.selected_channels),cursor=document.cursor,dirty=document.dirty,
                      metadata=_metadata(document.metadata),extra_chunks=list(document.extra_chunks),
                      name=getattr(document,'display_name',None),last_effect=document.last_effect)
             active={clip.media_id for track in session.tracks for clip in track.clips}
@@ -160,7 +160,8 @@ def restore(owner,dsp=None):
         document.metadata=_decode_metadata(item['metadata'])
         document.extra_chunks=tuple(item['extra_chunks'])
         document.path=Path(item['path']) if item['path'] else None
-        document.select(*item['selection']);document.cursor=integer(item['cursor'],'Cursor',0,document.frames)
+        document.select(*item['selection']);document.select_channels(item.get('selected_channels'))
+        document.cursor=integer(item['cursor'],'Cursor',0,document.frames)
         document.last_effect=item.get('last_effect')
         if item.get('name'):document.display_name=text(item['name'])
         if item['dirty']:document._saved_state_id=-1
