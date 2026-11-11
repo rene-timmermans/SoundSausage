@@ -64,3 +64,10 @@ De menuproef gebruikt de QWindow-route van Qt Test voor muisbewegingen en de
 klik. Die route levert de invoerevents ook op een virtueel scherm; de
 QWidget-route kan bij oudere Qt-versies alleen de cursor verplaatsen.
 Zie de [Qt Test-implementatie](https://github.com/qt/qtbase/blob/v6.8.3/src/testlib/qtestmouse.h).
+
+## Linkermarge — 0.16.2
+
+De titel boven de y-as van Dynamiekbewerking en Volumeverloop begint aan de
+linkermarge van het grafiekvenster, gelijk met de overige vensterinhoud.
+De schaalwaarden en het tekenvlak behouden hun eigen ruimte. De bestaande
+rendercontroles op afsnijding en onderlinge overlap slagen bij 9, 11 en 14 punten.

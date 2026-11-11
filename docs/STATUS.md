@@ -1,4 +1,4 @@
-# SoundSausage 0.16.1
+# SoundSausage 0.16.2
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 

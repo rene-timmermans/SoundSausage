@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.16.1**.
+De huidige versie is **0.16.2**.
 
 ## Wat het kan
 
@@ -95,6 +95,8 @@ De taalkeuze blijft bewaard. De handleidingen zijn ook rechtstreeks te lezen:
 [Deutsch](docs/manual/de.md), [Français](docs/manual/fr.md), [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**0.16.2** De titels boven de curves van Dynamiekbewerking en Volumeverloop volgen de linkermarge van het venster.
 
 **0.16.1** Leesbare grafiekassen, kanaallabels en tijdvelden bij grotere letters. Vensters passen zich aan taal en lettergrootte aan; de statusbalkkeuze blijft bewaard.
 

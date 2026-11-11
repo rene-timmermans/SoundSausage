@@ -51,7 +51,7 @@ def axes_layout(widget, x_ticks, y_ticks, x_title="", y_title=""):
     plot = QRectF(left, top, max(1, widget.width() - left - right), max(1, widget.height() - top - bottom))
     return PlotLayout(plot, metrics, line,
                       QRectF(plot.left(), plot.bottom() + 1.5 * line + 8, plot.width(), line),
-                      QRectF(plot.left(), 2, plot.width(), line))
+                      QRectF(0, 2, widget.width(), line))
 
 
 class AxisHeightMixin:

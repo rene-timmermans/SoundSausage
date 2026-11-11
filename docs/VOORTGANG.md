@@ -198,3 +198,9 @@ bevat de geteste installatiepakketten. Alle 384 controles slagen in Debian,
 Fedora en Arch. De geïnstalleerde pakketten doorstaan de gewone, afspeel-,
 opname- en duplexzelftest ook op Ubuntu 26.04 en Rolling.
 [Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43058515142).
+
+## Linkermarge van astitels — 0.16.2
+
+- [x] Titels boven de curves van Dynamiekbewerking en Volumeverloop links uitlijnen met de overige vensterinhoud.
+- [x] Afzonderlijke ruimte voor de aswaarden en de titel behouden; bestaande controles op afsnijding en overlap slagen bij 9, 11 en 14 punten.
+- [ ] Distributiecontroles en installatiepakketten voor 0.16.2.
