@@ -270,3 +270,17 @@ bevat de definitieve installatiepakketten. Alle 415 controles slagen in Debian,
 Fedora en Arch; de vier geïnstalleerde zelftests slagen op alle vijf doelen,
 inclusief Ubuntu 26.04 en Rolling.
 [Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43078651988).
+
+## Afronding naar v1.0 — actief
+
+- [ ] Eigen Linux VST3-plug-invensters, met parameter-/statusopslag en crashisolatie.
+- [ ] LV2- en LADSPA-audio-effecten toevoegen, met betrouwbare ontdekking en project-/herstelopslag.
+- [ ] Automatische compensatie van plug-invertraging bij afspelen en export.
+- [ ] Kalibratie van de opnamevertraging en compensatie van klokdrift tussen in- en uitvoer.
+- [ ] Punch-in/out met voorloop en precies begrensde opnamen, Undo en herstel.
+- [ ] Vijf talen, volledige offlinehandleidingen en distributiecontroles bijwerken.
+- [ ] Releasecandidate en fysieke praktijkcontrole vóór v1.0.
+
+V1.0 volgt wanneer deze functies, de dagelijkse werkwijze en de pakketten
+geen bekende blokkerende fouten hebben. De vaste apparaat-/plug-incombinaties
+worden in de praktijk gecontroleerd; een kalenderdatum volgt uit die resultaten.

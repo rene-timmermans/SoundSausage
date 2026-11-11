@@ -2,12 +2,14 @@
 // values.
 #define INIT_CLASS_IID
 #include "pluginterfaces/base/ibstream.h"
+#include "pluginterfaces/gui/iplugview.h"
 #include "pluginterfaces/vst/ivstaudioprocessor.h"
 #include "pluginterfaces/vst/ivsteditcontroller.h"
 #include "pluginterfaces/vst/ivstparameterchanges.h"
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
+#include <dlfcn.h>
 #include <unistd.h>
 using namespace Steinberg;
 using namespace Steinberg::Vst;
@@ -22,8 +24,14 @@ class Gain final : public IComponent,
   uint32 refs = 1;
   double value = .5, gain = 1, crash = 0, slow = 0;
   bool active = false, processing = false;
+  IComponentHandler* handler = nullptr;
 
 public:
+  ~Gain() { if (handler) handler->release(); }
+  void editFromUi(double next) {
+    value=next;
+    if (handler) { handler->beginEdit(0); handler->performEdit(0,next); handler->endEdit(0); }
+  }
   tresult PLUGIN_API queryInterface(const TUID id, void **obj) override {
     if (equal(id, IComponent::iid) || equal(id, FUnknown::iid))
       *obj = static_cast<IComponent *>(this);
@@ -184,11 +192,77 @@ public:
       value = v;
     return kResultOk;
   }
-  tresult PLUGIN_API setComponentHandler(IComponentHandler *) override {
+  tresult PLUGIN_API setComponentHandler(IComponentHandler *next) override {
+    if (next) next->addRef();
+    if (handler) handler->release();
+    handler=next;
     return kResultOk;
   }
-  IPlugView *PLUGIN_API createView(FIDString) override { return nullptr; }
+  IPlugView *PLUGIN_API createView(FIDString) override;
 };
+
+// A real X11 child plus independent Linux timer and descriptor callbacks.
+// The fixture edits its gain and requests a resize; no host UI code is reused.
+class View final : public IPlugView, public Linux::ITimerHandler, public Linux::IEventHandler {
+  uint32 refs=1; Gain* owner; IPlugFrame* frame=nullptr; Linux::IRunLoop* loop=nullptr;
+  void* xlib=nullptr; void* display=nullptr; unsigned long window=0; int fds[2]{-1,-1}; bool sent=false;
+  ViewRect area{0,0,320,180};
+public:
+  View(Gain* gain):owner(gain) { owner->addRef(); }
+  ~View() { removed(); owner->release(); if (xlib) dlclose(xlib); }
+  uint32 PLUGIN_API addRef() override { return ++refs; }
+  uint32 PLUGIN_API release() override { auto count=--refs; if (!count) delete this; return count; }
+  tresult PLUGIN_API queryInterface(const TUID id, void** out) override {
+    *out=nullptr;
+    if (equal(id,IPlugView::iid)||equal(id,FUnknown::iid)) *out=static_cast<IPlugView*>(this);
+    else if (equal(id,Linux::ITimerHandler::iid)) *out=static_cast<Linux::ITimerHandler*>(this);
+    else if (equal(id,Linux::IEventHandler::iid)) *out=static_cast<Linux::IEventHandler*>(this);
+    if (*out) { addRef(); return kResultOk; } return kNoInterface;
+  }
+  tresult PLUGIN_API isPlatformTypeSupported(FIDString type) override { return !strcmp(type,kPlatformTypeX11EmbedWindowID)?kResultTrue:kResultFalse; }
+  tresult PLUGIN_API attached(void* parent,FIDString type) override {
+    if (!parent || isPlatformTypeSupported(type)!=kResultTrue || !frame) return kResultFalse;
+    if (frame->queryInterface(Linux::IRunLoop::iid,(void**)&loop)!=kResultOk) return kResultFalse;
+    xlib=dlopen("libX11.so.6",RTLD_NOW|RTLD_LOCAL); if (!xlib) return kResultFalse;
+    display=((void*(*)(const char*))dlsym(xlib,"XOpenDisplay"))(nullptr); if (!display) return kResultFalse;
+    window=((unsigned long(*)(void*,unsigned long,int,int,unsigned int,unsigned int,unsigned int,unsigned long,unsigned long))dlsym(xlib,"XCreateSimpleWindow"))
+      (display,(unsigned long)parent,0,0,320,180,0,0,0x663399);
+    ((int(*)(void*,unsigned long))dlsym(xlib,"XMapWindow"))(display,window);
+    ((int(*)(void*))dlsym(xlib,"XFlush"))(display);
+    if (pipe(fds)) return kResultFalse;
+    loop->registerTimer(this,20);loop->registerEventHandler(this,fds[0]);return kResultOk;
+  }
+  tresult PLUGIN_API removed() override {
+    if (loop) { auto* old=loop;loop=nullptr;old->unregisterTimer(this);old->unregisterEventHandler(this);old->release(); }
+    for (int& fd:fds) if (fd>=0) { close(fd);fd=-1; }
+    if (display) {
+      if (window) ((int(*)(void*,unsigned long))dlsym(xlib,"XDestroyWindow"))(display,window);
+      ((int(*)(void*))dlsym(xlib,"XCloseDisplay"))(display);display=nullptr;window=0;
+    }
+    return kResultOk;
+  }
+  void PLUGIN_API onTimer() override {
+    if (!sent) { sent=true;ViewRect next(0,0,400,220);frame->resizeView(this,&next);char c='!';write(fds[1],&c,1); }
+  }
+  void PLUGIN_API onFDIsSet(int fd) override { char c;if (read(fd,&c,1)==1) owner->editFromUi(.75); }
+  tresult PLUGIN_API onWheel(float) override { return kResultFalse; }
+  tresult PLUGIN_API onKeyDown(char16,int16,int16) override { owner->editFromUi(.375);return kResultTrue; }
+  tresult PLUGIN_API onKeyUp(char16,int16,int16) override { return kResultTrue; }
+  tresult PLUGIN_API getSize(ViewRect* size) override { *size=area;return kResultOk; }
+  tresult PLUGIN_API onSize(ViewRect* size) override {
+    area=*size;
+    if (display&&window) {
+      ((int(*)(void*,unsigned long,int,int,unsigned int,unsigned int))dlsym(xlib,"XMoveResizeWindow"))(display,window,0,0,area.getWidth(),area.getHeight());
+      ((int(*)(void*))dlsym(xlib,"XFlush"))(display);
+    }
+    return kResultOk;
+  }
+  tresult PLUGIN_API onFocus(TBool) override { return kResultOk; }
+  tresult PLUGIN_API setFrame(IPlugFrame* next) override { frame=next;return kResultOk; }
+  tresult PLUGIN_API canResize() override { return kResultTrue; }
+  tresult PLUGIN_API checkSizeConstraint(ViewRect*) override { return kResultOk; }
+};
+IPlugView* Gain::createView(FIDString kind) { return !strcmp(kind,ViewType::kEditor)?new View(this):nullptr; }
 class Factory final : public IPluginFactory {
 public:
   tresult PLUGIN_API queryInterface(const TUID id, void **obj) override {

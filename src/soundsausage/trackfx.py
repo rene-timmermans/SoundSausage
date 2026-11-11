@@ -13,7 +13,7 @@ from .space import Processor as SpaceProcessor
 MAX_EFFECTS = 16
 NAMES = {'gain': 'Amplify', 'channel_mix': 'Channel Mixer', 'dynamics': 'Dynamics',
          'graphic_eq': 'Graphic EQ', 'parametric_eq': 'Parametric EQ', 'filter': 'Filter',
-         'delay': 'Delay', 'echo': 'Echo', 'reverb': 'Reverb', 'invert': 'Invert', 'plugin': 'VST3 Plug-in'}
+         'delay': 'Delay', 'echo': 'Echo', 'reverb': 'Reverb', 'invert': 'Invert', 'plugin': 'External Plug-in'}
 
 
 @dataclass(frozen=True)
@@ -103,6 +103,8 @@ class Processor:
         if self.plugin is None or spec.kind != 'plugin': return False
         old,new = self.spec.settings,spec.settings
         if any(old.get(key)!=new.get(key) for key in ('plugin_id','fingerprint')):return False
+        if old.get('state')!=new.get('state') and new.get('state'):
+            self.plugin.restore(new['state'])
         self.plugin.helper.request(dict(op='parameters',values=new.get('values',{})))
         self.spec=spec;self.settings=new
         return True
@@ -115,6 +117,10 @@ class Rack:
     def __init__(self, rate, dsp):
         self.rate, self.dsp = rate, dsp
         self.processors = {}
+
+    @property
+    def latency(self):
+        return sum(p.plugin.info.get('latency',0) for p in self.processors.values() if p.plugin is not None)
 
     def process(self, data, effects):
         active = {e.id for e in effects if e.enabled}

@@ -6,6 +6,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 import numpy as np
@@ -117,6 +118,26 @@ class PluginTests(unittest.TestCase):
             dialog.value.setValue(75);settings=dialog.settings()
             self.assertEqual(settings['values']['0'],.75);self.assertTrue(settings['state'])
         finally:dialog.close_processor();dialog.reject();dialog.deleteLater();self.app.processEvents()
+
+    @unittest.skipUnless(os.environ.get('SOUNDSAUSAGE_PLUGIN_UI_TEST')=='1','Native X11 window check is enabled on the distribution runners.')
+    def test_custom_window_runs_native_callbacks_resizes_and_saves_changes(self):
+        self.assertTrue(os.environ.get('DISPLAY'),'Run the plug-in window checks under Xvfb.')
+        processor=PluginProcess(self.settings,8000)
+        try:
+            processor.open_editor();deadline=time.monotonic()+4
+            while time.monotonic()<deadline:
+                snapshot=processor.snapshot()
+                if snapshot['info']['parameters'][0]['value']==.75 and snapshot['editor_size']==[400,220]:break
+                time.sleep(.02)
+            self.assertEqual(snapshot['info']['parameters'][0]['value'],.75)
+            self.assertEqual(snapshot['editor_size'],[400,220])
+            processor.close_editor();self.assertIsNone(processor.snapshot()['editor_size'])
+            saved=dict(self.settings,values={},state=snapshot['state'])
+        finally:processor.close()
+        restored=PluginProcess(saved,8000)
+        try:
+            data=np.ones((100,2),np.float32);restored.process(data);np.testing.assert_array_equal(data,1.5)
+        finally:restored.close()
 
     def test_unregistered_project_cannot_supply_an_executable_path(self):
         with self.assertRaisesRegex(ValueError,'Unknown plug-in setting'):
