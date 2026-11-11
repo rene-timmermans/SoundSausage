@@ -1,8 +1,11 @@
 # Opname en dagelijkse keten — 0.8.0
 
-Lokaal doorstaat de suite 237 controles, met vier echte audiobackendcontroles
-overgeslagen. De beperkte ontwikkelomgeving kan de fysieke audioserver niet
-openen. De pakketbouw gebruikt private virtuele in-/uitvoer voor die controles.
+De [distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/42979261330)
+doorstaat alle 237 controles in Debian, Fedora en Arch. Daaronder vallen vier echte
+Qt-backendcontroles met private virtuele in-/uitvoer. De geïnstalleerde pakketten
+doorstaan ook de gewone, afspeel- en opnamecontrole op Ubuntu 26.04 en Rolling.
+Er zijn geen Python-callbackfouten in de geverifieerde logs. [Release 0.8.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.8.0)
+bevat de geteste pakketten. Een fysieke opname-/afspeelcontrole blijft open.
 
 Gecontroleerd zijn begrensde reads en complete frames, genormaliseerde float- en
 integerinvoer, mono/stereokanalen, pauze/hervatten, apparaatverlies, oude callbacks,
@@ -16,6 +19,11 @@ in multitrack invoegen, een volgende take opnemen, clips instellen, project bewa
 heropenen en een WAV-eindmix schrijven. Controle op Undo, behoud bij annuleren,
 klok/meters, terugzetten van acties en bevestigen van het juiste vervangingsdoel
 maakt deel uit van dezelfde workflow.
+
+Qt-statusmeldingen worden via expliciete slots zonder enumargument verwerkt.
+De invoercontrole gebruikt beide publieke beschikbaarheids-API’s, zodat ook
+Qt 6.8 bruikbaar is wanneer het leesapparaat zelf nul beschikbare bytes meldt.
+De backendtests weigeren verborgen Python-callbackfouten.
 
 De 160 MiB geheugencontrole omvat ook het schrijven van een opnamebestand en het
 toevoegen aan het document. De lokale extra resident geheugengroei bleef ongeveer

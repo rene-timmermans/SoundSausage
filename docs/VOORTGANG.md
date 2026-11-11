@@ -65,12 +65,14 @@ De hoorbare controle uit fase 1 blijft open.
 - [x] Opnemen → effect → multitrack → opslaan → heropenen → WAV-export toetsen.
 - [x] Afspeelcursor na Stop behouden voor hervatten of opnemen op die positie.
 - [x] Handleiding en praktische opnamevoorbeelden bijwerken.
-- [ ] Definitieve distributiecontroles en installatiepakketten voor 0.8.0.
+- [x] Definitieve distributiecontroles en installatiepakketten voor 0.8.0.
 - [ ] Fysieke opname-/afspeelcontrole.
 
-Lokaal slagen 237 controles, met vier virtuele audiobackendcontroles overgeslagen
-omdat de host-audioserver vanuit de ontwikkelomgeving niet bereikbaar is.
-De distributiebouw controleert die in-/uitvoer met private virtuele apparaten.
+Alle 237 controles slagen in Debian, Fedora en Arch, inclusief de echte
+virtuele in-/uitvoercontroles. De geïnstalleerde pakketten doorstaan gewone,
+afspeel- en opnamecontroles ook op Ubuntu 26.04 en Rolling.
+[Release 0.8.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.8.0)
+bevat de geteste installers. De fysieke controle blijft open.
 Ook de 160 MiB geheugencontrole bevat nu een opnamebestand en toevoegen aan de
 editor; de extra resident geheugengroei bleef ongeveer 17 MiB in dat scenario.
 Gelijktijdig opnemen en terugluisteren, punch-in/out en latencycompensatie blijven

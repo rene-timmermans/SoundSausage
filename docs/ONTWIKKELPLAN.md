@@ -44,10 +44,11 @@ met echte geluidsapparaten, naast automatische tests.
 - [x] Herstel van een onderbroken take.
 - [x] De hele keten van opname tot heropend project en WAV-eindmix automatisch toetsen.
 - [x] De handleiding voor opname en dagelijks werken aanvullen.
-- [ ] Definitieve virtuele in-/uitvoer- en pakketcontroles voor 0.8.0.
+- [x] Definitieve virtuele in-/uitvoer- en pakketcontroles voor 0.8.0.
 - [ ] Opnemen en terugluisteren met fysieke microfoon en uitvoer controleren.
 
-De functionaliteit is gebouwd; de fysieke controle blijft open totdat die is
+De functionaliteit is gebouwd en in 0.8.0 gepubliceerd, met 237 geslaagde
+controles en geteste pakketten. De fysieke controle blijft open totdat die is
 bevestigd. Gelijktijdig opnemen en afspelen, punch-in/out en automatische
 latencycompensatie zijn vervolgmogelijkheden, geen huidige functies.
 
