@@ -97,12 +97,18 @@ jobs:
       fail-fast: false
       matrix:
         image: ["ubuntu:26.04", "ubuntu:rolling"]
-    container: ${{ matrix.image }}
     steps:
       - uses: actions/download-artifact@v4
         with: { name: debian }
       - name: Install the same package and smoke test
+        env:
+          UBUNTU_IMAGE: ${{ matrix.image }}
         run: |
+          docker run --rm -i --network host \
+            -e SOUNDSAUSAGE_LANGUAGE -e QT_QPA_PLATFORM -e QT_AUDIO_BACKEND \
+            -e PULSE_SERVER -e SOUNDSAUSAGE_AUDIO_TEST \
+            -v "$PWD:/packages:ro" "$UBUNTU_IMAGE" sh -eu <<'UBUNTU_CHECK'
+          cd /packages
           for attempt in 1 2 3; do
             if apt-get -o APT::Update::Error-Mode=any -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update; then
               break
@@ -121,13 +127,19 @@ jobs:
           soundsausage --audio-selftest
           soundsausage --input-selftest
           soundsausage --duplex-selftest
+          UBUNTU_CHECK
 
   fedora:
     needs: source
     runs-on: ubuntu-latest
     container: fedora:latest
     steps:
-      - run: dnf install -y rpm-build gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs pulseaudio
+      - name: Build dependencies with all interface languages
+        run: |
+          printf '%s\n' '%_install_langs all' > /etc/rpm/macros.image-language-conf
+          rpm --eval '%{_install_langs}'
+          dnf install -y rpm-build gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs pulseaudio
+          test -f /usr/share/qt6/translations/qtbase_nl.qm
       - name: Private virtual audio device
         run: |
           getent group pulse >/dev/null || groupadd --system pulse
