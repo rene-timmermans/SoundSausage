@@ -8,6 +8,7 @@ from .i18n_widgets import QWidget
 
 from .theme import colors, blend, readable
 from .peaks import piece_peaks
+from .plot_layout import text_width, separated_labels
 
 
 def envelope_polygon(minimum, maximum, channel, left, width, center, scale, clamp=1.08):
@@ -65,7 +66,10 @@ class Waveform(QWidget):
         self.update()
 
     def plot_rect(self):
-        return QRectF(9, 7, max(1, self.width() - 70), max(1, self.height() - 36))
+        metrics = self.fontMetrics()
+        right = max(61, text_width(metrics, "−32768") + 6)
+        bottom = max(29, metrics.height() + 8)
+        return QRectF(9, 7, max(1, self.width() - 9 - right), max(1, self.height() - 7 - bottom))
 
     def set_view(self, start, end):
         total = max(1, self.document.frames)
@@ -137,6 +141,8 @@ class Waveform(QWidget):
         rect = self.plot_rect()
         painter.fillRect(rect, c.plot)
         channels = self.document.channels
+        line = self.fontMetrics().height() + 2
+        amplitude_width = self.width() - rect.right() - 7
         gap = 8
         channel_height = (rect.height() - gap * (channels - 1)) / channels
         visible_seconds = (self.view_end - self.view_start) / self.document.sample_rate
@@ -169,11 +175,11 @@ class Waveform(QWidget):
             for _, x in ticks:
                 painter.drawLine(QPointF(x, top), QPointF(x, top + channel_height))
             painter.setPen(c.text)
-            painter.drawText(QRectF(rect.right() + 5, top, 49, 17), Qt.AlignmentFlag.AlignLeft, "32768")
-            painter.drawText(QRectF(rect.right() + 5, center - 8, 49, 17), Qt.AlignmentFlag.AlignLeft, "0")
-            painter.drawText(QRectF(rect.right() + 5, top + channel_height - 17, 49, 17), Qt.AlignmentFlag.AlignLeft, "−32768")
+            painter.drawText(QRectF(rect.right() + 5, top, amplitude_width, line), Qt.AlignmentFlag.AlignLeft, "32768")
+            painter.drawText(QRectF(rect.right() + 5, center - line / 2, amplitude_width, line), Qt.AlignmentFlag.AlignLeft, "0")
+            painter.drawText(QRectF(rect.right() + 5, top + channel_height - line, amplitude_width, line), Qt.AlignmentFlag.AlignLeft, "−32768")
             painter.setPen(c.plot_text)
-            badge = QRectF(rect.left()+3, top+2, 21, 19)
+            badge = QRectF(rect.left()+3, top+2, max(21, text_width(self.fontMetrics(), "R")), max(19, line))
             if channel in self.document.selected_channels:
                 painter.fillRect(badge, c.accent); painter.setPen(c.accent_text)
             painter.drawText(badge, Qt.AlignmentFlag.AlignCenter, "L" if channel == 0 else "R")
@@ -201,11 +207,15 @@ class Waveform(QWidget):
             painter.setPen(c.plot_text)
             painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, "Open a WAV file or generate a tone")
         painter.setPen(c.text)
+        labels = []
         for time, x in ticks:
             label = f"{time:.3f}" if step < 0.1 else f"{time:.1f}"
-            left = max(rect.left(), min(x - 32, rect.right() - 64))
-            painter.drawText(QRectF(left, rect.bottom() + 4, 64, 21), Qt.AlignmentFlag.AlignHCenter, label)
-        painter.drawText(QRectF(rect.right() + 4, rect.bottom() + 4, 50, 21), Qt.AlignmentFlag.AlignLeft, "sec")
+            width = text_width(self.fontMetrics(), label)
+            left = max(rect.left(), min(x - width / 2, rect.right() - width))
+            labels.append((QRectF(left, rect.bottom() + 4, width, line), label))
+        for area, text in separated_labels(labels):
+            painter.drawText(area, Qt.AlignmentFlag.AlignCenter, text)
+        painter.drawText(QRectF(rect.right() + 4, rect.bottom() + 4, amplitude_width, line), Qt.AlignmentFlag.AlignLeft, "sec")
         cursor = self.document.cursor if self.playhead is None else self.playhead
         if self.view_start <= cursor <= self.view_end:
             painter.setPen(QPen(c.plot_text if self.playhead is None else readable(c.accent, c.plot, 3.0), 1))

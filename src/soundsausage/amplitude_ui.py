@@ -15,6 +15,7 @@ from .playback import Playback
 from .theme import colors
 from .errors import OperationCancelled
 from .progress_ui import long_operation
+from .plot_layout import axes_layout, separated_labels, AxisHeightMixin
 
 
 def spin(value, low, high, suffix="", decimals=1):
@@ -174,8 +175,11 @@ class ChannelMixerDialog(EffectDialog):
                                        for field in weights) for row, weights in enumerate(self.weights)))
 
 
-class CurveEditor(QWidget):
+class CurveEditor(AxisHeightMixin, QWidget):
     """Small, bounded point editor; endpoints keep their horizontal position."""
+    axis_rows = 5
+    axis_minimum = 220
+    axis_titles = True
     changed = Signal()
     selected = Signal(int)
 
@@ -187,12 +191,18 @@ class CurveEditor(QWidget):
         self.index = 0
         self._drag = False
         self.setMinimumSize(420, 220)
+        self.update_axis_height()
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setAccessibleName(f"{y_label} by {x_label}; click to add or drag points, Delete to remove")
         self.setToolTip("Click to add a point; drag to move. Right-click or Delete removes an interior point.")
 
+    def axis_layout(self):
+        xs = [f"{self.x_range[0] + step / 4 * (self.x_range[1] - self.x_range[0]):g}" for step in range(5)]
+        ys = [f"{self.y_range[0] + step / 4 * (self.y_range[1] - self.y_range[0]):g}" for step in range(5)]
+        return axes_layout(self, xs, ys, self.x_label, self.y_label)
+
     def plot_rect(self):
-        return QRectF(57, 16, max(1, self.width() - 78), max(1, self.height() - 62))
+        return self.axis_layout().plot
 
     def point_position(self, point):
         rect = self.plot_rect()
@@ -280,7 +290,9 @@ class CurveEditor(QWidget):
     def paintEvent(self, event):
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
-        c, rect = colors(), self.plot_rect()
+        c, labels = colors(), self.axis_layout()
+        rect = labels.plot
+        x_labels = []
         p.fillRect(rect, c.plot)
         for step in range(5):
             fraction = step / 4
@@ -291,16 +303,18 @@ class CurveEditor(QWidget):
             p.setPen(c.text)
             xv = self.x_range[0] + fraction * (self.x_range[1] - self.x_range[0])
             yv = self.y_range[0] + fraction * (self.y_range[1] - self.y_range[0])
-            p.drawText(QRectF(x - 25, rect.bottom() + 3, 50, 19), Qt.AlignmentFlag.AlignCenter, f"{xv:g}")
-            p.drawText(QRectF(0, y - 10, 50, 20), Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, f"{yv:g}")
+            x_labels.append((labels.x_tick(x, f"{xv:g}"), f"{xv:g}"))
+            p.drawText(labels.y_tick(y, f"{yv:g}"), Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, f"{yv:g}")
+        for area, text in separated_labels(x_labels):
+            p.drawText(area, Qt.AlignmentFlag.AlignCenter, text)
         p.setPen(QPen(c.accent, 2))
         p.drawPolyline(QPolygonF([self.point_position(point) for point in self.points]))
         for index, point in enumerate(self.points):
             p.setBrush(c.accent if index == self.index else c.plot)
             p.drawEllipse(self.point_position(point), 5, 5)
         p.setPen(c.text)
-        p.drawText(QRectF(rect.left(), self.height() - 22, rect.width(), 20), Qt.AlignmentFlag.AlignCenter, self.x_label)
-        p.drawText(QRectF(4, 0, self.width() - 8, 16), Qt.AlignmentFlag.AlignLeft, self.y_label)
+        p.drawText(labels.x_title, Qt.AlignmentFlag.AlignCenter, self.x_label)
+        p.drawText(labels.y_title, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, self.y_label)
 
 
 class CurveDialog(EffectDialog):

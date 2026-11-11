@@ -1,11 +1,12 @@
 """Qt multitrack timeline and track/clip controls for the native session model."""
-from .i18n import Literal, tr
+from .i18n import Literal, tr, install_language
 from dataclasses import replace
 import math
 from .peaks import piece_peaks
+from .plot_layout import text_width, separated_labels
 
 import numpy as np
-from PySide6.QtCore import Qt, QRectF, QPointF, Signal
+from PySide6.QtCore import Qt, QRectF, QPointF, Signal, QEvent
 from PySide6.QtGui import QColor, QPen
 from .i18n_widgets import QPainter
 from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QScrollArea, QScrollBar, QButtonGroup, QSizePolicy
@@ -55,6 +56,7 @@ class TrackControls(QWidget):
         fx.clicked.connect(lambda *_: editor.track_effects(track.id))
         layout.addWidget(fx, 0, 3)
         mute, solo = QPushButton("M"), QPushButton("S")
+        self.state_buttons = (mute, solo)
         for widget, checked, label in ((mute, track.muted, "Mute"), (solo, track.solo, "Solo")):
             widget.setCheckable(True)
             widget.setChecked(checked)
@@ -81,6 +83,13 @@ class TrackControls(QWidget):
         self.pan.editingFinished.connect(lambda: editor.configure_track(track.id, pan=self.pan.value() / 100)
             if self.pan.value() != starting_pan else None)
         layout.addWidget(self.pan, 2, 2, 1, 2)
+        self.update_metrics()
+
+    def update_metrics(self):
+        for button in self.state_buttons:
+            button.setFixedWidth(max(34, text_width(button.fontMetrics(), button.text()) + 16))
+        for field, example in ((self.volume, "10000.0"), (self.pan, "−100.0")):
+            field.setMaximumWidth(max(76, text_width(field.fontMetrics(), example) + 24))
 
 
 class Timeline(EnvelopeTimeline, QWidget):
@@ -100,6 +109,8 @@ class Timeline(EnvelopeTimeline, QWidget):
         self.view_end = session.sample_rate * 10
         self.playhead = None
         self._controls = []
+        self.header_width, self.row_height, self.ruler_height = HEADER, ROW, RULER
+        self.clip_title_height = 20
         self._peaks = {}
         self._drag = None
         self._preview = None
@@ -111,18 +122,35 @@ class Timeline(EnvelopeTimeline, QWidget):
         self.setAcceptDrops(True)
         self.setToolTip("Drag clips to move them. Drag a clip edge to trim. Double-click a clip to edit a waveform copy.")
         self.rebuild_controls()
+        install_language().changed.connect(self.layout_controls)
+
+    def changeEvent(self, event):
+        super().changeEvent(event)
+        if event.type() in (QEvent.Type.FontChange, QEvent.Type.StyleChange) and hasattr(self, "_controls"):
+            self.layout_controls()
+
+    def layout_controls(self, *_):
+        for control in self._controls:
+            control.update_metrics()
+        self.header_width = max([HEADER] + [control.sizeHint().width() + 4 for control in self._controls])
+        self.row_height = max([ROW] + [control.sizeHint().height() + 3 for control in self._controls])
+        self.ruler_height = max(RULER, self.fontMetrics().height() + 8)
+        self.clip_title_height = max(20, self.fontMetrics().height() + 4)
+        self.setMinimumHeight(self.ruler_height + self.row_height * len(self.session.tracks) + 12)
+        for index, control in enumerate(self._controls):
+            control.setGeometry(0, self.ruler_height + index * self.row_height, self.header_width - 4, self.row_height - 3)
+        self.update()
 
     def rebuild_controls(self):
         for control in self._controls:
             control.hide()
             control.deleteLater()
         self._controls = []
-        self.setMinimumHeight(RULER + ROW * len(self.session.tracks) + 12)
-        for i, track in enumerate(self.session.tracks):
+        for track in self.session.tracks:
             control = TrackControls(track, self.editor, self)
-            control.setGeometry(0, RULER + i * ROW, HEADER - 4, ROW - 3)
             control.show()
             self._controls.append(control)
+        self.layout_controls()
         self._peaks.clear()
         self.update()
 
@@ -139,13 +167,13 @@ class Timeline(EnvelopeTimeline, QWidget):
             self.set_view(self.view_start, self.view_end)
 
     def plot_width(self):
-        return max(1, self.width() - HEADER - 12)
+        return max(1, self.width() - self.header_width - 12)
 
     def x_at(self, frame):
-        return HEADER + (frame - self.view_start) * self.plot_width() / (self.view_end - self.view_start)
+        return self.header_width + (frame - self.view_start) * self.plot_width() / (self.view_end - self.view_start)
 
     def frame_at(self, x):
-        frame = round(self.view_start + (x - HEADER) * (self.view_end - self.view_start) / self.plot_width())
+        frame = round(self.view_start + (x - self.header_width) * (self.view_end - self.view_start) / self.plot_width())
         return min(self.session.sample_rate * 86400, max(0, frame))
 
     def set_view(self, start, end):
@@ -174,8 +202,8 @@ class Timeline(EnvelopeTimeline, QWidget):
             self.set_view(*self.session.selection)
 
     def clip_rect(self, clip, row):
-        return QRectF(self.x_at(clip.start), RULER + row * ROW + 5,
-                      max(3, self.x_at(clip.end) - self.x_at(clip.start)), ROW - 13)
+        return QRectF(self.x_at(clip.start), self.ruler_height + row * self.row_height + 5,
+                      max(3, self.x_at(clip.end) - self.x_at(clip.start)), self.row_height - 13)
 
     def _display_clips(self):
         for row, track in enumerate(self.session.tracks):
@@ -204,7 +232,7 @@ class Timeline(EnvelopeTimeline, QWidget):
         c = colors()
         accent_on_plot = readable(c.accent, c.plot, 3.0)
         painter.fillRect(self.rect(), c.window)
-        painter.fillRect(QRectF(HEADER, 0, self.plot_width(), self.height()), c.plot)
+        painter.fillRect(QRectF(self.header_width, 0, self.plot_width(), self.height()), c.plot)
         seconds = (self.view_end - self.view_start) / self.session.sample_rate
         raw = seconds / max(2, self.plot_width() / 85)
         power = 10 ** math.floor(math.log10(max(raw, 1e-9)))
@@ -216,29 +244,29 @@ class Timeline(EnvelopeTimeline, QWidget):
             ticks.append((time, self.x_at(time * self.session.sample_rate)))
             time += step
         for row, track in enumerate(self.session.tracks):
-            rect = QRectF(HEADER, RULER + row * ROW, self.plot_width(), ROW - 3)
+            rect = QRectF(self.header_width, self.ruler_height + row * self.row_height, self.plot_width(), self.row_height - 3)
             painter.fillRect(rect, QColor("#0d2021" if row % 2 else "#09191a"))
             if track.id == self.session.selected_track:
-                painter.fillRect(QRectF(HEADER - 4, rect.top(), 4, rect.height()), c.accent)
+                painter.fillRect(QRectF(self.header_width - 4, rect.top(), 4, rect.height()), c.accent)
             painter.setPen(QPen(QColor("#2b4445"), 1))
             for _, x in ticks:
                 painter.drawLine(QPointF(x, rect.top()), QPointF(x, rect.bottom()))
             painter.setPen(QColor("#385153"))
-            painter.drawLine(QPointF(HEADER, rect.bottom()), QPointF(self.width() - 12, rect.bottom()))
+            painter.drawLine(QPointF(self.header_width, rect.bottom()), QPointF(self.width() - 12, rect.bottom()))
         a, b = self.session.selection
         if b > a:
-            left, right = max(HEADER, self.x_at(a)), min(self.width() - 12, self.x_at(b))
+            left, right = max(self.header_width, self.x_at(a)), min(self.width() - 12, self.x_at(b))
             if right > left:
-                painter.fillRect(QRectF(left, RULER, right - left, self.height() - RULER), blend(c.plot, c.accent, 0.22))
+                painter.fillRect(QRectF(left, self.ruler_height, right - left, self.height() - self.ruler_height), blend(c.plot, c.accent, 0.22))
         painter.save()
-        painter.setClipRect(QRectF(HEADER, RULER, self.plot_width(), self.height() - RULER))
+        painter.setClipRect(QRectF(self.header_width, self.ruler_height, self.plot_width(), self.height() - self.ruler_height))
         for row, track, clip in self._display_clips():
             if clip.end <= self.view_start or clip.start >= self.view_end:
                 continue
             rect = self.clip_rect(clip, row)
             selected = clip.id == self.session.selected_clip
             painter.fillRect(rect, blend(c.plot, c.accent, 0.17) if selected else QColor("#123329"))
-            painter.fillRect(QRectF(rect.left(), rect.top(), rect.width(), 20), c.accent if selected else QColor("#294d43"))
+            painter.fillRect(QRectF(rect.left(), rect.top(), rect.width(), self.clip_title_height), c.accent if selected else QColor("#294d43"))
             painter.setPen(c.accent_text if selected else c.plot_text)
             title = clip.name
             if clip.gain != 1:
@@ -251,7 +279,9 @@ class Timeline(EnvelopeTimeline, QWidget):
                 title += tr(" · VOL line")
             if clip.pan_envelope:
                 title += tr(" · PAN line")
-            painter.drawText(QRectF(rect.left() + 6, rect.top() + 1, max(0, rect.width() - 12), 18), Qt.AlignmentFlag.AlignLeft, Literal(title))
+            title_area = QRectF(rect.left() + 6, rect.top() + 1, max(0, rect.width() - 12), self.clip_title_height - 2)
+            painter.drawText(title_area, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
+                             Literal(self.fontMetrics().elidedText(title, Qt.TextElideMode.ElideRight, int(title_area.width()))))
             begin = max(clip.start, self.view_start)
             end = min(clip.end, self.view_end)
             source_start = clip.source_start + begin - clip.start
@@ -260,11 +290,11 @@ class Timeline(EnvelopeTimeline, QWidget):
             if source_end > source_start:
                 minimum, maximum = self._wave_peaks(clip, source_start, source_end, max(1, int(right - left)))
                 channels = minimum.shape[1]
-                wave_height = rect.height() - 25
+                wave_height = rect.height() - self.clip_title_height - 5
                 inactive = track.muted or clip.muted or (any(t.solo for t in self.session.tracks) and not track.solo)
                 painter.setPen(QPen(QColor("#8a9b93") if inactive else c.waveform, 1))
                 for channel in range(channels):
-                    center = rect.top() + 23 + (channel + 0.5) * wave_height / channels
+                    center = rect.top() + self.clip_title_height + 3 + (channel + 0.5) * wave_height / channels
                     scale = wave_height / channels * 0.43
                     painter.setBrush(QColor("#8a9b93") if inactive else c.waveform)
                     painter.drawPolygon(envelope_polygon(minimum, maximum, channel, left, right-left, center, scale, 1.1))
@@ -273,24 +303,32 @@ class Timeline(EnvelopeTimeline, QWidget):
             painter.setPen(QPen(accent_on_plot if selected else QColor("#7aa79a"), 2 if selected else 1))
             painter.drawRect(rect)
             if clip.fade_in:
-                painter.drawLine(QPointF(rect.left(), rect.bottom()), QPointF(self.x_at(clip.start + clip.fade_in), rect.top() + 20))
+                painter.drawLine(QPointF(rect.left(), rect.bottom()), QPointF(self.x_at(clip.start + clip.fade_in), rect.top() + self.clip_title_height))
             if clip.fade_out:
-                painter.drawLine(QPointF(self.x_at(clip.end - clip.fade_out), rect.top() + 20), QPointF(rect.right(), rect.bottom()))
+                painter.drawLine(QPointF(self.x_at(clip.end - clip.fade_out), rect.top() + self.clip_title_height), QPointF(rect.right(), rect.bottom()))
         cursor = self.session.cursor if self.playhead is None else self.playhead
         if self.view_start <= cursor <= self.view_end:
             painter.setPen(QPen(accent_on_plot if self.playhead is not None else c.plot_text, 1))
-            painter.drawLine(QPointF(self.x_at(cursor), RULER), QPointF(self.x_at(cursor), self.height()))
+            painter.drawLine(QPointF(self.x_at(cursor), self.ruler_height), QPointF(self.x_at(cursor), self.height()))
         painter.restore()
-        painter.fillRect(QRectF(HEADER, 0, self.plot_width(), RULER), c.panel)
+        painter.fillRect(QRectF(self.header_width, 0, self.plot_width(), self.ruler_height), c.panel)
         painter.setPen(c.text)
+        labels = []
+        line = self.fontMetrics().height() + 2
         for time, x in ticks:
-            left = max(HEADER, min(x - 28, self.width() - 68))
-            painter.drawText(QRectF(left, 3, 56, 20), Qt.AlignmentFlag.AlignHCenter, f"{time:.3f}" if step < 0.1 else f"{time:.1f}")
-        painter.drawText(QRectF(8, 4, HEADER - 16, 20), Qt.AlignmentFlag.AlignLeft, "TRACKS                         sec")
+            text = f"{time:.3f}" if step < 0.1 else f"{time:.1f}"
+            width = text_width(self.fontMetrics(), text)
+            left = max(self.header_width, min(x - width / 2, self.width() - 12 - width))
+            labels.append((QRectF(left, 3, width, line), text))
+        for area, text in separated_labels(labels):
+            painter.drawText(area, Qt.AlignmentFlag.AlignCenter, text)
+        unit_width = text_width(self.fontMetrics(), "sec")
+        painter.drawText(QRectF(8, 3, self.header_width - unit_width - 24, line), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, "Tracks")
+        painter.drawText(QRectF(self.header_width - unit_width - 8, 3, unit_width, line), Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, "sec")
 
     def hit_clip(self, point):
         for row, track, clip in reversed(list(self._display_clips())):
-            if point.x() >= HEADER and self.clip_rect(clip, row).contains(point):
+            if point.x() >= self.header_width and self.clip_rect(clip, row).contains(point):
                 return row, track, clip
         return None
 
@@ -309,9 +347,9 @@ class Timeline(EnvelopeTimeline, QWidget):
             kind = "left" if abs(event.position().x() - rect.left()) <= 8 else "right" if abs(event.position().x() - rect.right()) <= 8 else "move"
             self._drag = (kind, row, clip, self.frame_at(event.position().x()))
             self.setCursor(Qt.CursorShape.ClosedHandCursor if kind == "move" else Qt.CursorShape.SizeHorCursor)
-        elif event.position().x() >= HEADER:
+        elif event.position().x() >= self.header_width:
             self.session.selected_clip = None
-            row = min(len(self.session.tracks) - 1, max(0, int((event.position().y() - RULER) // ROW)))
+            row = min(len(self.session.tracks) - 1, max(0, int((event.position().y() - self.ruler_height) // self.row_height)))
             self.session.selected_track = self.session.tracks[row].id
             frame = self.frame_at(event.position().x())
             self._range_anchor = frame
@@ -326,7 +364,7 @@ class Timeline(EnvelopeTimeline, QWidget):
             kind, row, original, anchor = self._drag
             delta = self.frame_at(event.position().x()) - anchor
             if kind == "move":
-                row = min(len(self.session.tracks) - 1, max(0, int((event.position().y() - RULER) // ROW)))
+                row = min(len(self.session.tracks) - 1, max(0, int((event.position().y() - self.ruler_height) // self.row_height)))
                 start = max(0, min(original.start + delta, self.session.sample_rate * 86400 - original.frames))
                 preview = replace(original, start=start)
             elif kind == "left":
@@ -415,7 +453,7 @@ class Timeline(EnvelopeTimeline, QWidget):
 
     def dropEvent(self, event):
         files = [url.toLocalFile() for url in event.mimeData().urls() if url.isLocalFile()]
-        row = min(len(self.session.tracks) - 1, max(0, int((event.position().y() - RULER) // ROW)))
+        row = min(len(self.session.tracks) - 1, max(0, int((event.position().y() - self.ruler_height) // self.row_height)))
         self.import_files.emit(files, self.session.tracks[row].id, self.frame_at(event.position().x()))
         event.acceptProposedAction()
 

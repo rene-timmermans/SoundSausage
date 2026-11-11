@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.16.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.16.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -12,7 +12,9 @@ Choose **Options → Language** and select Nederlands, English, Deutsch, França
 
 Open a WAV with **File → Open**. Press **Space** to listen or stop. Drag over a fragment, choose **Transform → Amplitude → Normalize**, listen with **Preview**, then confirm with **OK**. **Ctrl+Z** undoes the edit. Use **Save As** to keep a separate result. For several recordings, create a **New Multitrack Session**, import WAV files and finish with **Mix Down**.
 
-**Edit Waveform View** edits one recording; **Multitrack View** combines clips. Switch with **Tab**, the top buttons or **View**. Both documents remain available. Tooltips explain buttons; **Show Toolbar Labels** adds text and **Show Status Bar** toggles the status bar. **F11** toggles full screen. The lower clock follows audio; selection fields show start, end and length, and view fields the visible time range. Red peaks indicate output overload. A star before a document name means unsaved changes.
+**Edit Waveform View** edits one recording; **Multitrack View** combines clips. Switch with **Tab**, the top buttons or **View**. Both documents remain available. Tooltips explain buttons; **Show Toolbar Labels** adds text and **Options → Show Status Bar** shows or hides the thin information line at the very bottom, below the level meter. It displays playback state and file details; the choice is remembered for the next start. **F11** toggles full screen. The lower clock follows audio; selection fields show start, end and length, and view fields the visible time range. Red peaks indicate output overload. A star before a document name means unsaved changes.
+
+Windows and graph scales adapt to the desktop font size and chosen language. If a form is too large for the screen, scroll through its settings; confirmation and cancel buttons remain accessible.
 
 ## 3. Files, projects and recovery
 

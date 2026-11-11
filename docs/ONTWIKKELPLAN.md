@@ -127,3 +127,15 @@ bevat de installers en broncode. Alle 376 controles slagen in Debian, Fedora
 en Arch. De geïnstalleerde pakketten doorstaan gewone, afspeel-, opname- en
 duplexzelftests op alle vijf doelen, inclusief Ubuntu 26.04 en Rolling.
 Zie [taalcontroles](validation/languages.md).
+
+## Tekstuitlijning en vensterindeling — 0.16.1
+
+- [x] Grafiekassen, meterlabels en tijdvelden aanpassen aan de lettergrootte.
+- [x] Golfvormschalen, spoorkoppen, cliptitels en opnameklokken laten meeschalen.
+- [x] Effect- en instellingenvensters in alle vijf talen controleren; grote formulieren laten scrollen met bereikbare bevestigingsknoppen.
+- [x] Statusbalkkeuze functioneel controleren en bij herstart behouden.
+- [x] De vijf handleidingen aanvullen en regressiecontroles toevoegen.
+- [ ] Definitieve distributiecontroles en installatiepakketten voor 0.16.1.
+
+Zie [tekst- en venstercontroles](validation/text-layout.md). De bestaande
+vervolgpunten voor plug-ins en opname blijven behouden.

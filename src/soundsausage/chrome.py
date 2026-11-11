@@ -25,6 +25,7 @@ def show_toolbar_labels(window, enabled):
     style = Qt.ToolButtonStyle.ToolButtonTextBesideIcon if enabled else Qt.ToolButtonStyle.ToolButtonIconOnly
     for toolbar in window.findChildren(QToolBar):
         toolbar.setToolButtonStyle(style)
+    window.update_minimum_size()
 
 
 def create_actions(window):
@@ -43,8 +44,9 @@ def create_actions(window):
     labels.toggled.connect(lambda checked: show_toolbar_labels(window, checked))
     status = window.action("show_status", "Show Status Bar", lambda: None)
     status.setCheckable(True)
-    status.setChecked(True)
-    status.toggled.connect(lambda checked: window.statusBar().setVisible(checked))
+    status.setChecked(window.ui_settings.value("ui/show_status_bar", True, type=bool))
+    status.setToolTip("Show or hide the bottom information line (playback state and file details)")
+    status.toggled.connect(window.set_status_bar_visible)
     window.action("fullscreen", "Full Screen", lambda: window.showNormal() if window.isFullScreen() else window.showFullScreen(), "F11")
 
 

@@ -790,6 +790,7 @@
   "Show Status Bar": "Show Status Bar",
   "Show Toolbar Labels": "Show Toolbar Labels",
   "Show only active devices": "Show only active devices",
+  "Show or hide the bottom information line (playback state and file details)": "Show or hide the bottom information line (playback state and file details)",
   "Side Signal (L − R)": "Side Signal (L − R)",
   "Signed": "Signed",
   "Signed 32-bit PCM integers (float32 editing precision)": "Signed 32-bit PCM integers (float32 editing precision)",

@@ -2,8 +2,8 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.16.0. De menunamen
-staan zoals ze in het programma worden getoond. Openen de handleiding met
+Deze handleiding beschrijft de beschikbare functies van versie 0.16.1. De menunamen
+staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
 treffer en **Shift+F3** naar de vorige.
@@ -38,8 +38,14 @@ naast elkaar blijven bestaan; wisselen van weergave sluit ze niet.
 
 Bovenaan staan menu's en werkbalken. Een korte aanwijzing verschijnt wanneer je
 de muis boven een knop houdt. **Opties → Werkbalkteksten tonen** toont ook namen
-naast werkbalkiconen. **Opties → Statusbalk tonen** toont of verbergt de statusbalk.
+naast werkbalkiconen. **Opties → Statusbalk tonen** toont of verbergt de smalle
+informatieregel helemaal onderaan, onder de niveaumeter. Die regel toont de
+afspeelstatus en bestandsgegevens. De keuze blijft bij de volgende start bewaard.
 **F11** schakelt naar volledig scherm en terug.
+
+Vensters en grafiekschalen passen zich aan de gekozen taal en de lettergrootte
+van het bureaublad aan. Past een formulier niet op het scherm, scroll dan door
+de instellingen; de knoppen om te bevestigen of annuleren blijven bereikbaar.
 
 Onderaan staan afspeelknoppen, de klok en de niveaumeters. **Sel** toont het begin,
 einde en de lengte van de selectie. **Beeld** toont het zichtbare tijdvak. De klok

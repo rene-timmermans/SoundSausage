@@ -9,6 +9,7 @@ from .i18n_widgets import QMenu, QDialog, QFormLayout, QSpinBox, QDoubleSpinBox,
 
 from .audio import AudioError
 from .envelopes import KINDS, MAX_ENVELOPE_POINTS, value_at
+from .plot_layout import text_width
 from .theme import colors
 
 
@@ -23,7 +24,7 @@ class EnvelopeTimeline:
         self._preview = None
 
     def envelope_rect(self, clip, row):
-        return self.clip_rect(clip, row).adjusted(0, 25, 0, -7)
+        return self.clip_rect(clip, row).adjusted(0, self.clip_title_height + 5, 0, -7)
 
     def envelope_y(self, clip, row, kind, value):
         rect = self.envelope_rect(clip, row)
@@ -65,7 +66,7 @@ class EnvelopeTimeline:
         if self.envelope_mode == "move":
             return False
         hit = self.hit_clip(pos)
-        if not hit or pos.y() < self.clip_rect(hit[2], hit[0]).top() + 21:
+        if not hit or pos.y() < self.clip_rect(hit[2], hit[0]).top() + self.clip_title_height + 1:
             return False
         row, _, original = hit
         kind = self.envelope_mode
@@ -114,7 +115,7 @@ class EnvelopeTimeline:
             return True
         if self.envelope_mode != "move" and self._drag is None and self._range_anchor is None:
             hit = self.hit_clip(pos)
-            if hit and pos.y() >= self.clip_rect(hit[2], hit[0]).top() + 21:
+            if hit and pos.y() >= self.clip_rect(hit[2], hit[0]).top() + self.clip_title_height + 1:
                 row, _, clip = hit
                 node = self.envelope_hit(pos, clip, row, self.envelope_mode, self.envelope_seed(clip, self.envelope_mode))
                 self.setCursor(Qt.CursorShape.PointingHandCursor if node is not None else Qt.CursorShape.CrossCursor)
@@ -250,9 +251,11 @@ class EnvelopeTimeline:
                 body = self.envelope_rect(clip, row)
                 if body.width() > 75:
                     painter.setPen(c.plot_text)
+                    line = self.fontMetrics().height() + 2
                     for label, y in (("200%" if kind == "volume" else "R", body.top()),
-                                     ("0%" if kind == "volume" else "L", body.bottom() - 15)):
-                        area = QRectF(body.right() - 43, y, 40, 15)
+                                     ("0%" if kind == "volume" else "L", body.bottom() - line)):
+                        width = text_width(self.fontMetrics(), label)
+                        area = QRectF(body.right() - width - 3, y, width, line)
                         painter.fillRect(area, c.plot)
                         painter.drawText(area, Qt.AlignmentFlag.AlignRight, label)
         painter.restore()

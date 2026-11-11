@@ -790,6 +790,7 @@
   "Show Status Bar": "Statusbalk tonen",
   "Show Toolbar Labels": "Werkbalkteksten tonen",
   "Show only active devices": "Alleen actieve apparaten tonen",
+  "Show or hide the bottom information line (playback state and file details)": "De onderste informatieregel met afspeelstatus en bestandsgegevens tonen of verbergen",
   "Side Signal (L − R)": "Zijsignaal (L − R)",
   "Signed": "Met teken",
   "Signed 32-bit PCM integers (float32 editing precision)": "32-bits PCM-gehele getallen met teken (float32-bewerkingsprecisie)",

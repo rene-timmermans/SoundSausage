@@ -2,7 +2,8 @@ from pathlib import Path
 from functools import partial
 
 import numpy as np
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, QEvent
+from shiboken6 import isValid
 from PySide6.QtGui import QActionGroup, QKeySequence
 from .i18n_widgets import QAction
 from PySide6.QtWidgets import QToolButton as NativeToolButton
@@ -150,7 +151,7 @@ class AmplifyDialog(EffectDialog):
 
 
 class MainWindow(RecordingActions, SessionActions, QMainWindow):
-    def __init__(self, document=None, no_audio=False):
+    def __init__(self, document=None, no_audio=False, ui_settings=None):
         super().__init__()
         self.setWindowIcon(application_icon())
         self.theme = install_theme()
@@ -162,6 +163,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self._recovery_error = None
         self.no_audio = no_audio
         self.audio_devices = AudioDevices(self)
+        self.ui_settings = ui_settings if ui_settings is not None else self.audio_devices.settings
         self.player = Playback(self, devices=self.audio_devices)
         self.init_recording()
         self.player.state_changed.connect(self.playback_state)
@@ -180,6 +182,20 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.apply_theme()
         self.refresh(fit=True)
         install_language().changed.connect(self.update_window_title)
+        install_language().changed.connect(self.update_minimum_size)
+        self.update_minimum_size()
+
+    def changeEvent(self, event):
+        super().changeEvent(event)
+        if event.type() in (QEvent.Type.FontChange, QEvent.Type.StyleChange) and hasattr(self, "transport"):
+            QTimer.singleShot(0, self.update_minimum_size)
+
+    def update_minimum_size(self, *_):
+        if not isValid(self) or not hasattr(self, "transport"):
+            return
+        self.layout().invalidate()
+        minimum = self.layout().minimumSize()
+        self.setMinimumSize(max(850, minimum.width()), max(540, minimum.height()))
 
     def update_language_actions(self,code):
         for key,action in self.language_actions.items():action.setChecked(key==code)
@@ -337,7 +353,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.channel_choice = QComboBox()
         self.channel_choice.setAccessibleName("Selected audio channels")
         self.channel_choice.addItems(("Both (L+R)", "Left (L)", "Right (R)"))
-        self.channel_choice.setFixedWidth(150)
+        self.channel_choice.setMinimumWidth(150)
+        self.channel_choice.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
         self.channel_choice.currentIndexChanged.connect(lambda index: self.choose_channels((None, (0,), (1,))[index]))
         range_row.addWidget(self.channel_choice)
         wave_layout.addLayout(range_row)
@@ -371,9 +388,18 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.state_label = QLabel("Stopped")
         self.format_label = QLabel()
         self.detail_label = QLabel()
-        self.statusBar().addWidget(self.state_label, 1)
-        self.statusBar().addPermanentWidget(self.format_label)
-        self.statusBar().addPermanentWidget(self.detail_label)
+        self.status_line = self.statusBar()
+        self.status_line.addWidget(self.state_label, 1)
+        self.status_line.addPermanentWidget(self.format_label)
+        self.status_line.addPermanentWidget(self.detail_label)
+        self.status_line.setVisible(self.actions["show_status"].isChecked())
+
+    def set_status_bar_visible(self, visible):
+        if hasattr(self, "status_line"):
+            self.status_line.setVisible(visible)
+        self.ui_settings.setValue("ui/show_status_bar", bool(visible))
+        self.ui_settings.sync()
+        self.update_minimum_size()
 
     def error(self, title, message):
         if isinstance(message, OperationCancelled):

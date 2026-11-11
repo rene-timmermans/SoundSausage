@@ -12,13 +12,15 @@ from .i18n_widgets import QWidget, QFormLayout, QLabel, QComboBox, QCheckBox, QP
 from .amplitude_ui import EffectDialog, spin
 from .filters import GRAPHIC_CENTRES, design, response, frequency_limit
 from .theme import colors
+from .plot_layout import axes_layout, separated_labels, AxisHeightMixin
 
 
-class ResponsePlot(QWidget):
+class ResponsePlot(AxisHeightMixin, QWidget):
     def __init__(self, dialog):
         super().__init__(dialog)
         self.dialog = dialog
         self.setMinimumSize(420, 180)
+        self.update_axis_height()
         self.setAccessibleName("Frequency response: Hz horizontally, gain in dB vertically")
         self.setToolTip("Combined response, including output gain. Display range: −36 to +36 dB.")
 
@@ -26,7 +28,8 @@ class ResponsePlot(QWidget):
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
         c = colors()
-        rect = QRectF(42, 8, self.width()-58, self.height()-38)
+        labels = axes_layout(self, ("10", "50", "200", "1k", "5k", "20k"), ("−36", "+36", "0"))
+        rect = labels.plot
         rate = self.dialog.document.sample_rate
         lo, hi = 10, rate/2
         x = lambda f: rect.left() + math.log(f/lo)/math.log(hi/lo)*rect.width()
@@ -36,7 +39,8 @@ class ResponsePlot(QWidget):
             p.setPen(QPen(c.plot_grid, 1))
             p.drawLine(QPointF(rect.left(), y(db)), QPointF(rect.right(), y(db)))
             p.setPen(c.text)
-            p.drawText(QRectF(0, y(db)-9, 36, 18), Qt.AlignmentFlag.AlignRight, f"{db:+d}")
+            p.drawText(labels.y_tick(y(db), f"{db:+d}"), Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, f"{db:+d}")
+        x_labels = []
         for f in (10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000):
             if f > hi:
                 continue
@@ -44,8 +48,10 @@ class ResponsePlot(QWidget):
             p.drawLine(QPointF(x(f), rect.top()), QPointF(x(f), rect.bottom()))
             p.setPen(c.text)
             if f in (10, 50, 200, 1000, 5000, 20000):
-                p.drawText(QRectF(x(f)-22, rect.bottom()+3, 44, 20), Qt.AlignmentFlag.AlignCenter,
-                           f"{f/1000:g}k" if f >= 1000 else str(f))
+                text = f"{f/1000:g}k" if f >= 1000 else str(f)
+                x_labels.append((labels.x_tick(x(f), text), text))
+        for area, text in separated_labels(x_labels):
+            p.drawText(area, Qt.AlignmentFlag.AlignCenter, text)
         try:
             coefficients, gain = design(self.dialog.effect_name, rate, **self.dialog.settings())
             frequencies = np.geomspace(lo, hi*.999999, max(200, self.width()))

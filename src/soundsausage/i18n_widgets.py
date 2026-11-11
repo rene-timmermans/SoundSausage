@@ -1,7 +1,8 @@
 """Qt widgets that retain translatable UI source text, without translating editable data."""
 import time
 from PySide6 import QtWidgets as W,QtGui as G
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QEvent, QTimer, QSize
+from shiboken6 import isValid
 from .i18n import tr,watch,bind,install_language,Literal
 
 # Unchanged Qt classes remain available from this module.
@@ -48,6 +49,88 @@ QAction=localized(G.QAction,'setText')
 QToolBar=localized(W.QToolBar,'setWindowTitle')
 
 
+class QDialog(QDialog):
+    """Fit translated content to its font; scroll if it cannot fit the screen."""
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self._fit_pending=False;self._fitting=False;self._base_minimum=None
+        self._content=None;self._content_scroll=None
+        install_language().changed.connect(self._queue_fit)
+
+    def _queue_fit(self,*_):
+        if self.isVisible() and not self._fit_pending and not self._fitting:
+            self._fit_pending=True
+            QTimer.singleShot(0,self._fit_content)
+
+    def showEvent(self,event):
+        super().showEvent(event)
+        self._fit_content()
+
+    def resizeEvent(self,event):
+        super().resizeEvent(event)
+        if hasattr(self,'_fit_pending'):self._queue_fit()
+
+    def changeEvent(self,event):
+        super().changeEvent(event)
+        if hasattr(self,'_fit_pending') and event.type() in (QEvent.Type.FontChange,QEvent.Type.StyleChange):
+            self._queue_fit()
+
+    def eventFilter(self,watched,event):
+        if event.type() in (QEvent.Type.LayoutRequest,QEvent.Type.Resize):self._queue_fit()
+        return super().eventFilter(watched,event)
+
+    def _make_scrollable(self):
+        layout=self.layout()
+        boxes=self.findChildren(W.QDialogButtonBox)
+        for box in boxes:
+            for child in self.findChildren(W.QLayout):child.removeWidget(box)
+        self._content=W.QWidget()
+        self._content.setLayout(layout)
+        self._content.installEventFilter(self)
+        self._content_scroll=W.QScrollArea(self)
+        self._content_scroll.setFrameShape(W.QFrame.Shape.NoFrame)
+        self._content_scroll.setWidgetResizable(True)
+        self._content_scroll.setWidget(self._content)
+        self._content_scroll.viewport().installEventFilter(self)
+        outer=W.QVBoxLayout(self);outer.setContentsMargins(0,0,0,0)
+        outer.addWidget(self._content_scroll,1)
+        if boxes:
+            footer=W.QHBoxLayout();footer.setContentsMargins(11,0,11,11)
+            for box in boxes:footer.addWidget(box)
+            outer.addLayout(footer)
+
+    def _fit_content(self):
+        if not isValid(self):return
+        self._fit_pending=False
+        if self._fitting or not self.isVisible() or self.layout() is None:return
+        self._fitting=True
+        try:
+            if self._base_minimum is None:self._base_minimum=QSize(self.minimumSize())
+            available=self.screen().availableGeometry()
+            max_width=max(240,available.width()-32)
+            max_height=max(200,available.height()-60)
+            layout=self._content.layout() if self._content is not None else self.layout()
+            layout.invalidate()
+            minimum=layout.minimumSize()
+            preferred=layout.sizeHint()
+            width=min(max_width,max(W.QWidget.width(self),self._base_minimum.width(),preferred.width(),minimum.width()))
+            needed=max(minimum.height(),layout.totalHeightForWidth(width))
+            if self._content is None and (needed>max_height or minimum.width()>max_width):
+                self._make_scrollable()
+            if self._content is None:
+                self.setMinimumSize(max(self._base_minimum.width(),minimum.width()),max(self._base_minimum.height(),needed))
+                self.resize(width,min(max_height,max(W.QWidget.height(self),needed,self.minimumHeight())))
+            else:
+                self.setMinimumSize(min(max_width,self._base_minimum.width()),min(max_height,self._base_minimum.height()))
+                self.resize(width,min(max_height,max(W.QWidget.height(self),needed)))
+                self.layout().activate()
+                scrollbar=self.style().pixelMetric(W.QStyle.PixelMetric.PM_ScrollBarExtent)
+                content_width=max(minimum.width(),self._content_scroll.viewport().width()-scrollbar)
+                content_height=max(minimum.height(),layout.totalHeightForWidth(content_width))
+                self._content.setMinimumSize(minimum.width(),content_height)
+        finally:self._fitting=False
+
+
 def set_text(widget,source):
     """Use for standard buttons created internally by Qt."""
     if not hasattr(widget,'_loc_sources'):widget._loc_sources={}
@@ -85,6 +168,11 @@ class QComboBox(localized(W.QComboBox)):
 
 
 class QFormLayout(W.QFormLayout):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.setRowWrapPolicy(W.QFormLayout.RowWrapPolicy.WrapLongRows)
+        self.setLabelAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
+
     def addRow(self,*args):
         result=super().addRow(*args)
         if len(args)==2 and isinstance(args[0],str):

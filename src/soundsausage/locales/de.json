@@ -790,6 +790,7 @@
   "Show Status Bar": "Statusleiste anzeigen",
   "Show Toolbar Labels": "Werkzeugleistenbeschriftungen anzeigen",
   "Show only active devices": "Nur aktive Geräte anzeigen",
+  "Show or hide the bottom information line (playback state and file details)": "Die untere Informationszeile mit Wiedergabestatus und Dateidetails ein- oder ausblenden",
   "Side Signal (L − R)": "Seitensignal (L − R)",
   "Signed": "Mit Vorzeichen",
   "Signed 32-bit PCM integers (float32 editing precision)": "Vorzeichenbehaftete 32-Bit-PCM-Ganzzahlen (float32-Bearbeitungsgenauigkeit)",

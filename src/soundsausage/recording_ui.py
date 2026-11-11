@@ -52,7 +52,8 @@ class RecordDialog(QDialog):
         self.offset.setToolTip('Negative moves the new clip earlier; positive moves it later. Calibrate with a loopback recording.')
         form.addRow(self.accompaniment); form.addRow('Recording position offset',self.offset)
         self.note=QLabel();self.note.setWordWrap(True);form.addRow(self.note)
-        form.addRow(QLabel('Stop keeps the take. Discard removes only this recording.\nThe input is not played through the speakers.'))
+        guidance=QLabel('Stop keeps the take. Discard removes only this recording.\nThe input is not played through the speakers.')
+        guidance.setWordWrap(True);form.addRow(guidance)
         self.box=QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         set_text(self.box.button(QDialogButtonBox.StandardButton.Ok),'Start Recording')
         self.box.accepted.connect(self.accept);self.box.rejected.connect(self.reject);form.addRow(self.box)
@@ -150,7 +151,8 @@ class LivePlot(QWidget):
     def paintEvent(self,event):
         p=QPainter(self);c=colors();p.fillRect(self.rect(),c.plot)
         view=self.view;span=max(1,view.rate*20);start=max(0,view.frames-span)
-        width=max(1,self.width()-18);height=max(1,self.height()-28)
+        line=self.fontMetrics().height()+2
+        width=max(1,self.width()-18);height=max(1,self.height()-line-4)
         for channel in range(view.channels):
             center=(channel+.5)*height/view.channels
             scale=height/view.channels*.44
@@ -162,8 +164,8 @@ class LivePlot(QWidget):
                 p.drawLine(QPointF(x,center-min(1.08,max(-1.08,float(high[channel])))*scale),
                            QPointF(x,center-min(1.08,max(-1.08,float(low[channel])))*scale))
         p.setPen(c.plot_text)
-        p.drawText(QRectF(9,height,width,26),Qt.AlignmentFlag.AlignLeft,clock_text(start/view.rate))
-        p.drawText(QRectF(9,height,width,26),Qt.AlignmentFlag.AlignRight,clock_text((start+span)/view.rate))
+        p.drawText(QRectF(9,height+2,width,line),Qt.AlignmentFlag.AlignLeft,clock_text(start/view.rate))
+        p.drawText(QRectF(9,height+2,width,line),Qt.AlignmentFlag.AlignRight,clock_text((start+span)/view.rate))
 
 
 class RecordingActions:

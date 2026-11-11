@@ -1,4 +1,4 @@
-# SoundSausage 0.16.0
+# SoundSausage 0.16.1
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -48,6 +48,9 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Interface in Nederlands, Engels, Duits, Frans en Spaans, direct wisselbaar via Opties → Taal.
 - Onthouden taalkeuze, inclusief menu’s, effectvensters, meldingen en standaarddialoogknoppen.
 - Volledige doorzoekbare handleiding in alle vijf talen via Help en F1, ook zonder internet.
+- Grafiekassen, kanaallabels, tijdvelden en spoorbediening passen zich aan de lettergrootte aan.
+- Vertaalde vensters groeien met hun inhoud; grote formulieren krijgen een scrollgebied met bereikbare bevestigingsknoppen.
+- De keuze voor de onderste statusregel blijft bij de volgende start bewaard.
 
 ## Beperkingen
 
