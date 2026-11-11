@@ -58,10 +58,12 @@ ruisreductie en tijd-/toonhoogtebewerking. Iedere groep wordt bruikbaar afgerond
 Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 
 - [x] EQ en filters, met luistervoorbeeld en frequentierespons — 0.9.0, met geteste installatiepakketten.
-- [ ] Delay, echo en galm — gebouwd voor 0.10.0; distributiecontroles volgen.
+- [x] Delay, echo en galm — 0.10.0, met geteste installatiepakketten.
 - [ ] Ruisreductie en klikverwijdering.
 - [ ] Tijd- en toonhoogtebewerking.
 - [ ] Overige aangeboden tools, waaronder vervorming en convolutie.
+
+Deze vijf groepen vullen de eerder afgeronde Amplitude-groep aan.
 
 Iedere groep krijgt meetbare audiocontroles, Undo/Redo, bediening voor selecties
 en lange bestanden, bijgewerkte uitleg en een geteste release.

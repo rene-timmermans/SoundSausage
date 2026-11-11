@@ -84,7 +84,7 @@ vervolgmogelijkheden. De fysieke controle uit fase 1 is daarmee ook afgerond.
 Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
 
 - [x] EQ en filters — gepubliceerd in 0.9.0.
-- [ ] Delay, echo en galm: gebouwd voor 0.10.0; distributiecontroles volgen.
+- [x] Delay, echo en galm — gepubliceerd in 0.10.0.
 - [ ] Restauratie: ruisreductie en klikverwijdering.
 - [ ] Tijd-/toonhoogtebewerking.
 - [ ] Overige tools, waaronder vervorming en convolutie.
@@ -92,7 +92,13 @@ Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
 De eerste groep is afgerond in [release 0.9.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.9.0).
 Alle 258 controles slagen in Debian, Fedora en Arch. De geïnstalleerde pakketten
 doorstaan gewone, afspeel- en opnamecontroles ook op Ubuntu 26.04 en Rolling.
-Zie [EQ/filtercontroles](validation/filters.md). De volgende groep is delay en galm.
+Zie [EQ/filtercontroles](validation/filters.md).
+
+De tweede groep is afgerond in [release 0.10.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.10.0).
+Alle 284 controles slagen in Debian, Fedora en Arch. De geïnstalleerde pakketten
+doorstaan gewone, afspeel- en opnamecontroles ook op Ubuntu 26.04 en Rolling.
+Zie [delay-/galmcontroles](validation/delay-reverb.md). Twee van de vijf groepen
+zijn afgerond. De volgende groep is ruisreductie en klikverwijdering.
 Elke groep krijgt een afzonderlijke bruikbare release.
 Amplitude is beschikbaar sinds 0.5.0 en dient ook als controle voor de nieuwe
 audiobasis. Uitgebreide oude SES-compatibiliteit en externe plug-ins volgen later.

@@ -24,8 +24,11 @@ De 26 nieuwe DSP- en Qt-controles toetsen:
 - Echte dialogen, presets, Reset, kanaalkeuze, preview-stop, mono en
   blokkeren tijdens opname of in multitrack.
 
-De volledige suite bevat 284 controles. Vier echte virtuele audiobackendtests
-worden in de distributiebouw uitgevoerd. De 160 MiB-keten bevat naast EQ en
+De [distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/42988304414)
+doorstaat alle 284 controles in Debian, Fedora en Arch, inclusief vier echte
+virtuele Qt-audiobackendtests. De geïnstalleerde pakketten doorstaan gewone,
+afspeel- en opnamecontroles ook op Ubuntu 26.04 en Rolling. In de geverifieerde
+logs zijn geen Python-callbackfouten gevonden. De 160 MiB-keten bevat naast EQ en
 filters nu ook Echo en Reverb en bewaakt de resident geheugengroei op minder
 dan 80 MiB boven de toepassing. Dit is een scenariocontrole, geen bovengrens
 voor iedere opname, samplerate of combinatie van instellingen.
@@ -39,4 +42,6 @@ Voorvertraging en effectgeheugen zijn onafhankelijk van verwerkingsblokken.
 Een optionele uitklank is expliciet begrensd tot 60 seconden, met de laatste
 10 ms aflopend naar stilte; voorgestelde tijden zijn richtwaarden.
 
-Pakketcontroles en publicatie worden bij de release bijgewerkt.
+[Release 0.10.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.10.0)
+bevat de geteste installatiepakketten voor Debian/Ubuntu, Fedora en Arch, de
+broncode en checksums.
