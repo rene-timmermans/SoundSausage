@@ -125,8 +125,14 @@ audiobasis. Uitgebreide oude SES-compatibiliteit en externe plug-ins volgen late
 - [x] Gedeelde stereotiming bewaken bij knippen, uitklank en opname.
 - [x] Verschillende zoomiconen en eigen iconen voor alle menufuncties.
 - [x] Volledige handleiding aanvullen.
-- [ ] Distributiecontroles en installatiepakketten voor 0.14.0.
+- [x] Distributiecontroles en installatiepakketten voor 0.14.0.
 
 De vijf effectgroepen blijven afgerond. Deze versie verfijnt de dagelijkse
 bediening. Zie [kanaalselectie](KANAALSELECTIE.md) en de
 [regressiecontroles](validation/channel-zoom.md).
+
+[Release 0.14.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.14.0)
+bevat de geteste installers. Alle 344 controles slagen in Debian, Fedora en
+Arch; de geïnstalleerde pakketten doorstaan gewone, afspeel- en opnamecontroles
+ook op Ubuntu 26.04 en Rolling. De geverifieerde logs bevatten geen callback-
+of bufferfouten.

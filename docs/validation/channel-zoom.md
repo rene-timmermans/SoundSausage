@@ -30,4 +30,10 @@ afhankelijkheden.
 De volledige lokale suite doorstaat 344 controles; vier tests die een echte
 audiobackend vereisen worden lokaal overgeslagen. De 22 nieuwe kanaal-/zoomtests,
 de vijf bestaande layouttests en de gewone installatie-selftest slagen.
-De distributiebouw voert de backendcontroles vóór publicatie van de pakketten uit.
+De distributiebouw doorstaat alle 344 controles in Debian, Fedora en Arch,
+inclusief de echte virtuele audiobackendtests. De geïnstalleerde pakketten
+doorstaan gewone, afspeel- en opnamecontroles ook op Ubuntu 26.04 en Rolling.
+De geverifieerde logs bevatten geen callback- of bufferfouten. Bewijs:
+[distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43009152892).
+[Release 0.14.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.14.0)
+bevat de geteste pakketten, broncode en checksums.
