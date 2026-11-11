@@ -260,7 +260,15 @@ class Document:
                  "dynamics": "Dynamics Processing", "graphic_eq": "Graphic Equalizer",
                  "parametric_eq": "Parametric Equalizer", "filter": "Filters"}.get(name, name.capitalize())
         # Validate before committing: failed or overflowing effects leave the document intact.
-        new_metadata = metadata.remap(self.metadata, lambda p: start + end - 1 - p if start <= p < end else p) if name == "reverse" else self.metadata
+        if name == "reverse":
+            new_metadata = metadata.remap(self.metadata, lambda p: start + end - 1 - p if start <= p < end else p)
+        elif len(result) != end-start:
+            # A retained effect tail inserts time after the original range:
+            # preserve markers inside it, shift only those following the range.
+            extra = len(result)-(end-start)
+            new_metadata = metadata.remap(self.metadata, lambda p: p+extra if p >= end else p)
+        else:
+            new_metadata = self.metadata
         self.replace(start, end, result, label, new_metadata=new_metadata)
         # Store immutable settings, independent of a dialog's mutable controls.
         self.last_effect = (name, deepcopy(settings))

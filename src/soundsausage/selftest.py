@@ -11,6 +11,7 @@ from .document import Document
 from .session import Session
 from .project import save_project, load_project
 from .amplitude_ui import ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
+from .space_ui import DelayDialog, EchoDialog, ReverbDialog
 from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog
 from .icons import application_icon, mascot_icon
 from .resample import resample
@@ -62,9 +63,12 @@ def run(window):
         session.import_audio([(doc.read(), 8000, "Selftest")])
         save_project(session, path / "test.celp")
         np.testing.assert_array_equal(load_project(path / "test.celp", dsp=doc.dsp).render(), session.render())
-    for cls in (GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
+    for cls in (DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
         dialog = cls(doc, window, no_audio=True)
         try:
+            if isinstance(dialog, (DelayDialog, EchoDialog, ReverbDialog)):
+                dialog.keep_tail.setChecked(True)
+                dialog.tail.setValue(.1)
             dialog.show()
             assert not dialog.grab().isNull()
             assert np.isfinite(dialog.preview_samples()).all()

@@ -5,6 +5,7 @@ from pathlib import Path
 from . import storage
 from .operations import blocks, progress
 from .filters import EFFECTS as FILTER_EFFECTS, design
+from . import space
 
 import numpy as np
 
@@ -25,10 +26,11 @@ class Dsp:
         except OSError as error:
             raise RuntimeError("The audio kernel is not built. Run 'make' in the project folder.") from error
         self.lib.ce_dsp_abi_version.restype = C.c_uint32
-        if self.lib.ce_dsp_abi_version() != 6:
+        if self.lib.ce_dsp_abi_version() != 7:
             raise RuntimeError("The audio kernel has an incompatible ABI. Rebuild it with make.")
         self.ptr = C.POINTER(C.c_float)
         signature = [self.ptr, C.c_size_t, C.c_size_t]
+        space.bind(self.lib, signature)
         for name in ("ce_reverse", "ce_invert", "ce_silence"):
             getattr(self.lib, name).argtypes = signature
             getattr(self.lib, name).restype = C.c_int
@@ -100,7 +102,12 @@ class Dsp:
                                         attack_ms, release_ms, makeup_db, int(linked), state))
 
     def process(self, name, data, sample_rate, **settings):
-        if name in FILTER_EFFECTS:
+        if name in space.EFFECTS:
+            processor = space.Processor(name, sample_rate, data.shape[1], **settings)
+            if processor.tail_frames:
+                raise ValueError("Use block processing to append an effect tail.")
+            processor.process(self, data)
+        elif name in FILTER_EFFECTS:
             coefficients, gain = design(name, sample_rate, **settings)
             state = np.zeros((len(coefficients), data.shape[1], 2), np.float64)
             self.biquads(data, coefficients, state, gain)
@@ -129,6 +136,9 @@ class Dsp:
         A preview may restrict the output while analysis still spans the full range.
         No mutation of the immutable source occurs before the caller commits.
         """
+        if name in space.EFFECTS:
+            return space.process_blocks(self, name, source, sample_rate, limit=limit,
+                                        block_frames=block_frames, **settings)
         frames, channels = source.shape
         wanted = frames if limit is None else min(frames, max(0, int(limit)))
         if name in FILTER_EFFECTS:

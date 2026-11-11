@@ -81,10 +81,13 @@ vervolgmogelijkheden. De fysieke controle uit fase 1 is daarmee ook afgerond.
 
 ## 4. Effecten en tools — actief
 
+Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
+
 - [x] EQ en filters — gepubliceerd in 0.9.0.
-- [ ] Delay en galm.
+- [ ] Delay, echo en galm: gebouwd voor 0.10.0; distributiecontroles volgen.
 - [ ] Restauratie: ruisreductie en klikverwijdering.
 - [ ] Tijd-/toonhoogtebewerking.
+- [ ] Overige tools, waaronder vervorming en convolutie.
 
 De eerste groep is afgerond in [release 0.9.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.9.0).
 Alle 258 controles slagen in Debian, Fedora en Arch. De geïnstalleerde pakketten

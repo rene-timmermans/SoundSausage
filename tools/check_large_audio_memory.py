@@ -31,6 +31,8 @@ with tempfile.TemporaryDirectory() as folder:
     doc.apply('normalize',target=.98,remove_dc=True);mark('normalize')
     doc.apply('graphic_eq',gains=(3,2,0,-1,-2,0,2,3,0,-2));mark('graphic-eq')
     doc.apply('filter',kind='high_pass',frequency=80,slope=48);mark('filter')
+    doc.apply('echo',delay_ms=250,feedback=.6);mark('echo')
+    doc.apply('reverb',decay_seconds=2);mark('reverb')
     piece_peaks(doc._pieces,doc.frames,2,1000);mark('waveform')
     write_wav(path,doc.view(),48000,'float32');mark('save')
     session=Session(48000,1);session.import_audio([(doc.view(),48000,'Long')]);mark('import')

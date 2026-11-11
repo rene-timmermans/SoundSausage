@@ -8,12 +8,122 @@
 // No exceptions, allocations, host callbacks, or global mutable state cross this ABI.
 extern "C" {
 
-std::uint32_t ce_dsp_abi_version() noexcept { return 6; }
+std::uint32_t ce_dsp_abi_version() noexcept { return 7; }
 
 static bool valid_buffer(float* data, std::size_t frames, std::size_t channels) noexcept {
     return channels >= 1 && channels <= 2 &&
            frames <= std::numeric_limits<std::size_t>::max() / channels &&
            (data != nullptr || frames == 0);
+}
+
+struct CeDelayLine {
+    double* data;
+    std::size_t length;
+    std::size_t cursor;
+    double filter;
+    double feedback;
+    double injection;
+};
+
+static bool valid_line(const CeDelayLine& line, bool allow_empty = false) noexcept {
+    return ((allow_empty && line.length == 0) || (line.data && line.length > 0 &&
+        line.length <= 2000000 && line.cursor < line.length)) &&
+        std::isfinite(line.filter) && std::isfinite(line.feedback) &&
+        line.feedback >= 0 && line.feedback < 1 && std::isfinite(line.injection) &&
+        line.injection >= 0 && line.injection <= 1;
+}
+
+static bool space_levels(double dry, double wet, double gain) noexcept {
+    return std::isfinite(dry) && dry >= 0 && dry <= 1 &&
+        std::isfinite(wet) && wet >= 0 && wet <= 1 &&
+        std::isfinite(gain) && gain >= 0 && gain <= 16;
+}
+
+static double tiny_zero(double value) noexcept {
+    return std::abs(value) < 1e-300 ? 0 : value;
+}
+
+// Discrete delay, optionally with filtered feedback and stereo cross-feedback.
+int ce_delay(float* data, std::size_t frames, std::size_t channels,
+             CeDelayLine* lines, double damping, int ping_pong,
+             double dry, double wet, double gain) noexcept {
+    if (!valid_buffer(data, frames, channels) || !lines || !space_levels(dry, wet, gain) ||
+        !std::isfinite(damping) || damping < 0 || damping > .95) return -1;
+    for (std::size_t c = 0; c < channels; ++c) if (!valid_line(lines[c])) return -1;
+    for (std::size_t f = 0; f < frames; ++f) {
+        double input[2], taps[2], filtered[2];
+        for (std::size_t c = 0; c < channels; ++c) {
+            input[c] = data[f*channels+c];
+            auto& line = lines[c];
+            taps[c] = line.data[line.cursor];
+            filtered[c] = tiny_zero((1-damping)*taps[c] + damping*line.filter);
+            line.filter = filtered[c];
+        }
+        for (std::size_t c = 0; c < channels; ++c) {
+            auto& line = lines[c];
+            const auto other = ping_pong && channels == 2 ? 1-c : c;
+            line.data[line.cursor] = tiny_zero(input[c] + line.feedback*filtered[other]);
+            line.cursor = (line.cursor+1) % line.length;
+            const double y = gain*(dry*input[c] + wet*taps[c]);
+            if (!std::isfinite(y) || std::abs(y) > std::numeric_limits<float>::max()) return -2;
+            data[f*channels+c] = static_cast<float>(y);
+        }
+    }
+    return 0;
+}
+
+// Per channel: predelay, eight lowpass-feedback combs, four true allpasses.
+// Independent line lengths and caller-owned state survive every block boundary.
+int ce_reverb(float* data, std::size_t frames, std::size_t channels,
+              CeDelayLine* lines, double damping, double width,
+              double dry, double wet, double gain) noexcept {
+    if (!valid_buffer(data, frames, channels) || !lines || !space_levels(dry, wet, gain) ||
+        !std::isfinite(damping) || damping < 0 || damping > .95 ||
+        !std::isfinite(width) || width < 0 || width > 1) return -1;
+    for (std::size_t c = 0; c < channels; ++c)
+        for (std::size_t i = 0; i < 13; ++i)
+            if (!valid_line(lines[c*13+i], i == 0)) return -1;
+    for (std::size_t f = 0; f < frames; ++f) {
+        double input[2], reverberated[2];
+        for (std::size_t c = 0; c < channels; ++c) input[c] = data[f*channels+c];
+        for (std::size_t c = 0; c < channels; ++c) {
+            auto* channel = lines + c*13;
+            double x = channels == 2 ? (2*input[c]+input[1-c])/3 : input[c];
+            auto& pre = channel[0];
+            if (pre.length) {
+                const double delayed = pre.data[pre.cursor];
+                pre.data[pre.cursor] = x;
+                pre.cursor = (pre.cursor+1) % pre.length;
+                x = delayed;
+            }
+            double sum = 0;
+            for (std::size_t i = 1; i <= 8; ++i) {
+                auto& comb = channel[i];
+                const double delayed = comb.data[comb.cursor];
+                comb.filter = tiny_zero((1-damping)*delayed + damping*comb.filter);
+                comb.data[comb.cursor] = tiny_zero(comb.injection*x + comb.feedback*comb.filter);
+                comb.cursor = (comb.cursor+1) % comb.length;
+                sum += delayed;
+            }
+            x = sum/std::sqrt(8.0);
+            for (std::size_t i = 9; i < 13; ++i) {
+                auto& allpass = channel[i];
+                const double y = allpass.data[allpass.cursor] - allpass.feedback*x;
+                allpass.data[allpass.cursor] = tiny_zero(x + allpass.feedback*y);
+                allpass.cursor = (allpass.cursor+1) % allpass.length;
+                x = y;
+            }
+            reverberated[c] = x;
+        }
+        for (std::size_t c = 0; c < channels; ++c) {
+            const double reflected = channels == 2 ?
+                .5*((1+width)*reverberated[c] + (1-width)*reverberated[1-c]) : reverberated[c];
+            const double y = gain*(dry*input[c] + wet*reflected);
+            if (!std::isfinite(y) || std::abs(y) > std::numeric_limits<float>::max()) return -2;
+            data[f*channels+c] = static_cast<float>(y);
+        }
+    }
+    return 0;
 }
 
 // Normalized biquads [b0,b1,b2,a1,a2], transposed direct form II.

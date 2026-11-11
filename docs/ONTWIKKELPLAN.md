@@ -58,10 +58,10 @@ ruisreductie en tijd-/toonhoogtebewerking. Iedere groep wordt bruikbaar afgerond
 Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 
 - [x] EQ en filters, met luistervoorbeeld en frequentierespons — 0.9.0, met geteste installatiepakketten.
-- [ ] Delay, echo en galm.
+- [ ] Delay, echo en galm — gebouwd voor 0.10.0; distributiecontroles volgen.
 - [ ] Ruisreductie en klikverwijdering.
 - [ ] Tijd- en toonhoogtebewerking.
-- [ ] Overige aangeboden tools per groep afronden.
+- [ ] Overige aangeboden tools, waaronder vervorming en convolutie.
 
 Iedere groep krijgt meetbare audiocontroles, Undo/Redo, bediening voor selecties
 en lange bestanden, bijgewerkte uitleg en een geteste release.

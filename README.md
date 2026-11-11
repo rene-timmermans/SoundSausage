@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.9.0**.
+De huidige versie is **0.10.0**.
 
 ## Wat het kan
 
@@ -18,6 +18,7 @@ De huidige versie is **0.9.0**.
 - Volume aanpassen, fades toepassen, normaliseren, omkeren en stilte toevoegen.
 - Stereokanalen mengen, dynamiek bewerken en een volumeverloop tekenen, met luistervoorbeelden.
 - Grafische en parametrische EQ, hoog-/laagdoorlaat-, banddoorlaat- en notchfilters.
+- Delay, echo en galm, met presets, luistervoorbeelden en optionele uitklank.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
 - Projecten opslaan met alle gebruikte audio en een complete mix exporteren.
@@ -61,6 +62,8 @@ Effecten bewerken de selectie, of de hele golfvorm als er niets geselecteerd is.
 Met **Preview** beluister je de instelling voordat je die toepast. Zie [Amplitude](docs/AMPLITUDE.md).
 Onder **Filters** staan de grafische en parametrische EQ en de filters, met presets
 en een grafiek van de gezamenlijke frequentierespons. Zie [EQ en filters](docs/FILTERS.md).
+Onder **Delay Effects** staan Delay, Echo en Reverb. Met **Add effect tail**
+bewaar je ook de uitklank. Zie [delay, echo en galm](docs/DELAY_GALM.md).
 Onder de tijdlijn staan het transport, de grote klok, selectie- en weergavetijden en de stereometer.
 Met **R** of de opnameknop kies je een ingang en bestemming. **Stop**, **Esc** of **Spatie** bewaart de take; **P** pauzeert/hervat. Zie de handleiding voor het verschil tussen stoppen en verwerpen.
 Met **Options → Show Toolbar Labels** toon je namen naast de werkbalkiconen. **F11** wisselt naar schermvullende weergave.
@@ -73,6 +76,8 @@ De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handl
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.10.0** Delay met tijden per kanaal, Echo met demping en stereopingpong en Reverb met ruimtegrootte, nagalmtijd, voorvertraging en stereobreedte. Met presets, luistervoorbeelden en een optionele uitklank die de opname verlengt.
 
 **0.9.0** Grafische EQ met tien banden, parametrische EQ met vijf bell-banden en low/high shelf, plus hoogdoorlaat-, laagdoorlaat-, banddoorlaat- en notchfilters. Met frequentiegrafieken, presets, luistervoorbeelden en uitgangsvolume.
 
