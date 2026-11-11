@@ -188,7 +188,13 @@ Zie [taalcontroles](validation/languages.md).
 - [x] Effect- en instellingenvensters in alle vijf talen controleren; grote formulieren laten scrollen met bereikbare bevestigingsknoppen.
 - [x] Statusbalkkeuze functioneel controleren en bij herstart behouden.
 - [x] De vijf handleidingen aanvullen en regressiecontroles toevoegen.
-- [ ] Definitieve distributiecontroles en installatiepakketten voor 0.16.1.
+- [x] Definitieve distributiecontroles en installatiepakketten voor 0.16.1.
 
 Zie [tekst- en venstercontroles](validation/text-layout.md). De bestaande
 vervolgpunten voor plug-ins en opname blijven behouden.
+
+[Release 0.16.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.16.1)
+bevat de geteste installatiepakketten. Alle 384 controles slagen in Debian,
+Fedora en Arch. De geïnstalleerde pakketten doorstaan de gewone, afspeel-,
+opname- en duplexzelftest ook op Ubuntu 26.04 en Rolling.
+[Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43058515142).

@@ -50,5 +50,17 @@ vensters.
 Lokaal slagen alle 384 controles; zes expliciete audiobackendcontroles worden
 lokaal overgeslagen en blijven onderdeel van de distributiebouw. De afzonderlijke
 proef bij 150% schermvergroting slaagt voor tekstgrenzen, open vensters en
-hoofdvenstertijden. De distributiebouw wordt vóór publicatie gecontroleerd.
+hoofdvenstertijden. De volledige distributiebouw slaagt voor alle 384 controles
+in Debian, Fedora en Arch, inclusief de virtuele audiobackendcontroles.
+De geïnstalleerde pakketten doorstaan gewone, afspeel-, opname- en duplexzelftests
+op alle vijf doelen, ook Ubuntu 26.04 en Rolling. Alle vijf distributielogs en
+de publicatielog zijn gecontroleerd op onverwachte callback- en bufferfouten.
+[Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43058515142)
+en [release 0.16.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.16.1)
+bevatten de controles en installatiepakketten.
 DSP-ABI 7 en projectformaat 4 blijven ongewijzigd.
+
+De menuproef gebruikt de QWindow-route van Qt Test voor muisbewegingen en de
+klik. Die route levert de invoerevents ook op een virtueel scherm; de
+QWidget-route kan bij oudere Qt-versies alleen de cursor verplaatsen.
+Zie de [Qt Test-implementatie](https://github.com/qt/qtbase/blob/v6.8.3/src/testlib/qtestmouse.h).
