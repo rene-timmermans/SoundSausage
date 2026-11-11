@@ -55,6 +55,7 @@ class RecordDialog(QDialog):
         self.offset.setValue(float(self.devices.settings.value('recording/offset_ms',0)))
         self.offset.setToolTip('Negative moves the new clip earlier; positive moves it later. Calibrate with a loopback recording.')
         form.addRow(self.accompaniment); form.addRow('Recording position offset',self.offset)
+        self.offset_label=form.labelForField(self.offset)
         self.note=QLabel();self.note.setWordWrap(True);form.addRow(self.note)
         guidance=QLabel('Stop keeps the take. Discard removes only this recording.\nThe input is not played through the speakers.')
         guidance.setWordWrap(True);form.addRow(guidance)
@@ -89,6 +90,7 @@ class RecordDialog(QDialog):
         target=self.target.currentData()
         existing=target in ('insert','replace');multi=target=='multitrack'
         self.accompaniment.setVisible(multi); self.offset.setVisible(multi)
+        self.offset_label.setVisible(multi)
         self.rate.setEnabled(not existing and not multi)
         self.channels.setEnabled(not existing)
         if existing:

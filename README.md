@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.17.0**.
+De huidige versie is **0.17.1**.
 
 ## Wat het kan
 
@@ -96,6 +96,8 @@ De taalkeuze blijft bewaard. De handleidingen zijn ook rechtstreeks te lezen:
 [Deutsch](docs/manual/de.md), [Français](docs/manual/fr.md), [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**0.17.1** Volledig vertaalde formaatkeuze bij opslaan en een aangepast opnamevenster.
 
 **0.17.0** MP3 openen en bewerken, met WAV- of MP3-uitvoer voor opnamen, selecties en eindmixen. ID3-tekst en hoesafbeeldingen blijven behouden. Opnamen kunnen een instelbaar begin overslaan; een dunne lijn scheidt de stereokanalen.
 

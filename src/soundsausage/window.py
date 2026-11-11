@@ -745,7 +745,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
 
     def _save_path(self, title, suggested=None, encoding=None):
         encoding = encoding or self.document.encoding
-        labels = ";;".join(FORMAT_LABELS.values())
+        labels = ";;".join(tr(value) for value in FORMAT_LABELS.values())
         suggested=Path(suggested or 'Untitled.wav')
         if suggested.suffix.lower() in ('.wav','.mp3'):suggested=suggested.with_suffix('')
         path, selected = QFileDialog.getSaveFileName(self, title, str(suggested), labels, tr(FORMAT_LABELS[encoding]))

@@ -55,6 +55,18 @@ De audiobestanden, namen en gedetailleerde privéreceipts worden niet gepublicee
 
 Lokaal slagen alle 406 controles; zes expliciete audiobackendcontroles worden
 lokaal overgeslagen. De catalogus bevat 1.279 bronvormen per taal en de vijf
-offlinehandleidingen behandelen de nieuwe bediening. De definitieve
-distributiebouw en installatiecontroles worden vóór publicatie uitgevoerd.
+offlinehandleidingen behandelen de nieuwe bediening. Alle 406 controles slagen
+ook in Debian, Fedora en Arch, inclusief de virtuele audiobackendcontroles.
+De geïnstalleerde pakketten doorstaan gewone, afspeel-, opname- en duplexzelftests
+op alle vijf doelen, inclusief Ubuntu 26.04 en Rolling.
+[Distributiebouw 0.17.0](https://github.com/rene-timmermans/SoundSausage/actions/runs/43070491299)
+en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.17.0).
 DSP-ABI 7 en projectformaat 4 blijven behouden.
+
+## Formaatlijst — 0.17.1
+
+De regressiecontrole toetst ook de werkelijk doorgegeven filterlijst in alle
+vijf talen en of de standaardkeuze in die lijst voorkomt. Het opnamevenster
+verbergt de niet-toepasselijke opnameverschuiving inclusief label. De MP3-codec
+blijft gelijk aan de met de 38 praktijkbestanden getoetste versie.
+Definitieve distributiecontroles worden vóór publicatie uitgevoerd.

@@ -155,8 +155,11 @@ class MediaGuiTests(unittest.TestCase):
             self.manager.set_language(code,False)
             for encoding in ('float32','pcm16',*MP3_ENCODINGS):
                 wrong=self.path/('target.wav' if encoding in MP3_ENCODINGS else 'target.mp3')
-                with patch('soundsausage.window.QFileDialog.getSaveFileName',return_value=(str(wrong),tr(FORMAT_LABELS[encoding]))):
+                with patch('soundsausage.window.QFileDialog.getSaveFileName',return_value=(str(wrong),tr(FORMAT_LABELS[encoding]))) as picker:
                     path,chosen=w._save_path('Save a Waveform')
+                actual_filters=picker.call_args.args[3].split(';;')
+                self.assertIn(tr(FORMAT_LABELS['float32']),actual_filters)
+                self.assertIn(picker.call_args.args[4],actual_filters)
                 self.assertEqual(chosen,encoding);self.assertEqual(path.suffix,'.mp3' if encoding in MP3_ENCODINGS else '.wav')
         destination=self.path/'existing.mp3';destination.write_bytes(b'keep')
         with patch('soundsausage.window.QFileDialog.getSaveFileName',return_value=(str(destination.with_suffix('.wav')),FORMAT_LABELS['mp3_192'])),patch('soundsausage.window.QMessageBox.question',return_value=QMessageBox.StandardButton.Cancel):

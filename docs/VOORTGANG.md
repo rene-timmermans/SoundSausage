@@ -220,7 +220,19 @@ op alle vijf doelen, inclusief Ubuntu 26.04 en Rolling.
 - [x] ID3-tekst en hoesafbeeldingen behouden; encoderkeuze in herstel en audio in projecten bewaren.
 - [x] Voortgang/annuleren, atomaire opslag, fouten en vertaalde formaatkeuze toetsen.
 - [x] Vijf offlinehandleidingen en installatieafhankelijkheden bijwerken.
-- [ ] Praktijkbestanden en definitieve distributiecontroles/installatiepakketten verifiëren.
+- [x] Praktijkbestanden en definitieve distributiecontroles/installatiepakketten voor 0.17.0 verifiëren.
 
 Zie [opname- en MP3-controles](validation/recording-mp3.md). De bestaande
 vervolgpunten voor plug-ins, latency-/driftcompensatie en punch-in/out blijven staan.
+
+Alle 406 controles en de vier geïnstalleerde zelftests op vijf distributiedoelen
+slagen voor [0.17.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.17.0).
+De 38 praktijkbestanden zijn geopend, bewerkt en als WAV en MP3 heropend, met
+behoud van de originelen.
+[Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43070491299).
+
+## Formaatkeuze en opnamevenster — 0.17.1
+
+- [x] De volledige WAV-/MP3-filterlijst in alle vijf talen tonen en de voorkeuze laten overeenkomen.
+- [x] Het label van de opnameverschuiving samen met het invoerveld verbergen buiten multitrack.
+- [ ] Definitieve distributiecontroles en installatiepakketten voor 0.17.1.

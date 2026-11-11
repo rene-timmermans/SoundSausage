@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.17.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.17.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 ## 1. Langue et aide
 

@@ -1,5 +1,5 @@
 pkgname=soundsausage
-pkgver=0.17.0
+pkgver=0.17.1
 pkgrel=1
 pkgdesc='Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht'
 arch=('x86_64')
