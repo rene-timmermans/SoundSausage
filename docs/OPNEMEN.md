@@ -32,8 +32,10 @@ na Stop bewaart de take eveneens voor herstel.
 Het ingangssignaal wordt niet door de speakers gespeeld. In multitrack kan
 **Bestaande sporen afspelen tijdens opnemen** de begeleiding afspelen, inclusief
 spooreffecten. **P** pauzeert/hervat beide; Stop bewaart de nieuwe take.
-**Opnamepositie verschuiven** stelt de plaatsing van de take af. Punch-in/out en
-automatische latencycompensatie blijven vervolgstappen. Zie
+**Automatische synchronisatie** gebruikt klokmetingen en een eventuele apparaatkalibratie.
+Met **Opties → Opname kalibreren** meet je de in-/uitvoerroute. **Shift+R**
+start punch-in/out binnen een multitrackselectie, met voorloop en korte overgangen.
+**Opnamepositie verschuiven** blijft als handmatig alternatief beschikbaar. Zie
 [spooreffecten en opname met begeleiding](REALTIME.md) voor bediening en kalibratie.
 Bij meerdere kanalen is opname beperkt tot één mono- of stereopaar per take.
 

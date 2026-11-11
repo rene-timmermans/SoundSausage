@@ -284,3 +284,18 @@ inclusief Ubuntu 26.04 en Rolling.
 V1.0 volgt wanneer deze functies, de dagelijkse werkwijze en de pakketten
 geen bekende blokkerende fouten hebben. De vaste apparaat-/plug-incombinaties
 worden in de praktijk gecontroleerd; een kalenderdatum volgt uit die resultaten.
+
+### Integratie 0.19.0
+
+De plug-inuitbreiding, automatische synchronisatie en punch-in/out zijn gebouwd.
+De gerichte model-/opname-/hersteltests slagen. De eerdere native X11-plug-inproef
+slaagde op Debian, Fedora en Arch; een nieuwe integratieronde omvat ook echte
+Qt/PulseAudio-loopbackkalibratie. Alle 1427 bronvormen zijn vertaald en de vijf
+volledige offlinehandleidingen bijgewerkt. De 21 taal-/venstercontroles slagen.
+De volledige suite, distributiecontrole en pakketpublicatie zijn nog in uitvoering;
+de stabiele GitHub-release blijft tot afronden 0.18.0.
+
+Vóór v1.0 blijven een fysieke kalibratie/overdub/punchproef en een echte externe
+plug-in met eigen venster nodig, gevolgd door een releasecandidate. De bestaande
+gewone B910-opname-/afspeelproef blijft bevestigd. Zie de concrete lijst onderaan
+het [ontwikkelplan](ONTWIKKELPLAN.md).

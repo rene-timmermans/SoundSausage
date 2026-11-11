@@ -103,3 +103,10 @@ class AutomaticRecordingTests(unittest.TestCase):
         dialog.automatic.setChecked(True)
         self.assertTrue(dialog.settings()['automatic_sync']);self.assertEqual(dialog.settings()['recording_offset_ms'],0)
         dialog.accompaniment.setChecked(False);self.assertFalse(dialog.settings()['automatic_sync'])
+
+    def test_audio_disabled_dialogs_do_not_discover_devices(self):
+        self.window.no_audio=True
+        with patch.object(self.window.audio_devices,'inputs',side_effect=AssertionError('Audio is disabled')) as inputs, patch.object(self.window.audio_devices,'outputs',side_effect=AssertionError('Audio is disabled')) as outputs:
+            for cls in (RecordDialog,CalibrationDialog):
+                dialog=cls(self.window);self.dialogs.append(dialog)
+            inputs.assert_not_called();outputs.assert_not_called()

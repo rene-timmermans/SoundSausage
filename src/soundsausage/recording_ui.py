@@ -87,7 +87,7 @@ class RecordDialog(QDialog):
     def reload(self,selected=None):
         selected=(self.input.currentData() or '') if selected is None else selected
         self.input.clear();self.input.addItem('System Default','')
-        for device in self.devices.inputs():self.input.addItem(Literal(device.description()),bytes(device.id()).hex())
+        for device in (() if self.window.no_audio else self.devices.inputs()):self.input.addItem(Literal(device.description()),bytes(device.id()).hex())
         index=self.input.findData(selected)
         if selected and index<0:self.input.addItem('Selected input (disconnected)',selected);index=self.input.count()-1
         self.input.setCurrentIndex(max(0,index))
@@ -122,6 +122,10 @@ class RecordDialog(QDialog):
             self.rate.setValue(self.window.document.sample_rate)
             self.channels.setCurrentIndex(self.window.document.channels-1)
         elif multi:self.rate.setValue(self.window.session.sample_rate)
+        if self.window.no_audio:
+            self.note.setText('Audio is disabled.');self.calibrate.setEnabled(False)
+            self.box.button(QDialogButtonBox.StandardButton.Ok).setEnabled(False)
+            return
         try:
             device=self.device()
             maximum=min(32,max(1,device.maximumChannelCount() if hasattr(device,'maximumChannelCount') else device.preferredFormat().channelCount()))

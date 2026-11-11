@@ -37,6 +37,9 @@ class CalibrationDialog(QDialog):
 
     def show_profile(self,*_):
         if self._running:return
+        if self.window.no_audio:
+            self.status.setText('Audio is disabled.');self.start_button.setEnabled(False)
+            return
         try:
             profile=read_calibration(self.devices,self.rate.value(),self.first.value()-1)
             if profile:self.status.setText(f"Saved correction: {profile['offset_ms']:.3f} ms")

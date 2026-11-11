@@ -21,6 +21,8 @@ from .icons import application_icon, mascot_icon
 from .resample import resample
 from .manual import ManualDialog
 from .sample_ui import SampleDialog
+from .calibration_ui import CalibrationDialog
+from .recording_ui import RecordDialog
 
 
 def run(window):
@@ -96,8 +98,41 @@ def run(window):
             else:os.environ["SOUNDSAUSAGE_CACHE_DIR"]=previous_cache
         session = Session(8000, dsp=doc.dsp)
         session.import_audio([(doc.read(), 8000, "Selftest")])
+        before = session.render().copy()
+        session.punch_audio(np.array([[.0625, -.125]], np.float32), session.selected_track, 1)
+        punched = session.render().copy()
+        np.testing.assert_array_equal(punched[[0, 2]], before[[0, 2]])
+        np.testing.assert_array_equal(punched[1], [.0625, -.125])
+        session.undo(); np.testing.assert_array_equal(session.render(), before)
+        session.redo(); np.testing.assert_array_equal(session.render(), punched)
         save_project(session, path / "test.celp")
         np.testing.assert_array_equal(load_project(path / "test.celp", dsp=doc.dsp).render(), session.render())
+        from .synchronization import calibration_probe, measure_latency
+        probe, markers = calibration_probe(8000)
+        measured = measure_latency(np.vstack((np.zeros((80, 2), np.float32), probe)), markers, 8000, 0)
+        assert abs(measured['offset_ms'] + 10) < .2
+        if os.environ.get('SOUNDSAUSAGE_TEST_VST3'):
+            from .plugins import scan_plugin, PluginProcess
+            from PySide6.QtTest import QTest
+            registry = os.environ.get('SOUNDSAUSAGE_PLUGIN_REGISTRY')
+            os.environ['SOUNDSAUSAGE_PLUGIN_REGISTRY'] = str(path/'plugins.json')
+            processor = None
+            try:
+                entry = scan_plugin(os.environ['SOUNDSAUSAGE_TEST_VST3'])[0]
+                processor = PluginProcess(dict(plugin_id=entry['id'], name=entry['name'],
+                    fingerprint=entry['fingerprint'], values={'0':.25}), 8000)
+                processor.open_editor()
+                for _ in range(100):
+                    QTest.qWait(20); snapshot = processor.snapshot()
+                    if snapshot['editor_size'] == [400, 220]: break
+                assert snapshot['editor_size'] == [400, 220]
+                assert snapshot['info']['parameters'][0]['value'] == .75
+                processor.close_editor()
+                assert processor.snapshot()['editor_size'] is None
+            finally:
+                if processor is not None: processor.close()
+                if registry is None: os.environ.pop('SOUNDSAUSAGE_PLUGIN_REGISTRY', None)
+                else: os.environ['SOUNDSAUSAGE_PLUGIN_REGISTRY'] = registry
     pitch_source = np.sin(2*np.pi*440*np.arange(8000)/8000).astype(np.float32)[:, None]*.1
     shifted = doc.dsp.process_blocks("pitch_shift", pitch_source, 8000, semitones=12)
     assert shifted.shape == pitch_source.shape and np.isfinite(shifted).all()
@@ -128,6 +163,15 @@ def run(window):
             assert tr('Channel Mixer') in manual.browser.toPlainText()
             assert tr('Audio Hardware') in manual.browser.toPlainText()
             assert tr('Edit Sample') in manual.browser.toPlainText()
+            assert tr('Start Calibration') in manual.browser.toPlainText()
+            assert 'LADSPA' in manual.browser.toPlainText()
+            for cls in (CalibrationDialog, RecordDialog):
+                dialog = cls(window)
+                try:
+                    dialog.show()
+                    assert not dialog.grab().isNull()
+                finally:
+                    dialog.reject(); dialog.deleteLater()
             sample_dialog = SampleDialog(doc, 1, 1, window)
             try:
                 sample_dialog.show()

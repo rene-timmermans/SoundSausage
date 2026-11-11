@@ -83,7 +83,10 @@ jobs:
           cd ..
           dpkg-deb --root-owner-group --build root "soundsausage_${VERSION}-1_amd64.deb"
       - name: Install and smoke test
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
         run: |
+          export SOUNDSAUSAGE_TEST_VST3="$PWD/soundsausage-$VERSION/build/vst3-test-gain.so"
           apt-get install -y ./soundsausage_*_amd64.deb
           cd /tmp
           soundsausage --selftest
@@ -92,6 +95,10 @@ jobs:
           soundsausage --duplex-selftest
       - uses: actions/upload-artifact@v4
         with: { name: debian, path: "soundsausage_*_amd64.deb" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: check-plugin
+          path: soundsausage-*/build/vst3-test-gain.so
 
   ubuntu:
     needs: debian
@@ -104,6 +111,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with: { name: debian }
+      - uses: actions/download-artifact@v4
+        with: { name: check-plugin }
       - name: Install the same package and smoke test
         env:
           UBUNTU_IMAGE: ${{ matrix.image }}
@@ -117,6 +126,7 @@ jobs:
             -v /etc/resolv.conf:/etc/resolv.conf:ro \
             -v "$PWD:/packages:ro" "$UBUNTU_IMAGE" sh -eu <<'UBUNTU_CHECK'
           cd /packages
+          export SOUNDSAUSAGE_TEST_VST3=/packages/vst3-test-gain.so
           cat /etc/resolv.conf
           getent ahostsv4 mirrors.edge.kernel.org
           sed -i -E 's#https?://(archive|security)\.ubuntu\.com/ubuntu/?#http://mirrors.edge.kernel.org/ubuntu/#g' /etc/apt/sources.list.d/ubuntu.sources
@@ -177,7 +187,10 @@ jobs:
           rpmbuild -bb --define '_topdir /tmp/rpmbuild' --define "ss_version $VERSION" "soundsausage-$VERSION/packaging/fedora/soundsausage.spec"
           cp /tmp/rpmbuild/RPMS/x86_64/soundsausage-*.rpm .
       - name: Install and smoke test
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
         run: |
+          export SOUNDSAUSAGE_TEST_VST3="$PWD/soundsausage-$VERSION/build/vst3-test-gain.so"
           dnf install -y ./soundsausage-*.rpm
           cd /tmp
           soundsausage --selftest
@@ -219,7 +232,10 @@ jobs:
           su builder -c 'cd /home/builder/pkg && makepkg --noconfirm'
           cp /home/builder/pkg/soundsausage-*.pkg.tar.zst .
       - name: Install and smoke test
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
         run: |
+          export SOUNDSAUSAGE_TEST_VST3="$PWD/soundsausage-$VERSION/build/vst3-test-gain.so"
           pacman -U --noconfirm soundsausage-*.pkg.tar.zst
           cd /tmp
           soundsausage --selftest
@@ -238,7 +254,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { path: dist, merge-multiple: true }
+        with:
+          path: dist
+          pattern: "!check-plugin"
+          merge-multiple: true
       - name: Tag and publish all tested installers
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

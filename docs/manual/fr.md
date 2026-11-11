@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.18.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.19.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 ## 1. Langue et aide
 
@@ -24,7 +24,7 @@ Deux fines lignes horizontales marquent le bord inférieur du canal gauche et le
 
 Textes WAV, repères et étiquettes sont conservés. Les repères suivent les éditions, collages et exports de sélection ; le titre cible est gardé. Les champs propres aux enregistreurs restent inchangés, sans recalcul après effet. Les métadonnées supplémentaires sont limitées à 16 Mio : une entrée excessive est refusée ; les omissions à l'export demandent confirmation. Le mixage ne fusionne pas les marqueurs des sources. Les gros exports utilisent RF64 si nécessaire.
 
-**Nouvelle session multipiste**, **Ouvrir une session**, **Enregistrer la session** et **Enregistrer la session sous** gèrent les projets éditables. Un projet SoundSausage (`.celp`) contient audio, clips, courbes, réglages de pistes, ordre/contournement/queues d'effets et paramètres VST3. Gardez le projet en plus du WAV final pour retrouver les pistes séparées. Les anciens projets SoundSausage restent lisibles ; les chaînes d'effets nécessitent l'application 0.15.0 ou ultérieure. L'import historique `.ses` est limité ; poursuivez dans un nouveau projet SoundSausage.
+**Nouvelle session multipiste**, **Ouvrir une session**, **Enregistrer la session** et **Enregistrer la session sous** gèrent les projets éditables. Un projet SoundSausage (`.celp`) contient audio, clips, courbes, réglages de pistes, ordre/contournement/queues d'effets et paramètres VST3. Gardez le projet en plus du WAV final pour retrouver les pistes séparées. Les anciens projets SoundSausage restent lisibles ; les projets nouvellement enregistrés nécessitent l’application 0.19.0 ou ultérieure. L'import historique `.ses` est limité ; poursuivez dans un nouveau projet SoundSausage.
 
 **Fermer / Ctrl+W** ferme la forme d'onde courante ; en multipiste, **Fermer la session** ferme la session. Choisissez enregistrer, abandonner ou annuler. L'autre vue et le presse-papiers restent disponibles. **Quitter / Ctrl+Q** quitte en vérifiant les modifications non enregistrées.
 
@@ -142,15 +142,45 @@ En **Déplacer les clips**, glissez le centre pour déplacer, les bords pour rog
 
 Double-clic ou **Édition une copie en forme d’onde** ouvre une copie pour effets hors ligne. **Fenêtre → Appliquer la forme d’onde au clip** réapplique explicitement ; changer de vue seul ne suffit pas. Annuler dans la session restaure audio/courbes. La fréquence est reconvertie, les courbes suivent la nouvelle durée, les clips suivants restent fixes : vérifiez les chevauchements. **Mixer la session / Mixer** exporte toute la session, indépendamment de la sélection, avec muet/solo, gains/pan, courbes, effets et queues. Enregistrer la session garde le projet éditable. Ces réglages changent pendant la lecture ; annuler/changer de vue l'arrête.
 
-## 10. Effets de piste en temps réel et VST3
+## 10. Effets de piste, plug-ins et enregistrement
 
-Ouvrez **FX** près de la piste ou **Effets → Effets de piste**. Ajoutez un effet, choisissez réglages/préréglage ; OK ajoute, Appliquer modifie sans fermer. Monter/descendre change l'ordre, coche contourne, modifier/double-clic édite, supprimer retire. Jusqu'à 16 effets s'exécutent de haut en bas après gain/courbes/fondus du clip, avant volume/pan de piste. Le mono devient stéréo. La queue après dernier clip ajoute 0–60 s. Les chaînes suivent lecture, mixage, projet et récupération. Redémarrer/chercher/contourner vide la mémoire d'effet ; une édition interne peut relancer la queue, les paramètres VST3 gardent l'instance.
+Ouvrez **FX** près d’une piste ou **Effets → Effets de piste**. Ajoutez un effet, choisissez réglages/préréglage et confirmez avec OK ; Appliquer modifie sans fermer. Modifier/double-clic rouvre les réglages. Monter/descendre change l’ordre, la coche contourne, Supprimer retire. Les changements ont Annuler/Rétablir. Au plus seize effets agissent après gain/courbes/fondus du clip, avant volume/pan de piste. Le mono devient stéréo. La queue après dernier clip ajoute 0–60 secondes. Lecture et mixage utilisent la même chaîne sans modifier les sources.
 
-Les chaînes temps réel proposent amplification fixe, mélangeur de canaux, dynamique, EQ graphique/paramétrique, filtres, délai, écho, réverbération, inversion et VST3. Utilisez la courbe de volume pour un gain variable. Normalisation, bruit/clics, temps/hauteur, distorsion et convolution restent hors ligne. Appliquer actualise pendant l'écoute ; l'audio déjà tamponné garde les anciens réglages. Les sources restent intactes.
+Les chaînes proposent amplification fixe, mélangeur, dynamique, EQ graphique/paramétrique, filtres, délai, écho, réverbération, inversion et plug-ins externes. Appliquer actualise à l’écoute ; l’audio déjà tamponné garde les anciens réglages. Redémarrage, recherche et changement de contournement vident la mémoire d’effet. Normalisation, restauration, temps/hauteur, distorsion et convolution restent des modifications via Modifier une copie en forme d’onde. Utilisez la courbe de volume pour varier le gain du clip.
 
-Installez un **effet audio VST3 Linux natif 64 bits**, choisissez Plug-in VST3 puis **Ajouter un paquet VST3** et son dossier `.vst3`. Plusieurs effets apparaissent séparément. Cherchez les paramètres et changez leur position normalisée 0–100 % (50 % ne signifie pas forcément demi-volume). Les paramètres discrets ont des pas ; ceux en lecture seule restent fixes. Appliquer écoute sur la piste ; OK confirme/ferme. L'éditeur propre du plug-in n'est pas intégré. Pris en charge : un bus stéréo d'entrée/sortie, traitement float32. Pas de VST2, VST Windows, instruments MIDI, sidechains ni autres formats. Les exigences manquantes sont signalées sans modifier le projet.
+### VST3, LV2 et LADSPA
 
-Le délai du plug-in est affiché sans compensation automatique entre pistes. Un processus auxiliaire isole chaque plug-in ; plantage, délai dépassé ou audio invalide arrête la lecture et conserve la prise. Le projet stocke paramètres et au plus 1 Mio d'état par effet, pas le code ni bibliothèques/échantillons externes. Sur une autre machine, installez/ajoutez le paquet correspondant. Une version manquante/modifiée garde les réglages mais exige le bon effet ou un contournement volontaire ; rien n'est supprimé silencieusement.
+Installez un **effet audio Linux natif 64 bits**. Dans Effets de piste, choisissez **Plug-in externe → Ajouter**, le format, puis **Ajouter un plug-in**. Sélectionnez un ensemble `.vst3`, `.lv2` ou une bibliothèque LADSPA (`.so`). Les effets d’un ensemble apparaissent séparément. Choisissez l’effet, cherchez un paramètre et changez sa position normalisée 0–100 % : 50 % ne signifie pas forcément demi-volume. Les paramètres discrets ont des pas ; ceux en lecture seule restent fixes. Appliquer permet l’écoute sur la piste ; OK confirme/ferme.
+
+**Ouvrir la fenêtre du plug-in** ouvre un éditeur VST3/LV2 compatible. Ses paramètres et son état enregistrable sont repris à la confirmation. Les fenêtres propres nécessitent **X11 ou XWayland**. Les commandes générales restent disponibles si l’éditeur manque ou n’est pas compatible ; LADSPA les utilise toujours. Les éditeurs LV2 nécessitant un adaptateur GTK/Qt ne sont pas intégrés.
+
+VST3 accepte un bus stéréo d’entrée/sortie en float32. LV2/LADSPA acceptent les effets mono/stéréo avec autant d’entrées que de sorties ; les effets mono ont une instance par canal stéréo. Instruments MIDI, sidechains supplémentaires, VST2 et plug-ins Windows ne sont pas pris en charge. Les fonctions/ports LV2 requis mais indisponibles sont signalés ; le traitement MIDI/Atom est absent. Un état LV2 nécessitant des fichiers externes ne peut pas être sauvegardé complètement et déclenche un message : choisissez un effet dont l’état est autonome.
+
+Chaque plug-in tourne dans un processus isolé. Plantage, délai dépassé ou audio invalide arrêtent la lecture en préservant l’audio enregistré. Les projets gardent paramètres et au plus 1 Mio d’état par effet. Installez séparément le plug-in, ses bibliothèques/échantillons externes. Sur une autre machine, ajoutez la même version. Les versions absentes/modifiées sont signalées ; lecture/export nécessitent l’effet correspondant ou un contournement volontaire.
+
+### Compensation du retard des plug-ins
+
+Le retard de traitement algorithmique déclaré est compensé par piste en lecture et mixage. Les retards d’une chaîne s’additionnent ; les changements de réglage/contournement actualisent le traitement. Positions et durée du mix restent identiques. Écho musical, prédélai et réverbération restent audibles. La compensation dépend d’une déclaration correcte et est limitée à dix secondes par piste. Un retard invalide ou changeant continuellement déclenche un message.
+
+### Accompagnement et synchronisation
+
+Placez l’accompagnement sur des pistes, choisissez piste cible et curseur. Appuyez sur **R**, choisissez entrée et destination nouveau clip, puis **Lire les pistes existantes pendant l’enregistrement**. Les pistes jouent avec leurs effets ; l’entrée n’est pas renvoyée aux haut-parleurs. **P** suspend/reprend les deux ; **Arrêter/Échap/Espace/R** conserve la prise en une étape d’annulation. Rejeter supprime seulement cette prise. Une panne d’appareil/plug-in conserve l’audio capturé.
+
+**Synchronisation automatique** relie le placement à l’horloge de lecture et mesure l’écart entre horloges d’entrée/sortie. Une mesure assez longue et fiable corrige légèrement la durée après Arrêter. Une mesure courte/instable n’étire pas la prise. Elle ne mesure pas le trajet physique entrée/sortie.
+
+Pour ce trajet, choisissez **Options → Étalonner l’enregistrement**, ou le bouton d’étalonnage du dialogue. Choisissez les mêmes appareils, fréquence, premier canal d’entrée et tampon que pour enregistrer. Reliez sortie et entrée avec un câble de bouclage adapté. Un microphone près d’un haut-parleur inclut aussi le délai acoustique. Commencez à faible niveau. **Démarrer l’étalonnage** joue des impulsions faibles pendant environ six secondes, sans retour de l’entrée. Seul un résultat fiable est enregistré ; silence, saturation, ambiguïté ou instabilité conservent un ancien bon profil. Vérifiez avec une courte prise ; refaites l’étalonnage après changement d’appareils/réglages.
+
+La synchronisation automatique utilise le profil correspondant. Sans profil, la synchronisation d’horloge fonctionne, mais un retard physique peut rester. Sinon, désactivez l’automatisme et utilisez **Décalage de position d’enregistrement** : négatif avance, positif retarde ; −15 ms corrige une prise en retard de 15 ms. Les corrections automatique et manuelle s’excluent.
+
+### Punch-in/out
+
+Choisissez une piste cible et une plage sur la règle multipiste ou via **Édition → Définir la sélection**. Choisissez **Options → Punch-in/out** ou **Maj+R**. Réglez entrée, synchronisation, **Prélecture** (2 s) et **Fondu enchaîné** (5 ms). La sélection fixe les limites d’enregistrement ; l’accompagnement est activé.
+
+L’entrée est préparée avant la lecture. L’original joue pendant la prélecture. Dans l’intervalle choisi, seule la piste cible est coupée pendant la capture de remplacement ; les autres continuent. Après une courte finalisation de synchronisation, l’enregistrement s’arrête automatiquement. Seul l’audio corrigé dans la sélection devient un nouveau clip.
+
+Les fondus mélangent ancien/nouveau dans les limites, au plus 100 ms. L’audio extérieur reste intact. Les clips originaux gardent leurs sources, la zone punch étant recouverte. Ctrl+Z restaure tout en une étape. Sur l’ancien clip, **Restaurer l’audio recouvert** retire toutes ses zones de recouvrement ; supprimez/coupez la nouvelle prise pour éviter d’entendre les deux. Un arrêt anticipé garde seulement la partie capturée dans l’intervalle. Avant l’intervalle, il ne modifie pas la session ; la prise brute reste dans **Fichier → Récupérer le travail**. La récupération d’une prise non confirmée propose l’audio brut, avec prélecture/fin, à placer manuellement. Les zones punch terminées sont sauvegardées dans le projet et la récupération après plantage.
+
+**Enregistrer la session / Enregistrer la session sous** garde audio, clips, courbes, chaînes, état des plug-ins et zones punch. Ouvrir une session les restaure ; le mixage exporte WAV/MP3 avec les mêmes effets. Gardez le projet pour les pistes séparées. Les projets nouvellement enregistrés nécessitent SoundSausage **0.19.0 ou ultérieur** ; les anciennes versions de projet restent lisibles. Un plug-in absent n’empêche pas l’ouverture/récupération des sources.
 
 ## 11. Enregistrer avec accompagnement
 
@@ -181,4 +211,4 @@ Le décalage de position déplace le clip inséré : négatif plus tôt, positif
 
 Pas d'entrée : vérifiez périphérique/canal et niveau micro Linux, reconnectez puis recommencez. Pas de sortie : routage, volume, muet/solo et matériel audio. Distorsion/crêtes rouges : baissez le gain cumulé, normalisez avant PCM ; collage mixé et clips superposés s'additionnent. Collage refusé : vérifiez canaux ou durée exacte de remplacement mono. Effet désactivé : ouvrez une forme/copie ; mélangeur exige stéréo, changements de durée les deux canaux. Points au lieu des clips : choisissez déplacer les clips. Disque plein : libérez de la place sans effacer de fichiers de travail actifs. Récupération endommagée : les originaux restent ; supprimez la copie seulement si inutile.
 
-En développement : éditeurs propres aux plug-ins, autres formats, compensation latence/dérive automatique, punch-in/out, favoris personnalisés et éditeur de marqueurs. Chaînes temps réel, Linux VST3 et accompagnement sont disponibles comme décrit. Enregistrez avant de quitter. Actualités : [SoundSausage](https://github.com/rene-timmermans/SoundSausage).
+En développement : favoris personnalisés et éditeur de marqueurs. Chaînes temps réel, Linux VST3 et accompagnement sont disponibles comme décrit. Enregistrez avant de quitter. Actualités : [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

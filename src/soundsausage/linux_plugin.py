@@ -156,8 +156,12 @@ class Ladspa(PortPlugin):
             raise AudioError('Invalid LADSPA descriptor.')
         ports=[]
         for index in range(desc.count):
-            flags=desc.ports[index];hint=desc.hints[index];h=hint.flags
+            flags=desc.ports[index]
             if bool(flags&1)==bool(flags&2) or bool(flags&4)==bool(flags&8):raise AudioError('Invalid LADSPA port direction or type.')
+            if flags&8:
+                ports.append(Port(index,desc.names[index].decode('utf-8','replace'),'audio',bool(flags&1)))
+                continue
+            hint=desc.hints[index];h=hint.flags
             factor=rate if h&8 else 1
             low=float(hint.low)*factor if h&1 else 0
             high=float(hint.high)*factor if h&2 else 1

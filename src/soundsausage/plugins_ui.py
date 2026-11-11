@@ -69,7 +69,7 @@ class PluginDialog(QDialog):
             self.values.update(settings.get('values',{}))
             for parameter in self.parameters:self.parameter.addItem(Literal(parameter['name']),str(parameter['id']))
             latency=self.process.info['latency']*1000/self.session.sample_rate
-            self.status.setText(f"{entry['name']} · Plug-in delay: {latency:.2f} ms (without automatic compensation)" if latency else Literal(entry['name']))
+            self.status.setText(f"{entry['name']} · Plug-in delay: {latency:.2f} ms (automatically compensated)" if latency else Literal(entry['name']))
             self.editor_button.setEnabled(entry.get('format')!='LADSPA')
             self.button_box.button(QDialogButtonBox.StandardButton.Ok).setEnabled(True);self.show_parameter()
         except (ValueError,OSError,RuntimeError) as error:self.status.setText(str(error));self.value.setEnabled(False);self.editor_button.setEnabled(False)

@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.18.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.19.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 ## 1. Idioma y ayuda
 
@@ -24,7 +24,7 @@ Dos finas líneas horizontales marcan el borde inferior del canal izquierdo y el
 
 Se conservan textos WAV, marcadores y etiquetas. Los marcadores siguen las ediciones, pegados y exportaciones de selección; se mantiene el título de destino. Los campos específicos de grabadoras se conservan literalmente y no se recalculan después de efectos. Los metadatos adicionales tienen un límite de 16 MiB: se rechaza una entrada mayor y se confirman las omisiones al exportar. La mezcla no reúne todos los marcadores de origen. Los WAV grandes usan RF64 cuando hace falta.
 
-**Nueva sesión multipista**, **Abrir sesión**, **Guardar sesión** y **Guardar sesión como** gestionan proyectos editables. Un proyecto SoundSausage (`.celp`) contiene audio, clips, curvas, ajustes de pistas, orden/omisión/colas de efectos y ajustes VST3. Guarda el proyecto además del WAV final para conservar las pistas separadas. Los proyectos SoundSausage anteriores siguen siendo legibles; las cadenas de efectos requieren la aplicación 0.15.0 o posterior. La importación antigua `.ses` es limitada; continúa en un proyecto SoundSausage nuevo.
+**Nueva sesión multipista**, **Abrir sesión**, **Guardar sesión** y **Guardar sesión como** gestionan proyectos editables. Un proyecto SoundSausage (`.celp`) contiene audio, clips, curvas, ajustes de pistas, orden/omisión/colas de efectos y ajustes VST3. Guarda el proyecto además del WAV final para conservar las pistas separadas. Los proyectos SoundSausage anteriores siguen siendo legibles; los proyectos nuevos guardados requieren la aplicación 0.19.0 o posterior. La importación antigua `.ses` es limitada; continúa en un proyecto SoundSausage nuevo.
 
 **Cerrar / Ctrl+W** cierra la forma de onda actual; en multipista se llama **Cerrar sesión**. Elige guardar, descartar o cancelar. La otra vista y el portapapeles siguen disponibles. **Salir / Ctrl+Q** cierra la aplicación y comprueba los cambios sin guardar.
 
@@ -142,15 +142,45 @@ En **Mover clips**, arrastra el centro para mover y los bordes para recortar; se
 
 Doble clic o **Editar copia en forma de onda** abre una copia para efectos sin tiempo real. **Ventana → Aplicar forma de onda al clip** devuelve expresamente el resultado; cambiar de vista no lo aplica. Deshacer en sesión restaura audio/curvas. Se reconvierte muestreo, las curvas siguen la duración y los clips posteriores quedan fijos: comprueba solapamientos. **Mezclar sesión / Mezclar** exporta toda la sesión sin depender de la selección, con silencio/solo, ganancias/pan, curvas, efectos y colas. Guardar sesión conserva el proyecto editable. Estos ajustes cambian durante reproducción; deshacer/cambiar vista la detiene.
 
-## 10. Efectos de pista en tiempo real y VST3
+## 10. Efectos de pista, plug-ins y grabación
 
-Abre **FX** junto a la pista o **Efectos → Efectos de pista**. Añade efecto, elige ajustes/preajuste; Aceptar añade y Aplicar cambia sin cerrar. Subir/bajar cambia orden, marca omite, editar/doble clic modifica y quitar elimina. Hasta 16 efectos se ejecutan de arriba abajo tras ganancia/curvas/fundidos del clip y antes de volumen/pan de pista. Mono pasa a estéreo. Cola tras último clip añade 0–60 s. Las cadenas sirven en reproducción, mezcla, proyecto y recuperación. Reiniciar/buscar/omitir vacía memoria; editar efectos internos puede reiniciar cola, los parámetros VST3 conservan instancia.
+Abra **FX** junto a la pista o **Efectos → Efectos de pista**. Añada un efecto, elija ajustes/preajuste y confirme con Aceptar; Aplicar cambia sin cerrar. Editar/doble clic reabre los ajustes. Subir/bajar cambia orden, la marca omite y Quitar elimina. Los cambios tienen Deshacer/Rehacer. Hasta dieciséis efectos actúan tras ganancia/curvas/fundidos del clip y antes de volumen/pan de pista. Mono pasa a estéreo. La cola tras el último clip añade 0–60 segundos. Reproducción y mezcla usan la misma cadena sin cambiar las fuentes.
 
-Las cadenas en tiempo real admiten amplificación fija, mezclador, dinámica, EQ gráfico/paramétrico, filtros, retardo, eco, reverberación, inversión y VST3. Para variar ganancia usa la curva de volumen. Normalización, ruido/clics, tiempo/tono, distorsión y convolución siguen sin tiempo real. Aplicar actualiza mientras escuchas; el audio ya almacenado usa ajustes anteriores. Los orígenes no cambian.
+Se ofrecen amplificación fija, mezclador, dinámica, EQ gráfico/paramétrico, filtros, retardo, eco, reverberación, inversión y plug-ins externos. Aplicar actualiza mientras escucha; el audio ya almacenado conserva los ajustes previos. Reiniciar, buscar y cambiar omisión vacían la memoria del efecto. Normalización, restauración, tiempo/tono, distorsión y convolución siguen siendo ediciones mediante Editar copia en forma de onda. Use la curva de volumen para variar la ganancia del clip.
 
-Instala un **efecto VST3 nativo de Linux de 64 bits**, elige complemento VST3, **Añadir paquete VST3** y su carpeta `.vst3`. Varios efectos aparecen por separado. Busca parámetros y cambia su posición normalizada 0–100 % (50 % no significa necesariamente medio volumen). Los discretos tienen pasos y los de solo lectura no cambian. Aplicar permite escuchar en pista; Aceptar confirma/cierra. No se integra su editor propio. Se admite un bus estéreo de entrada/salida y procesamiento float32. Sin VST2, VST Windows, instrumentos MIDI, cadenas laterales ni otros formatos. Las funciones no admitidas se notifican sin cambiar el proyecto.
+### VST3, LV2 y LADSPA
 
-Se muestra el retardo del complemento sin compensarlo entre pistas. Cada uno usa un proceso auxiliar: fallo, tiempo agotado o audio inválido detiene reproducción y conserva la toma. El proyecto guarda parámetros y hasta 1 MiB de estado por efecto, no código ni bibliotecas/muestras externas. En otro equipo instala/añade el paquete coincidente. Versiones ausentes/cambiadas conservan ajustes pero exigen el efecto adecuado o una omisión deliberada; no se eliminan silenciosamente.
+Instale un **efecto de audio nativo de Linux de 64 bits**. En Efectos de pista elija **Plug-in externo → Añadir**, formato y **Añadir plug-in**. Seleccione un paquete `.vst3`, `.lv2` o biblioteca LADSPA (`.so`). Los efectos del paquete aparecen por separado. Elija el efecto, busque parámetros y cambie su posición normalizada 0–100 %: 50 % no significa necesariamente medio volumen. Los discretos tienen pasos; los de solo lectura quedan fijos. Aplicar permite escuchar en la pista; Aceptar confirma/cierra.
+
+**Abrir ventana del plug-in** abre un editor VST3/LV2 compatible. Sus parámetros y estado guardable se incluyen al confirmar. Las ventanas propias requieren **X11 o XWayland**. Los controles generales siguen disponibles si el editor falta o no es compatible; LADSPA siempre los utiliza. Los editores LV2 que requieren un adaptador GTK/Qt no se integran.
+
+VST3 admite un bus estéreo de entrada/salida con float32. LV2/LADSPA admiten efectos mono/estéreo con igual número de entradas/salidas; los efectos mono usan una instancia por canal estéreo. Instrumentos MIDI, cadenas laterales adicionales, VST2 y plug-ins de Windows no están admitidos. Se indican funciones/puertos LV2 obligatorios no disponibles; no hay procesamiento MIDI/Atom. El estado LV2 que necesita archivos externos no puede guardarse completo y genera un mensaje: elija un efecto con estado autónomo.
+
+Cada plug-in se ejecuta en un proceso aislado. Fallo, tiempo agotado o audio no válido detienen la reproducción conservando lo grabado. Los proyectos guardan parámetros y hasta 1 MiB de estado por efecto. Instale aparte el plug-in y sus bibliotecas/muestras externas. En otro equipo añada la misma versión. Las versiones ausentes/cambiadas se indican; reproducir/exportar requiere el efecto correspondiente o una omisión deliberada.
+
+### Compensación del retardo de plug-ins
+
+El retardo algorítmico declarado se compensa por pista al reproducir y mezclar. Los retardos de la cadena se suman; cambios de ajustes/omisión actualizan el procesamiento. Posiciones y duración de mezcla no cambian. Eco musical, retardo previo y reverberación siguen audibles. La compensación depende de datos correctos del plug-in y admite hasta diez segundos por pista. Un retardo no válido o continuamente cambiante genera un mensaje.
+
+### Acompañamiento y sincronización
+
+Coloque acompañamiento en pistas, elija pista destino y cursor. Pulse **R**, elija entrada y destino nuevo clip y active **Reproducir pistas existentes al grabar**. Las pistas suenan con efectos; la entrada no se envía a altavoces. **P** pausa/reanuda ambos; **Detener/Esc/Espacio/R** conserva la toma como un paso de Deshacer. Descartar elimina solo esta toma. Un fallo de dispositivo/plug-in conserva el audio capturado.
+
+**Sincronización automática** vincula posición al reloj de reproducción y mide la diferencia de relojes de entrada/salida. Una medición larga y fiable corrige suavemente la duración tras Detener. Una medición corta/inestable no estira la toma. Esto no mide la ruta física de entrada/salida.
+
+Para medirla, use **Opciones → Calibrar grabación** o el botón del diálogo de grabación. Elija los mismos dispositivos, frecuencia, primer canal y búfer que para grabar. Conecte salida y entrada con un cable de bucle adecuado. Un micrófono cerca de un altavoz incluye el retardo acústico. Empiece a bajo nivel. **Iniciar calibración** reproduce pulsos suaves durante unos seis segundos sin monitorizar la entrada. Solo se guardan resultados fiables; silencio, saturación, ambigüedad o inestabilidad conservan un perfil previo correcto. Compruebe con una toma corta; recalibre si cambia dispositivos/ajustes.
+
+La sincronización automática aplica el perfil correspondiente. Sin perfil funciona la sincronización de reloj, pero puede quedar retardo físico. Como alternativa desactive el automatismo y use **Desplazamiento de posición de grabación**: negativo antes, positivo después; −15 ms corrige una toma que llega 15 ms tarde. La corrección manual y automática se excluyen.
+
+### Punch-in/out
+
+Elija pista destino y un intervalo en la regla multipista o con **Editar → Establecer selección**. Use **Opciones → Punch-in/out** o **Mayús+R**. Configure entrada, sincronización, **Pregrabación** (2 s) y **Fundido cruzado** (5 ms). La selección fija los límites de grabación; el acompañamiento queda activado.
+
+La entrada se prepara antes de reproducir. Durante la pregrabación suena el original. Dentro del intervalo se silencia solo la pista destino mientras se graba el reemplazo; las demás siguen sonando. Tras una breve finalización para sincronizar, se detiene automáticamente. Solo el audio corregido dentro de la selección se añade como nuevo clip.
+
+Los fundidos mezclan antiguo/nuevo dentro de los límites, hasta 100 ms. El audio exterior queda intacto. Los clips originales conservan las fuentes y se cubre la región punch. Ctrl+Z restaura todo en un paso. En el clip antiguo use **Restaurar audio cubierto** para eliminar todas sus regiones cubiertas; borre/silencie la toma nueva para no oír ambas. Detener antes de tiempo conserva solo la parte capturada dentro del intervalo. Antes del intervalo no cambia la sesión; la toma bruta queda en **Archivo → Recuperar trabajo**. Recuperar una toma sin confirmar ofrece el audio bruto, con pregrabación/final, para colocarlo manualmente. Las regiones punch completadas se conservan en el proyecto y la recuperación tras fallo.
+
+**Guardar sesión / Guardar sesión como** conserva audio, clips, curvas, cadenas, estado de plug-ins y regiones punch. Abrir sesión los restaura; la mezcla exporta WAV/MP3 con los mismos efectos. Conserve el proyecto para editar pistas separadas. Los proyectos nuevos guardados requieren SoundSausage **0.19.0 o posterior**; los anteriores siguen legibles. Los plug-ins ausentes no impiden abrir/recuperar las fuentes.
 
 ## 11. Grabar con acompañamiento
 
@@ -181,4 +211,4 @@ El desplazamiento de posición mueve el clip insertado: negativo antes, positivo
 
 Sin entrada: revisa dispositivo/canal y nivel de micrófono Linux, reconecta y empieza otra toma. Sin salida: comprueba ruta, volumen, silencio/solo y dispositivos. Distorsión/picos rojos: baja ganancia sumada y normaliza antes de PCM; pegar mezclando y clips solapados suman. Pegado rechazado: revisa canales o duración exacta del reemplazo mono. Efecto desactivado: abre forma/copia; mezclador necesita estéreo y cambios temporales ambos canales. Puntos en lugar de clips: elige mover clips. Disco lleno: libera espacio sin borrar archivos de trabajo activos. Recuperación dañada: quedan originales; elimina copia solo si ya no hace falta.
 
-En desarrollo: editores propios de complementos, más formatos, compensación automática de latencia/deriva, punch-in/out, favoritos personalizados y editor de marcadores. Cadenas en tiempo real, Linux VST3 y acompañamiento están disponibles como se describe. Guarda antes de salir. Novedades: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).
+En desarrollo: favoritos personalizados y editor de marcadores. Cadenas en tiempo real, Linux VST3 y acompañamiento están disponibles como se describe. Guarda antes de salir. Novedades: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

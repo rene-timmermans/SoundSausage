@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: plugin-check-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   plugins:
     runs-on: ubuntu-latest
@@ -59,4 +62,5 @@ jobs:
           chown pulse:pulse /tmp/soundsausage-pulse
           env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' --load='module-remap-source master=soundsausage_test.monitor source_name=soundsausage_loopback source_properties=device.description=SoundSausageLoopback' || { cat /tmp/soundsausage-pulse.log; exit 1; }
           make all
-          python3 -m unittest test_plugins test_linux_plugins test_realtime test_session test_synchronization test_automatic_recording test_punch test_punch_gui test_synchronization_backend -v
+          make test
+          SOUNDSAUSAGE_TEST_VST3="$PWD/build/vst3-test-gain.so" python3 -m soundsausage --selftest

@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.18.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.19.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -1017,128 +1017,65 @@ Volume, pan, mute, solo en spoorketens kunnen tijdens het luisteren veranderen.
 Dezelfde spoorketen wordt bij mixdown gebruikt. Ongedaan maken/Redo en wisselen van weergave
 stoppen het afspelen. De bronopnamen blijven behouden.
 
-## 8a. Spooreffecten, VST3 en opnemen met begeleiding
+## 8a. Spooreffecten, plug-ins en opname met begeleiding
 
-### Een effectketen op een spoor
+### Spooreffecten
 
-Openen een multitracksessie en klik op **FX** naast de spoornaam, of kies
-**Effecten → Spooreffecten** voor het gekozen spoor. Kies een effect en druk
-op **Toevoegen**. Het effectvenster gebruikt dezelfde instellingen en presets als de
-golfvormeditor. **OK** voegt het effect toe; **Toepassen** past de instelling toe
-terwijl het venster openblijft. De oorspronkelijke audio blijft behouden.
+Klik op **FX** naast een spoor of kies **Effecten → Spooreffecten**. Kies een effect en druk op **Toevoegen**. **OK** bevestigt; **Toepassen** verandert de instelling terwijl het venster openblijft. Dubbelklik of **Bewerken** opent de instellingen opnieuw. **Omhoog/Omlaag** verandert de volgorde; het vinkje schakelt een effect tijdelijk uit. **Verwijderen** haalt het uit de keten. Wijzigingen hebben Undo/Redo.
 
-De keten ondersteunt Versterken, Kanalenmixer, Dynamiek, Grafische EQ, Parametrische EQ,
-Filters, Vertraging, Echo, Galm, Ompolen en VST3-effecten. Een spoor heeft maximaal
-zestien effecten. Een monobron wordt eerst naar stereo gekopieerd. Clipvolume,
-panlijnen en fades werken vóór de spoorketen; spoorvolume en spoorpan erna.
+Een keten bevat maximaal zestien effecten: vaste versterking, kanaalmixer, dynamiek, grafische/parametrische EQ, filters, vertraging, echo, galm, ompolen en externe plug-ins. Clipvolume, lijnen en fades werken vóór de keten; spoorvolume en spoorpan erna. Mono wordt eerst stereo. Met **Uitklank na laatste clip** voeg je maximaal zestig seconden toe. Afspelen en eindmix gebruiken dezelfde keten. De bronnen blijven behouden.
 
-- Dubbelklik op een effect, of kies **Bewerken**, om de instellingen te wijzigen.
-- **Omhoog / Omlaag** verplaatst het effect. De volgorde kan het geluid veranderen.
-- Het vinkje schakelt een effect tijdelijk uit. **Verwijderen** verwijdert het.
-- **Ctrl+Z / Ctrl+Shift+Z** maakt een wijziging ongedaan of voert haar opnieuw uit.
-- **Uitklank na laatste clip** voegt 0–60 seconden toe om delay of galm te laten
-  uitsterven. Zonder extra tijd eindigt het spoor op de laatste clipgrens;
-  een langer ander spoor kan de bestaande uitklank nog laten horen.
+**Toepassen** werkt tijdens luisteren; al naar het apparaat gestuurde audio behoudt de vorige instelling. Starten, zoeken en bypasswissels beginnen met nieuw effectgeheugen. Voor normaliseren, restauratie, tijd/toonhoogte, vervorming en convolutie gebruik je **Kopie in golfvorm bewerken**. Een volumeverloop teken je met **Volumelijn** op de clip.
 
-De keten werkt tijdens afspelen en komt ook in Eindmix maken terecht. Volume, pan,
-mute, solo en effectinstellingen kunnen tijdens luisteren veranderen. **Toepassen**
-bevestigt een effectinstelling. Al naar het audioapparaat gestuurde audio speelt
-nog met de vorige instelling. Bij opnieuw starten, zoeken of opnieuw inschakelen
-begint het effectgeheugen leeg. Een gewijzigde interne effectinstelling kan de
-uitklank opnieuw beginnen. Een VST3-parameterwijziging houdt dezelfde instantie.
+### VST3, LV2 en LADSPA toevoegen
 
-Versterken gebruikt vaste versterking per kanaal; voor een verloop in de tijd
-gebruik je de **Volumelijn** van een clip. Normaliseren, ruisreductie, klikherstel,
-Tijdsduur aanpassen, Toonhoogte verschuiven, Vervorming en Convolutie blijven golfvormbewerkingen via
-**Kopie in golfvorm bewerken**. Een realtime keten verandert de bronbestanden niet.
+1. Installeer een native **64-bit Linux-audio-effect**.
+2. Kies **Externe plug-in** in Spooreffecten en klik **Toevoegen**.
+3. Kies het formaat en **Plug-in toevoegen**: een `.vst3`-bundel, `.lv2`-bundel of LADSPA-bibliotheek (`.so`). Effecten uit dezelfde bundel verschijnen afzonderlijk.
+4. Kies het effect. Zoek een parameter op naam en wijzig de genormaliseerde positie van 0–100%. Vijftig procent betekent niet automatisch half volume. Discrete parameters hebben stappen; alleen-lezen parameters blijven vast.
+5. **Toepassen** laat de instelling op het spoor horen; **OK** bevestigt en sluit.
 
-### VST3-effecten toevoegen
+Met **Plug-invenster openen** gebruik je het eigen venster van een ondersteunde VST3- of LV2-plug-in. Parameters en bewaarbare status uit dat venster worden meegenomen bij bevestigen. De eigen vensters vereisen **X11 of XWayland**. Bij een ontbrekend of niet-ondersteund venster blijven de algemene parameterregelaars beschikbaar. LADSPA gebruikt deze regelaars altijd. LV2-vensters die een GTK-/Qt-adapter vereisen, worden niet ingebed.
 
-1. Installeer een **64-bit Linux VST3-effect** en zoek de map met uitgang
-   `.vst3`. Gebruik de Linux-uitgave van de maker.
-2. Kies **VST3-plug-in → Toevoegen** in Spooreffecten en klik **VST3-bundel toevoegen**.
-3. Kies de bundelmap. Meerdere effecten uit dezelfde bundel worden afzonderlijk
-   beschikbaar in de keuzelijst.
-4. Kies het effect. Zoek de parameter op naam en wijzig de waarde. **Toepassen**
-   laat de gewijzigde instelling op het spoor horen; **OK** bevestigt en sluit.
+VST3 ondersteunt één stereo-invoerbus en één stereo-uitvoerbus met float32-verwerking. LV2 en LADSPA ondersteunen mono- en stereo-effecten met evenveel in- en uitgangen; een mono-effect krijgt per stereokanaal een eigen instantie. MIDI-instrumenten, extra sidechains, VST2 en Windows-plug-ins worden niet ondersteund. Verplichte LV2-functies of poorttypen die niet beschikbaar zijn, worden gemeld; MIDI/Atom-verwerking ontbreekt. LV2-status die externe bestanden vereist, kan niet volledig worden opgeslagen en geeft een melding. Kies daarvoor een effect met zelfstandig bewaarbare status.
 
-Het parametervenster gebruikt een genormaliseerde schaal van 0–100%. Dit is de
-positie binnen het bereik van de plug-in: 50% betekent niet automatisch 50%
-volume. Discrete parameters krijgen passende stappen. Alleen-lezen parameters
-kunnen niet worden veranderd. De oorspronkelijke eigen vensters van plug-ins
-zijn nog niet ingebed.
+Plug-ins draaien in een apart hulpproces. Een crash, vastloper of ongeldige audio stopt het afspelen met een melding; de vastgelegde opname blijft bewaard. Projecten bewaren parameters en maximaal 1 MiB status per effect. De plug-in en eigen bibliotheken, samples of responsbestanden blijven apart geïnstalleerd. Voeg op een andere computer dezelfde versie toe. Ontbrekende of gewijzigde plug-ins worden gemeld; afspelen/export vraagt om het passende effect of bewust uitschakelen.
 
-Ondersteund zijn native Linux VST3-audio-effecten met één stereo-invoerbus,
-één stereo-uitvoerbus en 32-bit floatverwerking. MIDI-instrumenten, extra
-sidechains, VST2, Windows-VST's en andere plug-informaten vallen hierbuiten.
-Sommige effecten vereisen extra hostfuncties en kunnen niet openen. De app meldt
-dat en verandert het project niet. Een gerapporteerde plug-invertraging staat
-in het venster; die wordt nog niet automatisch tussen sporen gecompenseerd.
+### Automatische plug-invertraging
 
-Plug-ins draaien in een afzonderlijk hulpproces. Als een plug-in stopt,
-onbruikbare audio terugstuurt of niet meer antwoordt, stopt het afspelen met een
-melding. Tijdens opname met begeleiding blijft de vastgelegde take behouden.
-De rest van de app en de bronopnamen blijven beschikbaar. Dit maakt een niet
-passende plug-in nog niet geschikt voor realtime gebruik.
+Gerapporteerde **verwerkingsvertraging** van plug-ins wordt automatisch per spoor gecompenseerd, tijdens afspelen en eindmix. Vertragingen in een keten worden opgeteld; bypass en gewijzigde instellingen worden opnieuw verwerkt. De tijdlijn en mixduur blijven gelijk. Een muzikale echo, voorvertraging of galm blijft hoorbaar: deze hoort bij het effect. Compensatie vereist een juiste melding door de plug-in en is begrensd tot tien seconden per spoor. Een ongeldige of voortdurend veranderende vertraging geeft een melding.
 
-Een project bewaart de parameterwaarden en maximaal 1 MiB status per VST3-effect.
-De plug-in en eventuele eigen bibliotheken, samples of responsbestanden blijven
-apart geïnstalleerd. Op een andere computer voeg je dezelfde bundel toe. Bij een
-ontbrekende of gewijzigde versie blijven de opgeslagen instellingen bestaan;
-afspelen en export vragen om een passende plug-in of om bewust uitschakelen van
-het effect. Opnieuw toevoegen van een gewijzigde bundel maakt die versie
-beschikbaar als nieuwe keuze. Er wordt niet stilzwijgend zonder het effect gemixt.
+### Opnemen met begeleiding en synchronisatie
 
-### Opnemen terwijl andere sporen spelen
+Zet begeleiding op sporen, kies het doelspoor en plaats de cursor. Druk **R**, kies ingang en nieuwe clip als bestemming en vink **Bestaande sporen afspelen tijdens opnemen** aan. De bestaande sporen spelen met effecten; de ingang wordt niet via de luidsprekers teruggespeeld. **P** pauzeert/hervat beide; **Stoppen/Esc/Spatie/R** houdt de take als één Undo-stap. **Opname verwerpen** verwijdert alleen de nieuwe take. Bij apparaat- of plug-inverlies blijft vastgelegde audio behouden.
 
-1. Zet de begeleiding op één of meer sporen.
-2. Kies een ander spoor en plaats de cursor waar de nieuwe take moet beginnen.
-3. Druk **R**, kies de ingang en **Nieuw clip on…** als bestemming.
-4. Vink **Bestaande sporen afspelen tijdens opnemen** aan. De bestaande sporen,
-   inclusief hun effecten, spelen vanaf de cursor terwijl de nieuwe take wordt
-   vastgelegd. De microfoon zelf wordt niet door de luidsprekers teruggespeeld.
-5. **P** pauzeert beide; opnieuw **P** hervat beide. **Stoppen**, **Esc**, **Spatie**
-   of opnieuw **R** stopt de begeleiding en bewaart de take als één Ongedaan maken-stap.
+**Automatische synchronisatie** koppelt de opnamepositie aan de afspeelklok en meet het verschil tussen de in- en uitvoerklokken. Bij voldoende lange, betrouwbare metingen wordt de opnamelengte na Stop voorzichtig gecorrigeerd. Een korte of onstabiele meting rekt de take niet op. Dit vervangt geen meting van de fysieke in-/uitvoerroute.
 
-Aan het einde van de begeleiding kan de opname doorgaan. Een opname met een
-maximale duur stopt ook de begeleiding. **Opname verwerpen** verwijdert alleen
-de nieuwe take. Gaat een apparaat of plug-in verloren, dan blijven de reeds
-opgenomen samples behouden. Bestanden en sporen wijzigen tijdens opnemen is
-vergrendeld. Voor een golfvormopname blijft de afzonderlijke opnamebediening gelden.
+Voor die route kies je **Opties → Opname kalibreren**, of de kalibratieknop in het opnamevenster:
 
-#### De opnamepositie afstellen
+1. Kies dezelfde apparaten, samplerate, eerste ingangskanaal en buffer als voor de opname.
+2. Verbind uitgang en ingang met een geschikte loopbackkabel. Een microfoon bij een luidspreker kan ook; dan telt de akoestische looptijd mee. Begin met een laag niveau.
+3. Klik **Kalibratie starten**. Ongeveer zes seconden zachte testpulsen meten de verbinding. De ingang wordt niet teruggespeeld.
+4. Alleen een betrouwbaar resultaat wordt opgeslagen. Bij stilte, oversturing, onduidelijke signalen of instabiele timing volgt een melding; een eerdere goede kalibratie blijft bestaan.
+5. Controleer de plaatsing met een korte proeftake. Gebruik na wijziging van apparaat, samplerate, ingang of buffer een passende nieuwe kalibratie.
 
-De app koppelt de startpositie aan de afspeelklok en de vastgelegde invoerframes.
-De fysieke in-/uitvoerroute kan extra vertraging hebben. Met **Opnemen position
-offset** verschuif je het nieuwe blok: negatief is eerder, positief later.
-Een waarde van −15 ms corrigeert bijvoorbeeld een take die 15 ms te laat staat.
-De instelling wordt onthouden; de opgenomen bron zelf blijft behouden.
+Het profiel hoort bij de gekozen apparaatcombinatie en instellingen. Automatische synchronisatie past de opgeslagen routecorrectie toe. Zonder profiel blijft kloksynchronisatie beschikbaar, maar kan fysieke vertraging overblijven. Als alternatief schakel je automatisch uit en gebruik je **Opnamepositie verschuiven**: negatief is eerder, positief later. Een take die 15 ms te laat staat vraagt bijvoorbeeld −15 ms. Handmatige en automatische correctie worden niet bij elkaar opgeteld.
 
-Neem een bekende testklik via de gebruikte in-/uitvoerroute op en vergelijk de
-klikposities. Vul het gemeten verschil in en controleer met een tweede take.
-Gebruik bij een andere geluidsinterface of andere bufferinstelling een nieuwe
-meting. Als de verschuiving vóór tijd nul komt, wordt het deel vóór nul bij het
-invoegen weggelaten; de oorspronkelijke take blijft bij een mislukte verwerking
-voor herstel beschikbaar.
+### Punch-in/out: alleen een passage opnieuw opnemen
 
-Automatische fysieke latencykalibratie, compensatie van plug-invertraging,
-correctie van klokdrift tussen verschillende apparaten en punch-in/out zijn
-vervolgstappen. Nauwkeurige gelijkloop over lange takes hangt ook van de gebruikte
-apparaatklokken af. Controleer de gekozen in-/uitvoerroute met een korte proeftake.
+1. Open Multitrack, kies het doelspoor en selecteer het gewenste tijdvak op de tijdlijn of met **Bewerken → Selectie instellen**.
+2. Kies **Opties → Punch-in/out** of **Shift+R**. In het opnamevenster staat **Punch-in/out in selectie**.
+3. Stel ingang, synchronisatie, **Voorloop** (standaard 2 s) en **Overgang** (standaard 5 ms) in. De selectie bepaalt de opnamegrenzen; begeleiding is ingeschakeld.
+4. Start. De ingang warmt eerst op; daarna speelt de oorspronkelijke passage tijdens de voorloop. Binnen het gekozen interval wordt alleen het doelspoor gedempt, terwijl de nieuwe take wordt opgenomen. Andere sporen blijven spelen.
+5. Na het interval stopt de opname automatisch, met een korte afronding voor synchronisatie. Alleen de gecorrigeerde audio binnen de selectie komt als nieuwe clip op het spoor.
 
-### Nieuwe projecten bewaren en heropenen
+Een korte overgang mengt oud en nieuw binnen de selectiegrenzen, maximaal 100 ms. Audio buiten het interval blijft behouden. De oorspronkelijke clips blijven eveneens bewaard: een punch dekt hun betreffende gedeelte af. **Ctrl+Z** herstelt de vorige situatie in één stap. Selecteer de oude clip en kies **Afgedekte audio herstellen** om zijn afdekking op te heffen; verwijder of demp de nieuwe take als die anders tegelijk hoorbaar wordt. Deze opdracht herstelt alle afgedekte gebieden van de gekozen clip.
 
-**Sessie opslaan / Sessie opslaan als** bewaart de gebruikte audio, clips, lijnen,
-spoorketens, volgorde, bypass, uitklanktijden en VST3-instellingen. **Sessie openen**
-herstelt die bewerkbare sessie. **Sessie mixen** bewaart één WAV met dezelfde
-spoorketens en de ingestelde uitklank. Het project blijft nodig om afzonderlijke
-sporen verder te veranderen.
+Vroeg stoppen bewaart alleen het werkelijk opgenomen deel binnen het interval. Stoppen vóór het interval verandert de sessie niet; de ruwe take blijft beschikbaar via **Bestand → Werk herstellen**. Herstel van een nog niet bevestigde opname biedt de ruwe take aan, inclusief eventuele voor-/naloop, zodat je die zelf kunt plaatsen. Een voltooide punch wordt met zijn afdekking in project en crashherstel bewaard.
 
-Nieuwe projecten gebruiken de bijgewerkte projectversie. Eerdere
-SoundSausage-projectversies blijven te openen. Oudere appversies kunnen de nieuwe
-spoorketens niet lezen; gebruik versie 0.16.0 of nieuwer om ze te heropenen.
-Herstel na onverwacht afsluiten bewaart de ketens en plug-ininstellingen eveneens.
-Een ontbrekende externe plug-in verhindert het herstellen van de bronopnamen niet.
+### Sessies bewaren en heropenen
+
+**Sessie opslaan / Sessie opslaan als** bewaart gebruikte audio, clips, lijnen, spoorketens, plug-ininstellingen en punchgebieden. **Sessie openen** herstelt deze bewerkbare sessie. **Eindmix maken** maakt een WAV of MP3 met dezelfde effecten. Bewaar het project om afzonderlijke sporen te kunnen blijven veranderen. Nieuwe projecten vereisen SoundSausage **0.19.0 of nieuwer**; eerdere projectversies blijven leesbaar. Een ontbrekende plug-in verhindert het openen en herstellen van de bronnen niet.
 
 ## 9. Een andere samplerate kiezen
 
@@ -1207,9 +1144,7 @@ golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
   blijven beschikbaar. Verwijder de betreffende kopie alleen wanneer je die niet
   meer wilt bewaren.
 
-Eigen plug-invensters, meer plug-informaten, automatische latency-/driftcompensatie,
-punch-in/out en een markereditor zijn vervolgmogelijkheden. Realtime spoorketens,
-Linux VST3 en opname met begeleiding zijn beschikbaar zoals in hoofdstuk 8a beschreven.
+Een markereditor en zelfgekozen favorieten blijven vervolgmogelijkheden. Spooreffecten, VST3/LV2/LADSPA, synchronisatie en punch-in/out zijn beschikbaar zoals in hoofdstuk 8a beschreven.
 
 Bewaar een project voordat je de toepassing verlaat. De actuele voortgang en
 nieuwe versies staan op de [SoundSausage-website](https://github.com/rene-timmermans/SoundSausage).

@@ -1,4 +1,4 @@
-# SoundSausage 0.18.0
+# SoundSausage 0.19.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -36,7 +36,11 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Multitrack met maximaal 32 sporen, clips verplaatsen, trimmen en dupliceren.
 - Volume, pan, mute/solo en bewerkbare volume- en panlijnen per clip.
 - Realtime spooreffecten met volgorde, bypass, bewerkbare instellingen, uitklank en Undo/Redo.
-- Linux VST3 in een apart hulpproces, met parameters en componentstatus in project en herstel.
+- Linux VST3, LV2 en LADSPA in aparte hulpprocessen, met parameters en bewaarbare status in project en herstel.
+- Eigen X11/XWayland-vensters voor ondersteunde VST3- en LV2-effecten; algemene parameterregelaars als alternatief.
+- Automatische compensatie van gerapporteerde plug-invertraging tijdens afspelen en mixdown.
+- Apparaatgebonden opnamekalibratie, automatische klokdriftcorrectie en een handmatig alternatief.
+- Punch-in/out binnen een selectie, met voorloop, korte overgangen, Undo en behoud van originele clips.
 - Opnemen met begeleiding, samen pauzeren/stoppen en een onthouden opnameverschuiving.
 - Nieuwe projecten bewaren audio, clips, lijnen en spoorketens; mixdown gebruikt dezelfde ketens.
 - Zelfstandige projecten met ingebedde audio en WAV-mixdown.
@@ -68,8 +72,13 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Stereo heeft een gezamenlijke tijdas. Duurwijzigingen, knippen, verwijderen, trimmen en opname in de bestaande golfvorm vereisen beide kanalen.
 - Op één stereokanaal plakken kan bij gelijke vervangingsduur; Mix Paste blijft binnen de bestaande lengte.
 
-- Externe effecten ondersteunen native Linux VST3 met één stereo-invoer/-uitvoerbus en float32. Geen VST2, Windows-plug-ins, MIDI-instrumenten of extra sidechains.
-- Plug-invensters gebruiken generieke parameters; eigen editors en automatische plug-inlatencycompensatie ontbreken.
+- VST3: één stereo-invoer/-uitvoerbus en float32. LV2/LADSPA: mono/stereo met evenveel in-/uitgangen. Geen VST2, Windows-plug-ins, MIDI-instrumenten of extra sidechains.
+- Eigen vensters vereisen X11/XWayland; LV2 GTK-/Qt-adapters en MIDI/Atom-poorten ontbreken. Niet-ondersteunde vereiste functies worden gemeld.
+- Compensatie vereist correct gerapporteerde algoritmische vertraging, maximaal tien seconden per spoor. Muzikale delay blijft intact.
+- LV2-status met externe bestanden wordt niet als volledig bewaarbaar geaccepteerd.
+- Opnamekalibratie vereist een herkenbaar loopbacksignaal; alleen betrouwbare resultaten worden bewaard. Korte/onstabiele klokmetingen rekken audio niet op.
+- Een profiel hoort bij apparaten, rate, ingangskanaal en buffer; veranderde instellingen vragen een passende kalibratie.
+- Punch-in/out vervangt één spoorinterval per take; herstel van een nog onbevestigde take biedt de ruwe opname aan om handmatig te plaatsen.
 - Een plug-in en zijn eigen externe bestanden blijven apart geïnstalleerd; gewijzigde/ontbrekende plug-ins worden gemeld.
 - Normalize, restauratie, tijd/toonhoogte, vervorming en convolutie blijven golfvormbewerkingen. Amplify, Channel Mixer, Dynamics, EQ, filters, delay, echo, galm en Invert zijn ook realtime spooreffecten.
 - Starten, zoeken of bypass inschakelen begint met nieuw effectgeheugen. Spoorketens zijn begrensd tot zestien effecten en 60 seconden uitklank per spoor.
@@ -88,7 +97,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Bijzondere metadata wordt letterlijk bewaard; afgeleide meetgegevens worden niet opnieuw berekend.
 - Een eindmix voegt markers of tags uit verschillende bronnen nog niet samen.
 - De audiobackend rapporteert de verwerkte frames; exacte fysieke luidsprekerlatentie en naadloos lussen zijn niet gegarandeerd.
-- Bestaande sporen kunnen tijdens een multitrackopname spelen. Punch-in/out, automatische fysieke latencykalibratie en driftcompensatie tussen apparaten ontbreken; opnamepositie is handmatig afstelbaar.
+- Virtuele loopback en onafhankelijke plug-infixtures toetsen synchronisatie; de nieuwe kalibratie-/punchroute en eigen vensters vragen ook fysieke praktijkcontrole vóór v1.0.
 - Uitvoer vereist een door Qt ondersteund mono-/stereoapparaat; multikanaals routering ontbreekt.
 - Virtuele in-/uitvoercontroles zijn geautomatiseerd; opname, pauze/hervatten en terugluisteren zijn ook met een USB-microfoon in de praktijk bevestigd.
 - Dithering en een markereditor ontbreken nog.
