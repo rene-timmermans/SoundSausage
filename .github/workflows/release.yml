@@ -115,7 +115,7 @@ jobs:
           cd /packages
           cat /etc/resolv.conf
           getent ahostsv4 mirrors.edge.kernel.org
-          sed -i -E 's|https?://(archive|security)\.ubuntu\.com/ubuntu/?|http://mirrors.edge.kernel.org/ubuntu/|g' /etc/apt/sources.list.d/ubuntu.sources
+          sed -i -E 's#https?://(archive|security)\.ubuntu\.com/ubuntu/?#http://mirrors.edge.kernel.org/ubuntu/#g' /etc/apt/sources.list.d/ubuntu.sources
           for attempt in 1 2 3; do
             if apt-get -o APT::Update::Error-Mode=any -o Acquire::ForceIPv4=true -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update; then
               break
