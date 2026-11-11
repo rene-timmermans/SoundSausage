@@ -183,6 +183,7 @@ def recover_take(owner):
 class Recorder(QObject):
     state_changed=Signal(str)
     samples=Signal(object,object)  # bounded decoded block, total captured frames
+    timing=Signal(object)  # native input frames received, including the skipped start
     finished=Signal(object)
     failed=Signal(str)
 
@@ -219,6 +220,7 @@ class Recorder(QObject):
             self._tail=b''
             self._skip_remaining=round(skip_start_ms*self.format.sampleRate()/1000)
             self.skipped_frames=0
+            self.received_frames=0
             self._fade_frames=max(2,round(self.format.sampleRate()*.005)) if self._skip_remaining else 0
             self._fade_position=0
             self.take=Take(self.format.sampleRate(),channels,device.description())
@@ -241,6 +243,7 @@ class Recorder(QObject):
         if self._draining or self._io is None or (self.state!='Recording' and not force):return
         self._draining=True
         try:
+            previous_received=self.received_frames
             # Qt 6.8's read device may report zero while QAudioSource itself
             # has buffered input. Query both through their public APIs.
             available=max(0,self._io.bytesAvailable(),self.source.bytesAvailable())
@@ -252,6 +255,7 @@ class Recorder(QObject):
                 length=len(raw)//self.format.bytesPerFrame()*self.format.bytesPerFrame()
                 self._tail=raw[length:]
                 if not length:continue
+                self.received_frames+=length//self.format.bytesPerFrame()
                 skipped=min(self._skip_remaining,length//self.format.bytesPerFrame())
                 self._skip_remaining-=skipped;self.skipped_frames+=skipped
                 raw=raw[skipped*self.format.bytesPerFrame():length]
@@ -265,10 +269,14 @@ class Recorder(QObject):
                         gain=np.arange(self._fade_position,self._fade_position+count,dtype=np.float32)/(self._fade_frames-1)
                         data[:count]*=gain[:,None];self._fade_position+=count
                     self.take.append(data);self.samples.emit(data,self.take.frames)
+                    if self.take is None or self.source is None:return
                 if self._limit is not None and self.take.frames>=self._limit:
                     generation=self._generation
                     QTimer.singleShot(0,lambda:self.stop() if generation==self._generation else None)
                     break
+            if self.source is not None and self.take is not None and self.received_frames>previous_received:
+                queued=max(0,self._io.bytesAvailable(),self.source.bytesAvailable())//self.format.bytesPerFrame()
+                self.timing.emit(self.received_frames+queued)
         except (ValueError,OSError,RuntimeError) as error:self._fail(str(error))
         finally:self._draining=False
 
@@ -280,6 +288,11 @@ class Recorder(QObject):
                 self._set_state('Paused');self._timer.stop();self.source.suspend()
         elif self.state=='Paused':
             self._set_state('Recording');self._timer.start();self.source.resume();self._drain()
+
+    def limit_from_now(self,seconds):
+        if not self.active or self.take is None or not np.isfinite(seconds) or seconds<=0:
+            raise AudioError('Invalid remaining recording duration.')
+        self._limit=self.take.frames+max(1,round(seconds*self.format.sampleRate()))
 
     def _release_source(self):
         self._timer.stop()

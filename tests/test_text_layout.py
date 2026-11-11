@@ -29,11 +29,12 @@ from soundsausage.recording_ui import RecordDialog
 from soundsausage.trackfx_ui import TrackEffectsDialog
 from soundsausage.plugins_ui import PluginDialog
 from soundsausage.sample_ui import SampleDialog
+from soundsausage.calibration_ui import CalibrationDialog
 
 EFFECTS=(AmplifyDialog,ChannelMixerDialog,DynamicsDialog,EnvelopeDialog,NormalizeDialog,
          GraphicEqualizerDialog,ParametricEqualizerDialog,FilterDialog,DelayDialog,EchoDialog,ReverbDialog,
          NoiseReductionDialog,ClickRemovalDialog,StretchDialog,PitchShiftDialog,DistortionDialog,ConvolutionDialog)
-OTHERS=(AboutDialog,ManualDialog,AudioHardwareDialog,RecordDialog,TrackEffectsDialog,PluginDialog,SpectrumDialog,SampleDialog)
+OTHERS=(AboutDialog,ManualDialog,AudioHardwareDialog,RecordDialog,TrackEffectsDialog,PluginDialog,SpectrumDialog,SampleDialog,CalibrationDialog)
 
 
 def visible_label_errors(dialog):

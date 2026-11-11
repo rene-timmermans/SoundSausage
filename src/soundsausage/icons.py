@@ -311,6 +311,17 @@ def draw(p, name, color):
         for x, y in ((2, 17), (8, 9), (15, 15), (22, 6)): rect(x-1, y-1, 2, 2)
         line(7, 2, 7, 5); line(5, 4, 7, 2); line(9, 4, 7, 2)
         line(7, 15, 7, 22); line(5, 20, 7, 22); line(9, 20, 7, 22)
+    elif name == "calibrate":
+        p.drawEllipse(QRectF(8, 8, 13, 13));line(14.5,10,14.5,14.5);line(14.5,14.5,18,16)
+        line(2,5,19,5);line(2,5,6,2);line(19,5,15,8)
+        line(3,10,3,20);line(1,15,5,15)
+    elif name == "punch":
+        line(4,3,4,21);line(20,3,20,21);line(1,12,7,12);line(17,12,23,12)
+        p.setBrush(color);p.drawEllipse(QRectF(8,8,8,8))
+    elif name == "restore_punch":
+        line(3,4,3,20);line(21,4,21,20)
+        line(6,13,9,7);line(9,7,13,18);line(13,18,18,10)
+        line(7,3,16,3);line(7,3,10,1);line(7,3,10,6)
     elif name == "audio_hardware":
         rect(3, 6, 18, 15); p.drawEllipse(QRectF(6, 9, 4, 4)); p.drawEllipse(QRectF(14, 9, 4, 4))
         line(7, 16, 17, 16); line(8, 2, 8, 6); line(16, 2, 16, 6)

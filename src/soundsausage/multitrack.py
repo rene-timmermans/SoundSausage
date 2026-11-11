@@ -300,6 +300,12 @@ class Timeline(EnvelopeTimeline, QWidget):
                     painter.drawPolygon(envelope_polygon(minimum, maximum, channel, left, right-left, center, scale, 1.1))
                     painter.setBrush(Qt.BrushStyle.NoBrush)
             self.draw_envelopes(painter, clip, row, accent_on_plot)
+            for first,last,fade in clip.punch_ranges:
+                begin=max(clip.start,clip.start+first-clip.source_start)
+                end=min(clip.end,clip.start+last-clip.source_start)
+                if end>begin:
+                    left=max(rect.left(),self.x_at(begin));right=min(rect.right(),self.x_at(end))
+                    painter.fillRect(QRectF(left,rect.top()+self.clip_title_height,max(0,right-left),rect.height()-self.clip_title_height),QColor(5,12,14,190))
             painter.setPen(QPen(accent_on_plot if selected else QColor("#7aa79a"), 2 if selected else 1))
             painter.drawRect(rect)
             if clip.fade_in:
@@ -434,6 +440,8 @@ class Timeline(EnvelopeTimeline, QWidget):
             menu.addAction("Clip Properties…", self.clip_properties.emit)
             menu.addAction("Edit Copy in Waveform", lambda: self.edit_copy.emit(hit[2].id))
             menu.addAction("Duplicate Clip", self.editor.duplicate_clip)
+            if hit[2].punch_ranges:
+                menu.addAction(make_icon('restore_punch',colors()),'Restore Covered Audio',lambda:self.editor.guarded(lambda:self.session.configure_clip(hit[2].id,punch_ranges=())))
             menu.addAction("Remove Clip", self.editor.remove_clip)
             menu.exec(event.globalPos())
 

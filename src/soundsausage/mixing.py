@@ -6,6 +6,7 @@ from .session import balance
 from .trackfx import Rack
 from . import storage
 from .operations import progress
+from .punch import gain as punch_gain
 
 
 class TrackStream:
@@ -23,16 +24,36 @@ class TrackStream:
     def raw(self,track,count):
         a,b=self.raw_position,self.raw_position+count
         output=np.zeros((count,2),np.float32)
-        for clip in track.clips:
+        for index,clip in enumerate(track.clips):
+            if index%32==31:progress(0,1,'Sporen mixen')
             if clip.muted:continue
             left,right=max(a,clip.start),min(b,clip.end)
             if right<=left:continue
             offset=left-clip.start
             source=self.owner.media[clip.media_id].samples[clip.source_start+offset:clip.source_start+offset+right-left]
             cl,cr=balance(clip.gain,clip.pan)
-            self.owner.session.dsp.mix_add(output[left-a:right-a],source,0,offset,clip.frames,
-                clip.fade_in,clip.fade_out,cl,cr,source_offset=clip.source_start+offset,
-                volume_envelope=clip.volume_envelope,pan_envelope=clip.pan_envelope)
+            target=output[left-a:right-a]
+            ranges=clip.punch_ranges
+            if self.owner.punch is not None and self.owner.punch[0]==track.id:
+                _,begin,end,fade=self.owner.punch
+                ranges=(*ranges,(clip.source_start+begin-clip.start,clip.source_start+end-clip.start,fade))
+            gates=punch_gain(ranges,clip.source_start+offset,len(source)) if ranges else None
+            def mix(destination,data,local_offset):
+                self.owner.session.dsp.mix_add(destination,data,0,offset+local_offset,clip.frames,
+                    clip.fade_in,clip.fade_out,cl,cr,source_offset=clip.source_start+offset+local_offset,
+                    volume_envelope=clip.volume_envelope,pan_envelope=clip.pan_envelope)
+            if gates is None:mix(target,source,0)
+            else:
+                # Direct addition outside the covered range retains the exact
+                # original rounding/order, even with overlapping clips and fades.
+                category=np.where(gates==1,1,np.where(gates==0,0,2))
+                boundaries=np.r_[0,np.flatnonzero(np.diff(category))+1,len(source)]
+                for first,last in zip(boundaries[:-1],boundaries[1:]):
+                    if category[first]==1:mix(target[first:last],source[first:last],int(first))
+                    elif category[first]==2:
+                        temporary=np.zeros((last-first,2),np.float32)
+                        mix(temporary,source[first:last],int(first))
+                        target[first:last]+=(temporary*gates[first:last,None]).astype(np.float32)
             storage.release_pages(source)
         self.raw_position=b
         self.rack.process(output,track.effects)
@@ -76,12 +97,19 @@ class TrackStream:
 
 class SessionStream:
     channels = 2
-    def __init__(self, session, start=0, end=None, *, live=True):
+    def __init__(self, session, start=0, end=None, *, live=True,punch=None):
         self.session, self.start = session, start
         self.end = session.frames if end is None else end
         if not 0 <= start <= self.end <= session.sample_rate*86400:
             raise AudioError('Invalid playback range.')
         self.sample_rate = session.sample_rate
+        self.punch=punch
+        if punch is not None:
+            from .session import integer
+            if not isinstance(punch,tuple) or len(punch)!=4:raise AudioError('Invalid punch playback range.')
+            track,begin,finish,fade=punch
+            session.track_index(track);integer(begin,'Punch begin',0,self.sample_rate*86400)
+            integer(finish,'Punch end',begin+1,self.sample_rate*86400);integer(fade,'Crossfade',0,(finish-begin)//2)
         self.frames = self.end-start
         self.tracks = None if live else session.tracks
         self.media = dict(session.media)

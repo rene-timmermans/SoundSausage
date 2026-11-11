@@ -468,6 +468,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         for key in ("cut", "copy", "delete", "trim", "zero", "save_selection", "zoom_selection"):
             self.actions[key].setEnabled(end > start)
         self.update_channel_controls()
+        if 'punch' in self.actions:self.actions['punch'].setEnabled(not self.recording_busy and not self.no_audio and self.mode=='multitrack' and end>start)
         self.update_session_actions()
 
     def choose_channels(self, channels):

@@ -29,6 +29,9 @@ def library():
     lib.ss_vst_editor_size.argtypes=[C.c_void_p,C.POINTER(C.c_int),C.POINTER(C.c_int)];lib.ss_vst_editor_size.restype=C.c_int
     lib.ss_vst_editor_resize.argtypes=[C.c_void_p,C.c_int,C.c_int];lib.ss_vst_editor_resize.restype=C.c_int
     lib.ss_vst_editor_idle.argtypes=[C.c_void_p];lib.ss_vst_editor_idle.restype=C.c_int
+    lib.ss_vst_editor_key.argtypes=[C.c_void_p,C.c_uint16,C.c_int16,C.c_int16,C.c_int];lib.ss_vst_editor_key.restype=C.c_int
+    lib.ss_vst_editor_wheel.argtypes=[C.c_void_p,C.c_float];lib.ss_vst_editor_wheel.restype=C.c_int
+    lib.ss_vst_editor_focus.argtypes=[C.c_void_p,C.c_int];lib.ss_vst_editor_focus.restype=None
     return lib
 
 
@@ -91,3 +94,6 @@ class Vst3:
     def resize_editor(self,width,height): checked(library().ss_vst_editor_resize(self.handle,width,height))
     def close_editor(self): library().ss_vst_editor_close(self.handle)
     def idle(self): checked(library().ss_vst_editor_idle(self.handle))
+    def editor_key(self,key,code,modifiers,down=True):return bool(library().ss_vst_editor_key(self.handle,key,code,modifiers,down))
+    def editor_wheel(self,amount):return bool(library().ss_vst_editor_wheel(self.handle,amount))
+    def editor_focus(self,focused):library().ss_vst_editor_focus(self.handle,focused)

@@ -74,7 +74,7 @@ class Recovery:
                             selection=list(session.selection),cursor=session.cursor,selected_clip=session.selected_clip,
                             selected_track=session.selected_track,dirty=session.dirty,path=str(session.path) if session.path else None,
                             adopt_first_rate=session.adopt_first_rate)
-            record=dict(format='soundsausage-recovery',version=1,time=time.time(),document=doc,session=multitrack,
+            record=dict(format='soundsausage-recovery',version=2,time=time.time(),document=doc,session=multitrack,
                         mode=mode,editing_clip_id=editing_clip_id)
             encoded=json.dumps(record,ensure_ascii=False,allow_nan=False,separators=(',',':')).encode('utf-8')
             if len(encoded)>MAX_JOURNAL_BYTES:
@@ -129,7 +129,7 @@ def restore(owner,dsp=None):
         raise AudioError('The recovery journal is too large.')
     try:
         record=json.loads(path.read_text('utf-8'))
-        if record.get('format')!='soundsausage-recovery' or record.get('version')!=1:
+        if record.get('format')!='soundsausage-recovery' or record.get('version') not in (1,2):
             raise AudioError('Unsupported recovery journal.')
         descriptors=list(record['document']['pieces'])+[item['buffer'] for item in record['session']['media']]
         protected={(storage.cache_root()/item['file']).resolve() for item in descriptors}
@@ -186,6 +186,8 @@ def restore(owner,dsp=None):
                 values=dict(values)
                 for kind in ('volume','pan'):
                     values[kind+'_envelope']=validate_points(values[kind+'_envelope'],kind,len(session._media[values['media_id']].samples))
+                from .punch import validate_ranges
+                values['punch_ranges']=validate_ranges(values.get('punch_ranges',()),len(session._media[values['media_id']].samples))
                 clip=SessionClip(**values)
                 _id(clip.id)
                 if clip.id in clip_ids:raise AudioError('Duplicate recovery clip.')

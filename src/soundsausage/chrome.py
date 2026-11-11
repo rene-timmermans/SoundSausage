@@ -36,6 +36,8 @@ def create_actions(window):
     window.action("record", "Record…", window.record, "R")
     window.actions["record"].setCheckable(True)
     window.actions["record"].setEnabled(not window.no_audio)
+    window.action('calibrate','Calibrate Recording…',window.calibrate_recording)
+    window.action('punch','Punch In/Out…',lambda:window.record(punch=True),'Shift+R')
     window.actions["record"].setToolTip("Record from the selected microphone or audio interface")
     window.action("discard_recording", "Discard Recording…", window.discard_recording)
     window.actions["discard_recording"].setEnabled(False)
@@ -117,7 +119,7 @@ def create_menus(window):
         group.addAction(action);language_menu.addAction(action);window.language_actions[code]=action
     install_language().changed.connect(window.update_language_actions)
     options.addSeparator()
-    add(options, ("audio_hardware", "record", "discard_recording", None, "toolbar_labels", "show_status", None, "loop"))
+    add(options, ("audio_hardware", "calibrate", "record", "punch", "discard_recording", None, "toolbar_labels", "show_status", None, "loop"))
     windows = menu("window", "&Window")
     add(windows, ("mode_wave", "mode_multi", None, "insert_wave", "apply_clip", None, "fullscreen"))
     help_menu = menu("help", "&Help")

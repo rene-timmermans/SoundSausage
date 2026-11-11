@@ -669,6 +669,17 @@ int ss_vst_editor_idle(void* handle) {
   try { static_cast<Instance*>(handle)->editor.tick(); return 0; }
   catch (const std::exception& e) { error = e.what(); return -1; }
 }
+int ss_vst_editor_key(void* handle, uint16 key, int16 code, int16 modifiers, int down) {
+  auto* p = static_cast<Instance*>(handle);
+  if (!p->view) return 0;
+  return (down ? p->view->onKeyDown(key,code,modifiers) : p->view->onKeyUp(key,code,modifiers)) == kResultTrue;
+}
+int ss_vst_editor_wheel(void* handle, float amount) {
+  auto* p = static_cast<Instance*>(handle); return p->view && p->view->onWheel(amount) == kResultTrue;
+}
+void ss_vst_editor_focus(void* handle, int focused) {
+  auto* p = static_cast<Instance*>(handle); if (p->view) p->view->onFocus(focused != 0);
+}
 int ss_vst_process(void *handle, float *data, int frames) {
   try {
     static_cast<Instance *>(handle)->process(data, frames);

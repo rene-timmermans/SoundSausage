@@ -25,20 +25,23 @@ jobs:
       SOUNDSAUSAGE_LANGUAGE: en
       SOUNDSAUSAGE_PLUGIN_UI_TEST: '1'
       DISPLAY: ':97'
+      QT_AUDIO_BACKEND: pulseaudio
+      SOUNDSAUSAGE_AUDIO_TEST: '1'
+      PULSE_SERVER: unix:/tmp/soundsausage-pulse/native
     steps:
       - name: Debian dependencies
         if: matrix.distribution == 'debian'
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends ca-certificates git g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest python3-pyside6.qtmultimedia qt6-qpa-plugins qt6-translations-l10n libsamplerate0 librubberband2 liblilv-0-0 libxcb-cursor0 xvfb fonts-dejavu-core ffmpeg python3-mutagen
+          apt-get install -y --no-install-recommends ca-certificates git g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest python3-pyside6.qtmultimedia qt6-qpa-plugins qt6-translations-l10n libsamplerate0 librubberband2 liblilv-0-0 libxcb-cursor0 xvfb pulseaudio fonts-dejavu-core ffmpeg python3-mutagen
       - name: Fedora dependencies
         if: matrix.distribution == 'fedora'
         run: |
           printf '%s\n' '%_install_langs all' > /etc/rpm/macros.image-language-conf
-          dnf install -y git gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs lilv xorg-x11-server-Xvfb dejavu-sans-fonts ffmpeg-free python3-mutagen
+          dnf install -y git gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs lilv xorg-x11-server-Xvfb pulseaudio dejavu-sans-fonts ffmpeg-free python3-mutagen
       - name: Arch dependencies
         if: matrix.distribution == 'arch'
-        run: pacman -Syu --noconfirm --needed git base-devel pyside6 qt6-multimedia qt6-translations python-numpy libsamplerate rubberband lilv xorg-server-xvfb ttf-dejavu ffmpeg python-mutagen
+        run: pacman -Syu --noconfirm --needed git base-devel pyside6 qt6-multimedia qt6-translations python-numpy libsamplerate rubberband lilv xorg-server-xvfb pulseaudio ttf-dejavu ffmpeg python-mutagen
       - uses: actions/checkout@v4
       - name: Isolated display and plug-in checks
         run: |
@@ -50,5 +53,10 @@ jobs:
           export SOUNDSAUSAGE_CACHE_DIR="$PWD/build/check-cache"
           export XDG_CONFIG_HOME="$PWD/build/check-config"
           export PYTHONPATH=src:tests
+          getent group pulse >/dev/null || groupadd --system pulse
+          id -u pulse >/dev/null 2>&1 || useradd --system --gid pulse --home-dir /tmp/soundsausage-pulse pulse
+          mkdir -p /tmp/soundsausage-pulse
+          chown pulse:pulse /tmp/soundsausage-pulse
+          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' --load='module-remap-source master=soundsausage_test.monitor source_name=soundsausage_loopback source_properties=device.description=SoundSausageLoopback' || { cat /tmp/soundsausage-pulse.log; exit 1; }
           make all
-          python3 -m unittest test_plugins test_linux_plugins test_realtime test_session -v
+          python3 -m unittest test_plugins test_linux_plugins test_realtime test_session test_synchronization test_automatic_recording test_punch test_punch_gui test_synchronization_backend -v

@@ -128,9 +128,14 @@ class Helper:
             if not result.get('ok'):raise AudioError(result.get('error','The plug-in failed.'))
             return result
         except (OSError,ValueError) as error:
-            self.close();raise AudioError(str(error)) from error
+            self.close(graceful=False);raise AudioError(str(error)) from error
 
-    def close(self):
+    def close(self,graceful=True):
+        if graceful and self.process.poll() is None and self.sock.read_fd>=0:
+            try:
+                send(self.sock,dict(op='shutdown'));receive(self.sock,timeout=.15)
+                self.process.wait(timeout=.15)
+            except (OSError,ValueError,subprocess.TimeoutExpired):pass
         self.sock.close()
         if self.process.poll() is None:
             self.process.terminate()

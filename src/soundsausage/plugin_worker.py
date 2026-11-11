@@ -18,6 +18,8 @@ def main():
             message=receive(sock,timeout=86400,poll=idle,poll_interval=.01);op=message.get('op')
             try:
                 if op=='host_info':result=dict(ready=bool(library()))
+                elif op=='shutdown':
+                    send(sock,dict(ok=True));break
                 elif op=='scan':
                     format=message.get('format','VST3')
                     if format=='LV2':
@@ -52,6 +54,8 @@ def main():
                 elif op=='editor_close':
                     if editor is not None:editor.close();editor=None
                     result=dict(open=False)
+                elif op=='editor_key':
+                    result=dict(handled=plugin.editor_key(message['key'],message['code'],message['modifiers'],message.get('down',True)))
                 elif op=='process':
                     frames=message['frames']
                     if type(frames) is not int or not 0<=frames<=1024:raise ValueError('Invalid audio block size.')

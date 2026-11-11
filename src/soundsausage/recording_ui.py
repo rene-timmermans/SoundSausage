@@ -2,6 +2,7 @@
 from .i18n import Literal
 from collections import deque
 from datetime import datetime
+import time
 
 import numpy as np
 from PySide6.QtCore import Qt,QPointF,QRectF,QTimer
@@ -16,8 +17,10 @@ from .capture import Recorder,input_format,recover_take
 from .document import Document
 from .errors import OperationCancelled
 from .progress_ui import long_operation
-from .resample import resample
+from .resample import resample,resample_frames
+from .synchronization import DuplexClock,read_calibration
 from .theme import colors,blend
+from .icons import make_icon
 from .waveform import clock_text
 from .i18n_widgets import set_text
 
@@ -33,6 +36,7 @@ class RecordDialog(QDialog):
         if window.mode=='multitrack':
             name=window.session.tracks[window.session.track_index(window.session.selected_track)].name
             self.target.addItem(f'New clip on {name}','multitrack')
+            if window.session.selected:self.target.addItem('Punch In/Out in Selection','punch')
         elif window.document.frames and not window.document.partial_channels:
             self.target.addItem('Insert at cursor','insert')
             if window.document.selected:self.target.addItem('Replace selection','replace')
@@ -56,6 +60,17 @@ class RecordDialog(QDialog):
         self.offset.setToolTip('Negative moves the new clip earlier; positive moves it later. Calibrate with a loopback recording.')
         form.addRow(self.accompaniment); form.addRow('Recording position offset',self.offset)
         self.offset_label=form.labelForField(self.offset)
+        self.automatic=QCheckBox('Automatic synchronization')
+        self.automatic.setChecked(str(self.devices.settings.value('recording/automatic_sync',True)).lower() in ('true','1'))
+        self.calibrate=QPushButton(make_icon('calibrate',colors()),'Calibrate Recording…');self.calibrate.clicked.connect(self.calibrate_recording)
+        form.addRow(self.automatic,self.calibrate)
+        self.sync_info=QLabel();self.sync_info.setWordWrap(True);form.addRow(self.sync_info)
+        self.pre_roll=QDoubleSpinBox();self.pre_roll.setRange(0,30);self.pre_roll.setDecimals(2);self.pre_roll.setSuffix(' sec')
+        self.pre_roll.setValue(float(self.devices.settings.value('recording/pre_roll_seconds',2)))
+        self.crossfade=QDoubleSpinBox();self.crossfade.setRange(0,100);self.crossfade.setDecimals(1);self.crossfade.setSuffix(' ms')
+        self.crossfade.setValue(float(self.devices.settings.value('recording/punch_fade_ms',5)))
+        form.addRow('Pre-roll',self.pre_roll);self.pre_roll_label=form.labelForField(self.pre_roll)
+        form.addRow('Punch crossfade',self.crossfade);self.crossfade_label=form.labelForField(self.crossfade)
         self.note=QLabel();self.note.setWordWrap(True);form.addRow(self.note)
         guidance=QLabel('Stop keeps the take. Discard removes only this recording.\nThe input is not played through the speakers.')
         guidance.setWordWrap(True);form.addRow(guidance)
@@ -66,6 +81,7 @@ class RecordDialog(QDialog):
         self.devices.inputs_changed.connect(self.reload)
         for field in (self.input,self.target,self.channels):field.currentIndexChanged.connect(self.sync)
         self.rate.valueChanged.connect(self.sync);self.first.valueChanged.connect(self.sync)
+        self.automatic.toggled.connect(self.sync);self.accompaniment.toggled.connect(self.sync)
         self.sync()
 
     def reload(self,selected=None):
@@ -88,9 +104,18 @@ class RecordDialog(QDialog):
 
     def sync(self,*_):
         target=self.target.currentData()
-        existing=target in ('insert','replace');multi=target=='multitrack'
+        existing=target in ('insert','replace');multi=target in ('multitrack','punch');punch=target=='punch'
+        if punch and not self.accompaniment.isChecked():
+            self.accompaniment.blockSignals(True);self.accompaniment.setChecked(True);self.accompaniment.blockSignals(False)
+        self.accompaniment.setEnabled(not punch)
+        self.pre_roll.setVisible(punch);self.pre_roll_label.setVisible(punch)
+        self.crossfade.setVisible(punch);self.crossfade_label.setVisible(punch);self.duration.setEnabled(not punch)
         self.accompaniment.setVisible(multi); self.offset.setVisible(multi)
         self.offset_label.setVisible(multi)
+        self.automatic.setVisible(multi);self.calibrate.setVisible(multi);self.sync_info.setVisible(multi)
+        automatic=multi and self.accompaniment.isChecked() and self.automatic.isChecked()
+        self.automatic.setEnabled(multi and self.accompaniment.isChecked())
+        self.offset.setEnabled(not automatic)
         self.rate.setEnabled(not existing and not multi)
         self.channels.setEnabled(not existing)
         if existing:
@@ -106,6 +131,11 @@ class RecordDialog(QDialog):
             if fmt.channelCount()==1 and self.channels.currentIndex()==1:
                 text+='\nMono input is recorded on both stereo channels.'
             if fmt.sampleRate()!=self.rate.value():text+=f'\nInput at {fmt.sampleRate():,} Hz; the take is converted after Stop.'
+            if punch:text+='\nOnly the selected interval is replaced. Playback starts with pre-roll; recording stops automatically after the selection.'
+            if multi:
+                profile=read_calibration(self.devices,self.rate.value(),self.first.value()-1,input_device=device) if automatic else None
+                self.sync_info.setText(f"Calibrated correction: {profile['offset_ms']:.3f} ms" if profile else
+                    'No calibration for these devices yet. Clock drift is measured while backing tracks play.' if automatic else 'The manual recording position offset is used.')
             self.note.setText(text);self.box.button(QDialogButtonBox.StandardButton.Ok).setEnabled(True)
         except (ValueError,RuntimeError) as error:
             self.note.setText(str(error));self.box.button(QDialogButtonBox.StandardButton.Ok).setEnabled(False)
@@ -113,9 +143,19 @@ class RecordDialog(QDialog):
     def settings(self):
         return dict(target=self.target.currentData(),rate=self.rate.value(),channels=self.channels.currentIndex()+1,
                     first_channel=self.first.value()-1,input_id=self.input.currentData(),
-                    limit_seconds=self.duration.value() or None,skip_start_ms=self.skip_start.value(),
-                    accompaniment=self.target.currentData()=='multitrack' and self.accompaniment.isChecked(),
-                    recording_offset_ms=self.offset.value())
+                    limit_seconds=None if self.target.currentData()=='punch' else self.duration.value() or None,skip_start_ms=self.skip_start.value(),
+                    accompaniment=self.target.currentData() in ('multitrack','punch') and self.accompaniment.isChecked(),
+                    recording_offset_ms=0 if self.target.currentData() in ('multitrack','punch') and self.accompaniment.isChecked() and self.automatic.isChecked() else self.offset.value(),
+                    automatic_sync=self.target.currentData() in ('multitrack','punch') and self.accompaniment.isChecked() and self.automatic.isChecked(),
+                    pre_roll_seconds=self.pre_roll.value(),punch_fade_ms=self.crossfade.value())
+
+    def calibrate_recording(self):
+        from .calibration_ui import CalibrationDialog
+        self.devices.configure(self.devices.output_id,self.devices.buffer_ms,self.input.currentData())
+        dialog=CalibrationDialog(self.window,self,rate=self.rate.value(),first_channel=self.first.value()-1)
+        dialog.exec()
+        if dialog.calibration_result is not None:self.automatic.setChecked(True)
+        dialog.deleteLater();self.sync()
 
 
 class RecordingView(QWidget):
@@ -128,12 +168,13 @@ class RecordingView(QWidget):
         self._paint_timer=QTimer(self);self._paint_timer.setInterval(33);self._paint_timer.timeout.connect(self.plot.update)
         self.note=QLabel('Stop keeps the take. Pause excludes the paused time. Discard removes this take.')
         layout.addWidget(self.note)
+        self.sync_status=QLabel();self.sync_status.setWordWrap(True);layout.addWidget(self.sync_status)
         discard=QPushButton('Discard Recording');discard.clicked.connect(window.discard_recording)
         row=QHBoxLayout();row.addStretch();row.addWidget(discard);layout.addLayout(row)
 
     def reset(self,rate,channels,description):
         self.rate=rate;self.channels=channels;self.frames=0;self.bins.clear()
-        self.heading.setText(f'Recording — {description}');self._paint_timer.start();self.plot.update()
+        self.heading.setText(f'Recording — {description}');self.sync_status.setText('');self._paint_timer.start();self.plot.update()
 
     def feed(self,data,frames):
         start=frames-len(data);step=max(1,self.rate//100);offset=0
@@ -186,69 +227,131 @@ class RecordingActions:
         self.recorder=Recorder(self,devices=self.audio_devices)
         self.recorder.state_changed.connect(self.recording_state)
         self.recorder.samples.connect(self.recording_samples)
+        self.recorder.timing.connect(self.recording_timing)
         self.recorder.finished.connect(self.recording_finished)
         self.recorder.failed.connect(self.recording_failed)
         self.player.failed.connect(self.recording_output_failed)
+        self._punch_wait_timer=QTimer(self);self._punch_wait_timer.setInterval(20);self._punch_wait_timer.timeout.connect(self.begin_punch_playback)
 
     @property
     def recording_busy(self):return self._record_context is not None
 
-    def record(self):
+    def record(self,punch=False):
         if self.no_audio:return
         if self.recorder.active:return self.stop_recording()
         if self.recording_busy:return
+        if punch and (self.mode!='multitrack' or not self.session.selected):
+            self.error('Punch Recording','Select a time range in Multitrack before punching in/out.');return
         self.player.stop()
         dialog=RecordDialog(self)
+        if punch:dialog.target.setCurrentIndex(dialog.target.findData('punch'))
         try:
             if dialog.exec()==QDialog.DialogCode.Accepted:self.start_recording(**dialog.settings())
         finally:
             self.update_recording_actions();dialog.deleteLater()
 
-    def start_recording(self,target='new',rate=44100,channels=2,first_channel=0,input_id=None,limit_seconds=None,accompaniment=False,recording_offset_ms=0,skip_start_ms=None):
+    def start_recording(self,target='new',rate=44100,channels=2,first_channel=0,input_id=None,limit_seconds=None,accompaniment=False,recording_offset_ms=0,skip_start_ms=None,automatic_sync=None,pre_roll_seconds=2,punch_fade_ms=5):
         if self.recording_busy:return False
-        if target not in ('new','insert','replace','multitrack'):raise AudioError('Invalid recording destination.')
+        if target not in ('new','insert','replace','multitrack','punch'):raise AudioError('Invalid recording destination.')
+        if target=='punch':
+            if self.mode!='multitrack' or not self.session.selected:raise AudioError('Select a time range in Multitrack before punching in/out.')
+            accompaniment=True
+        if not np.isfinite(pre_roll_seconds) or not 0<=pre_roll_seconds<=30 or not np.isfinite(punch_fade_ms) or not 0<=punch_fade_ms<=100:
+            raise AudioError('Invalid punch pre-roll or crossfade.')
         if target in ('insert','replace') and self.document.partial_channels:
             raise AudioError('Choose Both channels to record into an existing stereo waveform.')
         if target=='new' and not self._confirm_discard():return False
         if target in ('insert','replace') and (rate!=self.document.sample_rate or channels!=self.document.channels):
             raise AudioError('Recording into a waveform requires its sample rate and channel count.')
         if target=='replace' and not self.document.selected:raise AudioError('Select audio to replace first.')
-        if target=='multitrack' and rate!=self.session.sample_rate:raise AudioError('Use the session sample rate for recording.')
-        if accompaniment and target!='multitrack': raise AudioError('Playback accompaniment requires a multitrack recording.')
+        if target in ('multitrack','punch') and rate!=self.session.sample_rate:raise AudioError('Use the session sample rate for recording.')
+        if accompaniment and target not in ('multitrack','punch'): raise AudioError('Playback accompaniment requires a multitrack recording.')
+        if automatic_sync is not None and type(automatic_sync) is not bool:raise AudioError('Invalid automatic synchronization setting.')
+        if automatic_sync and not accompaniment:raise AudioError('Automatic synchronization requires playback accompaniment.')
+        if automatic_sync and recording_offset_ms:raise AudioError('Choose automatic synchronization or a manual recording offset.')
         if not np.isfinite(recording_offset_ms) or not -2000<=recording_offset_ms<=2000: raise AudioError('Invalid recording position offset.')
         if skip_start_ms is not None and (not np.isfinite(skip_start_ms) or not 0<=skip_start_ms<=500):
             raise AudioError('Choose a recording start skip between 0 and 500 ms.')
         if input_id is not None:self.audio_devices.configure(self.audio_devices.output_id,self.audio_devices.buffer_ms,input_id)
         self.player.stop()
+        profile=read_calibration(self.audio_devices,rate,first_channel) if automatic_sync else None
         start,end=self.document.selection if target=='replace' else (self.active_model().cursor,self.active_model().cursor)
+        if target=='punch':
+            punch_in,end=self.session.selection;start=max(0,punch_in-round(pre_roll_seconds*rate))
         if target=='multitrack':
             remaining=86400-start/rate
             if remaining<=0:raise AudioError('The recording would exceed the 24-hour timeline.')
             limit_seconds=min(limit_seconds,remaining) if limit_seconds is not None else remaining
         self._record_context=dict(target=target,rate=rate,channels=channels,start=start,end=end,
                                   accompaniment=bool(accompaniment),recording_offset_ms=recording_offset_ms,
+                                  automatic_sync=bool(automatic_sync),calibration=profile,clock=None,
                                   playback_loop=self.player.loop,
                                   document=self.document,session=self.session,revision=self.active_model().revision,
                                   track=self.session.selected_track,
                                   actions={key:action.isEnabled() for key,action in self.actions.items()})
+        if target=='punch':
+            self._record_context.update(punch_in=punch_in,punch_out=end,punch_fade=round(punch_fade_ms*rate/1000),
+                play_started=False,play_end=min(rate*86400,end+round(rate*2.25)),wait_deadline=time.monotonic()+2)
+            self.audio_devices.settings.setValue('recording/pre_roll_seconds',pre_roll_seconds)
+            self.audio_devices.settings.setValue('recording/punch_fade_ms',punch_fade_ms)
+            limit_seconds=None
         self.update_recording_actions()
-        if accompaniment and start<self.session.frames:
+        if accompaniment and target!='punch' and start<self.session.frames:
             self.player.loop=False
             self.player.play_session(self.session,start,self.session.frames)
             if self.player.state=='Stopped':
                 if self.recording_busy:self.end_recording_view()
                 return False
-        self.audio_devices.settings.setValue('recording/offset_ms',recording_offset_ms)
+        if not automatic_sync:self.audio_devices.settings.setValue('recording/offset_ms',recording_offset_ms)
+        if automatic_sync is not None:self.audio_devices.settings.setValue('recording/automatic_sync',bool(automatic_sync))
         if skip_start_ms is not None:
             self.audio_devices.settings.setValue('recording/skip_start_ms',skip_start_ms)
             self.audio_devices.settings.sync()
         ok=self.recorder.start(rate,channels,first_channel,limit_seconds,skip_start_ms=skip_start_ms or 0)
         if not ok and self.recording_busy:self.end_recording_view()
+        elif ok and target=='punch':self._punch_wait_timer.start()
         return ok
+
+    def begin_punch_playback(self):
+        context=self._record_context
+        if context is None or context['target']!='punch' or not self.recorder.active:
+            self._punch_wait_timer.stop();return
+        if self.recorder.state=='Paused':return
+        if self.recorder.take.frames<self.recorder.format.sampleRate()*.1:
+            if time.monotonic()>context['wait_deadline']:
+                self._punch_wait_timer.stop();self.recorder.stop()
+                self.error('Punch Recording','The input did not start in time. Check the recording device.')
+            return
+        self._punch_wait_timer.stop();self.player.loop=False
+        self.player.play_session(self.session,context['start'],context['play_end'],punch=(context['track'],context['punch_in'],context['punch_out'],min(context['punch_fade'],(context['punch_out']-context['punch_in'])//2)))
+        if self._record_context is not context:return
+        if self.player.state=='Playing':
+            context['play_started']=True
+            context['preplay_received']=self.recorder.received_frames
+            self.recorder.limit_from_now((context['play_end']-context['start'])/context['rate'])
+        else:self.recorder.stop()
+
+    def calibrate_recording(self):
+        if self.recording_busy:return
+        from .calibration_ui import CalibrationDialog
+        self.player.stop();dialog=CalibrationDialog(self);dialog.exec();dialog.deleteLater()
+
+    def recording_timing(self,native_frames):
+        context=self._record_context
+        if context is None or not context.get('automatic_sync') or self.player.state!='Playing':return
+        self.player._tick()
+        if self._record_context is not context or self.player.state!='Playing':return
+        if context['clock'] is None:context['clock']=DuplexClock(self.recorder.format.sampleRate(),context['rate'])
+        context['clock'].observe(native_frames,self.player._last_frame)
+        if context['target']!='punch' and native_frames-context.get('clock_update',0)>=self.recorder.format.sampleRate():
+            context['clock_update']=native_frames;fit=context['clock'].result()
+            self.recording_view.sync_status.setText(f"Clock correction: {fit.ppm:+.1f} ppm" if fit.drift_measured else
+                'Automatic synchronization is active.' if context.get('calibration') else 'Clock synchronization is active; no input/output calibration is saved.')
 
     def update_recording_actions(self):
         if 'record' not in self.actions:return
         busy=self.recording_busy
+        if 'punch' in self.actions:self.actions['punch'].setEnabled(not busy and not self.no_audio and self.mode=='multitrack' and self.session.selected)
         self.waveform.sample_editable = not busy
         if busy: self.waveform.cancel_sample_drag()
         if hasattr(self, 'channel_choice'): self.channel_choice.setEnabled(not busy and self.document.channels == 2)
@@ -280,18 +383,24 @@ class RecordingActions:
     def recording_samples(self,data,frames):
         if not self.recording_busy:return
         context=self._record_context
-        if context.get('accompaniment') and 'anchor' not in context:
+        if context.get('accompaniment') and 'anchor' not in context and (context['target']!='punch' or context.get('play_started')):
             self.player._tick()
             elapsed=max(0,self.player._last_frame-context['start'])
             captured=round(frames*context['rate']/self.recorder.take.rate)
             skipped=round(getattr(self.recorder,'skipped_frames',0)*context['rate']/self.recorder.take.rate)
-            context['anchor']=context['start']+max(skipped,elapsed-captured)
+            context['anchor']=context['start']+(elapsed-captured if context['target']=='punch' else max(skipped,elapsed-captured))
         self.recording_view.feed(data,frames)
         self.time_label.setText(clock_text(frames/self.recording_view.rate))
         self.detail_label.setText(f' {frames:,} captured frames ')
         rate=self.recording_view.rate
         self.transport.set_view_range(max(0,frames-rate*20),max(frames,rate*20),rate)
         self.update_meters(data)
+        if context['target']=='punch':
+            frame=self.player._last_frame
+            self.recording_view.sync_status.setText('Preparing punch recording…' if not context.get('play_started') else
+                'Pre-roll: the original audio is playing.' if frame<context['punch_in'] else
+                'Punch recording: the selected interval is being captured.' if frame<context['punch_out'] else
+                'Finishing punch recording…')
 
     def stop_recording(self):
         if self._applying_recording:return
@@ -310,6 +419,9 @@ class RecordingActions:
     def toggle_pause(self):
         if self.recorder.active:
             paused=self.recorder.state=='Paused'
+            if paused and self._record_context and self._record_context['target']=='punch' and not self._record_context.get('play_started'):
+                self._record_context['wait_deadline']=time.monotonic()+2
+            if paused and self._record_context and self._record_context.get('clock') is not None:self._record_context['clock'].new_segment()
             if not paused and self.player.state=='Playing':self.player.toggle_pause()
             self.recorder.toggle_pause()
             if paused and self.player.state=='Paused':self.player.toggle_pause()
@@ -321,16 +433,37 @@ class RecordingActions:
 
     @long_operation
     def apply_recorded_take(self,take,context):
-        data=resample(take.samples,take.rate,context['rate']) if take.rate!=context['rate'] else take.samples
+        data=take.samples
+        if context.get('automatic_sync'):
+            skipped=getattr(self.recorder,'skipped_frames',0)*context['rate']/take.rate
+            fallback=context.get('anchor',context['start'])-skipped
+            clock=context.get('clock')
+            fit=clock.result(fallback) if clock is not None else None
+            ratio=fit.ratio if fit is not None else 1
+            frames=max(1,round(take.frames*context['rate']/take.rate*ratio))
+            if frames!=take.frames or take.rate!=context['rate']:data=resample_frames(data,frames,take.rate)
+            calibration=context.get('calibration') or {}
+            correction=calibration.get('offset_ms',0)*context['rate']/1000
+            context['synchronized_position']=round((fit.anchor if fit is not None else fallback)+skipped*ratio+correction)
+            context['sync_result']=fit
+        elif take.rate!=context['rate']:data=resample(data,take.rate,context['rate'])
         target=context['target']
         if target=='new':
             doc=Document(sample_rate=context['rate'],channels=context['channels'],encoding='float32',dsp=self.document.dsp)
             doc.replace(0,0,data,'Record');doc.display_name='Recording '+datetime.now().strftime('%Y-%m-%d %H-%M-%S')
             self.document=doc;self.editing_clip_id=None;self.mode='waveform'
-        elif target=='multitrack':
+        elif target in ('multitrack','punch'):
             if self.session is not context['session'] or self.session.revision!=context['revision']:
                 raise AudioError('The destination changed; the take is available under Recover Work.')
-            position=context.get('anchor',context['start'])+round(context.get('recording_offset_ms',0)*context['rate']/1000)
+            position=context.get('synchronized_position',context.get('anchor',context['start']))+round(context.get('recording_offset_ms',0)*context['rate']/1000)
+            if target=='punch':
+                if not context.get('play_started') or 'anchor' not in context:
+                    context['outside_punch']=True;return False
+                first=max(context['punch_in'],position);last=min(context['punch_out'],position+len(data))
+                if last<=first:context['outside_punch']=True;return False
+                body=data[first-position:last-position]
+                self.session.punch_audio(body,context['track'],first,fade_frames=min(context['punch_fade'],len(body)//2))
+                self.mode='multitrack';return True
             if position<0:
                 data=data[min(len(data),-position):];position=0
             if not len(data): raise AudioError('The position offset removes the whole take. Recover it as a new waveform.')
@@ -356,9 +489,11 @@ class RecordingActions:
             if success and self._recovery_error is None:take.discard()
             else:
                 take.leave_for_recovery()
-                self.statusBar().showMessage('Recording kept for recovery. Use File → Recover Work.',12000)
+                self.statusBar().showMessage('No audio inside the punch interval. The take was kept under File → Recover Work.' if context.get('outside_punch') else 'Recording kept for recovery. Use File → Recover Work.',12000)
+        if success and context.get('automatic_sync'):self.statusBar().showMessage('Recording synchronized.',8000)
 
     def end_recording_view(self,fit=False):
+        self._punch_wait_timer.stop()
         if self._record_context and self._record_context.get('accompaniment'):self.player.stop()
         context=self._record_context
         self._record_context=None;self.recording_view.stop();self.recording_view.bins.clear()

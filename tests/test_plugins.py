@@ -11,6 +11,8 @@ import unittest
 from unittest.mock import patch
 import numpy as np
 from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Qt,QEvent
+from PySide6.QtGui import QKeyEvent
 
 from soundsausage.plugins import scan_plugin, PluginProcess, read_registry
 from soundsausage.trackfx import effect
@@ -131,13 +133,22 @@ class PluginTests(unittest.TestCase):
                 time.sleep(.02)
             self.assertEqual(snapshot['info']['parameters'][0]['value'],.75)
             self.assertEqual(snapshot['editor_size'],[400,220])
+            self.assertTrue(processor.helper.request(dict(op='editor_key',key=65,code=145,modifiers=4))['handled'])
+            snapshot=processor.snapshot();self.assertEqual(snapshot['info']['parameters'][0]['value'],.375)
             processor.close_editor();self.assertIsNone(processor.snapshot()['editor_size'])
             saved=dict(self.settings,values={},state=snapshot['state'])
         finally:processor.close()
         restored=PluginProcess(saved,8000)
         try:
-            data=np.ones((100,2),np.float32);restored.process(data);np.testing.assert_array_equal(data,1.5)
+            data=np.ones((100,2),np.float32);restored.process(data);np.testing.assert_array_equal(data,.75)
         finally:restored.close()
+
+    def test_native_editor_keyboard_mapping_preserves_text_and_control_shortcuts(self):
+        from soundsausage.plugin_editor import key_message
+        event=QKeyEvent(QEvent.Type.KeyPress,Qt.Key.Key_A,Qt.KeyboardModifier.ControlModifier|Qt.KeyboardModifier.ShiftModifier,'A')
+        self.assertEqual(key_message(event),(65,145,5))
+        event=QKeyEvent(QEvent.Type.KeyPress,Qt.Key.Key_Return,Qt.KeyboardModifier.NoModifier,'\r')
+        self.assertEqual(key_message(event),(0,4,0))
 
     def test_unregistered_project_cannot_supply_an_executable_path(self):
         with self.assertRaisesRegex(ValueError,'Unknown plug-in setting'):

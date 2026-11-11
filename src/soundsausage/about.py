@@ -45,7 +45,7 @@ class AboutDialog(QDialog):
         author, credit = tr("Gemaakt door"), tr("met Codex (OpenAI)")
         license_title = tr("Licentie")
         license_text = tr("Vrije software onder de GNU General Public License, versie 3 of later.")
-        components = tr("Gebouwd met Python {0}, Qt {1}, PySide6 {2}, NumPy {3}, C++, libsamplerate, Rubber Band, FFmpeg, Mutagen en de VST3-interfaces (MIT).").format(platform.python_version(), qVersion(), PySide6.__version__, numpy.__version__)
+        components = tr("Gebouwd met Python {0}, Qt {1}, PySide6 {2}, NumPy {3}, C++, libsamplerate, Rubber Band, FFmpeg, Mutagen, Lilv, X11 en de VST3-, LV2- en LADSPA-interfaces.").format(platform.python_version(), qVersion(), PySide6.__version__, numpy.__version__)
         trademark = tr("VST is een handelsmerk van Steinberg Media Technologies GmbH.")
         self.description.setText(Literal(
             f"<h2 style='margin:0'>SoundSausage {__version__}</h2><p>{description}</p>"
