@@ -85,4 +85,9 @@ vrij. Ook de live opnameweergave heeft twee kanaalranden met een tussenruimte.
 Visuele controle en de 24 bestaande kanaalselectie-, opname- en indelingscontroles
 slagen. Een aparte rastercontrole bij 150% schaal bevestigt twee lijnen van
 één fysieke pixel, een vrije tussenruimte en vrije buitenmarges in beide
-weergaven. Definitieve distributiecontroles volgen vóór publicatie.
+weergaven. Alle 406 controles slagen in Debian, Fedora en Arch, zonder
+overslaan. De gewone, afspeel-, opname- en duplexzelftest slagen op de vijf
+geïnstalleerde doelen, inclusief Ubuntu 26.04 en Rolling. De zes distributie-
+en publicatielogs bevatten geen onverwachte callback- of bufferfouten.
+[Distributiebouw 0.17.2](https://github.com/rene-timmermans/SoundSausage/actions/runs/43075533132)
+en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.17.2).

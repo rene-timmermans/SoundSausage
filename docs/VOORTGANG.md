@@ -248,4 +248,10 @@ inclusief Ubuntu 26.04 en Rolling.
 - [x] Onderkant links en bovenkant rechts met twee dunne lijnen begrenzen, binnen de breedte van het tekenvlak.
 - [x] Dezelfde afbakening in de live opnameweergave, met een smalle tussenruimte.
 - [x] Visuele controle, bestaande selectie-/opname-/indelingscontroles en vijf handleidingen bijwerken.
-- [ ] Definitieve distributiecontroles en installatiepakketten voor 0.17.2.
+- [x] Definitieve distributiecontroles en installatiepakketten voor 0.17.2.
+
+[Release 0.17.2](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.17.2)
+bevat de definitieve installatiepakketten. Alle 406 controles slagen in Debian,
+Fedora en Arch; de vier geïnstalleerde zelftests slagen op alle vijf doelen,
+inclusief Ubuntu 26.04 en Rolling.
+[Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43075533132).
