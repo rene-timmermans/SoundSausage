@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.10.0**.
+De huidige versie is **0.11.0**.
 
 ## Wat het kan
 
@@ -19,6 +19,7 @@ De huidige versie is **0.10.0**.
 - Stereokanalen mengen, dynamiek bewerken en een volumeverloop tekenen, met luistervoorbeelden.
 - Grafische en parametrische EQ, hoog-/laagdoorlaat-, banddoorlaat- en notchfilters.
 - Delay, echo en galm, met presets, luistervoorbeelden en optionele uitklank.
+- Ruisprofielen opnemen en bewaren, ruis verminderen en korte tikken herstellen.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
 - Projecten opslaan met alle gebruikte audio en een complete mix exporteren.
@@ -76,6 +77,8 @@ De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handl
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.11.0** Ruisprofielen opnemen, bewaren en opnieuw gebruiken. Ruisreductie met stereokoppeling en een luistervoorbeeld van het verwijderde geluid, plus herstel van korte tikken. Zie [restauratie](docs/RESTORATIE.md).
 
 **0.10.0** Delay met tijden per kanaal, Echo met demping en stereopingpong en Reverb met ruimtegrootte, nagalmtijd, voorvertraging en stereobreedte. Met presets, luistervoorbeelden en een optionele uitklank die de opname verlengt.
 

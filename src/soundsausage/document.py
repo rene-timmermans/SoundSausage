@@ -258,6 +258,7 @@ class Document:
         result = self.dsp.process_blocks(name, self.view(start, end), self.sample_rate, **settings)
         label = {"gain": "Amplify / Fade", "channel_mix": "Channel Mixer",
                  "dynamics": "Dynamics Processing", "graphic_eq": "Graphic Equalizer",
+                 "noise_reduction": "Noise Reduction", "click_removal": "Click Removal",
                  "parametric_eq": "Parametric Equalizer", "filter": "Filters"}.get(name, name.capitalize())
         # Validate before committing: failed or overflowing effects leave the document intact.
         if name == "reverse":

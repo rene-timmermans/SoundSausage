@@ -85,7 +85,7 @@ Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
 
 - [x] EQ en filters — gepubliceerd in 0.9.0.
 - [x] Delay, echo en galm — gepubliceerd in 0.10.0.
-- [ ] Restauratie: ruisreductie en klikverwijdering.
+- [ ] Restauratie: gebouwd voor 0.11.0; distributiecontroles volgen.
 - [ ] Tijd-/toonhoogtebewerking.
 - [ ] Overige tools, waaronder vervorming en convolutie.
 

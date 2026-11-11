@@ -12,6 +12,8 @@ from .session import Session
 from .project import save_project, load_project
 from .amplitude_ui import ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .space_ui import DelayDialog, EchoDialog, ReverbDialog
+from .restoration_ui import NoiseReductionDialog, ClickRemovalDialog
+from .restoration import learn_profile
 from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog
 from .icons import application_icon, mascot_icon
 from .resample import resample
@@ -63,7 +65,8 @@ def run(window):
         session.import_audio([(doc.read(), 8000, "Selftest")])
         save_project(session, path / "test.celp")
         np.testing.assert_array_equal(load_project(path / "test.celp", dsp=doc.dsp).render(), session.render())
-    for cls in (DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
+    window.noise_profile = learn_profile(np.random.default_rng(5).normal(0, .01, (2000, 2)).astype(np.float32), 8000)
+    for cls in (NoiseReductionDialog, ClickRemovalDialog, DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
         dialog = cls(doc, window, no_audio=True)
         try:
             if isinstance(dialog, (DelayDialog, EchoDialog, ReverbDialog)):

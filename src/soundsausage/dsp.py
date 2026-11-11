@@ -5,7 +5,7 @@ from pathlib import Path
 from . import storage
 from .operations import blocks, progress
 from .filters import EFFECTS as FILTER_EFFECTS, design
-from . import space
+from . import space, restoration
 
 import numpy as np
 
@@ -102,7 +102,10 @@ class Dsp:
                                         attack_ms, release_ms, makeup_db, int(linked), state))
 
     def process(self, name, data, sample_rate, **settings):
-        if name in space.EFFECTS:
+        if name in restoration.EFFECTS:
+            self._buffer(data)
+            data[:] = restoration.process_blocks(name, data, sample_rate, **settings)
+        elif name in space.EFFECTS:
             processor = space.Processor(name, sample_rate, data.shape[1], **settings)
             if processor.tail_frames:
                 raise ValueError("Use block processing to append an effect tail.")
@@ -136,6 +139,9 @@ class Dsp:
         A preview may restrict the output while analysis still spans the full range.
         No mutation of the immutable source occurs before the caller commits.
         """
+        if name in restoration.EFFECTS:
+            return restoration.process_blocks(name, source, sample_rate, limit=limit,
+                                              block_frames=block_frames, **settings)
         if name in space.EFFECTS:
             return space.process_blocks(self, name, source, sample_rate, limit=limit,
                                         block_frames=block_frames, **settings)

@@ -1,4 +1,4 @@
-# SoundSausage 0.10.0
+# SoundSausage 0.11.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -19,6 +19,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Delay met tijden per kanaal; Echo met feedback, demping en stereopingpong.
 - Algoritmische galm met ruimtegrootte, nagalmtijd, voorvertraging en breedte.
 - Uitklank van maximaal 60 seconden toevoegen, met behoud en verschuiven van cuepunten.
+- Ruisprofielen opnemen/laden/bewaren, ruisreductie en korte tikken interpoleren.
 - DC-offset verwijderen bij normaliseren; onafhankelijke of gekoppelde stereokanalen waar van toepassing.
 - Multitrack met maximaal 32 sporen, clips verplaatsen, trimmen en dupliceren.
 - Volume, pan, mute/solo en bewerkbare volume- en panlijnen per clip.
@@ -37,8 +38,10 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 
 ## Beperkingen
 
-- Tijd-/toonhoogte-effecten, ruisreductie en externe plug-ins zijn nog niet beschikbaar.
+- Tijd-/toonhoogte-effecten en externe plug-ins zijn nog niet beschikbaar.
 - Amplitude-, EQ-, filter-, delay- en galmeffecten bewerken de golfvorm; voor een multitrackclip open je eerst een bewerkkopie. Het zijn nog geen realtime spooreffecten.
+- Ruisreductie richt zich op constante achtergrond; sterke instellingen kunnen zachte details aantasten.
+- Click Removal behandelt korte geïsoleerde tikken, geen langdurige kraken of clipping.
 - Galm en echo hebben begrensde, optionele uitklank; extreme feedback kan langer dan 60 seconden doorlopen.
 - EQ en filters veranderen fase; korte selecties kunnen aan de randen een overgang geven.
 - Dynamics gebruikt piekdetectie zonder vooruitblik. Exact dezelfde uitkomst als historische effecten is niet aangetoond.

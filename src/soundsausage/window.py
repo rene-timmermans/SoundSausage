@@ -26,6 +26,8 @@ from . import chrome, metadata, storage
 from .errors import OperationCancelled
 from .progress_ui import long_operation
 from .transport import TransportPanel
+from .restoration_ui import NoiseReductionDialog, ClickRemovalDialog
+from .restoration import learn_profile
 from .space_ui import DelayDialog, EchoDialog, ReverbDialog
 from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog
 from .amplitude_ui import EffectDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
@@ -252,6 +254,9 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.actions["channel_mix"].setToolTip("Mix the left and right channels of a stereo waveform")
         self.action("dynamics", "Dynamics Processing…", lambda: self.amplitude_dialog(DynamicsDialog))
         self.action("envelope", "Envelope…", lambda: self.amplitude_dialog(EnvelopeDialog))
+        self.action("noise_profile", "Capture Noise Profile", self.capture_noise_profile)
+        self.action("noise_reduction", "Noise Reduction…", lambda: self.amplitude_dialog(NoiseReductionDialog))
+        self.action("click_removal", "Click Removal…", lambda: self.amplitude_dialog(ClickRemovalDialog))
         self.action("delay", "Delay…", lambda: self.amplitude_dialog(DelayDialog))
         self.action("echo", "Echo…", lambda: self.amplitude_dialog(EchoDialog))
         self.action("reverb", "Reverb…", lambda: self.amplitude_dialog(ReverbDialog))
@@ -353,7 +358,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.detail_label.setText(f" {clock_text(doc.duration)} · {doc.frames:,} frames ")
         self.selection_changed(*doc.selection)
         has_audio = doc.frames > 0
-        for key in ("delay", "echo", "reverb", "graphic_eq", "parametric_eq", "filter", "amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
+        for key in ("noise_profile", "noise_reduction", "click_removal", "delay", "echo", "reverb", "graphic_eq", "parametric_eq", "filter", "amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
             self.actions[key].setEnabled(has_audio)
         self.actions["channel_mix"].setEnabled(has_audio and doc.channels == 2)
         self.actions["play"].setEnabled(has_audio and not self.no_audio)
@@ -514,6 +519,19 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.document.zero_crossings()
         self.selection_changed(*self.document.selection)
         self.waveform.update()
+
+    @long_operation
+    def capture_noise_profile(self):
+        if self.mode != "waveform" or not self.document.selected:
+            self.error("Noise Profile", "Select a fragment containing only background noise first.")
+            return
+        try:
+            self.player.stop()
+            profile = learn_profile(self.document.view(*self.document.selection), self.document.sample_rate)
+            self.noise_profile = profile
+            self.statusBar().showMessage("Noise profile captured. Select the audio to clean and open Noise Reduction.", 8000)
+        except (ValueError, OSError) as error:
+            self.error("Noise Profile", error)
 
     def amplify(self):
         self.amplitude_dialog(AmplifyDialog)

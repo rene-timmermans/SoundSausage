@@ -84,8 +84,10 @@ def create_menus(window):
     delay = transform.addMenu("Delay Effects")
     window.menus["delay"] = delay
     add(delay, ("delay", "echo", "reverb"))
+    noise = transform.addMenu("Noise Reduction")
+    window.menus["noise"] = noise
+    add(noise, ("noise_profile", "noise_reduction", "click_removal"))
     for name, items in (
-        ("Noise Reduction", ("Noise Reduction…", "Click Removal…")),
         ("Special", ("Distortion…", "Convolution…")),
         ("Time/Pitch", ("Stretch…", "Pitch Shift…")),
     ):
