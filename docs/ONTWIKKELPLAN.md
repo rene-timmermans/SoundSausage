@@ -57,7 +57,7 @@ Eerst EQ en filters, vervolgens delay en galm, daarna complexere functies zoals
 ruisreductie en tijd-/toonhoogtebewerking. Iedere groep wordt bruikbaar afgerond.
 Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 
-- [ ] EQ en filters, met luistervoorbeeld en frequentierespons: gebouwd voor 0.9.0; distributiecontroles volgen.
+- [x] EQ en filters, met luistervoorbeeld en frequentierespons — 0.9.0, met geteste installatiepakketten.
 - [ ] Delay, echo en galm.
 - [ ] Ruisreductie en klikverwijdering.
 - [ ] Tijd- en toonhoogtebewerking.

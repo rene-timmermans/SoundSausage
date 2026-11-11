@@ -81,11 +81,15 @@ vervolgmogelijkheden. De fysieke controle uit fase 1 is daarmee ook afgerond.
 
 ## 4. Effecten en tools — actief
 
-- [ ] EQ en filters: gebouwd voor 0.9.0; pakketcontroles en publicatie lopen.
+- [x] EQ en filters — gepubliceerd in 0.9.0.
 - [ ] Delay en galm.
 - [ ] Restauratie: ruisreductie en klikverwijdering.
 - [ ] Tijd-/toonhoogtebewerking.
 
-De eerste groep is EQ en filters. Elke groep krijgt een afzonderlijke bruikbare release.
+De eerste groep is afgerond in [release 0.9.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.9.0).
+Alle 258 controles slagen in Debian, Fedora en Arch. De geïnstalleerde pakketten
+doorstaan gewone, afspeel- en opnamecontroles ook op Ubuntu 26.04 en Rolling.
+Zie [EQ/filtercontroles](validation/filters.md). De volgende groep is delay en galm.
+Elke groep krijgt een afzonderlijke bruikbare release.
 Amplitude is beschikbaar sinds 0.5.0 en dient ook als controle voor de nieuwe
 audiobasis. Uitgebreide oude SES-compatibiliteit en externe plug-ins volgen later.

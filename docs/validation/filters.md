@@ -18,8 +18,11 @@ De DSP- en Qt-controles toetsen de volledige EQ/filterketen:
 - Daadwerkelijke Qt-dialogen, presets, Reset, frequentiebereik, moduskeuze,
   blokkeren tijdens opname, modaal toepassen/annuleren en stoppen van Preview.
 
-De lokale regressiesuite doorstaat 258 controles; vier echte audio-backendtests
-zijn lokaal overgeslagen en worden in de distributiebouw uitgevoerd. De
+De [distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/42983592249)
+doorstaat alle 258 controles in Debian, Fedora en Arch, inclusief vier echte
+Qt-audiobackendtests. De geïnstalleerde pakketten doorstaan gewone, afspeel- en
+opnamecontroles ook op Ubuntu 26.04 en Rolling. Geen Python-callbackfouten zijn
+in de geverifieerde logs gevonden. De
 160 MiB-keten bevat nu ook tienbands-EQ en een 48 dB/oct-filter. De afzonderlijke
 lokale meting bleef op ongeveer 20 MiB extra resident geheugen boven de geladen
 toepassing; dit is een scenarioresultaat, geen universele geheugenlimiet.
@@ -31,4 +34,6 @@ begint opnieuw bij het begin van iedere selectie. Verwerking houdt de lengte
 aan en is faseveranderend. Shelves gebruiken monotone slope S=1. Graphic EQ
 gebruikt vaste Q=√2; overlappende banden beïnvloeden samen de responscurve.
 
-Pakketcontroles en publicatie worden bij de release bijgewerkt.
+[Release 0.9.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.9.0)
+bevat de geteste installatiepakketten voor Debian/Ubuntu, Fedora en Arch, de
+broncode en checksums.
