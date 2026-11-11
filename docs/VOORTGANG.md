@@ -168,9 +168,15 @@ punch-in/out blijven vervolgmogelijkheden.
 - [x] Geopende effectvensters, meldingen en bediening vertalen zonder modelwijzigingen.
 - [x] Volledige offline handleidingen in alle vijf talen, inclusief live wisselen en zoeken.
 - [x] Taalregressies en behoud van audio, kanaalkeuze, instellingen en Undo toetsen.
-- [ ] Definitieve distributiecontroles en publicatie van installatiepakketten.
+- [x] Definitieve distributiecontroles en publicatie van installatiepakketten.
 
 De effectgroepen en realtime functies blijven afgerond. Eigen plug-invensters,
 meer formaten, automatische latency-/driftcompensatie en punch-in/out blijven open.
 De fysieke duplexroute en handmatige opnameverschuiving vragen nog een proeftake;
 de gewone B910-opname-/afspeelcontrole is eerder bevestigd.
+
+[Release 0.16.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.16.0)
+bevat de installers en broncode. Alle 376 controles slagen in Debian, Fedora
+en Arch. De geïnstalleerde pakketten doorstaan gewone, afspeel-, opname- en
+duplexzelftests op alle vijf doelen, inclusief Ubuntu 26.04 en Rolling.
+Zie [taalcontroles](validation/languages.md).

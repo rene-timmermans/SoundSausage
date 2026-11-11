@@ -23,7 +23,14 @@ van de distributie.
 Lokaal doorstaat de volledige suite 376 controles, waarvan zes expliciete
 hardwarebackendcontroles worden overgeslagen. De gewone zelftest controleert
 alle vijf catalogi, Qt-vertalingen en volledige handleidingen, ook vanuit de
-geënsceneerde installatie. Distributiecontroles en publicatie volgen na de bouw.
+geënsceneerde installatie. De distributiebouw doorstaat alle 376 controles in Debian, Fedora en Arch,
+inclusief de zes virtuele audiobackendcontroles. De geïnstalleerde pakketten
+slagen voor de gewone, afspeel-, opname- en duplexzelftest op alle vijf doelen,
+inclusief Ubuntu 26.04 en Rolling. Alle vijf logs en de publicatielog zijn
+gecontroleerd; er zijn geen onverwachte callback-, RuntimeError- of bufferfouten.
+[Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43038246038)
+en [release 0.16.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.16.0)
+bevatten de controles en geteste installatiepakketten.
 DSP-ABI 7 en projectformaat 4 blijven behouden.
 
 Qt-vertaalpakketten: [Debian](https://packages.debian.org/trixie/qt6-translations-l10n),
@@ -34,3 +41,8 @@ Qt-vertalingen worden zowel op het door Qt gemelde pad als in de gedeelde
 Qt6-datamappen gezocht. Een regressiecontrole simuleert een binding met een
 niet-bestaand privaat pad. Dit dekt distributies die vertalingen apart in
 `/usr/share/qt6/translations` installeren.
+
+De Fedora-testcontainer installeert alle talen in plaats van uitsluitend Engels.
+De Ubuntu-controles gebruiken de actuele kernel.org-mirror met de oorspronkelijke
+Ubuntu-suites en archive-keyring. De pakketondertekening en alle controles blijven
+actief. De mirrorhost wordt op de runner opgelost en in de container doorgegeven.
