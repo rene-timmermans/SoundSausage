@@ -66,3 +66,53 @@ static const State state={save,restore};
 static const void* extension(const char* uri) { return !strcmp(uri,"http://lv2plug.in/ns/ext/state#interface")?&state:NULL; }
 static const Lv2 lv2={"urn:soundsausage:test:lv2:gain",lv2_create,lv2_connect,activate,lv2_run,NULL,cleanup,extension};
 const Lv2* lv2_descriptor(uint32_t index) { return index?NULL:&lv2; }
+
+/* Independent X11 LV2 UI: actual child window, port callback and host resize. */
+#include <dlfcn.h>
+typedef void (*UiWrite)(Handle,uint32_t,uint32_t,uint32_t,const void*);
+typedef struct { Handle handle;int (*resize)(Handle,int,int); } UiResize;
+typedef struct UiDescriptor UiDescriptor;
+struct UiDescriptor { const char* URI;
+ Handle (*instantiate)(const UiDescriptor*,const char*,const char*,UiWrite,Handle,void**,const Feature* const*);
+ void (*cleanup)(Handle);void (*port_event)(Handle,uint32_t,uint32_t,uint32_t,const void*);
+ const void* (*extension_data)(const char*); };
+typedef struct {
+ void* library;void* display;unsigned long window;UiWrite write;Handle controller;UiResize* resize;int ticks;float value;
+ void* (*open)(const char*);unsigned long (*create)(void*,unsigned long,int,int,unsigned,unsigned,unsigned,unsigned long,unsigned long);
+ int (*map)(void*,unsigned long);int (*destroy)(void*,unsigned long);int (*flush)(void*);int (*close)(void*);
+ int (*move)(void*,unsigned long,int,int,unsigned,unsigned);
+} Ui;
+static void ui_cleanup(Handle h) {
+ Ui* u=h;if(u->display) { if(u->window)u->destroy(u->display,u->window);u->flush(u->display);u->close(u->display); }
+ if(u->library)dlclose(u->library);free(u);
+}
+static Handle ui_create(const UiDescriptor* descriptor,const char* plugin,const char* bundle,UiWrite write,Handle controller,void** widget,const Feature* const* features) {
+ (void)descriptor;(void)plugin;(void)bundle;Ui* u=calloc(1,sizeof(Ui));if(!u)return NULL;
+ unsigned long parent=0;u->write=write;u->controller=controller;
+ for(unsigned i=0;features&&features[i];++i) {
+  if(!strcmp(features[i]->URI,"http://lv2plug.in/ns/extensions/ui#parent"))parent=(unsigned long)features[i]->data;
+  if(!strcmp(features[i]->URI,"http://lv2plug.in/ns/extensions/ui#resize"))u->resize=features[i]->data;
+ }
+ u->library=dlopen("libX11.so.6",RTLD_NOW|RTLD_LOCAL);
+ if(!u->library||!parent||!u->resize) { ui_cleanup(u);return NULL; }
+ #define FN(field,name) *(void**)(&u->field)=dlsym(u->library,name)
+ FN(open,"XOpenDisplay");FN(create,"XCreateSimpleWindow");FN(map,"XMapWindow");FN(destroy,"XDestroyWindow");
+ FN(flush,"XFlush");FN(close,"XCloseDisplay");FN(move,"XMoveResizeWindow");
+ #undef FN
+ u->display=u->open(NULL);if(!u->display) { ui_cleanup(u);return NULL; }
+ u->window=u->create(u->display,parent,0,0,320,180,0,0,0);u->map(u->display,u->window);u->flush(u->display);
+ *widget=(void*)u->window;return u;
+}
+static void ui_port(Handle h,uint32_t index,uint32_t size,uint32_t protocol,const void* data) {
+ if(index==2&&size==4&&!protocol)memcpy(&((Ui*)h)->value,data,4);
+}
+static int ui_idle(Handle h) {
+ Ui* u=h;if(++u->ticks==2) { float value=1.5f;u->write(u->controller,2,4,0,&value);
+  u->move(u->display,u->window,0,0,400,220);u->flush(u->display);u->resize->resize(u->resize->handle,400,220); }
+ return 0;
+}
+typedef struct { int (*idle)(Handle); } Idle;
+static const Idle idle_interface={ui_idle};
+static const void* ui_extension(const char* uri) { return !strcmp(uri,"http://lv2plug.in/ns/extensions/ui#idleInterface")?&idle_interface:NULL; }
+static const UiDescriptor ui={"urn:soundsausage:test:lv2:ui",ui_create,ui_cleanup,ui_port,ui_extension};
+const UiDescriptor* lv2ui_descriptor(uint32_t index) { return index?NULL:&ui; }

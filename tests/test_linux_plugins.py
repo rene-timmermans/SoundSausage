@@ -7,6 +7,7 @@ import shutil
 import struct
 import subprocess
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -38,7 +39,7 @@ class LinuxPluginTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.binary=ROOT/'build/linux-test-gain.so'
-        subprocess.run(['cc','-std=c11','-O2','-shared','-fPIC','tests/fixtures/linux_gain.c','-o',str(cls.binary)],cwd=ROOT,check=True)
+        subprocess.run(['cc','-std=c11','-O2','-shared','-fPIC','tests/fixtures/linux_gain.c','-ldl','-o',str(cls.binary)],cwd=ROOT,check=True)
 
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.path=Path(self.temp.name)
@@ -140,3 +141,30 @@ class LinuxPluginTests(unittest.TestCase):
             s.configure_track(s.selected_track,effects=(effect('plugin',saved,key=spec.id),))
             np.testing.assert_array_equal(stream.read(211),source[211:422]*.25)
         finally:stream.close()
+
+    @unittest.skipUnless(os.environ.get('SOUNDSAUSAGE_PLUGIN_UI_TEST')=='1','Native LV2 X11 check is enabled on distribution runners.')
+    def test_native_lv2_window_uses_port_callbacks_resize_and_saved_controls(self):
+        path=self.bundle/'gain.ttl'
+        path.write_text(TTL+"""
+@prefix ui: <http://lv2plug.in/ns/extensions/ui#> .
+<urn:soundsausage:test:lv2:gain> ui:ui <urn:soundsausage:test:lv2:ui> .
+<urn:soundsausage:test:lv2:ui> a ui:X11UI;ui:binary <gain.so>;
+ lv2:requiredFeature ui:parent,ui:resize .
+""")
+        settings=self.settings('LV2');processor=PluginProcess(settings,8000)
+        try:
+            processor.open_editor();deadline=time.monotonic()+4
+            while time.monotonic()<deadline:
+                snapshot=processor.snapshot()
+                if snapshot['editor_size']==[400,220] and snapshot['info']['parameters'][0]['value']==.75:break
+                time.sleep(.02)
+            self.assertEqual(snapshot['editor_size'],[400,220])
+            self.assertEqual(snapshot['info']['parameters'][0]['value'],.75)
+            processor.close_editor();self.assertIsNone(processor.snapshot()['editor_size'])
+            saved=dict(settings,values={},state=snapshot['state'])
+        finally:processor.close()
+        restored=PluginProcess(saved,8000)
+        try:
+            data=np.ones((100,2),np.float32);restored.process(data)
+            np.testing.assert_array_equal(data[7:],1.5)
+        finally:restored.close()
