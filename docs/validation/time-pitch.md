@@ -5,7 +5,12 @@ Negen nieuwe controles toetsen duurverhoudingen van 0,25 tot 4, toonhoogte bij
 verwerking, Preview-prefix, cueposities, Undo/Redo, annuleren en schijfopslag.
 Een 440 Hz-toon behoudt zijn frequentie bij rek en komt bij een octaafverschuiving
 op 220 of 880 Hz uit. De resulterende lengte is exact op hele uitvoerframes.
-De volledige suite telt 308 controles; pakketcontroles volgen bij de release.
+De [distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/42996330974)
+doorstaat alle 308 controles in Debian, Fedora en Arch. De geïnstalleerde pakketten
+doorstaan gewone, afspeel- en opnamecontroles ook op Ubuntu 26.04 en Rolling.
+De logs bevatten geen callback- of bufferfouten.
+[Release 0.12.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.12.0)
+bevat de geteste pakketten, broncode en checksums.
 
 Rubber Band draait via zijn C API in offline-modus, met volledige analyse en
 vaste invoerblokken van 4096 frames. Uitvoer wordt opgehaald tot maximaal het

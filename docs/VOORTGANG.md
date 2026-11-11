@@ -86,7 +86,7 @@ Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
 - [x] EQ en filters — gepubliceerd in 0.9.0.
 - [x] Delay, echo en galm — gepubliceerd in 0.10.0.
 - [x] Ruisreductie en klikverwijdering — gepubliceerd in 0.11.0.
-- [ ] Tijd-/toonhoogtebewerking: gebouwd voor 0.12.0; distributiecontroles volgen.
+- [x] Tijd-/toonhoogtebewerking — gepubliceerd in 0.12.0.
 - [ ] Overige tools, waaronder vervorming en convolutie.
 
 De eerste groep is afgerond in [release 0.9.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.9.0).
@@ -101,7 +101,12 @@ Zie [delay-/galmcontroles](validation/delay-reverb.md). Deze groep is afgerond.
 
 [Release 0.11.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.11.0)
 voegt restauratie toe. Alle 299 controles en pakketcontroles slagen op de ondersteunde
-distributies. Drie van de vijf groepen zijn afgerond; tijd-/toonhoogte volgt.
+distributies. Deze groep is afgerond.
+
+[Release 0.12.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.12.0)
+voegt tijd- en toonhoogtebewerking toe. Alle 308 controles en de geïnstalleerde
+pakketten slagen op de ondersteunde distributies. Vier van de vijf groepen zijn
+afgerond; vervorming en convolutie volgen.
 Elke groep krijgt een afzonderlijke bruikbare release.
 Amplitude is beschikbaar sinds 0.5.0 en dient ook als controle voor de nieuwe
 audiobasis. Uitgebreide oude SES-compatibiliteit en externe plug-ins volgen later.
