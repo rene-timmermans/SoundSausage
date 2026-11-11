@@ -69,4 +69,9 @@ De regressiecontrole toetst ook de werkelijk doorgegeven filterlijst in alle
 vijf talen en of de standaardkeuze in die lijst voorkomt. Het opnamevenster
 verbergt de niet-toepasselijke opnameverschuiving inclusief label. De MP3-codec
 blijft gelijk aan de met de 38 praktijkbestanden getoetste versie.
-Definitieve distributiecontroles worden vóór publicatie uitgevoerd.
+Alle 406 controles slagen in Debian, Fedora en Arch, zonder overslaan. De
+geïnstalleerde pakketten doorstaan de gewone, afspeel-, opname- en duplexzelftest
+op alle vijf doelen, inclusief Ubuntu 26.04 en Rolling. Alle distributielogs en
+de publicatielog bevatten geen onverwachte callback- of bufferfouten.
+[Distributiebouw 0.17.1](https://github.com/rene-timmermans/SoundSausage/actions/runs/43071990484)
+en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.17.1).

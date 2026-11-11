@@ -235,4 +235,10 @@ behoud van de originelen.
 
 - [x] De volledige WAV-/MP3-filterlijst in alle vijf talen tonen en de voorkeuze laten overeenkomen.
 - [x] Het label van de opnameverschuiving samen met het invoerveld verbergen buiten multitrack.
-- [ ] Definitieve distributiecontroles en installatiepakketten voor 0.17.1.
+- [x] Definitieve distributiecontroles en installatiepakketten voor 0.17.1.
+
+[Release 0.17.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.17.1)
+bevat de definitieve installatiepakketten. Alle 406 controles slagen in Debian,
+Fedora en Arch; de vier geïnstalleerde zelftests slagen op alle vijf doelen,
+inclusief Ubuntu 26.04 en Rolling.
+[Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43071990484).
