@@ -24,6 +24,10 @@ herstelalgoritme voor langdurig gekraak of clipping. Profielbestanden zijn
 begrensde, strikt gevalideerde JSON-data; mislukte opslag behoudt een bestaand
 bestand. Er worden geen modules of scripts uit profielen uitgevoerd.
 
-De volledige suite bevat 299 controles. De distributiebouw en pakketpublicatie
-worden na verificatie vastgelegd. DSP-ABI blijft 7; de nieuwe spectrale verwerking
+De [distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/42994477512)
+doorstaat alle 299 controles in Debian, Fedora en Arch. De geïnstalleerde
+pakketten doorstaan gewone, afspeel- en opnamecontroles ook op Ubuntu 26.04
+en Rolling. De logs bevatten geen callbackfouten.
+[Release 0.11.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.11.0)
+bevat de geteste pakketten, broncode en checksums. DSP-ABI blijft 7; de nieuwe spectrale verwerking
 gebruikt de bestaande NumPy-afhankelijkheid.

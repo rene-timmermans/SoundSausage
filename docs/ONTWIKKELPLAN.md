@@ -59,7 +59,7 @@ Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 
 - [x] EQ en filters, met luistervoorbeeld en frequentierespons — 0.9.0, met geteste installatiepakketten.
 - [x] Delay, echo en galm — 0.10.0, met geteste installatiepakketten.
-- [ ] Ruisreductie en klikverwijdering — gebouwd voor 0.11.0; distributiecontroles volgen.
+- [x] Ruisreductie en klikverwijdering — 0.11.0, met geteste installatiepakketten.
 - [ ] Tijd- en toonhoogtebewerking.
 - [ ] Overige aangeboden tools, waaronder vervorming en convolutie.
 
