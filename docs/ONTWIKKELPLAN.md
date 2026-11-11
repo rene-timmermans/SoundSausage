@@ -80,7 +80,7 @@ mono-export en de gedeelde stereotijdas horen bij deze uitbreiding. Alle
 menufuncties krijgen eigen iconen; de beide zoomfuncties blijven herkenbaar.
 De vijf effectgroepen blijven afgerond. Zie [voortgang](VOORTGANG.md).
 
-## 5. Realtime mixen, opname met begeleiding en uitwisseling
+## 5. Realtime mixen, opname met begeleiding en uitwisseling — afgerond in 0.15.0
 
 - [x] Spooreffecten in kleine audioblokken tijdens afspelen; bewerkbare keten, bypass, Undo/Redo, projectopslag en dezelfde keten bij mixdown.
 - [x] Bestaande sporen beluisteren tijdens opnemen op een nieuw blok; samen pauzeren/stoppen, veilige foutafhandeling en instelbare opnameverschuiving.
@@ -91,7 +91,12 @@ Iedere uitbreiding krijgt audiocontroles, bijgewerkte offlinehandleiding en
 installatiepakketten. Exacte ondersteuning van plug-informaten en oude
 sessievarianten staat bij de functie; niet-ondersteunde gegevens worden gemeld.
 
-Distributiecontroles en de installatiepakketten voor 0.15.0 worden nog afgerond.
+Alle 363 controles en de geïnstalleerde pakketten zijn geverifieerd in de
+[distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43017564061).
+[Release 0.15.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.15.0)
+bevat de installers. De fysieke duplexroute blijft afstelbaar met een proeftake;
+eigen plug-invensters, meer formaten en automatische latency-/driftcompensatie
+blijven vervolgmogelijkheden.
 
 ## Open punten blijven zichtbaar
 

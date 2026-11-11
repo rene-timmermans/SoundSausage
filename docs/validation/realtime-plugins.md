@@ -28,7 +28,14 @@ controleert ook geïnstalleerde pakketten. De gewone selftest opent geen
 microfoon en controleert de laadbaarheid van de geïsoleerde VST3-host.
 
 De volledige lokale suite doorstaat 363 controles; zes expliciete backendtests
-worden lokaal overgeslagen. Distributiecontroles worden vóór publicatie uitgevoerd.
+worden lokaal overgeslagen. De distributiebouw doorstaat alle 363 controles in
+Debian, Fedora en Arch, inclusief de echte virtuele backendtests. Alle vijf
+geïnstalleerde distributiedoelen doorstaan gewone, afspeel-, opname- en
+duplexzelftests, ook Ubuntu 26.04 en Rolling. De geverifieerde logs bevatten
+geen callback- of RingBuffer-fouten. Bewijs:
+[distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43017564061).
+[Release 0.15.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.15.0)
+bevat de geteste pakketten, broncode en checksums.
 De eerdere fysieke USB-test geldt voor gewone opname/weergave. De nieuwe
 duplexroute en fysieke offset moeten met de gekozen interface worden beluisterd
 en afgesteld. Er is geen automatische kalibratie of garantie voor apparaatdrift.

@@ -137,7 +137,7 @@ Arch; de geïnstalleerde pakketten doorstaan gewone, afspeel- en opnamecontroles
 ook op Ubuntu 26.04 en Rolling. De geverifieerde logs bevatten geen callback-
 of bufferfouten.
 
-## 5. Realtime mixen en uitwisseling — in uitvoering
+## 5. Realtime mixen en uitwisseling — afgerond in 0.15.0
 
 - [x] Realtime spooreffecten en een keten per spoor.
 - [x] Mixen in kleine blokken zonder de hele sessie vooraf te berekenen.
@@ -145,14 +145,18 @@ of bufferfouten.
 - [x] Externe Linux-effectplug-ins en herstel van hun instellingen.
 - [x] Nieuwe projecten volledig opslaan/heropenen met opnamen, spooreffecten en plug-ininstellingen.
 - [x] Handleiding en automatische audiocontroles.
-- [ ] Installatiepakketten en distributiecontroles voor 0.15.0.
+- [x] Installatiepakketten en distributiecontroles voor 0.15.0.
 
 De externe host ondersteunt native Linux VST3-stereoeffecten met een generiek
 parametervenster. De uitgebreide sessietaak richt zich op nieuwe projecten:
 audio, opnamen, ketens en plug-instatus worden samen bewaard en heropend.
 Uitbreiding van oude importvarianten hoort niet bij deze stap.
 
-Alle 363 lokale controles slagen, met zes expliciete backendtests overgeslagen.
-De distributiebouw voert de echte virtuele in-/uitvoer- en duplexcontroles uit.
+Alle 363 controles slagen in Debian, Fedora en Arch, inclusief virtuele
+audiobackend- en duplexcontroles. De geïnstalleerde pakketten doorstaan de
+gewone, afspeel-, opname- en duplexzelftest ook op Ubuntu 26.04 en Rolling.
+De geverifieerde logs bevatten geen callback- of RingBuffer-fouten.
+[Release 0.15.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.15.0)
+bevat de geteste installatiepakketten. Zie [realtime-/plug-incontroles](validation/realtime-plugins.md).
 Eigen plug-invensters, meer formaten, automatische latency-/driftcompensatie en
 punch-in/out blijven vervolgmogelijkheden.
