@@ -204,10 +204,12 @@ class Recorder(QObject):
     def _set_state(self,state):
         if self.state!=state:self.state=state;self.state_changed.emit(state)
 
-    def start(self,rate,channels=1,first_channel=0,limit_seconds=None):
+    def start(self,rate,channels=1,first_channel=0,limit_seconds=None,*,skip_start_ms=0):
         if self.active:raise AudioError("An audio recording is already running.")
         self._generation+=1
         try:
+            if not np.isfinite(skip_start_ms) or not 0<=skip_start_ms<=500:
+                raise AudioError("Choose a recording start skip between 0 and 500 ms.")
             device=self.devices.input()
             self.format=input_format(device,rate,channels,first_channel)
             if limit_seconds is not None and (not np.isfinite(limit_seconds) or limit_seconds<=0):
@@ -215,6 +217,10 @@ class Recorder(QObject):
             self._limit=max(1,round(limit_seconds*self.format.sampleRate())) if limit_seconds is not None else None
             self._input_id=bytes(device.id()).hex();self._channels=channels;self._first_channel=first_channel
             self._tail=b''
+            self._skip_remaining=round(skip_start_ms*self.format.sampleRate()/1000)
+            self.skipped_frames=0
+            self._fade_frames=max(2,round(self.format.sampleRate()*.005)) if self._skip_remaining else 0
+            self._fade_position=0
             self.take=Take(self.format.sampleRate(),channels,device.description())
             self.source=self._source_factory(device,self.format,self)
             source=self.source
@@ -246,9 +252,18 @@ class Recorder(QObject):
                 length=len(raw)//self.format.bytesPerFrame()*self.format.bytesPerFrame()
                 self._tail=raw[length:]
                 if not length:continue
-                data=decode_input(raw[:length],self.format,self._channels,self._first_channel)
+                skipped=min(self._skip_remaining,length//self.format.bytesPerFrame())
+                self._skip_remaining-=skipped;self.skipped_frames+=skipped
+                raw=raw[skipped*self.format.bytesPerFrame():length]
+                if not raw:continue
+                data=decode_input(raw,self.format,self._channels,self._first_channel)
                 if self._limit is not None:data=data[:max(0,self._limit-self.take.frames)]
                 if len(data):
+                    if self._fade_position<self._fade_frames:
+                        count=min(len(data),self._fade_frames-self._fade_position)
+                        data=data.copy()
+                        gain=np.arange(self._fade_position,self._fade_position+count,dtype=np.float32)/(self._fade_frames-1)
+                        data[:count]*=gain[:,None];self._fade_position+=count
                     self.take.append(data);self.samples.emit(data,self.take.frames)
                 if self._limit is not None and self.take.frames>=self._limit:
                     generation=self._generation

@@ -56,6 +56,11 @@ def run(window):
         path = Path(folder)
         write_wav(path / "test.wav", doc.read(), doc.sample_rate, "float32")
         np.testing.assert_array_equal(read_wav(path / "test.wav").samples, doc.read())
+        from .media import write_mp3,read_mp3
+        mp3_samples=np.zeros((2400,2),np.float32)
+        write_mp3(path/'test.mp3',mp3_samples,48000,'mp3_192')
+        mp3=read_mp3(path/'test.mp3')
+        assert mp3.sample_rate==48000 and mp3.samples.shape==mp3_samples.shape
         from . import storage
         from .recovery import Recovery, restore, discard
         from .capture import Take,recover_take
@@ -119,7 +124,7 @@ def run(window):
     finally:
         install_language().set_language(previous_language,persist=False)
         manual.close();manual.deleteLater()
-    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, disk buffers, recovery, recording files, icons, effects, track inserts, isolated VST3 host, manual)")
+    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, MP3, projects, disk buffers, recovery, recording files, icons, effects, track inserts, isolated VST3 host, manual)")
 
 
 def run_audio(window):
@@ -163,7 +168,7 @@ def run_input(window):
     folder=tempfile.TemporaryDirectory(prefix="soundsausage-input-check-")
     try:
         os.environ["SOUNDSAUSAGE_CACHE_DIR"]=folder.name
-        ok=recorder.start(48000,2,limit_seconds=.25)
+        ok=recorder.start(48000,2,limit_seconds=.25,skip_start_ms=50)
         if ok and recorder.active:
             timeout.start(7000);loop.exec()
         if errors or recorder.active or not takes or not takes[0].frames:

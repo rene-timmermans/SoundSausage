@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.16.2. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.17.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -10,25 +10,35 @@ Choose **Options → Language** and select Nederlands, English, Deutsch, França
 
 ## 2. Quick start and workspace
 
-Open a WAV with **File → Open**. Press **Space** to listen or stop. Drag over a fragment, choose **Transform → Amplitude → Normalize**, listen with **Preview**, then confirm with **OK**. **Ctrl+Z** undoes the edit. Use **Save As** to keep a separate result. For several recordings, create a **New Multitrack Session**, import WAV files and finish with **Mix Down**.
+Open a WAV or MP3 with **File → Open**. Press **Space** to listen or stop. Drag over a fragment, choose **Transform → Amplitude → Normalize**, listen with **Preview**, then confirm with **OK**. **Ctrl+Z** undoes the edit. Use **Save As** to keep a separate result. For several recordings, create a **New Multitrack Session**, import WAV or MP3 files and finish with **Mix Down**.
 
 **Edit Waveform View** edits one recording; **Multitrack View** combines clips. Switch with **Tab**, the top buttons or **View**. Both documents remain available. Tooltips explain buttons; **Show Toolbar Labels** adds text and **Options → Show Status Bar** shows or hides the thin information line at the very bottom, below the level meter. It displays playback state and file details; the choice is remembered for the next start. **F11** toggles full screen. The lower clock follows audio; selection fields show start, end and length, and view fields the visible time range. Red peaks indicate output overload. A star before a document name means unsaved changes.
 
 Windows and graph scales adapt to the desktop font size and chosen language. If a form is too large for the screen, scroll through its settings; confirmation and cancel buttons remain accessible.
 
+A thin horizontal line separates left and right in the stereo waveform and live recording view.
+
 ## 3. Files, projects and recovery
 
-**New** creates an empty mono or stereo waveform at the chosen sample rate. **Open** reads WAV. **Save** updates the current file; **Save As** chooses another name/encoding; **Save Selection** writes only the chosen time and channels. WAV export supports PCM 8/16/24/32-bit and float32. PCM16 is a useful exchange format; float32 also preserves internal peaks above 0 dBFS. Extra bit depth cannot restore lost detail. Ambiguous older 32-bit WAV files ask for PCM or legacy-float interpretation; cancelling leaves the file intact.
+**New** creates an empty mono or stereo waveform at the chosen sample rate. **Open** reads WAV and MP3. **Save** updates the current file; **Save As** chooses another name/encoding; **Save Selection** writes only the chosen time and channels. WAV export supports PCM 8/16/24/32-bit and float32. PCM16 is a useful exchange format; float32 also preserves internal peaks above 0 dBFS. Extra bit depth cannot restore lost detail. Ambiguous older 32-bit WAV files ask for PCM or legacy-float interpretation; cancelling leaves the file intact.
 
 WAV text, cues and labels are retained. Cues follow editing, pasting and selection export; the destination title is kept. Recorder-specific fields are preserved verbatim, not recalculated after effects. Extra metadata is limited to 16 MiB; oversized input is rejected and omitted output fields require confirmation. Mixdown does not merge all source markers. Large WAV exports use RF64 when necessary.
 
-**New Multitrack Session**, **Open Session**, **Save Session** and **Save Session As** manage editable projects. A SoundSausage project (`.celp`) contains the audio, clips, lines, track settings, effect order/bypass/tails and VST3 settings. Save a project as well as the final WAV to retain separate tracks. Older SoundSausage versions remain readable; projects with track racks need app 0.15.0 or newer. Legacy `.ses` import is limited; use a new SoundSausage project for continued work.
+**New Multitrack Session**, **Open Session**, **Save Session** and **Save Session As** manage editable projects. A SoundSausage project (`.celp`) contains the audio, clips, lines, track settings, effect order/bypass/tails and VST3 settings. Save a project as well as the final WAV or MP3 to retain separate tracks. Older SoundSausage versions remain readable; projects with track racks need app 0.15.0 or newer. Legacy `.ses` import is limited; use a new SoundSausage project for continued work.
 
 **Close / Ctrl+W** closes the current waveform; in multitrack it is **Close Session**. Save, discard or cancel when asked. The other view and clipboard remain available. **Exit / Ctrl+Q** closes the application and checks unsaved work.
 
 Long files are processed in blocks on disk, without the former 128 MiB limit. Reserve free space for source copies, results and Undo. Sessions are limited to 24 hours and 32 tracks. Long operations show progress and cancellation; cancelling preserves audio, selection, history and the old export target. One applied effect is one Undo step.
 
 After an unexpected exit, recovery offers the latest checkpoint: restore, remove or later. **File → Recover Work** opens retained copies. Original files remain intact; waveform, session, channels, clips, lines and racks return, but Undo starts afresh. Confirmed edits are checkpointed, cursor/selection about once per second. Active instances are skipped. Ordinary save/confirmed close clears that instance's recovery. Keep your own backups; a disk error can leave an older checkpoint.
+
+### MP3 and WAV
+
+Open MP3 files through **File → Open**, import them into multitrack or drag them onto the timeline. All selection, editing and effect tools work on the decoded audio. **Save As**, **Save Selection** and **Mix Down** offer WAV and MP3; the file extension follows the selected format. Saving an existing MP3 uses the chosen MP3 encoding; Save As can make a WAV copy.
+
+MP3 offers 128, 192, 256 and 320 kb/s. Higher bitrates use more space and usually retain more detail. MP3 is lossy: recompression may lose more detail. WAV avoids another MP3 compression step, but cannot recover detail already lost. Use float32 WAV for continued editing or PCM16 for exchange. MP3 export uses the closest of 32,000, 44,100 and 48,000 Hz, preserving duration while the document retains its own rate. Use WAV for selections shorter than 2 ms.
+
+ID3 text and embedded cover images are retained, including through WAV and embedded projects. The duration tag is updated; chapter positions, ReplayGain and other derived tags are not recalculated. Unsupported WAV markers/file data require confirmation before MP3 export. Extra metadata remains limited to 16 MiB; mixdown does not merge all track metadata. Long conversions show progress and can be cancelled without replacing an existing destination. Reserve disk space for conversion and editing.
 
 ## 4. Playback, zoom and audio devices
 
@@ -43,6 +53,8 @@ Connect a microphone/interface, choose the recording device in **Audio Hardware*
 **Start Recording** opens the microphone; nothing opens before that. The live waveform shows the last 20 seconds, the clock the total captured duration and meters the input. **P** pauses/resumes without including paused time. **Stop**, **Esc**, **Space** or **R** keeps the take. Insertion/replacement or a new multitrack clip is one Undo step; a new waveform still needs Save. **Discard Recording** asks before removing only this take. Closing asks to keep, discard or continue. Other edits are locked during recording.
 
 The input is not monitored through speakers. Adjust gain on the interface/microphone or Linux sound settings; clipped input cannot be repaired by lowering it later. Device loss stops and retains captured audio rather than switching microphones. Takes are written in blocks, checkpointed roughly each second. Recovery opens the last checkpoint as a separate waveform. Cancelling conversion after Stop leaves the take available under **Recover Work** and the old document unchanged.
+
+**Skip at start** removes the first input milliseconds once per take to exclude a startup click. The initial value is 50 ms, adjustable from 0 to 500 ms and remembered. At 0 ms the full start is kept; a nonzero cut is followed by a 5 ms fade-in. Removed audio is not recorded. Clock, live view, meters and maximum duration follow retained audio. Pause/resume does not repeat the cut. With backing playback, clip placement accounts for the removed time to retain alignment.
 
 ## 6. Selection, channels and editing
 

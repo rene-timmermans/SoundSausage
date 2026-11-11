@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.16.2. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.17.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -18,7 +18,7 @@ behouden. Alle vijf handleidingen zijn ook zonder internet beschikbaar.
 
 ## Snel beginnen
 
-1. Kies **Bestand → Openen** en open een WAV-bestand.
+1. Kies **Bestand → Openen** en open een WAV- of MP3-bestand.
 2. Druk op **Spatie** om te luisteren en opnieuw op Spatie om te stoppen.
 3. Sleep over de golfvorm om een fragment te selecteren.
 4. Kies bijvoorbeeld **Effecten → Amplitude → Normaliseren**. Luister met
@@ -27,14 +27,15 @@ behouden. Alle vijf handleidingen zijn ook zonder internet beschikbaar.
 6. Kies **Bestand → Opslaan als** om het resultaat onder een nieuwe naam te bewaren.
 
 Voor meerdere opnamen tegelijk kies je **Bestand → Nieuwe multitracksessie**.
-Importeer de WAV-bestanden, verschuif de clips en maak een eindmix met **Eindmix maken**.
+Importeer de WAV- of MP3-bestanden, verschuif de clips en maak een eindmix met **Eindmix maken**.
 
 ## 1. De werkruimte
 
 SoundSausage heeft twee weergaven. **Golfvorm bewerken** bewerkt één opname.
 **Multitrackweergave** combineert clips op meerdere sporen. Wissel met de knoppen
 bovenaan, via **Beeld**, of met **Tab**. De golfvorm en de multitracksessie kunnen
-naast elkaar blijven bestaan; wisselen van weergave sluit ze niet.
+naast elkaar blijven bestaan; wisselen van weergave sluit ze niet. Een dunne
+horizontale lijn scheidt links en rechts in de stereo- en live opnameweergave.
 
 Bovenaan staan menu's en werkbalken. Een korte aanwijzing verschijnt wanneer je
 de muis boven een knop houdt. **Opties → Werkbalkteksten tonen** toont ook namen
@@ -64,11 +65,11 @@ horen, een selectie vereisen of nog in ontwikkeling zijn.
 voor links/rechts. De samplerate bepaalt hoeveel audiopunten per seconde worden
 bewaard. 44.100 en 48.000 Hz zijn gangbare keuzes.
 
-**Bestand → Openen** opent een WAV-bestand. **Opslaan** bewaart de huidige opname en
-**Opslaan als** kiest een andere naam of WAV-uitvoering. **Selectie opslaan** schrijft
+**Bestand → Openen** opent een WAV- of MP3-bestand. **Opslaan** bewaart de huidige opname en
+**Opslaan als** kiest een andere naam en de uitvoering WAV of MP3. **Selectie opslaan** schrijft
 alleen het geselecteerde fragment naar een nieuw bestand.
 
-Bij opslaan kun je PCM met 8, 16, 24 of 32 bits kiezen, of float32. 16-bit PCM is
+Bij WAV opslaan kun je PCM met 8, 16, 24 of 32 bits kiezen, of float32. 16-bit PCM is
 een praktische uitwisselkeuze; float32 bewaart ook interne pieken boven het
 gewone uitvoerniveau. Een grotere bitdiepte herstelt geen detail dat al eerder
 uit een opname is verdwenen.
@@ -85,6 +86,35 @@ Ontbrekende informatie wordt vóór export gemeld, met een keuze om te stoppen. 
 na een effect niet opnieuw berekend. Een eindmix voegt geen markers uit alle
 sporen samen. Grote WAV-export gebruikt waar nodig RF64.
 
+### MP3 openen en bewaren
+
+MP3-bestanden zijn net als WAV te selecteren, knippen, mengen en met effecten te
+bewerken. **Audio in multitrack importeren** en slepen naar de tijdlijn werken met
+beide bestandstypen. Bij **Opslaan als**, **Selectie opslaan** en **Eindmix maken**
+kies je onder het bestandstype **WAV** of **MP3**. De bestandsuitgang volgt die
+keuze. Opslaan van een bestaande MP3 gebruikt het eerder gekozen MP3-formaat;
+met Opslaan als kun je daarvan een WAV-kopie maken.
+
+Voor MP3 zijn 128, 192, 256 en 320 kb/s beschikbaar. Een hogere bitrate geeft
+grotere bestanden en doorgaans meer detail. MP3 slaat audio met kwaliteitsverlies
+op; opnieuw comprimeren kan meer detail verliezen. Een WAV-kopie voorkomt een
+extra MP3-compressiestap, maar herstelt geen eerder verloren informatie. Kies
+WAV float32 voor verdere bewerking, of WAV PCM16 voor eenvoudige uitwisseling.
+
+MP3-uitvoer gebruikt de dichtstbijzijnde samplerate van 32.000, 44.100 of
+48.000 Hz. De speelduur blijft behouden; het document blijft op zijn eigen
+samplerate. Selecties korter dan 2 ms kunnen als WAV worden bewaard. Langere
+opdrachten tonen voortgang en zijn te annuleren; een mislukte of afgebroken
+opslag vervangt het bestaande doelbestand niet. Er is vrije schijfruimte nodig
+voor de omzetting en de bewerkte audio.
+
+ID3-tekst en ingesloten hoesafbeeldingen blijven bij MP3-opslag behouden, ook
+na een tussenstap via WAV of een SoundSausage-project. De opgeslagen duur wordt
+bijgewerkt. MP3-hoofdstukposities, ReplayGain en andere afgeleide velden worden
+niet opnieuw berekend. WAV-cuepunten en andere gegevens die MP3 niet kan
+bewaren, worden vóór export gemeld. De totale extra bestandsinformatie blijft
+begrensd tot 16 MiB. Een eindmix neemt geen bestandsinformatie uit alle sporen samen.
+
 ### Projecten met meerdere sporen
 
 **Nieuwe multitracksessie** maakt een sessie met een gekozen samplerate en aantal
@@ -95,10 +125,11 @@ met clipposities, spoorinstellingen en getekende lijnen.
 | Bestand | Gebruik |
 | --- | --- |
 | WAV | Een losse opname of een afgemaakte eindmix |
+| MP3 | Een compacte opname of eindmix, met kwaliteitsverlies |
 | SoundSausage-project (`.celp`) | Een bewerkbaar project met meerdere sporen en de gebruikte audio |
 | Oudere sessie (`.ses`) | Beperkte import; sla het resultaat daarna op als SoundSausage-project |
 
-Een WAV-eindmix bevat geen afzonderlijk bewerkbare sporen. Bewaar daarom ook het
+Een WAV- of MP3-eindmix bevat geen afzonderlijk bewerkbare sporen. Bewaar daarom ook het
 project wanneer je later verder wilt mixen.
 
 ### Sluiten
@@ -197,6 +228,19 @@ is pas als bestand bewaard nadat je **Opslaan** of **Opslaan als** kiest.
 bevestiging. Tijdens opname staan andere bewerkingen uit. Sluiten vraagt of de
 opname moet worden gestopt en behouden, verworpen of doorgezet. Daarna gelden
 de gewone vragen voor niet-opgeslagen werk.
+
+### Het opnamebegin overslaan
+
+**Begin overslaan** in het opnamevenster verwijdert eenmalig de eerste
+milliseconden om een inschakelklik buiten de opname te houden. De beginwaarde is
+50 ms; kies een waarde van 0 tot 500 ms. De keuze blijft bewaard. Met **0 ms**
+wordt het volledige begin opgenomen. Bij een uitsnede volgt een fade-in van
+5 ms om een harde overgang te vermijden.
+
+Het overgeslagen geluid komt niet in de opname. De klok, golfvorm, meters en
+**Maximale duur** volgen de bewaarde audio. Pauzeren en hervatten herhalen de
+uitsnede niet. Bij opname met begeleiding wordt de uitgesneden tijd in de
+clippositie meegenomen, zodat het overgebleven geluid op zijn plaats blijft.
 
 ### Ingang en herstel
 
@@ -864,8 +908,8 @@ klank of toon te onderzoeken. Sluiten verandert de audio niet.
 ### Een sessie opbouwen
 
 1. Kies **Bestand → Nieuwe multitracksessie** en stel rate en aantal sporen in.
-2. Gebruik **WAV importeren** of **Bestand → WAV in multitrack importeren**. Je kunt ook
-   WAV-bestanden vanuit de bestandsbeheerder op de tijdlijn slepen.
+2. Gebruik **Audio importeren** of **Bestand → Audio in multitrack importeren**. Je kunt ook
+   WAV- of MP3-bestanden vanuit de bestandsbeheerder op de tijdlijn slepen.
 3. Sleep clips in **Clips verplaatsen** naar de gewenste tijd en het gewenste spoor.
 4. Stel volume, pan, Dempen en Solo per spoor in.
 5. Sla het project tussentijds op en luister naar de combinatie.

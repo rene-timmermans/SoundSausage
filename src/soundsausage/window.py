@@ -14,6 +14,7 @@ from .i18n_widgets import QMainWindow, QWidget, QLabel, QToolBar, QToolButton, Q
 from .about import AboutDialog
 from .manual import ManualDialog
 from .audio import AudioError, AmbiguousWavError, read_wav, write_wav, tone
+from .media import read_mp3,write_audio,MP3_ENCODINGS,AUDIO_FILTER
 from .document import Document
 from .recording_ui import RecordingActions,RecordingView
 from .playback import Playback
@@ -43,6 +44,10 @@ FORMAT_LABELS = {
     "pcm24": "WAV · 24-bit PCM (*.wav)",
     "pcm32": "WAV · 32-bit integer PCM (*.wav)",
     "float32": "WAV · 32-bit normalized float (*.wav)",
+    "mp3_128": "MP3 · 128 kb/s (*.mp3)",
+    "mp3_192": "MP3 · 192 kb/s (*.mp3)",
+    "mp3_256": "MP3 · 256 kb/s (*.mp3)",
+    "mp3_320": "MP3 · 320 kb/s (*.mp3)",
 }
 
 
@@ -417,7 +422,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         elif fit:
             self.multitrack.set_session(self.session, fit=True)
         self.update_window_title()
-        self.format_label.setText(f" {doc.sample_rate} Hz · {doc.encoding} · {'Stereo' if doc.channels == 2 else 'Mono'} ")
+        encoding=f'MP3 {MP3_ENCODINGS[doc.encoding]} kb/s' if doc.encoding in MP3_ENCODINGS else doc.encoding
+        self.format_label.setText(f" {doc.sample_rate} Hz · {encoding} · {'Stereo' if doc.channels == 2 else 'Mono'} ")
         self.detail_label.setText(f" {clock_text(doc.duration)} · {doc.frames:,} frames ")
         self.selection_changed(*doc.selection)
         has_audio = doc.frames > 0
@@ -691,7 +697,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
     def open_dialog(self):
         if self.mode == "multitrack":
             return self.open_session_dialog()
-        path, _ = QFileDialog.getOpenFileName(self, "Open a Waveform", "", "Waveform audio (*.wav *.WAV);;All files (*)")
+        path, _ = QFileDialog.getOpenFileName(self, "Open a Waveform", "", AUDIO_FILTER)
         if path:
             self.open_selected_path(path)
 
@@ -703,6 +709,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
 
     @long_operation
     def read_audio_file(self, path):
+        if Path(path).suffix.lower()=='.mp3':return read_mp3(path)
         try:
             return read_wav(path)
         except AmbiguousWavError:
@@ -739,21 +746,38 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
     def _save_path(self, title, suggested=None, encoding=None):
         encoding = encoding or self.document.encoding
         labels = ";;".join(FORMAT_LABELS.values())
-        path, selected = QFileDialog.getSaveFileName(self, title, str(suggested or "Untitled.wav"), labels, FORMAT_LABELS[encoding])
+        suggested=Path(suggested or 'Untitled.wav')
+        if suggested.suffix.lower() in ('.wav','.mp3'):suggested=suggested.with_suffix('')
+        path, selected = QFileDialog.getSaveFileName(self, title, str(suggested), labels, tr(FORMAT_LABELS[encoding]))
         if not path:
             return None, None
-        if not Path(path).suffix:
-            path += ".wav"
-        return Path(path), next((key for key, value in FORMAT_LABELS.items() if value == selected), encoding)
+        encoding=next((key for key,value in FORMAT_LABELS.items() if selected in (value,tr(value))),encoding)
+        original=Path(path);extension='.mp3' if encoding in MP3_ENCODINGS else '.wav'
+        if original.suffix.lower()==extension:result=original
+        elif original.suffix.lower() in ('.wav','.mp3'):result=original.with_suffix(extension)
+        else:result=Path(str(original)+extension)
+        if result!=original and result.exists():
+            answer=QMessageBox.question(self,'Replace File','The file already exists:\n{0}\n\nReplace it?'.format(result),
+                QMessageBox.StandardButton.Yes|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Cancel)
+            if answer!=QMessageBox.StandardButton.Yes:return None,None
+        return result,encoding
 
-    def _metadata_permission(self):
-        preserved = {kind.decode("ascii","replace") for kind,_ in self.document.metadata}
-        omitted = [name for name in self.document.extra_chunks if name not in preserved]
+    def _metadata_permission(self,encoding=None):
+        mp3=encoding in MP3_ENCODINGS
+        preserved = {kind.decode("ascii","replace") for kind,raw in self.document.metadata
+                     if not mp3 or kind.lower()==b'id3 ' or (kind==b'LIST' and raw[:4]==b'INFO')}
+        omitted={name for name in self.document.extra_chunks if name not in preserved}
+        if mp3:
+            omitted.update(kind.decode('ascii','replace') for kind,raw in self.document.metadata
+                           if kind.lower()!=b'id3 ' and not (kind==b'LIST' and raw[:4]==b'INFO'))
+        omitted=sorted(omitted)
         if not omitted:
             return True
         names = ", ".join(omitted)
-        result = QMessageBox.question(self, "Audio-only WAV Export",
-            f"These additional WAV chunks could not be preserved and will be omitted: {names}.\n\nContinue?",
+        title='MP3 Metadata' if mp3 else 'Audio-only WAV Export'
+        message=('These file details cannot be stored in MP3 and will be omitted: {0}.\n\nContinue?'.format(names) if mp3 else
+                 f"These additional WAV chunks could not be preserved and will be omitted: {names}.\n\nContinue?")
+        result = QMessageBox.question(self,title,message,
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
         return result == QMessageBox.StandardButton.Yes
 
@@ -767,10 +791,10 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         path, encoding = self.document.path, self.document.encoding
         if save_as or path is None:
             path, encoding = self._save_path("Save a Waveform", path)
-        if path is None or not self._metadata_permission():
+        if path is None or not self._metadata_permission(encoding):
             return False
         try:
-            write_wav(path, self.document.view(), self.document.sample_rate, encoding, metadata=self.document.metadata)
+            write_audio(path, self.document.view(), self.document.sample_rate, encoding, metadata=self.document.metadata)
         except (ValueError, OSError) as error:
             self.error("Save Audio", error)
             return False
@@ -786,10 +810,10 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         if not self.document.selected:
             return
         path, encoding = self._save_path("Save Selection", "Selection.wav")
-        if path is None or not self._metadata_permission():
+        if path is None or not self._metadata_permission(encoding):
             return
         try:
-            write_wav(path, self.document.effect_view(*self.document.selection), self.document.sample_rate, encoding,
+            write_audio(path, self.document.effect_view(*self.document.selection), self.document.sample_rate, encoding,
                       metadata=metadata.crop(self.document.metadata,*self.document.selection))
         except (ValueError, OSError) as error:
             self.error("Save Selection", error)

@@ -1,4 +1,4 @@
-# SoundSausage 0.16.2
+# SoundSausage 0.17.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -9,6 +9,10 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Live golfvorm, ingangsniveaus, opnameklok, pauze/hervatten en stoppen als één Undo-stap.
 - Onderbroken opnamen afzonderlijk herstellen zonder bestaande bestanden te overschrijven.
 - WAV openen en opslaan: mono/stereo, PCM 8/16/24/32-bit en float32.
+- MP3 openen, bewerken en importeren in multitrack; WAV of MP3 kiezen bij opslaan, selectie-export en eindmix.
+- MP3-bitrates van 128, 192, 256 en 320 kb/s, met ID3-tekst en hoesafbeeldingen.
+- Opnamebegin eenmalig overslaan, 0–500 ms met onthouden keuze en korte fade-in; beginwaarde 50 ms.
+- Een dunne scheidingslijn tussen links en rechts, ook bij live opname.
 - De huidige golfvorm of sessie sluiten via Bestand → Sluiten of Ctrl+W, met een keuze voor niet-opgeslagen wijzigingen.
 - Golfvormbewerking met selecties, knippen, plakken, Mix Paste, trimmen en undo/redo.
 - Links/rechts apart kiezen door slepen, een zichtbare kanaalkeuze of sneltoetsen.
@@ -54,6 +58,10 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 
 ## Beperkingen
 
+- MP3 comprimeert met kwaliteitsverlies; opnieuw opslaan kan extra detail verliezen. WAV vermijdt een extra MP3-compressiestap.
+- MP3-uitvoer gebruikt de dichtstbijzijnde samplerate van 32/44,1/48 kHz en vereist ten minste 2 ms audio.
+- MP3-hoofdstukposities, ReplayGain en andere afgeleide ID3-gegevens worden niet opnieuw berekend. Niet-ondersteunde WAV-bestandsinformatie vereist een keuze vóór MP3-export.
+- De ingestelde eerste opnamemilliseconden worden verwijderd. Kies 0 ms om het volledige begin te bewaren.
 - Stereo heeft een gezamenlijke tijdas. Duurwijzigingen, knippen, verwijderen, trimmen en opname in de bestaande golfvorm vereisen beide kanalen.
 - Op één stereokanaal plakken kan bij gelijke vervangingsduur; Mix Paste blijft binnen de bestaande lengte.
 

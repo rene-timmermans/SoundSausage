@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.16.2. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.17.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 ## 1. Langue et aide
 
@@ -10,15 +10,17 @@ Dans **Options → Langue**, choisissez Nederlands, English, Deutsch, Français 
 
 ## 2. Démarrage rapide et espace de travail
 
-Ouvrez un WAV par **Fichier → Ouvrir**. **Espace** démarre ou arrête la lecture. Sélectionnez un passage, choisissez **Effets → Amplitude → Normaliser**, écoutez avec **Écouter**, puis validez par **OK**. **Ctrl+Z** annule. **Enregistrer sous** garde un résultat séparé. Pour plusieurs prises, créez une **Nouvelle session multipiste**, importez les WAV puis utilisez **Mixer**.
+Ouvrez un WAV ou MP3 par **Fichier → Ouvrir**. **Espace** démarre ou arrête la lecture. Sélectionnez un passage, choisissez **Effets → Amplitude → Normaliser**, écoutez avec **Écouter**, puis validez par **OK**. **Ctrl+Z** annule. **Enregistrer sous** garde un résultat séparé. Pour plusieurs prises, créez une **Nouvelle session multipiste**, importez les WAV ou MP3 puis utilisez **Mixer**.
 
 **Édition la forme d’onde** modifie une prise ; **Vue multipiste** combine des clips. Passez de l'une à l'autre avec **Tab**, les boutons supérieurs ou **Affichage** ; les deux documents restent disponibles. Les infobulles expliquent les boutons. **Afficher le texte des barres d’outils** ajoute leur texte, **Options → Afficher la barre d’état** affiche ou masque la fine ligne d’information tout en bas, sous les indicateurs de niveau. Elle indique l’état de lecture et les détails du fichier ; le choix est conservé au prochain démarrage. **F11** bascule le plein écran. L'horloge suit l'audio ; les champs de sélection indiquent début, fin et durée, ceux de vue l'intervalle visible. Des crêtes rouges signalent une surcharge ; une étoile indique des modifications non enregistrées.
 
 Les fenêtres et les échelles des graphiques s’adaptent à la taille de police du bureau et à la langue choisie. Si un formulaire dépasse l’écran, faites défiler ses réglages ; les boutons de validation et d’annulation restent accessibles.
 
+Une fine ligne horizontale sépare gauche et droite dans la forme d’onde stéréo et la vue d’enregistrement en direct.
+
 ## 3. Fichiers, projets et récupération
 
-**Nouveau** crée une forme d'onde mono ou stéréo à la fréquence choisie. **Ouvrir** lit un WAV. **Enregistrer** actualise le fichier ; **Enregistrer sous** choisit nom/encodage ; **Enregistrer la sélection** écrit uniquement l'intervalle et les canaux sélectionnés. L'export WAV propose PCM 8/16/24/32 bits et float32. PCM16 facilite l'échange ; float32 conserve aussi les crêtes internes au-delà de 0 dBFS. Augmenter la résolution ne restitue pas les détails perdus. Un ancien WAV 32 bits ambigu demande une interprétation PCM ou flottante historique ; annuler le laisse intact.
+**Nouveau** crée une forme d'onde mono ou stéréo à la fréquence choisie. **Ouvrir** lit les WAV et MP3. **Enregistrer** actualise le fichier ; **Enregistrer sous** choisit nom/encodage ; **Enregistrer la sélection** écrit uniquement l'intervalle et les canaux sélectionnés. L'export WAV propose PCM 8/16/24/32 bits et float32. PCM16 facilite l'échange ; float32 conserve aussi les crêtes internes au-delà de 0 dBFS. Augmenter la résolution ne restitue pas les détails perdus. Un ancien WAV 32 bits ambigu demande une interprétation PCM ou flottante historique ; annuler le laisse intact.
 
 Textes WAV, repères et étiquettes sont conservés. Les repères suivent les éditions, collages et exports de sélection ; le titre cible est gardé. Les champs propres aux enregistreurs restent inchangés, sans recalcul après effet. Les métadonnées supplémentaires sont limitées à 16 Mio : une entrée excessive est refusée ; les omissions à l'export demandent confirmation. Le mixage ne fusionne pas les marqueurs des sources. Les gros exports utilisent RF64 si nécessaire.
 
@@ -29,6 +31,14 @@ Textes WAV, repères et étiquettes sont conservés. Les repères suivent les é
 Les fichiers longs sont traités par blocs sur disque, sans l'ancienne limite de 128 Mio. Prévoyez de la place pour sources, résultats et annulations. Les sessions sont limitées à 24 heures et 32 pistes. Les opérations longues affichent progression et annulation ; annuler conserve audio, sélection, historique et ancienne cible d'export. Un effet appliqué constitue une annulation.
 
 Après une fermeture imprévue, restaurez, supprimez ou reportez la dernière sauvegarde de récupération. **Fichier → Récupérer le travail** ouvre les copies conservées. Les originaux restent intacts ; forme d'onde, session, canaux, clips, courbes et effets reviennent, mais l'historique d'annulation repart à zéro. Les éditions validées sont sauvegardées, curseur/sélection environ chaque seconde. Les instances actives sont ignorées. Enregistrer ou fermer normalement efface la copie propre à l'instance. Gardez vos sauvegardes ; une erreur disque peut laisser un état plus ancien.
+
+### MP3 et WAV
+
+Ouvrez les MP3 par **Fichier → Ouvrir**, importez-les en multipiste ou déposez-les sur la chronologie. Sélection, édition et effets travaillent sur l’audio décodé. **Enregistrer sous**, **Enregistrer la sélection** et **Mixer** proposent WAV et MP3 ; l’extension suit le format choisi. Enregistrer un MP3 existant utilise l’encodage MP3 choisi ; Enregistrer sous permet une copie WAV.
+
+MP3 propose 128, 192, 256 et 320 kb/s. Un débit supérieur occupe plus de place et conserve généralement plus de détails. MP3 est avec perte : recomprimer peut supprimer d’autres détails. WAV évite une compression MP3 supplémentaire sans restaurer les informations perdues. Choisissez WAV float32 pour poursuivre l’édition, PCM16 pour l’échange. L’export MP3 utilise la fréquence la plus proche parmi 32 000, 44 100 et 48 000 Hz, à durée égale ; le document garde sa fréquence. Utilisez WAV pour les sélections de moins de 2 ms.
+
+Textes ID3 et pochettes intégrées sont conservés, y compris via WAV et les projets intégrés. La durée est actualisée ; positions des chapitres, ReplayGain et autres données dérivées ne sont pas recalculées. Les marqueurs/données WAV incompatibles nécessitent confirmation avant export MP3. Les métadonnées supplémentaires restent limitées à 16 Mio ; le mixage ne fusionne pas toutes les métadonnées des pistes. Les conversions longues affichent la progression et peuvent être annulées sans remplacer la destination existante. Prévoyez de l’espace disque pour la conversion et l’édition.
 
 ## 4. Lecture, zoom et matériel audio
 
@@ -43,6 +53,8 @@ Branchez un micro/interface, choisissez l'entrée dans **Périphériques audio**
 **Démarrer l’enregistrement** ouvre alors le microphone, jamais avant. La forme en direct montre les 20 dernières secondes, l'horloge la durée totale et les vumètres l'entrée. **P** pause/reprend sans inclure le temps de pause. **Arrêter**, **Échap**, **Espace** ou **R** conserve la prise. Insertion/remplacement ou nouveau clip forme une annulation ; une nouvelle forme d'onde doit encore être enregistrée. **Abandonner l’enregistrement** confirme la suppression de cette seule prise. Fermer propose conserver, abandonner ou continuer. Les autres éditions sont verrouillées pendant l'enregistrement.
 
 L'entrée n'est pas renvoyée aux haut-parleurs. Réglez le gain sur l'interface/micro ou dans Linux ; baisser ensuite ne répare pas une entrée écrêtée. La perte d'un périphérique arrête et conserve l'audio capturé au lieu de changer de micro. Les prises sont écrites par blocs, avec sauvegarde environ chaque seconde. La récupération ouvre une forme séparée. Annuler la conversion après arrêt garde la prise dans **Récupérer le travail** et laisse l'ancien document intact.
+
+**Début à ignorer** retire une fois les premières millisecondes de chaque prise pour exclure un clic de démarrage. La valeur initiale est 50 ms, réglable de 0 à 500 ms et mémorisée. À 0 ms, le début est conservé ; une coupe est suivie d’un fondu d’entrée de 5 ms. L’audio retiré n’est pas enregistré. Horloge, vue, niveaux et durée maximale suivent l’audio conservé. Pause/reprise ne répète pas la coupe. Avec accompagnement, la position du clip tient compte du temps retiré pour préserver l’alignement.
 
 ## 6. Sélection, canaux et édition
 

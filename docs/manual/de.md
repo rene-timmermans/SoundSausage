@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.16.2. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.17.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 ## 1. Sprache und Hilfe
 
@@ -10,15 +10,17 @@ Unter **Optionen → Sprache** Nederlands, English, Deutsch, Français oder Espa
 
 ## 2. Schnellstart und Arbeitsbereich
 
-Eine WAV-Datei mit **Datei → Öffnen** öffnen. **Leertaste** startet oder stoppt. Einen Abschnitt markieren, **Effekte → Amplitude → Normalisieren** wählen, mit **Vorschau** anhören und mit **OK** anwenden. **Strg+Z** macht die Änderung rückgängig. Mit **Speichern unter** ein separates Ergebnis speichern. Für mehrere Aufnahmen **Neue Mehrspursitzung** erstellen, WAVs importieren und mit **Abmischen** abschließen.
+Eine WAV- oder MP3-Datei mit **Datei → Öffnen** öffnen. **Leertaste** startet oder stoppt. Einen Abschnitt markieren, **Effekte → Amplitude → Normalisieren** wählen, mit **Vorschau** anhören und mit **OK** anwenden. **Strg+Z** macht die Änderung rückgängig. Mit **Speichern unter** ein separates Ergebnis speichern. Für mehrere Aufnahmen **Neue Mehrspursitzung** erstellen, WAVs oder MP3s importieren und mit **Abmischen** abschließen.
 
 **Wellenform bearbeiten** bearbeitet eine Aufnahme; **Mehrspuransicht** kombiniert Clips. Mit **Tab**, oberen Knöpfen oder **Ansicht** wechseln; beide Dokumente bleiben verfügbar. Hinweise erklären die Knöpfe. **Werkzeugleistenbeschriftungen anzeigen** ergänzt Text, **Optionen → Statusleiste anzeigen** blendet die schmale Informationszeile ganz unten unter der Pegelanzeige ein oder aus. Sie zeigt Wiedergabestatus und Dateidaten; die Auswahl bleibt beim nächsten Start erhalten. **F11** schaltet Vollbild. Die Uhr folgt dem Audio; Auswahlfelder zeigen Anfang, Ende und Länge, Ansichtsfelder den sichtbaren Zeitraum. Rote Spitzen zeigen Übersteuerung, ein Stern ungespeicherte Änderungen.
 
 Fenster und Diagrammskalen passen sich an die Schriftgröße des Desktops und die gewählte Sprache an. Ist ein Formular zu groß für den Bildschirm, durch die Einstellungen scrollen; die Schaltflächen zum Bestätigen und Abbrechen bleiben erreichbar.
 
+Eine dünne horizontale Linie trennt links und rechts in der Stereowellenform und der Liveaufnahme.
+
 ## 3. Dateien, Projekte und Wiederherstellung
 
-**Neu** erstellt eine leere Mono- oder Stereowellenform mit gewählter Abtastrate. **Öffnen** liest WAV. **Speichern** aktualisiert die Datei, **Speichern unter** wählt Name/Format, **Auswahl speichern** speichert nur ausgewählte Zeit und Kanäle. WAV unterstützt PCM 8/16/24/32 Bit und Float32. PCM16 eignet sich zum Austausch; Float32 erhält interne Spitzen über 0 dBFS. Höhere Bittiefe ersetzt keine verlorenen Details. Bei mehrdeutigen älteren 32-Bit-WAVs zwischen PCM und älterem Float wählen; Abbrechen lässt die Datei unverändert.
+**Neu** erstellt eine leere Mono- oder Stereowellenform mit gewählter Abtastrate. **Öffnen** liest WAV und MP3. **Speichern** aktualisiert die Datei, **Speichern unter** wählt Name/Format, **Auswahl speichern** speichert nur ausgewählte Zeit und Kanäle. WAV unterstützt PCM 8/16/24/32 Bit und Float32. PCM16 eignet sich zum Austausch; Float32 erhält interne Spitzen über 0 dBFS. Höhere Bittiefe ersetzt keine verlorenen Details. Bei mehrdeutigen älteren 32-Bit-WAVs zwischen PCM und älterem Float wählen; Abbrechen lässt die Datei unverändert.
 
 WAV-Texte, Cuepunkte und Beschriftungen bleiben erhalten. Cuepunkte folgen Bearbeitung, Einfügen und Auswahlexport; der Zieltitel bleibt erhalten. Recorderfelder werden wörtlich bewahrt und nach Effekten nicht neu berechnet. Zusätzliche Metadaten sind auf 16 MiB begrenzt. Größere Eingaben werden abgewiesen; ausgelassene Exportfelder benötigen Bestätigung. Die Mischung vereinigt keine Quellmarker. Große WAVs verwenden bei Bedarf RF64.
 
@@ -29,6 +31,14 @@ WAV-Texte, Cuepunkte und Beschriftungen bleiben erhalten. Cuepunkte folgen Bearb
 Lange Dateien werden blockweise auf Platte verarbeitet, ohne frühere 128-MiB-Grenze. Freien Platz für Quellkopien, Ergebnisse und Rückgängig-Verlauf vorhalten. Sitzungen sind auf 24 Stunden und 32 Spuren begrenzt. Lange Vorgänge zeigen Fortschritt und Abbrechen. Abbrechen erhält Audio, Auswahl, Verlauf und die bisherige Exportdatei. Ein angewandter Effekt ist ein Rückgängig-Schritt.
 
 Nach unerwartetem Beenden den letzten Stand wiederherstellen, entfernen oder später öffnen. **Datei → Arbeit wiederherstellen** öffnet aufbewahrte Kopien. Originaldateien bleiben erhalten; Wellenform, Sitzung, Kanäle, Clips, Linien und Ketten kehren zurück, der Verlauf beginnt neu. Bestätigte Änderungen werden gesichert, Cursor/Auswahl etwa sekündlich. Aktive Instanzen werden übersprungen. Normales Speichern/bestätigtes Schließen räumt die eigene Kopie auf. Eigene Sicherungen behalten; bei Plattenfehlern kann der Stand älter sein.
+
+### MP3 und WAV
+
+MP3-Dateien über **Datei → Öffnen** laden, in Mehrspur importieren oder auf die Zeitleiste ziehen. Auswahl, Bearbeitung und Effekte arbeiten mit dem dekodierten Audio. **Speichern unter**, **Auswahl speichern** und **Abmischen** bieten WAV und MP3; die Dateiendung folgt dem Format. Speichern einer vorhandenen MP3 verwendet die gewählte MP3-Kodierung; Speichern unter kann eine WAV-Kopie erstellen.
+
+MP3 bietet 128, 192, 256 und 320 kb/s. Höhere Bitraten benötigen mehr Speicher und erhalten meist mehr Details. MP3 ist verlustbehaftet: erneute Kompression kann weitere Details verlieren. WAV vermeidet einen weiteren MP3-Kompressionsschritt, stellt aber verlorene Informationen nicht wieder her. Float32-WAV eignet sich zum Weiterbearbeiten, PCM16 zum Austausch. MP3 verwendet die nächstliegende Abtastrate von 32.000, 44.100 oder 48.000 Hz bei gleicher Dauer; das Dokument behält seine Abtastrate. Auswahlen unter 2 ms als WAV speichern.
+
+ID3-Texte und eingebettete Cover bleiben erhalten, auch über WAV und eingebettete Projekte. Die Dauerangabe wird aktualisiert; Kapitelpositionen, ReplayGain und andere abgeleitete Angaben werden nicht neu berechnet. Nicht unterstützte WAV-Marker/Dateidaten benötigen vor dem MP3-Export eine Bestätigung. Zusätzliche Metadaten bleiben auf 16 MiB begrenzt; die Mischung vereinigt nicht alle Spurmetadaten. Lange Umwandlungen zeigen Fortschritt und lassen sich abbrechen, ohne eine vorhandene Zieldatei zu ersetzen. Freien Speicher für Umwandlung und Bearbeitung vorsehen.
 
 ## 4. Wiedergabe, Zoom und Audiogeräte
 
@@ -43,6 +53,8 @@ Mikrofon/Interface anschließen, Eingang in **Audiogeräte** wählen und **R** d
 **Aufnahme starten** öffnet erst jetzt das Mikrofon. Die Livewellenform zeigt die letzten 20 Sekunden, die Uhr die gesamte Aufnahmedauer, die Pegel den Eingang. **P** pausiert ohne Pausenzeit aufzunehmen. **Stopp**, **Esc**, **Leertaste** oder **R** behält die Aufnahme. Einfügen/Ersetzen oder ein neuer Mehrspurclip ist ein Rückgängig-Schritt; eine neue Wellenform muss noch gespeichert werden. **Aufnahme verwerfen** fragt vor Entfernen nur dieser Aufnahme. Schließen fragt nach Behalten, Verwerfen oder Fortsetzen. Andere Änderungen sind während Aufnahme gesperrt.
 
 Der Eingang wird nicht über Lautsprecher wiedergegeben. Verstärkung am Interface/Mikrofon oder in Linux einstellen; bereits übersteuerter Eingang wird durch späteres Absenken nicht repariert. Geräteverlust stoppt und behält Audio, statt das Mikrofon zu wechseln. Aufnahmen werden blockweise geschrieben und etwa sekündlich gesichert. Wiederherstellung öffnet eine separate Wellenform. Wird die Umwandlung nach Stopp abgebrochen, bleibt die Aufnahme unter **Arbeit wiederherstellen** verfügbar; das alte Dokument bleibt unverändert.
+
+**Am Anfang überspringen** entfernt die ersten Millisekunden einmal pro Aufnahme, um einen Einschaltknacks auszuschließen. Der Anfangswert beträgt 50 ms, einstellbar von 0 bis 500 ms und gespeichert. Bei 0 ms bleibt der gesamte Anfang erhalten; nach einem Schnitt folgt eine Einblendung von 5 ms. Entferntes Audio wird nicht aufgenommen. Uhr, Liveansicht, Pegel und Höchstdauer folgen dem behaltenen Audio. Pause/Fortsetzen wiederholt den Schnitt nicht. Bei Begleitwiedergabe berücksichtigt die Clipposition die entfernte Zeit und erhält die Ausrichtung.
 
 ## 6. Auswahl, Kanäle und Bearbeitung
 

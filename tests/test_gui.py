@@ -70,7 +70,7 @@ class GuiTests(unittest.TestCase):
     def test_failed_save_leaves_the_document_unsaved(self):
         self.window.document.path = ROOT / "build/unwritten.wav"
         self.window.effect("invert")
-        with patch("soundsausage.window.write_wav", side_effect=OSError("disk full")), patch.object(self.window, "error"):
+        with patch("soundsausage.window.write_audio", side_effect=OSError("disk full")), patch.object(self.window, "error"):
             self.assertFalse(self.window.save())
         self.assertTrue(self.window.document.dirty)
 

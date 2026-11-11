@@ -160,6 +160,54 @@ class CaptureTests(unittest.TestCase):
         self.recorder.source.push(np.ones((100,2),np.float32).tobytes());self.app.processEvents()
         self.assertEqual(self.recorder.state,'Stopped');self.assertEqual(self.takes[0].frames,48)
 
+    def test_start_skip_and_fade_are_independent_of_partial_reads(self):
+        data=np.arange(2000,dtype=np.float32).reshape(1000,2)/2000
+        expected=data[480:].copy()
+        expected[:240]*=(np.arange(240,dtype=np.float32)/239)[:,None]
+        for read_limit in (7,65536):
+            with self.subTest(read_limit=read_limit):
+                self.assertTrue(self.recorder.start(48000,2,skip_start_ms=10))
+                source=self.recorder.source;source.limit=read_limit
+                source.push(data.tobytes()[:13]);source.push(data.tobytes()[13:])
+                self.recorder.stop()
+                self.assertEqual(self.recorder.skipped_frames,480)
+                self.assertEqual(self.takes[-1].frames,520)
+                np.testing.assert_array_equal(self.takes[-1].samples,expected)
+        self.assertFalse(self.errors)
+
+    def test_start_skip_uses_device_rate_and_is_not_repeated_after_pause(self):
+        self.inputs=[Device(supported={(44100,2,QAudioFormat.SampleFormat.Int16)})]
+        self.assertTrue(self.recorder.start(48000,1,first_channel=1,skip_start_ms=1))
+        self.recorder.source.push(np.tile([8192,16384],(60,1)).astype(np.int16).tobytes())
+        self.recorder.toggle_pause();self.recorder.toggle_pause()
+        self.recorder.source.push(np.tile([8192,16384],(300,1)).astype(np.int16).tobytes())
+        self.recorder.stop()
+        expected=np.full((316,1),.5,np.float32)
+        expected[:220]*=(np.arange(220,dtype=np.float32)/219)[:,None]
+        self.assertEqual(self.takes[-1].rate,44100)
+        self.assertEqual(self.recorder.skipped_frames,44)
+        np.testing.assert_array_equal(self.takes[-1].samples,expected)
+        self.assertFalse(self.errors)
+
+    def test_start_skip_is_excluded_from_duration_and_an_empty_take_is_discarded(self):
+        self.recorder.start(48000,2,limit_seconds=.001,skip_start_ms=2)
+        self.recorder.source.push(np.ones((100,2),np.float32).tobytes())
+        self.assertEqual(self.recorder.take.frames,4)
+        self.assertEqual(self.recorder.state,'Recording')
+        self.recorder.source.push(np.ones((100,2),np.float32).tobytes());self.app.processEvents()
+        self.assertEqual(self.recorder.state,'Stopped');self.assertEqual(self.takes[-1].frames,48)
+        count=len(self.takes)
+        self.recorder.start(48000,2,skip_start_ms=50);path=self.recorder.take.path
+        self.recorder.source.push(np.ones((100,2),np.float32).tobytes());self.recorder.stop()
+        self.assertEqual(len(self.takes),count);self.assertFalse(path.exists());self.assertFalse(self.errors)
+
+    def test_invalid_start_skip_never_opens_the_input(self):
+        with patch.object(self.devices,'input') as input_device:
+            for skip in (-1,501,float('nan'),float('inf')):
+                self.assertFalse(self.recorder.start(48000,2,skip_start_ms=skip))
+                self.assertEqual(self.recorder.state,'Stopped')
+            input_device.assert_not_called()
+
     def test_input_preferences_cancel_and_hotplug(self):
         self.devices.configure('',100,b'usb'.hex())
         dialog=AudioHardwareDialog(self.devices)

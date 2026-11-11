@@ -114,7 +114,7 @@ class CloseTests(unittest.TestCase):
             self.assertIs(self.window.document, document)
             with tempfile.TemporaryDirectory() as folder:
                 document.path = Path(folder) / "cannot-write.wav"
-                with patch("soundsausage.window.write_wav", side_effect=OSError("disk full")), patch.object(self.window, "error"):
+                with patch("soundsausage.window.write_audio", side_effect=OSError("disk full")), patch.object(self.window, "error"):
                     self.assertFalse(self.window.close_current())
         self.assertIs(self.window.document, document)
         self.assertTrue(document.dirty)

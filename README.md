@@ -8,13 +8,14 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.16.2**.
+De huidige versie is **0.17.0**.
 
 ## Wat het kan
 
 - Nederlands, Engels, Duits, Frans en Spaans, met directe taalkeuze en bijpassende offline handleiding.
-- WAV-bestanden openen, bewerken en opslaan.
+- WAV- en MP3-bestanden openen, bewerken en opslaan, met formaatkeuze bij export.
 - Mono of stereo opnemen via microfoon of audio-interface, met apparaatkeuze en live meters.
+- Een instelbaar opnamebegin overslaan, met een korte fade-in tegen een harde overgang.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
 - Links of rechts afzonderlijk selecteren en bewerken met behoud van het andere kanaal.
 - Volume aanpassen, fades toepassen, normaliseren, omkeren en stilte toevoegen.
@@ -40,7 +41,7 @@ Zie [status en beperkingen](docs/STATUS.md).
 
 ## Installeren en starten
 
-Benodigd: Python 3.12–3.14, een C++20-compiler, Make, Qt Multimedia, libsamplerate en Rubber Band (3.3 of nieuwer).
+Benodigd: Python 3.12–3.14, een C++20-compiler, Make, Qt Multimedia, FFmpeg, libsamplerate en Rubber Band (3.3 of nieuwer). De Python-afhankelijkheden bevatten ook Mutagen voor MP3-bestandsinformatie.
 Op Arch is Qt Multimedia een aparte afhankelijkheid naast PySide6.
 
 Installatiepakketten voor Debian/Ubuntu, Fedora en Arch staan bij de
@@ -63,7 +64,7 @@ Het startscript bouwt de audiokern automatisch. Voorbeeldprojecten staan in [exa
 
 Wissel met **Tab** tussen golfvorm en multitrack. **Spatie** start en stopt het afspelen.
 **Ctrl+W** sluit de huidige golfvorm of sessie; het programma blijft open. Bij niet-opgeslagen wijzigingen kun je opslaan, verwerpen of annuleren.
-In multitrack sleep je WAV-bestanden op een spoor en verplaats of trim je clips met de muis.
+In multitrack sleep je WAV- of MP3-bestanden op een spoor en verplaats of trim je clips met de muis.
 Met **Volumelijn** en **Balanslijn** teken je de lijnen op een clip.
 **FX** opent een bewerkbare spoorketen; effecten en VST3-instellingen werken
 tijdens luisteren en in mixdown. Zie [spooreffecten, VST3 en opnemen met begeleiding](docs/REALTIME.md).
@@ -95,6 +96,8 @@ De taalkeuze blijft bewaard. De handleidingen zijn ook rechtstreeks te lezen:
 [Deutsch](docs/manual/de.md), [Français](docs/manual/fr.md), [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**0.17.0** MP3 openen en bewerken, met WAV- of MP3-uitvoer voor opnamen, selecties en eindmixen. ID3-tekst en hoesafbeeldingen blijven behouden. Opnamen kunnen een instelbaar begin overslaan; een dunne lijn scheidt de stereokanalen.
 
 **0.16.2** De titels boven de curves van Dynamiekbewerking en Volumeverloop volgen de linkermarge van het venster.
 

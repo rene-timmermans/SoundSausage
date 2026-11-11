@@ -155,7 +155,7 @@ def restore(owner,dsp=None):
         item=record['document']
         document=Document(sample_rate=integer(item['rate'],'Sample rate',1000,384000),
                           channels=integer(item['channels'],'Channels',1,2),encoding=item['encoding'],dsp=dsp)
-        if item['encoding'] not in ('pcm8','pcm16','pcm24','pcm32','float32'):
+        if item['encoding'] not in ('pcm8','pcm16','pcm24','pcm32','float32','mp3_128','mp3_192','mp3_256','mp3_320'):
             raise AudioError('Invalid recovery encoding.')
         document._pieces=tuple(buffer(value,document.channels) for value in item['pieces'])
         document.metadata=_decode_metadata(item['metadata'])

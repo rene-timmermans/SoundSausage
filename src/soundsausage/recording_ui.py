@@ -17,7 +17,7 @@ from .document import Document
 from .errors import OperationCancelled
 from .progress_ui import long_operation
 from .resample import resample
-from .theme import colors
+from .theme import colors,blend
 from .waveform import clock_text
 from .i18n_widgets import set_text
 
@@ -42,9 +42,13 @@ class RecordDialog(QDialog):
         self.first=QSpinBox();self.first.setRange(1,32);self.first.setValue(1)
         self.duration=QDoubleSpinBox();self.duration.setRange(0,86400);self.duration.setDecimals(3)
         self.duration.setSpecialValueText('Until Stop');self.duration.setSuffix(' sec')
+        self.skip_start=QDoubleSpinBox();self.skip_start.setRange(0,500);self.skip_start.setDecimals(1);self.skip_start.setSuffix(' ms')
+        self.skip_start.setValue(float(self.devices.settings.value('recording/skip_start_ms',50)))
+        self.skip_start.setToolTip('Discard the first input milliseconds once per take, followed by a 5 ms fade-in. Use 0 ms to keep the complete start.')
         form.addRow('Input',self.input);form.addRow('Destination',self.target)
         form.addRow('Sample rate (Hz)',self.rate);form.addRow('Channels',self.channels)
         form.addRow('First input channel',self.first);form.addRow('Maximum duration',self.duration)
+        form.addRow('Skip at start',self.skip_start)
         self.accompaniment = QCheckBox('Play existing tracks while recording')
         self.accompaniment.setChecked(window.mode=='multitrack' and window.session.frames>0)
         self.offset = QDoubleSpinBox(); self.offset.setRange(-2000,2000); self.offset.setDecimals(1); self.offset.setSuffix(' ms')
@@ -107,7 +111,7 @@ class RecordDialog(QDialog):
     def settings(self):
         return dict(target=self.target.currentData(),rate=self.rate.value(),channels=self.channels.currentIndex()+1,
                     first_channel=self.first.value()-1,input_id=self.input.currentData(),
-                    limit_seconds=self.duration.value() or None,
+                    limit_seconds=self.duration.value() or None,skip_start_ms=self.skip_start.value(),
                     accompaniment=self.target.currentData()=='multitrack' and self.accompaniment.isChecked(),
                     recording_offset_ms=self.offset.value())
 
@@ -163,6 +167,9 @@ class LivePlot(QWidget):
                 x=9+(max(a,start)-start)/span*width
                 p.drawLine(QPointF(x,center-min(1.08,max(-1.08,float(high[channel])))*scale),
                            QPointF(x,center-min(1.08,max(-1.08,float(low[channel])))*scale))
+        if view.channels==2:
+            separator=QPen(blend(c.plot,c.plot_text,.55),1);separator.setCosmetic(True);p.setPen(separator)
+            p.drawLine(QPointF(0,round(height/2)+.5),QPointF(self.width(),round(height/2)+.5))
         p.setPen(c.plot_text)
         p.drawText(QRectF(9,height+2,width,line),Qt.AlignmentFlag.AlignLeft,clock_text(start/view.rate))
         p.drawText(QRectF(9,height+2,width,line),Qt.AlignmentFlag.AlignRight,clock_text((start+span)/view.rate))
@@ -192,7 +199,7 @@ class RecordingActions:
         finally:
             self.update_recording_actions();dialog.deleteLater()
 
-    def start_recording(self,target='new',rate=44100,channels=2,first_channel=0,input_id=None,limit_seconds=None,accompaniment=False,recording_offset_ms=0):
+    def start_recording(self,target='new',rate=44100,channels=2,first_channel=0,input_id=None,limit_seconds=None,accompaniment=False,recording_offset_ms=0,skip_start_ms=None):
         if self.recording_busy:return False
         if target not in ('new','insert','replace','multitrack'):raise AudioError('Invalid recording destination.')
         if target in ('insert','replace') and self.document.partial_channels:
@@ -204,6 +211,8 @@ class RecordingActions:
         if target=='multitrack' and rate!=self.session.sample_rate:raise AudioError('Use the session sample rate for recording.')
         if accompaniment and target!='multitrack': raise AudioError('Playback accompaniment requires a multitrack recording.')
         if not np.isfinite(recording_offset_ms) or not -2000<=recording_offset_ms<=2000: raise AudioError('Invalid recording position offset.')
+        if skip_start_ms is not None and (not np.isfinite(skip_start_ms) or not 0<=skip_start_ms<=500):
+            raise AudioError('Choose a recording start skip between 0 and 500 ms.')
         if input_id is not None:self.audio_devices.configure(self.audio_devices.output_id,self.audio_devices.buffer_ms,input_id)
         self.player.stop()
         start,end=self.document.selection if target=='replace' else (self.active_model().cursor,self.active_model().cursor)
@@ -225,7 +234,10 @@ class RecordingActions:
                 if self.recording_busy:self.end_recording_view()
                 return False
         self.audio_devices.settings.setValue('recording/offset_ms',recording_offset_ms)
-        ok=self.recorder.start(rate,channels,first_channel,limit_seconds)
+        if skip_start_ms is not None:
+            self.audio_devices.settings.setValue('recording/skip_start_ms',skip_start_ms)
+            self.audio_devices.settings.sync()
+        ok=self.recorder.start(rate,channels,first_channel,limit_seconds,skip_start_ms=skip_start_ms or 0)
         if not ok and self.recording_busy:self.end_recording_view()
         return ok
 
@@ -265,7 +277,8 @@ class RecordingActions:
             self.player._tick()
             elapsed=max(0,self.player._last_frame-context['start'])
             captured=round(frames*context['rate']/self.recorder.take.rate)
-            context['anchor']=context['start']+max(0,elapsed-captured)
+            skipped=round(getattr(self.recorder,'skipped_frames',0)*context['rate']/self.recorder.take.rate)
+            context['anchor']=context['start']+max(skipped,elapsed-captured)
         self.recording_view.feed(data,frames)
         self.time_label.setText(clock_text(frames/self.recording_view.rate))
         self.detail_label.setText(f' {frames:,} captured frames ')

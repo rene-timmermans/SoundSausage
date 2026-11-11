@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.16.2. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.17.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 ## 1. Idioma y ayuda
 
@@ -10,15 +10,17 @@ En **Opciones → Idioma**, elige Nederlands, English, Deutsch, Français o Espa
 
 ## 2. Inicio rápido y espacio de trabajo
 
-Abre un WAV con **Archivo → Abrir**. **Espacio** reproduce o detiene. Selecciona un fragmento, elige **Efectos → Amplitud → Normalizar**, escucha con **Escuchar** y confirma con **Aceptar**. **Ctrl+Z** deshace la edición. Usa **Guardar como** para guardar otro archivo. Para varias grabaciones, crea una **Nueva sesión multipista**, importa WAV y termina con **Mezclar**.
+Abre un WAV o MP3 con **Archivo → Abrir**. **Espacio** reproduce o detiene. Selecciona un fragmento, elige **Efectos → Amplitud → Normalizar**, escucha con **Escuchar** y confirma con **Aceptar**. **Ctrl+Z** deshace la edición. Usa **Guardar como** para guardar otro archivo. Para varias grabaciones, crea una **Nueva sesión multipista**, importa WAV o MP3 y termina con **Mezclar**.
 
 **Editar forma de onda** edita una grabación; **Vista multipista** combina clips. Cambia con **Tab**, los botones superiores o **Ver**; ambos documentos siguen disponibles. Las ayudas explican los botones. **Mostrar etiquetas de herramientas** añade texto y **Opciones → Mostrar barra de estado** muestra u oculta la fina línea de información situada abajo del todo, debajo del medidor de nivel. Indica el estado de reproducción y los datos del archivo; la elección se conserva para el próximo inicio. **F11** alterna pantalla completa. El reloj sigue el audio; los campos de selección muestran inicio, fin y duración, y los de vista el intervalo visible. Los picos rojos indican sobrecarga y un asterisco cambios sin guardar.
 
 Las ventanas y las escalas de los gráficos se adaptan al tamaño de letra del escritorio y al idioma elegido. Si un formulario no cabe en la pantalla, desplázate por sus ajustes; los botones para confirmar o cancelar siguen accesibles.
 
+Una fina línea horizontal separa izquierda y derecha en la forma de onda estéreo y en la vista de grabación en directo.
+
 ## 3. Archivos, proyectos y recuperación
 
-**Nuevo** crea una forma de onda mono o estéreo con el muestreo elegido. **Abrir** lee WAV. **Guardar** actualiza el archivo; **Guardar como** elige nombre y codificación; **Guardar selección** guarda solo el tiempo y los canales seleccionados. WAV permite PCM de 8/16/24/32 bits y float32. PCM16 facilita el intercambio; float32 conserva también picos internos superiores a 0 dBFS. Más bits no recuperan detalles perdidos. Los WAV antiguos ambiguos de 32 bits preguntan si son PCM o flotante antiguo; cancelar no cambia el archivo.
+**Nuevo** crea una forma de onda mono o estéreo con el muestreo elegido. **Abrir** lee WAV y MP3. **Guardar** actualiza el archivo; **Guardar como** elige nombre y codificación; **Guardar selección** guarda solo el tiempo y los canales seleccionados. WAV permite PCM de 8/16/24/32 bits y float32. PCM16 facilita el intercambio; float32 conserva también picos internos superiores a 0 dBFS. Más bits no recuperan detalles perdidos. Los WAV antiguos ambiguos de 32 bits preguntan si son PCM o flotante antiguo; cancelar no cambia el archivo.
 
 Se conservan textos WAV, marcadores y etiquetas. Los marcadores siguen las ediciones, pegados y exportaciones de selección; se mantiene el título de destino. Los campos específicos de grabadoras se conservan literalmente y no se recalculan después de efectos. Los metadatos adicionales tienen un límite de 16 MiB: se rechaza una entrada mayor y se confirman las omisiones al exportar. La mezcla no reúne todos los marcadores de origen. Los WAV grandes usan RF64 cuando hace falta.
 
@@ -29,6 +31,14 @@ Se conservan textos WAV, marcadores y etiquetas. Los marcadores siguen las edici
 Los archivos largos se procesan por bloques en disco, sin el antiguo límite de 128 MiB. Reserva espacio para copias de origen, resultados y deshacer. Las sesiones se limitan a 24 horas y 32 pistas. Las operaciones largas muestran progreso y cancelación; cancelar conserva audio, selección, historial y el archivo de exportación anterior. Cada efecto aplicado es un paso de deshacer.
 
 Tras un cierre inesperado, recupera, elimina o pospón el último punto guardado. **Archivo → Recuperar trabajo** abre las copias conservadas. Los originales permanecen intactos; vuelven forma de onda, sesión, canales, clips, curvas y cadenas, pero el historial de deshacer se reinicia. Se guardan las ediciones confirmadas y, aproximadamente cada segundo, cursor y selección. Se omiten las instancias activas. Guardar o cerrar normalmente limpia la copia propia. Mantén tus copias de seguridad; un error de disco puede dejar un punto anterior.
+
+### MP3 y WAV
+
+Abre MP3 con **Archivo → Abrir**, impórtalos a multipista o arrástralos a la línea de tiempo. La selección, edición y efectos trabajan con el audio decodificado. **Guardar como**, **Guardar selección** y **Mezclar** ofrecen WAV y MP3; la extensión sigue el formato elegido. Guardar un MP3 existente usa la codificación MP3 elegida; Guardar como permite crear una copia WAV.
+
+MP3 ofrece 128, 192, 256 y 320 kb/s. Una tasa mayor ocupa más espacio y suele conservar más detalle. MP3 tiene pérdida: recomprimir puede perder más detalle. WAV evita otra compresión MP3, pero no recupera información perdida. Usa WAV float32 para seguir editando o PCM16 para intercambiar archivos. MP3 utiliza la frecuencia más cercana entre 32.000, 44.100 y 48.000 Hz y mantiene la duración; el documento conserva su frecuencia. Usa WAV para selecciones de menos de 2 ms.
+
+Se conservan los textos ID3 y las portadas integradas, también al pasar por WAV y proyectos integrados. Se actualiza la duración; las posiciones de capítulos, ReplayGain y otros datos derivados no se recalculan. Los marcadores/datos WAV incompatibles requieren confirmación antes de exportar a MP3. Los metadatos adicionales siguen limitados a 16 MiB; la mezcla no reúne todos los metadatos de las pistas. Las conversiones largas muestran progreso y se pueden cancelar sin reemplazar el destino existente. Reserva espacio para la conversión y la edición.
 
 ## 4. Reproducción, zoom y dispositivos
 
@@ -43,6 +53,8 @@ Conecta un micrófono/interfaz, elige la entrada en **Dispositivos de audio** y 
 **Iniciar grabación** abre el micrófono; antes permanece cerrado. La forma en vivo muestra los últimos 20 segundos, el reloj la duración total y los medidores la entrada. **P** pausa/reanuda sin incluir el tiempo pausado. **Detener**, **Esc**, **Espacio** o **R** conserva la toma. Insertar/reemplazar o añadir un clip es un paso de deshacer; una forma nueva aún necesita guardarse. **Descartar grabación** pide confirmar para eliminar solo esta toma. Cerrar pregunta si conservar, descartar o continuar. Las demás ediciones quedan bloqueadas durante la grabación.
 
 La entrada no se monitoriza por los altavoces. Ajusta la ganancia en la interfaz/micrófono o Linux; bajar después no repara una entrada saturada. Perder el dispositivo detiene y conserva el audio en lugar de cambiar de micrófono. Las tomas se escriben por bloques y se guardan aproximadamente cada segundo. Recuperar abre una forma aparte. Cancelar la conversión tras detener deja la toma en **Recuperar trabajo** y conserva el documento anterior.
+
+**Omitir al inicio** elimina una vez los primeros milisegundos de cada toma para excluir un clic de arranque. El valor inicial es 50 ms, ajustable de 0 a 500 ms y recordado. Con 0 ms se conserva todo el inicio; después de una omisión se aplica una entrada gradual de 5 ms. El audio omitido no se graba. Reloj, vista, niveles y duración máxima siguen el audio conservado. Pausar/reanudar no repite la omisión. Con acompañamiento, la posición del clip tiene en cuenta el tiempo omitido para mantener la sincronización.
 
 ## 6. Selección, canales y edición
 

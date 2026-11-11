@@ -15,6 +15,6 @@ Exec=soundsausage %f
 Icon=soundsausage
 Terminal=false
 Categories=AudioVideo;Audio;AudioVideoEditing;
-MimeType=audio/x-wav;audio/wav;
+MimeType=audio/x-wav;audio/wav;audio/mpeg;audio/mp3;
 StartupNotify=true
 StartupWMClass=SoundSausage

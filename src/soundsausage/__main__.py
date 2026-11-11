@@ -12,7 +12,7 @@ from .icons import application_icon
 
 def main():
     parser = argparse.ArgumentParser(description="SoundSausage waveform and multitrack editor")
-    parser.add_argument("waveform", nargs="?", help="WAV or .celp project to open")
+    parser.add_argument("waveform", nargs="?", help="WAV, MP3 or SoundSausage project to open")
     parser.add_argument("--multitrack", action="store_true", help="Start in multitrack view")
     parser.add_argument("--no-audio", action="store_true", help="Disable playback and recording for headless or restricted environments")
     parser.add_argument("--selftest", action="store_true", help="Check the installation without playing audio, then exit")

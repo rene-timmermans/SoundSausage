@@ -6,6 +6,7 @@ from .i18n_widgets import QDialogButtonBox
 from .i18n_widgets import QFileDialog, QMessageBox, QDialog, QFormLayout, QSpinBox
 
 from .audio import AudioError, write_wav
+from .media import write_audio,AUDIO_FILTER
 from . import metadata
 from .progress_ui import long_operation
 from .document import Document
@@ -41,7 +42,7 @@ class SessionActions:
         self.action("save_session", "Save Session", self.save_session, "Ctrl+Alt+S")
         self.action("save_session_as", "Save Session As…", lambda: self.save_session(True))
         self.action("insert_wave", "Insert Current Waveform in Multitrack", self.insert_waveform)
-        self.action("import_audio", "Import WAV into Multitrack…", self.import_audio_dialog)
+        self.action("import_audio", "Import Audio into Multitrack…", self.import_audio_dialog)
         self.action("apply_clip", "Apply Waveform to Clip", self.apply_waveform_to_clip)
         self.action("clip_properties", "Clip Properties…", lambda: self.multitrack.properties())
         self.action("duplicate_clip", "Duplicate Clip", lambda: self.multitrack.duplicate_clip(), "Ctrl+D")
@@ -206,7 +207,7 @@ class SessionActions:
         return True
 
     def import_audio_dialog(self):
-        paths, _ = QFileDialog.getOpenFileNames(self, "Import Audio into Multitrack", "", "WAV audio (*.wav *.WAV)")
+        paths, _ = QFileDialog.getOpenFileNames(self, "Import Audio into Multitrack", "", AUDIO_FILTER)
         if paths:
             self.import_session_files(paths)
 
@@ -286,7 +287,7 @@ class SessionActions:
             audio = self.session.render()
             # The supplied original PCM16 mixes saturate at -32767 and +32767.
             # Keep the float render's headroom and ordinary waveform saves intact.
-            write_wav(path, audio, self.session.sample_rate, encoding, pcm16_symmetric=True)
+            write_audio(path, audio, self.session.sample_rate, encoding, pcm16_symmetric=True)
         except (ValueError, OSError, RuntimeError) as error:
             self.error("Mix Down", error)
             return

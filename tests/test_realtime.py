@@ -169,6 +169,23 @@ class DuplexTests(unittest.TestCase):
             self.assertFalse(w.start_recording(target='multitrack',rate=48000,channels=2,accompaniment=True))
         self.assertFalse(w.recorder.active)
 
+    def test_start_skip_preserves_overdub_time_when_the_input_rate_differs(self):
+        from PySide6.QtMultimedia import QAudioFormat
+        w=self.window;rate=44100;start=4410
+        w.session=Session(rate,2);w.session.import_audio([(np.full((rate,2),.1,np.float32),rate,'Backing')])
+        w.session.selected_track=w.session.tracks[1].id;w.multitrack.set_session(w.session)
+        w.session.select(start,start);before=w.session.render()
+        device=Device('Input',b'input',supported={(48000,2,QAudioFormat.SampleFormat.Float)})
+        for elapsed in (0,882):
+            with self.subTest(elapsed=elapsed),patch.object(w.audio_devices,'settings',MemorySettings()),patch.object(w.audio_devices,'inputs',return_value=[device]),patch.object(w.player,'_tick',side_effect=lambda:setattr(w.player,'_last_frame',start+elapsed)):
+                self.assertTrue(w.start_recording(target='multitrack',rate=rate,channels=2,accompaniment=True,skip_start_ms=10))
+                w.recorder.source.push(np.full((960,2),.2,np.float32).tobytes())
+                w.stop_recording()
+            clip=w.session.tracks[1].clips[0]
+            self.assertEqual(clip.start,start+441);self.assertEqual(clip.frames,441)
+            w.session.undo();np.testing.assert_array_equal(w.session.render(),before)
+            self.errors.assert_not_called()
+
     def test_duplex_selftest_tolerates_input_queued_before_the_first_pause(self):
         from soundsausage.selftest import run_duplex
         class BacklogSource(Source):

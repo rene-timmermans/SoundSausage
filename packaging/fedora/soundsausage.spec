@@ -12,6 +12,8 @@ Requires:       python3-pyside6 >= 6.8
 Requires:       qt6-qtmultimedia
 Requires:       qt6-qttranslations
 Requires:       python3-numpy
+Requires:       python3-mutagen
+Requires:       /usr/bin/ffmpeg
 Requires:       rubberband-libs >= 3.3
 Requires:       libsamplerate
 %global __brp_python_bytecompile %{nil}

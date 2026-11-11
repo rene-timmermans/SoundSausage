@@ -157,3 +157,17 @@ bevat de geteste installatiepakketten. Alle 384 controles slagen in Debian,
 Fedora en Arch. Gewone, afspeel-, opname- en duplexzelftests slagen na installatie
 op alle vijf doelen, inclusief Ubuntu 26.04 en Rolling.
 [Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43061345129).
+
+## Opnamebegin en MP3 — 0.17.0
+
+- [x] Eerste opnamemilliseconden instelbaar overslaan, met korte fade-in, onthouden keuze en correcte klok/limiet.
+- [x] Blokgrenzen, pauze/hervatten, apparaat-samplerate, Undo en timing met begeleiding toetsen.
+- [x] Dunne scheidingslijn tussen links en rechts in golfvorm en live opname.
+- [x] MP3 openen/bewerken/importeren en WAV of MP3 kiezen voor opslag, selecties en eindmix.
+- [x] ID3-tekst en hoesafbeeldingen behouden; encoderkeuze in herstel en audio in projecten bewaren.
+- [x] Voortgang/annuleren, atomaire opslag, fouten en vertaalde formaatkeuze toetsen.
+- [x] Vijf offlinehandleidingen en installatieafhankelijkheden bijwerken.
+- [ ] Praktijkbestanden en definitieve distributiecontroles/installatiepakketten verifiëren.
+
+Zie [opname- en MP3-controles](validation/recording-mp3.md). De bestaande
+vervolgpunten voor plug-ins, latency-/driftcompensatie en punch-in/out blijven staan.

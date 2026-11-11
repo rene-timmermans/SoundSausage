@@ -16,7 +16,7 @@ from soundsausage.recovery import candidates,discard
 from soundsausage.recording_ui import RecordDialog
 from soundsausage.window import MainWindow
 from test_capture import Source
-from test_playback import Device
+from test_playback import Device,MemorySettings
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -139,6 +139,38 @@ class RecordingGuiTests(unittest.TestCase):
         self.assertEqual(dialog.settings()['input_id'],b'webcam'.hex())
         self.assertTrue(dialog.box.button(QDialogButtonBox.StandardButton.Ok).isEnabled())
         dialog.reject();dialog.deleteLater()
+
+    def test_start_skip_preference_and_live_audio_exclude_the_initial_peak(self):
+        w=self.window
+        with patch.object(w.audio_devices,'settings',MemorySettings()):
+            dialog=RecordDialog(w)
+            self.assertEqual(dialog.skip_start.value(),50)
+            dialog.skip_start.setValue(100);dialog.reject();dialog.deleteLater()
+            self.assertIsNone(w.audio_devices.settings.value('recording/skip_start_ms'))
+            self.assertTrue(w.start_recording(rate=48000,channels=2,skip_start_ms=100))
+            data=np.concatenate((np.ones((4800,2),np.float32),np.full((500,2),.25,np.float32)))
+            w.recorder.source.push(data.tobytes())
+            self.assertEqual(w.recording_view.frames,500)
+            self.assertEqual(w.transport.meter.peaks,(.25,.25))
+            w.stop_recording()
+            self.assertEqual(w.document.frames,500);self.assertEqual(w.document.read()[0,0],0)
+            self.assertEqual(w.document.read()[-1,0],.25)
+            dialog=RecordDialog(w);self.assertEqual(dialog.skip_start.value(),100)
+            dialog.reject();dialog.deleteLater()
+        self.error.assert_not_called()
+
+    def test_start_skip_insertion_is_one_undo_step(self):
+        w=self.window;original=np.full((20,2),.1,np.float32)
+        w.document=Document(original,48000);w.document.select(10,10);w.refresh()
+        with patch.object(w.audio_devices,'settings',MemorySettings()):
+            self.assertTrue(w.start_recording(target='insert',rate=48000,channels=2,skip_start_ms=5))
+            w.recorder.source.push(np.full((740,2),.3,np.float32).tobytes());w.stop_recording()
+        self.assertEqual(w.document.frames,520)
+        np.testing.assert_array_equal(w.document.read()[:10],original[:10])
+        np.testing.assert_array_equal(w.document.read()[-10:],original[10:])
+        self.assertEqual(len(w.document.undo_stack),1)
+        w.document.undo();np.testing.assert_array_equal(w.document.read(),original)
+        self.error.assert_not_called()
 
     def test_full_record_edit_multitrack_save_reopen_and_mixdown_chain(self):
         data=np.column_stack((np.linspace(-.5,.5,4800),np.linspace(.2,-.2,4800))).astype(np.float32)

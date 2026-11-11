@@ -205,7 +205,12 @@ class Waveform(QWidget):
             painter.restore()
         else:
             painter.setPen(c.plot_text)
-            painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, "Open a WAV file or generate a tone")
+            painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, "Open an audio file or generate a tone")
+        if channels==2:
+            separator=QPen(blend(c.plot,c.plot_text,.55),1);separator.setCosmetic(True)
+            painter.setPen(separator)
+            y=round(rect.center().y())+.5
+            painter.drawLine(QPointF(0,y),QPointF(self.width(),y))
         painter.setPen(c.text)
         labels = []
         for time, x in ticks:

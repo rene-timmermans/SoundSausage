@@ -475,15 +475,15 @@ class MultitrackEditor(QWidget):
         layout.setSpacing(4)
         row = QHBoxLayout()
         self.primary_buttons = {}
-        for name, callback in (("Import WAV…", self.import_requested.emit), ("+ Track", self.add_track),
+        for name, callback in (("Import Audio…", self.import_requested.emit), ("+ Track", self.add_track),
             ("− Track", self.remove_track), ("Clip Properties…", self.properties),
             ("Duplicate", self.duplicate_clip), ("Remove Clip", self.remove_clip),
             ("Mix Down…", self.mixdown_requested.emit)):
             button = QPushButton(name)
             button.setProperty("compact", True)
-            if name in ("Import WAV…", "Mix Down…"):
+            if name in ("Import Audio…", "Mix Down…"):
                 button.setProperty("primary", True)
-                self.primary_buttons["import_audio" if name == "Import WAV…" else "mixdown"] = button
+                self.primary_buttons["import_audio" if name == "Import Audio…" else "mixdown"] = button
             button.clicked.connect(lambda checked=False, action=callback: action())
             row.addWidget(button)
         row.addStretch()
