@@ -28,4 +28,12 @@ De gewone installatiezelftest slaagt eveneens. Voorbeelden van golfvorm en
 invoervenster zijn visueel gecontroleerd. Catalogus: 1293 bronvormen per taal,
 geen ontbrekende vertalingen.
 
-Definitieve distributiecontroles en installatiepakketten volgen vóór publicatie.
+Alle 415 definitieve controles slagen zonder overslaan op Debian, Fedora en
+Arch. De geïnstalleerde pakketten doorstaan de gewone, afspeel-, opname- en
+duplexzelftest op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De gewone
+zelftest bevat de nieuwe samplebewerking, herstel en het vertaalde venster.
+De zes distributie- en publicatielogs bevatten geen onverwachte callback-,
+RuntimeError- of bufferfouten. Tag, geteste broncommit, releasepunten en acht
+assets (naam, grootte, uploadstatus en digestmetadata) zijn gecontroleerd.
+[Distributiebouw 0.18.0](https://github.com/rene-timmermans/SoundSausage/actions/runs/43078651988)
+en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.18.0).

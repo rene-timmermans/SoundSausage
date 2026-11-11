@@ -210,4 +210,10 @@ inclusief Ubuntu 26.04 en Rolling.
 - [x] Eén Undo-stap per correctie; omliggende samples, het andere kanaal en metadata behouden.
 - [x] Annuleren, selectie met Shift en vergrendeling tijdens opnemen.
 - [x] Vijf interfacetalen en offlinehandleidingen bijwerken.
-- [ ] Definitieve controles en installatiepakketten voor 0.18.0.
+- [x] Definitieve controles en installatiepakketten voor 0.18.0.
+
+[Release 0.18.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.18.0)
+bevat de definitieve installatiepakketten. Alle 415 controles slagen in Debian,
+Fedora en Arch; de vier geïnstalleerde zelftests slagen op alle vijf doelen,
+inclusief Ubuntu 26.04 en Rolling.
+[Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43078651988).
