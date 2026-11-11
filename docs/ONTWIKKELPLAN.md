@@ -60,7 +60,7 @@ Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 - [x] EQ en filters, met luistervoorbeeld en frequentierespons — 0.9.0, met geteste installatiepakketten.
 - [x] Delay, echo en galm — 0.10.0, met geteste installatiepakketten.
 - [x] Ruisreductie en klikverwijdering — 0.11.0, met geteste installatiepakketten.
-- [ ] Tijd- en toonhoogtebewerking.
+- [ ] Tijd- en toonhoogtebewerking — gebouwd voor 0.12.0; distributiecontroles volgen.
 - [ ] Overige aangeboden tools, waaronder vervorming en convolutie.
 
 Deze vijf groepen vullen de eerder afgeronde Amplitude-groep aan.

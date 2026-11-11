@@ -87,9 +87,11 @@ def create_menus(window):
     noise = transform.addMenu("Noise Reduction")
     window.menus["noise"] = noise
     add(noise, ("noise_profile", "noise_reduction", "click_removal"))
+    timing = transform.addMenu("Time/Pitch")
+    window.menus["time_pitch"] = timing
+    add(timing, ("stretch", "pitch_shift"))
     for name, items in (
         ("Special", ("Distortion…", "Convolution…")),
-        ("Time/Pitch", ("Stretch…", "Pitch Shift…")),
     ):
         group = transform.addMenu(name)
         group.setToolTipsVisible(True)

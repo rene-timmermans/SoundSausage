@@ -258,11 +258,18 @@ class Document:
         result = self.dsp.process_blocks(name, self.view(start, end), self.sample_rate, **settings)
         label = {"gain": "Amplify / Fade", "channel_mix": "Channel Mixer",
                  "dynamics": "Dynamics Processing", "graphic_eq": "Graphic Equalizer",
-                 "noise_reduction": "Noise Reduction", "click_removal": "Click Removal",
+                 "stretch": "Stretch", "pitch_shift": "Pitch Shift", "noise_reduction": "Noise Reduction", "click_removal": "Click Removal",
                  "parametric_eq": "Parametric Equalizer", "filter": "Filters"}.get(name, name.capitalize())
         # Validate before committing: failed or overflowing effects leave the document intact.
         if name == "reverse":
             new_metadata = metadata.remap(self.metadata, lambda p: start + end - 1 - p if start <= p < end else p)
+        elif name == "stretch" and len(result) != end-start:
+            extra = len(result)-(end-start)
+            def position(p):
+                if p < start: return p
+                if p >= end: return p+extra
+                return start+min(len(result)-1, ((p-start)*len(result)+(end-start)//2)//(end-start))
+            new_metadata = metadata.remap(self.metadata, position)
         elif len(result) != end-start:
             # A retained effect tail inserts time after the original range:
             # preserve markers inside it, shift only those following the range.

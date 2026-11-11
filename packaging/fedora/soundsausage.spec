@@ -11,6 +11,7 @@ Requires:       python3 >= 3.12
 Requires:       python3-pyside6 >= 6.8
 Requires:       qt6-qtmultimedia
 Requires:       python3-numpy
+Requires:       rubberband-libs >= 3.3
 Requires:       libsamplerate
 %global __brp_python_bytecompile %{nil}
 %global __requires_exclude_from ^/usr/lib/soundsausage/src/.*$

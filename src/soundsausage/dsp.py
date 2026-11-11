@@ -5,7 +5,7 @@ from pathlib import Path
 from . import storage
 from .operations import blocks, progress
 from .filters import EFFECTS as FILTER_EFFECTS, design
-from . import space, restoration
+from . import space, restoration, time_pitch
 
 import numpy as np
 
@@ -102,7 +102,12 @@ class Dsp:
                                         attack_ms, release_ms, makeup_db, int(linked), state))
 
     def process(self, name, data, sample_rate, **settings):
-        if name in restoration.EFFECTS:
+        if name in time_pitch.EFFECTS:
+            self._buffer(data)
+            result = time_pitch.process_blocks(name, data, sample_rate, **settings)
+            if result.shape != data.shape: raise ValueError("Use block processing to change audio length.")
+            data[:] = result
+        elif name in restoration.EFFECTS:
             self._buffer(data)
             data[:] = restoration.process_blocks(name, data, sample_rate, **settings)
         elif name in space.EFFECTS:
@@ -139,6 +144,8 @@ class Dsp:
         A preview may restrict the output while analysis still spans the full range.
         No mutation of the immutable source occurs before the caller commits.
         """
+        if name in time_pitch.EFFECTS:
+            return time_pitch.process_blocks(name, source, sample_rate, limit=limit, block_frames=block_frames, **settings)
         if name in restoration.EFFECTS:
             return restoration.process_blocks(name, source, sample_rate, limit=limit,
                                               block_frames=block_frames, **settings)

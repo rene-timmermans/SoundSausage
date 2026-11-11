@@ -86,7 +86,7 @@ Deze fase bestaat uit vijf groepen; elke groep krijgt een bruikbare release.
 - [x] EQ en filters — gepubliceerd in 0.9.0.
 - [x] Delay, echo en galm — gepubliceerd in 0.10.0.
 - [x] Ruisreductie en klikverwijdering — gepubliceerd in 0.11.0.
-- [ ] Tijd-/toonhoogtebewerking.
+- [ ] Tijd-/toonhoogtebewerking: gebouwd voor 0.12.0; distributiecontroles volgen.
 - [ ] Overige tools, waaronder vervorming en convolutie.
 
 De eerste groep is afgerond in [release 0.9.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.9.0).

@@ -12,6 +12,7 @@ from .session import Session
 from .project import save_project, load_project
 from .amplitude_ui import ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
 from .space_ui import DelayDialog, EchoDialog, ReverbDialog
+from .time_pitch_ui import StretchDialog, PitchShiftDialog
 from .restoration_ui import NoiseReductionDialog, ClickRemovalDialog
 from .restoration import learn_profile
 from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog
@@ -65,8 +66,11 @@ def run(window):
         session.import_audio([(doc.read(), 8000, "Selftest")])
         save_project(session, path / "test.celp")
         np.testing.assert_array_equal(load_project(path / "test.celp", dsp=doc.dsp).render(), session.render())
+    pitch_source = np.sin(2*np.pi*440*np.arange(8000)/8000).astype(np.float32)[:, None]*.1
+    shifted = doc.dsp.process_blocks("pitch_shift", pitch_source, 8000, semitones=12)
+    assert shifted.shape == pitch_source.shape and np.isfinite(shifted).all()
     window.noise_profile = learn_profile(np.random.default_rng(5).normal(0, .01, (2000, 2)).astype(np.float32), 8000)
-    for cls in (NoiseReductionDialog, ClickRemovalDialog, DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
+    for cls in (StretchDialog, PitchShiftDialog, NoiseReductionDialog, ClickRemovalDialog, DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
         dialog = cls(doc, window, no_audio=True)
         try:
             if isinstance(dialog, (DelayDialog, EchoDialog, ReverbDialog)):

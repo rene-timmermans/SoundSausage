@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.11.0**.
+De huidige versie is **0.12.0**.
 
 ## Wat het kan
 
@@ -20,6 +20,7 @@ De huidige versie is **0.11.0**.
 - Grafische en parametrische EQ, hoog-/laagdoorlaat-, banddoorlaat- en notchfilters.
 - Delay, echo en galm, met presets, luistervoorbeelden en optionele uitklank.
 - Ruisprofielen opnemen en bewaren, ruis verminderen en korte tikken herstellen.
+- Speelduur en toonhoogte onafhankelijk aanpassen, met formantbehoud voor zang.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
 - Projecten opslaan met alle gebruikte audio en een complete mix exporteren.
@@ -31,7 +32,7 @@ Zie [status en beperkingen](docs/STATUS.md).
 
 ## Installeren en starten
 
-Benodigd: Python 3.12–3.14, een C++20-compiler, Make, Qt Multimedia en libsamplerate.
+Benodigd: Python 3.12–3.14, een C++20-compiler, Make, Qt Multimedia, libsamplerate en Rubber Band (3.3 of nieuwer).
 Op Arch is Qt Multimedia een aparte afhankelijkheid naast PySide6.
 
 Installatiepakketten voor Debian/Ubuntu, Fedora en Arch staan bij de
@@ -77,6 +78,8 @@ De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handl
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.12.0** Stretch past de lengte aan met behoud van toonhoogte; Pitch Shift verschuift de toonhoogte met behoud van lengte. Met tempoverhouding, kwaliteitskeuze en optioneel formantbehoud. Zie [tijd en toonhoogte](docs/TIJD_TOONHOOGTE.md).
 
 **0.11.0** Ruisprofielen opnemen, bewaren en opnieuw gebruiken. Ruisreductie met stereokoppeling en een luistervoorbeeld van het verwijderde geluid, plus herstel van korte tikken. Zie [restauratie](docs/RESTORATIE.md).
 
