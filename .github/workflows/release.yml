@@ -104,8 +104,13 @@ jobs:
         env:
           UBUNTU_IMAGE: ${{ matrix.image }}
         run: |
-          cat /etc/resolv.conf
+          ubuntu_archive_address=$(getent ahostsv4 archive.ubuntu.com | awk 'NR == 1 {print $1}')
+          ubuntu_security_address=$(getent ahostsv4 security.ubuntu.com | awk 'NR == 1 {print $1}')
+          test -n "$ubuntu_archive_address"
+          test -n "$ubuntu_security_address"
           docker run --rm -i --network host \
+            --add-host "archive.ubuntu.com:$ubuntu_archive_address" \
+            --add-host "security.ubuntu.com:$ubuntu_security_address" \
             -e SOUNDSAUSAGE_LANGUAGE -e QT_QPA_PLATFORM -e QT_AUDIO_BACKEND \
             -e PULSE_SERVER -e SOUNDSAUSAGE_AUDIO_TEST \
             -v /etc/resolv.conf:/etc/resolv.conf:ro \
