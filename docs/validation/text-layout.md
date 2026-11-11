@@ -71,3 +71,11 @@ De titel boven de y-as van Dynamiekbewerking en Volumeverloop begint aan de
 linkermarge van het grafiekvenster, gelijk met de overige vensterinhoud.
 De schaalwaarden en het tekenvlak behouden hun eigen ruimte. De bestaande
 rendercontroles op afsnijding en onderlinge overlap slagen bij 9, 11 en 14 punten.
+
+Alle 384 regressiecontroles slagen in Debian, Fedora en Arch. De geïnstalleerde
+pakketten slagen voor gewone, afspeel-, opname- en duplexzelftests op alle vijf
+distributiedoelen. De getekende tekst is ook afzonderlijk bij 150% schaal
+gecontroleerd. De vijf distributielogs en de publicatielog bevatten geen
+onverwachte callback- of bufferfouten.
+[Distributiebouw 0.16.2](https://github.com/rene-timmermans/SoundSausage/actions/runs/43061345129)
+en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.16.2).
