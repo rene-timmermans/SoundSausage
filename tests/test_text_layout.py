@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-from PySide6.QtCore import Qt,QPointF,QRect,QRectF,QSettings,QTimer,QCoreApplication,QEvent
+from PySide6.QtCore import Qt,QPoint,QPointF,QRect,QRectF,QSettings,QTimer,QCoreApplication,QEvent
 from PySide6.QtGui import QFont
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication,QLabel,QDialogButtonBox,QDialog,QWidget
@@ -181,8 +181,14 @@ class TextLayoutTests(unittest.TestCase):
         self.settle();QTest.qWait(20)
         position=menu.actionGeometry(action).center()
         self.assertTrue(menu.rect().contains(position))
-        QTest.mouseMove(menu,position)
-        QTest.mouseClick(menu,Qt.MouseButton.LeftButton,pos=position);self.settle()
+        # The QWindow overload delivers move events even when the offscreen
+        # platform cannot generate them from QWidget's cursor repositioning.
+        # A short pointer path also satisfies older QMenu's movement guard.
+        surface=menu.windowHandle()
+        for offset in range(8,0,-1):QTest.mouseMove(surface,position-QPoint(offset,0))
+        self.assertIs(menu.actionAt(position),action)
+        self.assertIs(menu.activeAction(),action)
+        QTest.mouseClick(surface,Qt.MouseButton.LeftButton,pos=position);self.settle()
         self.assertFalse(action.isChecked());self.assertTrue(bar.isHidden())
         self.assertGreater(w.centralWidget().height(),before)
         self.assertFalse(w.ui_settings.value('ui/show_status_bar',True,type=bool))
