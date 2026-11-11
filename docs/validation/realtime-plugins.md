@@ -1,6 +1,6 @@
 # Realtime spoorketens, VST3 en duplex — 0.15.0
 
-Achttien aanvullende controles toetsen stateful effecten, volgorde/bypass,
+Negentien aanvullende controles toetsen stateful effecten, volgorde/bypass,
 uitklank, Undo/Redo, live wijzigingen, bronbehoud, projectopslag en herstel.
 Tien interne effecten leveren sample voor sample dezelfde uitkomst als de
 bestaande offlineverwerking, ook met blokken van 377 frames. Gedeeltelijke
@@ -21,11 +21,13 @@ uitvoerbaar bibliotheekpad aanleveren.
 Duplexcontroles toetsen gelijktijdig afspelen/opnemen, samen pauzeren en hervatten,
 opnameverschuiving, Undo en behoud van een take bij uitvoerverlies. Twee expliciete
 backendtests gebruiken een private virtuele PulseAudio-invoer en -uitvoer bij
-48 kHz en een afwijkende sessierate van 44,1 kHz. De nieuwe duplex-selftest
+48 kHz en een afwijkende sessierate van 44,1 kHz. Een regressieproef met een vooraf gevulde invoerbuffer toetst dat de pauzetest
+niet afhankelijk is van de snelheid waarmee een backend zijn eerste frames levert.
+De nieuwe duplex-selftest
 controleert ook geïnstalleerde pakketten. De gewone selftest opent geen
 microfoon en controleert de laadbaarheid van de geïsoleerde VST3-host.
 
-De volledige lokale suite doorstaat 362 controles; zes expliciete backendtests
+De volledige lokale suite doorstaat 363 controles; zes expliciete backendtests
 worden lokaal overgeslagen. Distributiecontroles worden vóór publicatie uitgevoerd.
 De eerdere fysieke USB-test geldt voor gewone opname/weergave. De nieuwe
 duplexroute en fysieke offset moeten met de gekozen interface worden beluisterd

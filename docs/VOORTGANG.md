@@ -152,7 +152,7 @@ parametervenster. De uitgebreide sessietaak richt zich op nieuwe projecten:
 audio, opnamen, ketens en plug-instatus worden samen bewaard en heropend.
 Uitbreiding van oude importvarianten hoort niet bij deze stap.
 
-Alle 362 lokale controles slagen, met zes expliciete backendtests overgeslagen.
+Alle 363 lokale controles slagen, met zes expliciete backendtests overgeslagen.
 De distributiebouw voert de echte virtuele in-/uitvoer- en duplexcontroles uit.
 Eigen plug-invensters, meer formaten, automatische latency-/driftcompensatie en
 punch-in/out blijven vervolgmogelijkheden.

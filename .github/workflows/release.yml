@@ -4,7 +4,10 @@ on:
   push:
     branches: [main]
     paths:
-      - src/soundsausage/__init__.py
+      - src/**
+      - native/**
+      - tests/**
+      - third_party/**
       - packaging/**
       - .github/workflows/release.yml
       - docs/releases/**

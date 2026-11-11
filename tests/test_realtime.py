@@ -168,3 +168,13 @@ class DuplexTests(unittest.TestCase):
         with patch.object(w.audio_devices,'outputs',return_value=[]):
             self.assertFalse(w.start_recording(target='multitrack',rate=48000,channels=2,accompaniment=True))
         self.assertFalse(w.recorder.active)
+
+    def test_duplex_selftest_tolerates_input_queued_before_the_first_pause(self):
+        from soundsausage.selftest import run_duplex
+        class BacklogSource(Source):
+            def start(self):
+                self.pending.extend(np.zeros((24000,2),np.float32).tobytes())
+                return super().start()
+        self.window.recorder._source_factory=BacklogSource
+        run_duplex(self.window)
+        self.assertFalse(self.window.recording_busy)

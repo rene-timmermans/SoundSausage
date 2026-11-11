@@ -192,9 +192,12 @@ def run_duplex(window,rate=48000):
         window.session.import_audio([(np.zeros((rate*2,2),np.float32),rate,'Silent backing')])
         window.session.selected_track=window.session.tracks[1].id;window.set_mode('multitrack')
         window.session.select(0,0)
-        if not window.start_recording(target='multitrack',rate=rate,channels=2,accompaniment=True,limit_seconds=.35):
+        if not window.start_recording(target='multitrack',rate=rate,channels=2,accompaniment=True):
             raise RuntimeError('; '.join(errors) or 'Duplex capture could not start.')
-        observe();QTimer.singleShot(100,pause);QTimer.singleShot(200,resume);timeout.start(7000);loop.exec()
+        # Some backends deliver queued input immediately. Exercise pause before
+        # allowing a duration limit or an event-loop delay to finish that take.
+        observe();pause();QTimer.singleShot(100,resume)
+        QTimer.singleShot(450,window.stop_recording);timeout.start(7000);loop.exec()
         if window.recorder.active:window.stop_recording()
         clips=window.session.tracks[1].clips
         if errors or not clips or ('Playing','Recording') not in observed or ('Paused','Paused') not in observed:
