@@ -115,7 +115,7 @@ def run(window):
             assert tr('Channel Mixer') in manual.browser.toPlainText()
             assert tr('Audio Hardware') in manual.browser.toPlainText()
             assert len(catalogue(code))>1200
-            assert code=='en' or install_language().qt_translator is not None
+            assert code=='en' or install_language().qt_translator is not None, f'Missing Qt translation: {code}'
     finally:
         install_language().set_language(previous_language,persist=False)
         manual.close();manual.deleteLater()

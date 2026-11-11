@@ -1,6 +1,6 @@
 # Vijf interfacetalen — 0.16.0
 
-De interface ondersteunt Nederlands, Engels, Duits, Frans en Spaans. Twaalf
+De interface ondersteunt Nederlands, Engels, Duits, Frans en Spaans. Dertien
 nieuwe integratiecontroles toetsen de taalkeuze, exclusieve menumarkering,
 QSettings en een nieuwe processtart, live vertalen van alle zestien effectvensters,
 standaardknoppen, tijdelijke voorbeeldknoppen, bestandsfilters, meldingen en Over.
@@ -20,7 +20,7 @@ bronlabels zijn interne sleutels; bediening en projectgegevens hangen niet af
 van de vertaalde zichtbare tekst. Qt-standaardteksten gebruiken de vertalingen
 van de distributie.
 
-Lokaal doorstaat de volledige suite 375 controles, waarvan zes expliciete
+Lokaal doorstaat de volledige suite 376 controles, waarvan zes expliciete
 hardwarebackendcontroles worden overgeslagen. De gewone zelftest controleert
 alle vijf catalogi, Qt-vertalingen en volledige handleidingen, ook vanuit de
 geënsceneerde installatie. Distributiecontroles en publicatie volgen na de bouw.
@@ -29,3 +29,8 @@ DSP-ABI 7 en projectformaat 4 blijven behouden.
 Qt-vertaalpakketten: [Debian](https://packages.debian.org/trixie/qt6-translations-l10n),
 [Fedora](https://packages.fedoraproject.org/pkgs/qt6-qttranslations/qt6-qttranslations/),
 [Arch](https://archlinux.org/packages/extra/any/qt6-translations/).
+
+Qt-vertalingen worden zowel op het door Qt gemelde pad als in de gedeelde
+Qt6-datamappen gezocht. Een regressiecontrole simuleert een binding met een
+niet-bestaand privaat pad. Dit dekt distributies die vertalingen apart in
+`/usr/share/qt6/translations` installeren.

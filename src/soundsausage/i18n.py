@@ -11,7 +11,7 @@ import re
 import string
 import weakref
 
-from PySide6.QtCore import QObject, Signal, QCoreApplication, QLocale, QSettings, QTranslator, QLibraryInfo
+from PySide6.QtCore import QObject, Signal, QCoreApplication, QLocale, QSettings, QTranslator, QLibraryInfo, QStandardPaths
 from shiboken6 import isValid
 
 LANGUAGES={'nl':'Nederlands','en':'English','de':'Deutsch','fr':'Français','es':'Español'}
@@ -107,6 +107,15 @@ def nested_fields():
     return json.loads(path.read_text('utf-8')) if path.is_file() else {}
 
 
+def qt_translation_paths():
+    # Some distribution PySide builds report a private Qt path even though
+    # qttranslations is installed in the shared data directory.
+    paths=[QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)]
+    paths.extend(str(Path(root)/'qt6/translations') for root in
+                 QStandardPaths.standardLocations(QStandardPaths.StandardLocation.GenericDataLocation))
+    return tuple(dict.fromkeys(paths))
+
+
 class LanguageManager(QObject):
     changed=Signal(str)
     def __init__(self,app,settings=None):
@@ -126,7 +135,7 @@ class LanguageManager(QObject):
             self.app.removeTranslator(self.qt_translator);self.qt_translator.deleteLater();self.qt_translator=None
         if code!='en':
             translator=QTranslator(self)
-            if translator.load('qtbase_'+code,QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
+            if any(translator.load('qtbase_'+code,path) for path in qt_translation_paths()):
                 self.app.installTranslator(translator);self.qt_translator=translator
             else:translator.deleteLater()
         if persist:self.settings.setValue('ui/language',code);self.settings.sync()

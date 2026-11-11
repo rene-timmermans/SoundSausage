@@ -193,6 +193,13 @@ print(language(),tr('Language'))
                 self.assertGreaterEqual(label.width(),label.fontMetrics().horizontalAdvance(tr(text)))
                 label.close();label.deleteLater()
 
+    def test_qt_translations_are_found_when_binding_reports_a_private_path(self):
+        with patch.object(i18n.QLibraryInfo,'path',return_value='/tmp/soundsausage-no-private-qt/translations'):
+            for code in ('nl','de','fr','es'):
+                self.switch(code)
+                self.assertIsNotNone(self.manager.qt_translator)
+        self.switch('en')
+
     def test_closed_windows_are_not_called_by_later_language_changes(self):
         other=MainWindow(no_audio=True)
         about=AboutDialog(other);manual=ManualDialog(other)
