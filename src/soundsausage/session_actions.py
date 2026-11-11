@@ -49,6 +49,7 @@ class SessionActions:
         self.action("duplicate_clip", "Duplicate Clip", lambda: self.multitrack.duplicate_clip(), "Ctrl+D")
         self.action("remove_clip", "Remove Clip", lambda: self.multitrack.remove_clip())
         self.action("mixdown", "Mix Down Session…", self.mixdown)
+        self.action("track_fx", "Track Effects…", lambda: self.multitrack.track_effects())
 
     def set_mode(self, mode):
         if self.recording_busy:return
@@ -70,6 +71,7 @@ class SessionActions:
         if "mode_multi" not in self.actions:
             return
         multi = self.mode == "multitrack"
+        self.actions['track_fx'].setEnabled(multi)
         if hasattr(self, "effects_toolbar"):
             self.effects_toolbar.setVisible(not multi)
         self.actions["new"].setText("&New Session…" if multi else "&New…")
@@ -107,7 +109,7 @@ class SessionActions:
             self.selection_changed(*self.session.selection)
 
     def session_edited(self):
-        self.player.stop()
+        # The streaming mixer observes immutable track snapshots at block boundaries.
         self.refresh()
 
     def confirm_session_discard(self):

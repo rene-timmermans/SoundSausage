@@ -17,10 +17,11 @@ def main():
     parser.add_argument("--no-audio", action="store_true", help="Disable playback and recording for headless or restricted environments")
     parser.add_argument("--selftest", action="store_true", help="Check the installation without playing audio, then exit")
     parser.add_argument("--audio-selftest", action="store_true", help="Check the selected audio output with silence, then exit")
+    parser.add_argument("--duplex-selftest", action="store_true", help="Check simultaneous silent playback and recording, then exit")
     parser.add_argument("--input-selftest", action="store_true", help="Check the selected input by briefly recording and discarding audio, then exit")
     parser.add_argument("--screenshot", type=Path, help="Render the window to a PNG and exit; does not start audio")
     args = parser.parse_args()
-    if args.screenshot or args.selftest or args.audio_selftest or args.input_selftest:
+    if args.screenshot or args.selftest or args.audio_selftest or args.input_selftest or args.duplex_selftest:
         os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     app = QApplication([sys.argv[0]])
     app.setApplicationName("SoundSausage")
@@ -30,12 +31,12 @@ def main():
     app.setStyle("Fusion")
     install_theme(app)
     try:
-        window = MainWindow(no_audio=args.no_audio or bool(args.screenshot) or args.selftest or args.audio_selftest or args.input_selftest)
+        window = MainWindow(no_audio=args.no_audio or bool(args.screenshot) or args.selftest or args.audio_selftest or args.input_selftest or args.duplex_selftest)
     except RuntimeError as error:
         print(error, file=sys.stderr)
         return 1
-    if args.selftest or args.audio_selftest or args.input_selftest:
-        from .selftest import run, run_audio, run_input
+    if args.selftest or args.audio_selftest or args.input_selftest or args.duplex_selftest:
+        from .selftest import run, run_audio, run_input, run_duplex
         try:
             if args.selftest:
                 run(window)
@@ -43,6 +44,8 @@ def main():
                 run_audio(window)
             if args.input_selftest:
                 run_input(window)
+            if args.duplex_selftest:
+                run_duplex(window)
             return 0
         except Exception as error:
             print(f"SoundSausage selftest failed: {error}", file=sys.stderr)

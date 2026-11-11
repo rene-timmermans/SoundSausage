@@ -1,4 +1,4 @@
-# SoundSausage 0.14.0
+# SoundSausage 0.15.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -30,6 +30,10 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - DC-offset verwijderen bij normaliseren; onafhankelijke of gekoppelde stereokanalen waar van toepassing.
 - Multitrack met maximaal 32 sporen, clips verplaatsen, trimmen en dupliceren.
 - Volume, pan, mute/solo en bewerkbare volume- en panlijnen per clip.
+- Realtime spooreffecten met volgorde, bypass, bewerkbare instellingen, uitklank en Undo/Redo.
+- Linux VST3 in een apart hulpproces, met parameters en componentstatus in project en herstel.
+- Opnemen met begeleiding, samen pauzeren/stoppen en een onthouden opnameverschuiving.
+- Nieuwe projecten bewaren audio, clips, lijnen en spoorketens; mixdown gebruikt dezelfde ketens.
 - Zelfstandige projecten met ingebedde audio en WAV-mixdown.
 - Beperkte import van eenvoudige oudere sessies (`.ses`).
 - Qt-interface die het Linux-thema en de accentkleur volgt.
@@ -48,8 +52,11 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Stereo heeft een gezamenlijke tijdas. Duurwijzigingen, knippen, verwijderen, trimmen en opname in de bestaande golfvorm vereisen Both.
 - Op één stereokanaal plakken kan bij gelijke vervangingsduur; Mix Paste blijft binnen de bestaande lengte.
 
-- Externe plug-ins zijn nog niet beschikbaar.
-- Amplitude-, EQ-, filter-, delay- en galmeffecten bewerken de golfvorm; voor een multitrackclip open je eerst een bewerkkopie. Het zijn nog geen realtime spooreffecten.
+- Externe effecten ondersteunen native Linux VST3 met één stereo-invoer/-uitvoerbus en float32. Geen VST2, Windows-plug-ins, MIDI-instrumenten of extra sidechains.
+- Plug-invensters gebruiken generieke parameters; eigen editors en automatische plug-inlatencycompensatie ontbreken.
+- Een plug-in en zijn eigen externe bestanden blijven apart geïnstalleerd; gewijzigde/ontbrekende plug-ins worden gemeld.
+- Normalize, restauratie, tijd/toonhoogte, vervorming en convolutie blijven golfvormbewerkingen. Amplify, Channel Mixer, Dynamics, EQ, filters, delay, echo, galm en Invert zijn ook realtime spooreffecten.
+- Starten, zoeken of bypass inschakelen begint met nieuw effectgeheugen. Spoorketens zijn begrensd tot zestien effecten en 60 seconden uitklank per spoor.
 - Convolutie vereist een ongewijzigd responsbestand voor herhalen; stereo is kanaalgewijs.
 - Impulsresponsen zijn begrensd tot 10 s / 524.288 uitvoersamples en 32 MiB per bestand.
 - Tijd-/toonhoogtebewerking vraagt minimaal 50 ms (ten minste 64 samples) en analyseert de volledige selectie.
@@ -65,7 +72,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Bijzondere metadata wordt letterlijk bewaard; afgeleide meetgegevens worden niet opnieuw berekend.
 - Een eindmix voegt markers of tags uit verschillende bronnen nog niet samen.
 - De audiobackend rapporteert de verwerkte frames; exacte fysieke luidsprekerlatentie en naadloos lussen zijn niet gegarandeerd.
-- Bestaande sporen worden tijdens opname nog niet afgespeeld; punch-in/out en automatische latencycompensatie ontbreken.
+- Bestaande sporen kunnen tijdens een multitrackopname spelen. Punch-in/out, automatische fysieke latencykalibratie en driftcompensatie tussen apparaten ontbreken; opnamepositie is handmatig afstelbaar.
 - Uitvoer vereist een door Qt ondersteund mono-/stereoapparaat; multikanaals routering ontbreekt.
 - Virtuele in-/uitvoercontroles zijn geautomatiseerd; opname, pauze/hervatten en terugluisteren zijn ook met een USB-microfoon in de praktijk bevestigd.
 - Dithering en een markereditor ontbreken nog.

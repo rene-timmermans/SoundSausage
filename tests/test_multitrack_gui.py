@@ -332,12 +332,16 @@ class MultitrackGuiTests(unittest.TestCase):
         self.window.session.select(1000, 3000)
         self.window.no_audio = False
         self.window.refresh()
-        with patch.object(self.window.player, "play") as play:
+        with patch.object(self.window.player, "play_session") as play, patch.object(self.window.session, "render", side_effect=AssertionError('Playback must stream')):
             self.window.actions["play"].trigger()
         play.assert_called_once()
-        audio, rate, start = play.call_args.args
-        np.testing.assert_array_equal(audio, expected)
-        self.assertEqual((rate, start), (8000, 1000))
+        session, start, end = play.call_args.args
+        self.assertIs(session, self.window.session)
+        from soundsausage.mixing import SessionStream
+        stream = SessionStream(session, start, end)
+        np.testing.assert_array_equal(stream.read(end-start), expected)
+        stream.close()
+        self.assertEqual((start, end), (1000, 3000))
         self.window.no_audio = True
 
     def test_clip_header_can_move_over_another_clip_while_editing_a_line(self):

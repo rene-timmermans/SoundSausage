@@ -48,7 +48,13 @@ class TrackControls(QWidget):
         self.name = QLineEdit(track.name)
         self.name.setToolTip("Track name")
         self.name.editingFinished.connect(lambda: editor.configure_track(track.id, name=self.name.text()))
-        layout.addWidget(self.name, 0, 0, 1, 4)
+        layout.addWidget(self.name, 0, 0, 1, 3)
+        active_fx = any(e.enabled for e in track.effects)
+        fx = QPushButton(make_icon('track_fx', colors(), primary=active_fx), 'FX')
+        fx.setToolTip('Track Effects')
+        fx.setProperty('primary', active_fx)
+        fx.clicked.connect(lambda *_: editor.track_effects(track.id))
+        layout.addWidget(fx, 0, 3)
         mute, solo = QPushButton("M"), QPushButton("S")
         for widget, checked, label in ((mute, track.muted, "Mute"), (solo, track.solo, "Solo")):
             widget.setCheckable(True)
@@ -556,6 +562,13 @@ class MultitrackEditor(QWidget):
 
     def configure_track(self, track_id, **settings):
         self.perform(lambda: self.session.configure_track(track_id, **settings))
+
+    def track_effects(self, track_id=None):
+        from .trackfx_ui import TrackEffectsDialog
+        self.session.selected_track = track_id or self.session.selected_track
+        dialog = TrackEffectsDialog(self, self.session.selected_track)
+        dialog.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        dialog.show()
 
     def add_track(self):
         self.perform(self.session.add_track)

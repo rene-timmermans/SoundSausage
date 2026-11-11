@@ -13,6 +13,7 @@ from . import storage, peaks
 from .operations import blocks, progress
 from .resample import resample, frame_count
 from .envelopes import validate_points, remap_points
+from .trackfx import chain
 
 
 MAX_TRACKS = 32
@@ -87,6 +88,8 @@ class Track:
     pan: float = 0.0
     muted: bool = False
     solo: bool = False
+    effects: tuple = ()
+    tail_seconds: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -146,7 +149,9 @@ class Session:
 
     @property
     def frames(self):
-        return max((clip.end for track in self.tracks for clip in track.clips), default=0)
+        return min(self.sample_rate*MAX_SECONDS, max((max((clip.end for clip in track.clips), default=0)
+                   + (round(track.tail_seconds*self.sample_rate) if track.clips and any(e.enabled for e in track.effects) else 0)
+                   for track in self.tracks), default=0))
 
     @property
     def duration(self):
@@ -244,7 +249,7 @@ class Session:
 
     def configure_track(self, track_id, **settings):
         index = self.track_index(track_id)
-        allowed = {"name", "gain", "pan", "muted", "solo"}
+        allowed = {"name", "gain", "pan", "muted", "solo", "effects", "tail_seconds"}
         if not set(settings) <= allowed:
             raise AudioError("Unknown track setting.")
         if "name" in settings:
@@ -253,6 +258,10 @@ class Session:
             settings["gain"] = number(settings["gain"], 0, 100, "Volume")
         if "pan" in settings:
             settings["pan"] = number(settings["pan"], -1, 1, "Pan")
+        if "effects" in settings:
+            settings["effects"] = chain(settings["effects"])
+        if "tail_seconds" in settings:
+            settings["tail_seconds"] = number(settings["tail_seconds"], 0, 60, "Track tail")
         for name in ("muted", "solo"):
             if name in settings and not isinstance(settings[name], bool):
                 raise AudioError("Mute and solo must be boolean values.")
@@ -412,35 +421,19 @@ class Session:
             raise AudioError("Invalid mixdown range.")
         if (end - start) * 8 > MAX_AUDIO_BYTES:
             raise AudioError("The mix exceeds the supported address space.")
-        output = storage.allocate((end - start, 2), zero=True)
-        progress(0, end-start, "Sporen mixen")
-        solo = any(track.solo for track in self.tracks)
-        for track in self.tracks:
-            if track.muted or (solo and not track.solo):
-                continue
-            tl, tr = balance(track.gain, track.pan)
-            for clip in track.clips:
-                if clip.muted:
-                    continue
-                a, b = max(start, clip.start), min(end, clip.end)
-                if b <= a:
-                    continue
-                offset = a - clip.start
-                source = self.media[clip.media_id].samples[clip.source_start + offset:clip.source_start + offset + b - a]
-                cl, cr = balance(clip.gain, clip.pan)
-                for p,q in blocks(len(source)):
-                    destination = output[a-start+p:a-start+q]
-                    self.dsp.mix_add(destination, source[p:q], 0, offset+p, clip.frames,
-                                     clip.fade_in, clip.fade_out, tl * cl, tr * cr,
-                                     source_offset=clip.source_start + offset+p,
-                                     volume_envelope=clip.volume_envelope, pan_envelope=clip.pan_envelope)
-                    if not np.isfinite(destination).all():
-                        raise AudioError("The mix overflowed. Reduce track or clip levels.")
-                    if isinstance(output, np.memmap):
-                        output.flush(); storage.release_pages(output)
-                    storage.release_pages(source)
-                    progress(a-start+q, end-start, "Sporen mixen")
-        return storage.seal(output, checked=True)
+        from .mixing import SessionStream
+        stream = SessionStream(self, start, end, live=False)
+        output = storage.allocate((end-start, 2))
+        try:
+            progress(0, end-start, "Sporen mixen")
+            for a, b in blocks(end-start, 1024):
+                output[a:b] = stream.read(b-a)
+                if isinstance(output, np.memmap) and (b % 262144 == 0 or b == end-start):
+                    output.flush(); storage.release_pages(output)
+                progress(b, end-start, "Sporen mixen")
+            return storage.seal(output, checked=True)
+        finally:
+            stream.close()
 
     def undo(self):
         if self.undo_stack:

@@ -136,3 +136,23 @@ bevat de geteste installers. Alle 344 controles slagen in Debian, Fedora en
 Arch; de geïnstalleerde pakketten doorstaan gewone, afspeel- en opnamecontroles
 ook op Ubuntu 26.04 en Rolling. De geverifieerde logs bevatten geen callback-
 of bufferfouten.
+
+## 5. Realtime mixen en uitwisseling — in uitvoering
+
+- [x] Realtime spooreffecten en een keten per spoor.
+- [x] Mixen in kleine blokken zonder de hele sessie vooraf te berekenen.
+- [x] Gelijktijdig opnemen en bestaande sporen beluisteren.
+- [x] Externe Linux-effectplug-ins en herstel van hun instellingen.
+- [x] Nieuwe projecten volledig opslaan/heropenen met opnamen, spooreffecten en plug-ininstellingen.
+- [x] Handleiding en automatische audiocontroles.
+- [ ] Installatiepakketten en distributiecontroles voor 0.15.0.
+
+De externe host ondersteunt native Linux VST3-stereoeffecten met een generiek
+parametervenster. De uitgebreide sessietaak richt zich op nieuwe projecten:
+audio, opnamen, ketens en plug-instatus worden samen bewaard en heropend.
+Uitbreiding van oude importvarianten hoort niet bij deze stap.
+
+Alle 362 lokale controles slagen, met zes expliciete backendtests overgeslagen.
+De distributiebouw voert de echte virtuele in-/uitvoer- en duplexcontroles uit.
+Eigen plug-invensters, meer formaten, automatische latency-/driftcompensatie en
+punch-in/out blijven vervolgmogelijkheden.

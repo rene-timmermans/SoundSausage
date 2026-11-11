@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.14.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.15.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -187,9 +187,10 @@ de gewone vragen voor niet-opgeslagen werk.
 ### Ingang en herstel
 
 De microfoon wordt pas geopend na **Start Recording**. SoundSausage speelt het
-ingangssignaal niet door de luidsprekers. Bestaande sporen worden tijdens opnemen
-nog niet afgespeeld. Neem de takes afzonderlijk op en combineer ze daarna in
-multitrack. Voor luisteren gebruik je na Stop de gewone afspeelknoppen.
+ingangssignaal niet door de luidsprekers. In multitrack kan **Play existing tracks
+while recording** de bestaande sporen laten horen. **P** pauzeert/hervat dan
+opname én begeleiding. Zie hoofdstuk 8a voor de complete werkwijze en het
+afstellen van de opnamepositie.
 
 Is een specifiek gekozen USB-apparaat verdwenen, kies dan een beschikbare ingang.
 Tijdens een opname leidt apparaatverlies niet naar een andere microfoon: de app
@@ -500,7 +501,8 @@ opnieuw berekend.
 Bij een lange bewerking toont de voortgang een annuleerknop. Annuleren behoudt
 de oorspronkelijke golfvorm en Undo-geschiedenis. Voor een multitrackclip open
 je eerst een bewerkkopie, pas je het effect toe en kies je Apply Waveform to Clip.
-Deze effecten zijn nog geen realtime spooreffecten.
+Dezelfde EQ- en filterinstellingen zijn ook beschikbaar via **Track Effects**;
+zie hoofdstuk 8a.
 
 ## 5b. Delay, echo en galm
 
@@ -603,7 +605,7 @@ Bij een multitrackclip open je eerst een bewerkkopie en plaats je het resultaat
 terug met Apply Waveform to Clip. Controleer bij een verlengde clip de overlap
 met volgende clips; die schuiven niet automatisch mee. Bestaande volume- en
 panlijnen worden bij het terugplaatsen naar de nieuwe cliplengte geschaald.
-De effecten zijn nog geen realtime spooreffecten.
+Delay, Echo en Reverb zijn ook beschikbaar via **Track Effects**; zie hoofdstuk 8a.
 
 ## 5c. Ruisreductie en klikverwijdering
 
@@ -817,7 +819,8 @@ Grote audio wordt in blokken verwerkt en de werkstaat van convolutie is begrensd
 Annuleren laat audio, selectie en Undo/Redo intact. Voor multitrack gebruik je een
 bewerkclipkopie en Apply Waveform to Clip. Volgende clips verschuiven niet vanzelf
 bij een langere clip; volume-/panlijnen volgen bij terugplaatsen de cliplengte.
-Realtime spooreffecten en externe plug-ins blijven afzonderlijke uitbreidingen.
+Via **Track Effects** zijn andere realtime spooreffecten en VST3 beschikbaar;
+Distortion en Convolution blijven golfvormbewerkingen.
 
 ## 6. Tonen en stilte maken
 
@@ -921,9 +924,132 @@ samplerate wordt bij terugplaatsen naar de sessierate omgezet.
 hierbij niet de exportlengte. Controleer Mute, Solo en de niveaus voordat je
 exporteert: die instellingen werken door in het eindresultaat.
 
-Een bevestigde wijziging stopt het afspelen; de mix wordt bij opnieuw starten
-opnieuw berekend. Effecten reageren nog niet als realtime spooreffecten tijdens
-lopend afspelen.
+Volume, pan, mute, solo en spoorketens kunnen tijdens het luisteren veranderen.
+Dezelfde spoorketen wordt bij mixdown gebruikt. Undo/Redo en wisselen van weergave
+stoppen het afspelen. De bronopnamen blijven behouden.
+
+## 8a. Spooreffecten, VST3 en opnemen met begeleiding
+
+### Een effectketen op een spoor
+
+Open een multitracksessie en klik op **FX** naast de spoornaam, of kies
+**Transform → Track Effects** voor het gekozen spoor. Kies een effect en druk
+op **Add**. Het effectvenster gebruikt dezelfde instellingen en presets als de
+golfvormeditor. **OK** voegt het effect toe; **Apply** past de instelling toe
+terwijl het venster openblijft. De oorspronkelijke audio blijft behouden.
+
+De keten ondersteunt Amplify, Channel Mixer, Dynamics, Graphic EQ, Parametric EQ,
+Filters, Delay, Echo, Reverb, Invert en VST3-effecten. Een spoor heeft maximaal
+zestien effecten. Een monobron wordt eerst naar stereo gekopieerd. Clipvolume,
+panlijnen en fades werken vóór de spoorketen; spoorvolume en spoorpan erna.
+
+- Dubbelklik op een effect, of kies **Edit**, om de instellingen te wijzigen.
+- **Up / Down** verplaatst het effect. De volgorde kan het geluid veranderen.
+- Het vinkje schakelt een effect tijdelijk uit. **Remove** verwijdert het.
+- **Ctrl+Z / Ctrl+Shift+Z** maakt een wijziging ongedaan of voert haar opnieuw uit.
+- **Tail after last clip** voegt 0–60 seconden toe om delay of galm te laten
+  uitsterven. Zonder extra tijd eindigt het spoor op de laatste clipgrens;
+  een langer ander spoor kan de bestaande uitklank nog laten horen.
+
+De keten werkt tijdens afspelen en komt ook in Mix Down terecht. Volume, pan,
+mute, solo en effectinstellingen kunnen tijdens luisteren veranderen. **Apply**
+bevestigt een effectinstelling. Al naar het audioapparaat gestuurde audio speelt
+nog met de vorige instelling. Bij opnieuw starten, zoeken of opnieuw inschakelen
+begint het effectgeheugen leeg. Een gewijzigde interne effectinstelling kan de
+uitklank opnieuw beginnen. Een VST3-parameterwijziging houdt dezelfde instantie.
+
+Amplify gebruikt vaste versterking per kanaal; voor een verloop in de tijd
+gebruik je de **Volume Line** van een clip. Normalize, ruisreductie, klikherstel,
+Stretch, Pitch Shift, Distortion en Convolution blijven golfvormbewerkingen via
+**Edit Copy in Waveform**. Een realtime keten verandert de bronbestanden niet.
+
+### VST3-effecten toevoegen
+
+1. Installeer een **64-bit Linux VST3-effect** en zoek de map met uitgang
+   `.vst3`. Gebruik de Linux-uitgave van de maker.
+2. Kies **VST3 Plug-in → Add** in Track Effects en klik **Add VST3 Bundle**.
+3. Kies de bundelmap. Meerdere effecten uit dezelfde bundel worden afzonderlijk
+   beschikbaar in de keuzelijst.
+4. Kies het effect. Zoek de parameter op naam en wijzig de waarde. **Apply**
+   laat de gewijzigde instelling op het spoor horen; **OK** bevestigt en sluit.
+
+Het parametervenster gebruikt een genormaliseerde schaal van 0–100%. Dit is de
+positie binnen het bereik van de plug-in: 50% betekent niet automatisch 50%
+volume. Discrete parameters krijgen passende stappen. Alleen-lezen parameters
+kunnen niet worden veranderd. De oorspronkelijke eigen vensters van plug-ins
+zijn nog niet ingebed.
+
+Ondersteund zijn native Linux VST3-audio-effecten met één stereo-invoerbus,
+één stereo-uitvoerbus en 32-bit floatverwerking. MIDI-instrumenten, extra
+sidechains, VST2, Windows-VST's en andere plug-informaten vallen hierbuiten.
+Sommige effecten vereisen extra hostfuncties en kunnen niet openen. De app meldt
+dat en verandert het project niet. Een gerapporteerde plug-invertraging staat
+in het venster; die wordt nog niet automatisch tussen sporen gecompenseerd.
+
+Plug-ins draaien in een afzonderlijk hulpproces. Als een plug-in stopt,
+onbruikbare audio terugstuurt of niet meer antwoordt, stopt het afspelen met een
+melding. Tijdens opname met begeleiding blijft de vastgelegde take behouden.
+De rest van de app en de bronopnamen blijven beschikbaar. Dit maakt een niet
+passende plug-in nog niet geschikt voor realtime gebruik.
+
+Een project bewaart de parameterwaarden en maximaal 1 MiB status per VST3-effect.
+De plug-in en eventuele eigen bibliotheken, samples of responsbestanden blijven
+apart geïnstalleerd. Op een andere computer voeg je dezelfde bundel toe. Bij een
+ontbrekende of gewijzigde versie blijven de opgeslagen instellingen bestaan;
+afspelen en export vragen om een passende plug-in of om bewust uitschakelen van
+het effect. Opnieuw toevoegen van een gewijzigde bundel maakt die versie
+beschikbaar als nieuwe keuze. Er wordt niet stilzwijgend zonder het effect gemixt.
+
+### Opnemen terwijl andere sporen spelen
+
+1. Zet de begeleiding op één of meer sporen.
+2. Kies een ander spoor en plaats de cursor waar de nieuwe take moet beginnen.
+3. Druk **R**, kies de ingang en **New clip on…** als bestemming.
+4. Vink **Play existing tracks while recording** aan. De bestaande sporen,
+   inclusief hun effecten, spelen vanaf de cursor terwijl de nieuwe take wordt
+   vastgelegd. De microfoon zelf wordt niet door de luidsprekers teruggespeeld.
+5. **P** pauzeert beide; opnieuw **P** hervat beide. **Stop**, **Esc**, **Spatie**
+   of opnieuw **R** stopt de begeleiding en bewaart de take als één Undo-stap.
+
+Aan het einde van de begeleiding kan de opname doorgaan. Een opname met een
+maximale duur stopt ook de begeleiding. **Discard Recording** verwijdert alleen
+de nieuwe take. Gaat een apparaat of plug-in verloren, dan blijven de reeds
+opgenomen samples behouden. Bestanden en sporen wijzigen tijdens opnemen is
+vergrendeld. Voor een golfvormopname blijft de afzonderlijke opnamebediening gelden.
+
+#### De opnamepositie afstellen
+
+De app koppelt de startpositie aan de afspeelklok en de vastgelegde invoerframes.
+De fysieke in-/uitvoerroute kan extra vertraging hebben. Met **Recording position
+offset** verschuif je het nieuwe blok: negatief is eerder, positief later.
+Een waarde van −15 ms corrigeert bijvoorbeeld een take die 15 ms te laat staat.
+De instelling wordt onthouden; de opgenomen bron zelf blijft behouden.
+
+Neem een bekende testklik via de gebruikte in-/uitvoerroute op en vergelijk de
+klikposities. Vul het gemeten verschil in en controleer met een tweede take.
+Gebruik bij een andere geluidsinterface of andere bufferinstelling een nieuwe
+meting. Als de verschuiving vóór tijd nul komt, wordt het deel vóór nul bij het
+invoegen weggelaten; de oorspronkelijke take blijft bij een mislukte verwerking
+voor herstel beschikbaar.
+
+Automatische fysieke latencykalibratie, compensatie van plug-invertraging,
+correctie van klokdrift tussen verschillende apparaten en punch-in/out zijn
+vervolgstappen. Nauwkeurige gelijkloop over lange takes hangt ook van de gebruikte
+apparaatklokken af. Controleer de gekozen in-/uitvoerroute met een korte proeftake.
+
+### Nieuwe projecten bewaren en heropenen
+
+**Save Session / Save Session As** bewaart de gebruikte audio, clips, lijnen,
+spoorketens, volgorde, bypass, uitklanktijden en VST3-instellingen. **Open Session**
+herstelt die bewerkbare sessie. **Mix Down Session** bewaart één WAV met dezelfde
+spoorketens en de ingestelde uitklank. Het project blijft nodig om afzonderlijke
+sporen verder te veranderen.
+
+Nieuwe projecten gebruiken de bijgewerkte projectversie. Eerdere
+SoundSausage-projectversies blijven te openen. Oudere appversies kunnen de nieuwe
+spoorketens niet lezen; gebruik versie 0.15.0 of nieuwer om ze te heropenen.
+Herstel na onverwacht afsluiten bewaart de ketens en plug-ininstellingen eveneens.
+Een ontbrekende externe plug-in verhindert het herstellen van de bronopnamen niet.
 
 ## 9. Een andere samplerate kiezen
 
@@ -992,8 +1118,9 @@ golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
   blijven beschikbaar. Verwijder de betreffende kopie alleen wanneer je die niet
   meer wilt bewaren.
 
-Gelijktijdig opnemen en afspelen, een markereditor en realtime spooreffecten zijn nog in ontwikkeling.
-Externe plug-ins en uitgebreidere sessiecompatibiliteit volgen later. Deze uitbreidingen zijn nog niet beschikbaar.
+Eigen plug-invensters, meer plug-informaten, automatische latency-/driftcompensatie,
+punch-in/out en een markereditor zijn vervolgmogelijkheden. Realtime spoorketens,
+Linux VST3 en opname met begeleiding zijn beschikbaar zoals in hoofdstuk 8a beschreven.
 
 Bewaar een project voordat je de toepassing verlaat. De actuele voortgang en
 nieuwe versies staan op de [SoundSausage-website](https://github.com/rene-timmermans/SoundSausage).

@@ -13,6 +13,7 @@ from .audio import AudioError, validate_audio
 from .document import Document
 from .session import Session, Media, Track, SessionClip, text, number, integer, MAX_TRACKS, MAX_MEDIA, MAX_CLIPS
 from .envelopes import validate_points
+from .trackfx import chain
 from .operations import operation
 
 MAX_JOURNAL_BYTES=64*1024*1024
@@ -191,7 +192,7 @@ def restore(owner,dsp=None):
                 clip_ids.add(clip.id);session._validate_clip(clip);clips.append(clip)
             if type(entry['muted']) is not bool or type(entry['solo']) is not bool:
                 raise AudioError('Invalid recovery mute/solo.')
-            tracks.append(Track(key,text(entry['name']),tuple(clips),number(entry['gain'],0,100,'Gain'),number(entry['pan'],-1,1,'Pan'),entry['muted'],entry['solo']))
+            tracks.append(Track(key,text(entry['name']),tuple(clips),number(entry['gain'],0,100,'Gain'),number(entry['pan'],-1,1,'Pan'),entry['muted'],entry['solo'],chain(entry.get('effects',())),number(entry.get('tail_seconds',0),0,60,'Track tail')))
         session._tracks=tuple(tracks)
         session.selected_track=item['selected_track'] if item['selected_track'] in track_ids else tracks[0].id
         session.selected_clip=item['selected_clip'] if item['selected_clip'] in clip_ids else None

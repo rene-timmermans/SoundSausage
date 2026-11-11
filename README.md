@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.14.0**.
+De huidige versie is **0.15.0**.
 
 ## Wat het kan
 
@@ -25,11 +25,16 @@ De huidige versie is **0.14.0**.
 - Zachte of harde vervorming, wavefold en bit crush, plus convolutie met een impulsrespons.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
+- Realtime spoorketens met volume, dynamiek, EQ, filters, delay, echo en galm.
+- Linux VST3-effecten toevoegen en hun parameters en status bij het project bewaren.
+- Andere sporen beluisteren tijdens opnemen, met samen pauzeren en stoppen.
 - Projecten opslaan met alle gebruikte audio en een complete mix exporteren.
 - Eenvoudige oudere sessies importeren.
 - Inzoomen op de golfvorm, afspelen in een lus en frequenties analyseren.
 
-Realtime spooreffecten, gelijktijdig opnemen en afspelen en volledige ondersteuning voor oude sessies volgen later.
+Spoorketens met realtime effecten en Linux VST3, opnemen met begeleiding en
+projecten met alle effectinstellingen zijn beschikbaar. Eigen plug-invensters,
+meer plug-informaten en automatische latencycompensatie volgen later.
 Zie [status en beperkingen](docs/STATUS.md).
 
 ## Installeren en starten
@@ -59,6 +64,8 @@ Wissel met **Tab** tussen golfvorm en multitrack. **Spatie** start en stopt het 
 **Ctrl+W** sluit de huidige golfvorm of sessie; het programma blijft open. Bij niet-opgeslagen wijzigingen kun je opslaan, verwerpen of annuleren.
 In multitrack sleep je WAV-bestanden op een spoor en verplaats of trim je clips met de muis.
 Met **Volume Line** en **Pan Line** teken je de lijnen op een clip.
+**FX** opent een bewerkbare spoorketen; effecten en VST3-instellingen werken
+tijdens luisteren en in mixdown. Zie [spooreffecten, VST3 en opnemen met begeleiding](docs/REALTIME.md).
 
 De effecten staan onder **Transform**; versterken en normaliseren vind je in **Amplitude**.
 Daar staan ook **Channel Mixer**, **Dynamics Processing** en **Envelope**.
@@ -82,6 +89,8 @@ De [volledige handleiding](docs/HANDLEIDING.md) staat ook onder **Help → Handl
 en **F1**, met een zoekfunctie en uitleg van alle beschikbare effecten en functies.
 
 ## Wat er nieuw is
+
+**0.15.0** Realtime spoorketens met bypass en volgorde, Linux VST3-effecten met opgeslagen status, opnemen met begeleiding en gekoppeld pauzeren. Projecten bewaren de ketens en instellingen; mixdown gebruikt dezelfde effecten.
 
 **0.14.0** Links en rechts afzonderlijk selecteren en bewerken, met kanaalkeuze, luistervoorbeelden en Undo/Redo. Doorlopende golfvorm bij zoomen, verschillende zoomiconen en eigen iconen voor de menufuncties.
 

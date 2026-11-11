@@ -71,6 +71,7 @@ def create_menus(window):
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
     transform = menu("transform", "&Transform")
     add(transform, ("invert", "reverse", "silence", None))
+    add(transform, ("track_fx", None))
     amplitude = transform.addMenu("&Amplitude")
     amplitude.setToolTipsVisible(True)
     window.menus["amplitude"] = amplitude

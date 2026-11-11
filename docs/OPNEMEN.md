@@ -24,9 +24,12 @@ schrijfcontrole draait buiten de interface. Bij de volgende start kan SoundSausa
 opname aanbieden, of kies **File → Recover Work**. Annuleren van de verwerking
 na Stop bewaart de take eveneens voor herstel.
 
-Het ingangssignaal wordt niet door de speakers gespeeld. Gelijktijdig opnemen
-en de sessie terugluisteren, punch-in/out en automatische latencycompensatie
-zijn nog niet beschikbaar. Neem takes afzonderlijk op en combineer ze daarna.
+Het ingangssignaal wordt niet door de speakers gespeeld. In multitrack kan
+**Play existing tracks while recording** de begeleiding afspelen, inclusief
+spooreffecten. **P** pauzeert/hervat beide; Stop bewaart de nieuwe take.
+**Recording position offset** stelt de plaatsing van de take af. Punch-in/out en
+automatische latencycompensatie blijven vervolgstappen. Zie
+[spooreffecten en opname met begeleiding](REALTIME.md) voor bediening en kalibratie.
 Bij meerdere kanalen is opname beperkt tot één mono- of stereopaar per take.
 
 Een complete werkwijze:

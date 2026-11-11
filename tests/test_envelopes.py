@@ -149,7 +149,7 @@ class EnvelopeProjectTests(unittest.TestCase):
         np.testing.assert_array_equal(restored.render(), expected)
         self.assertFalse(restored.dirty)
         with zipfile.ZipFile(self.path) as archive:
-            self.assertEqual(json.loads(archive.read("project.json"))["version"], 3)
+            self.assertEqual(json.loads(archive.read("project.json"))["version"], 4)
 
     def test_version_one_projects_load_with_neutral_curves(self):
         save_project(self.session, self.path)

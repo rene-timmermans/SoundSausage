@@ -6,6 +6,8 @@ install -d "$destination/usr/lib/soundsausage/src" "$destination/usr/lib/soundsa
 cp -R src/soundsausage "$destination/usr/lib/soundsausage/src/"
 find "$destination/usr/lib/soundsausage/src" -type d -name __pycache__ -prune -exec rm -rf {} +
 install -m755 build/libsoundsausage_dsp.so "$destination/usr/lib/soundsausage/build/"
+install -m755 build/libsoundsausage_vst3.so "$destination/usr/lib/soundsausage/build/"
+install -Dm644 third_party/vst3/pluginterfaces/LICENSE.txt "$destination/usr/share/licenses/soundsausage/VST3-MIT.txt"
 install -Dm755 packaging/soundsausage-launcher.sh "$destination/usr/bin/soundsausage"
 install -Dm644 packaging/soundsausage.desktop "$destination/usr/share/applications/soundsausage.desktop"
 install -Dm644 src/soundsausage/assets/soundsausage.png "$destination/usr/share/icons/hicolor/256x256/apps/soundsausage.png"

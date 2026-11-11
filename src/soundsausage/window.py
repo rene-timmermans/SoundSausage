@@ -817,8 +817,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             start = 0
         if end > start:
             try:
-                audio = doc.render(start, end) if self.mode == "multitrack" else doc.view(start, end)
-                self.player.play(audio, doc.sample_rate, start)
+                if self.mode == "multitrack": self.player.play_session(doc, start, end)
+                else: self.player.play(doc.view(start, end), doc.sample_rate, start)
             except (ValueError, RuntimeError) as error:
                 self.error("Playback", error)
 
@@ -839,6 +839,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             self.update_meters(None)
 
     def playback_position(self, frame):
+        if self.recording_busy: return
         frame = min(frame, self.active_model().frames)
         self.active_model().cursor = frame
         self.time_label.setText(clock_text(frame / self.active_model().sample_rate))

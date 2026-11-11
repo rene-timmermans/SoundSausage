@@ -19,11 +19,12 @@ from . import storage
 from .metadata import MAX_METADATA_BYTES
 from .session import Session, Track, SessionClip, MAX_TRACKS, MAX_CLIPS, MAX_MEDIA, integer, text, number
 from .envelopes import validate_points
+from .trackfx import chain
 
 
 PROJECT_FORMAT = "cooledit-linux-project"
-PROJECT_VERSION = 3
-MAX_MANIFEST_BYTES = 2 * 1024 * 1024
+PROJECT_VERSION = 4
+MAX_MANIFEST_BYTES = 32 * 1024 * 1024
 _IDENTIFIER = re.compile(r"^[0-9a-f]{32}$")
 
 
@@ -92,7 +93,7 @@ def _load_project(path, dsp):
         manifest = json.loads(archive.read("project.json").decode("utf-8"), parse_constant=_reject_constant)
         if not isinstance(manifest, dict) or manifest.get("format") != PROJECT_FORMAT:
             raise AudioError("This is not a SoundSausage project.")
-        if type(manifest.get("version")) is not int or manifest["version"] not in (1, 2, PROJECT_VERSION):
+        if type(manifest.get("version")) is not int or manifest["version"] not in (1, 2, 3, PROJECT_VERSION):
             raise AudioError("This project version is not supported.")
         rate = integer(manifest.get("sample_rate"), "Sample rate", 1000, 384000)
         tracks_data, media_data = manifest.get("tracks"), manifest.get("media")
@@ -181,7 +182,11 @@ def _load_project(path, dsp):
                 clip_ids.add(clip.id)
                 session._validate_clip(clip)
                 clips.append(clip)
-            tracks.append(Track(key, text(record.get("name")), tuple(clips), gain, pan, record["muted"], record["solo"]))
+            effects = chain(record.get("effects", ()))
+            tail = number(record.get("tail_seconds", 0), 0, 60, "Track tail")
+            if manifest["version"] < 4 and (effects or tail):
+                raise AudioError("An older project version cannot contain track effects.")
+            tracks.append(Track(key, text(record.get("name")), tuple(clips), gain, pan, record["muted"], record["solo"], effects, tail))
         session._tracks = tuple(tracks)
         session.selected_track = tracks[0].id
         session.selected_clip = None

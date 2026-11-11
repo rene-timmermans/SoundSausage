@@ -42,6 +42,15 @@ def run(window):
     assert np.isfinite(doc.read()).all()
     assert not application_icon().pixmap(32, 32).isNull()
     assert not mascot_icon().pixmap(24, 24).isNull()
+    from .plugins import Helper
+    helper=Helper()
+    try:assert helper.request(dict(op='host_info'))['ready']
+    finally:helper.close()
+    from .trackfx import effect
+    live_session=Session(8000,1,dsp=doc.dsp)
+    live_session.import_audio([(original,8000,'Track insert check')])
+    live_session.configure_track(live_session.selected_track,effects=(effect('gain',dict(initial=.5)),))
+    np.testing.assert_array_equal(live_session.render(),original*.5)
     assert resample(np.zeros((441, 2), np.float32), 44100, 48000).shape == (480, 2)
     with tempfile.TemporaryDirectory(prefix="soundsausage-selftest-") as folder:
         path = Path(folder)
@@ -103,7 +112,7 @@ def run(window):
     finally:
         manual.close()
         manual.deleteLater()
-    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, disk buffers, recovery, recording files, icons, effects, manual)")
+    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, projects, disk buffers, recovery, recording files, icons, effects, track inserts, isolated VST3 host, manual)")
 
 
 def run_audio(window):
@@ -160,3 +169,43 @@ def run_input(window):
         folder.cleanup()
         if previous_cache is None:os.environ.pop("SOUNDSAUSAGE_CACHE_DIR",None)
         else:os.environ["SOUNDSAUSAGE_CACHE_DIR"]=previous_cache
+
+
+def run_duplex(window,rate=48000):
+    """Explicit simultaneous virtual/device output and input test with silent backing."""
+    from PySide6.QtCore import QEventLoop,QTimer
+    original_session,original_mode=window.session,window.mode
+    original_error=window.error
+    errors=[];observed=[];loop=QEventLoop()
+    window.error=lambda title,message:errors.append(str(message))
+    timeout=QTimer();timeout.setSingleShot(True);timeout.timeout.connect(loop.quit)
+    def observe():observed.append((window.player.state,window.recorder.state))
+    def pause():
+        if window.recorder.state=='Recording':window.toggle_pause();observe()
+    def resume():
+        if window.recorder.state=='Paused':window.toggle_pause();observe()
+    def finished(state):
+        if state=='Stopped' and window.recorder.take is None:loop.quit()
+    window.recorder.state_changed.connect(finished)
+    try:
+        window.session=Session(rate,2,dsp=window.document.dsp)
+        window.session.import_audio([(np.zeros((rate*2,2),np.float32),rate,'Silent backing')])
+        window.session.selected_track=window.session.tracks[1].id;window.set_mode('multitrack')
+        window.session.select(0,0)
+        if not window.start_recording(target='multitrack',rate=rate,channels=2,accompaniment=True,limit_seconds=.35):
+            raise RuntimeError('; '.join(errors) or 'Duplex capture could not start.')
+        observe();QTimer.singleShot(100,pause);QTimer.singleShot(200,resume);timeout.start(7000);loop.exec()
+        if window.recorder.active:window.stop_recording()
+        clips=window.session.tracks[1].clips
+        if errors or not clips or ('Playing','Recording') not in observed or ('Paused','Paused') not in observed:
+            raise RuntimeError('; '.join(errors) or f'Duplex playback/pause/capture failed: {observed}')
+        assert window.player.state=='Stopped' and not window.recording_busy
+        assert len(window.session.media[clips[0].media_id].samples)>rate//5
+        print(f'SoundSausage {__version__}: duplex selftest OK ({rate} Hz, simultaneous output/input, linked pause, take kept)')
+    finally:
+        timeout.stop();window.recorder.state_changed.disconnect(finished)
+        window.player.stop()
+        if window.recorder.active:window.recorder.stop(keep=False)
+        if window.recording_busy:window.end_recording_view()
+        window.session.mark_saved();window.session=original_session;window.error=original_error
+        window.multitrack.set_session(original_session);window.set_mode(original_mode)

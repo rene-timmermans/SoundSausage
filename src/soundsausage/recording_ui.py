@@ -6,7 +6,7 @@ import numpy as np
 from PySide6.QtCore import Qt,QPointF,QRectF,QTimer
 from PySide6.QtGui import QPainter,QPen
 from PySide6.QtWidgets import (QWidget,QVBoxLayout,QLabel,QDialog,QFormLayout,QComboBox,QSpinBox,
-                             QDoubleSpinBox,QDialogButtonBox,QPushButton,QHBoxLayout,QMessageBox)
+                             QDoubleSpinBox,QDialogButtonBox,QPushButton,QHBoxLayout,QMessageBox,QCheckBox)
 
 from .audio import AudioError
 from .capture import Recorder,input_format,recover_take
@@ -41,6 +41,12 @@ class RecordDialog(QDialog):
         form.addRow('Input',self.input);form.addRow('Destination',self.target)
         form.addRow('Sample rate (Hz)',self.rate);form.addRow('Channels',self.channels)
         form.addRow('First input channel',self.first);form.addRow('Maximum duration',self.duration)
+        self.accompaniment = QCheckBox('Play existing tracks while recording')
+        self.accompaniment.setChecked(window.mode=='multitrack' and window.session.frames>0)
+        self.offset = QDoubleSpinBox(); self.offset.setRange(-2000,2000); self.offset.setDecimals(1); self.offset.setSuffix(' ms')
+        self.offset.setValue(float(self.devices.settings.value('recording/offset_ms',0)))
+        self.offset.setToolTip('Negative moves the new clip earlier; positive moves it later. Calibrate with a loopback recording.')
+        form.addRow(self.accompaniment); form.addRow('Recording position offset',self.offset)
         self.note=QLabel();self.note.setWordWrap(True);form.addRow(self.note)
         form.addRow(QLabel('Stop keeps the take. Discard removes only this recording.\nThe input is not played through the speakers.'))
         self.box=QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
@@ -73,6 +79,7 @@ class RecordDialog(QDialog):
     def sync(self,*_):
         target=self.target.currentData()
         existing=target in ('insert','replace');multi=target=='multitrack'
+        self.accompaniment.setVisible(multi); self.offset.setVisible(multi)
         self.rate.setEnabled(not existing and not multi)
         self.channels.setEnabled(not existing)
         if existing:
@@ -95,7 +102,9 @@ class RecordDialog(QDialog):
     def settings(self):
         return dict(target=self.target.currentData(),rate=self.rate.value(),channels=self.channels.currentIndex()+1,
                     first_channel=self.first.value()-1,input_id=self.input.currentData(),
-                    limit_seconds=self.duration.value() or None)
+                    limit_seconds=self.duration.value() or None,
+                    accompaniment=self.target.currentData()=='multitrack' and self.accompaniment.isChecked(),
+                    recording_offset_ms=self.offset.value())
 
 
 class RecordingView(QWidget):
@@ -161,6 +170,7 @@ class RecordingActions:
         self.recorder.samples.connect(self.recording_samples)
         self.recorder.finished.connect(self.recording_finished)
         self.recorder.failed.connect(self.recording_failed)
+        self.player.failed.connect(self.recording_output_failed)
 
     @property
     def recording_busy(self):return self._record_context is not None
@@ -176,7 +186,7 @@ class RecordingActions:
         finally:
             self.update_recording_actions();dialog.deleteLater()
 
-    def start_recording(self,target='new',rate=44100,channels=2,first_channel=0,input_id=None,limit_seconds=None):
+    def start_recording(self,target='new',rate=44100,channels=2,first_channel=0,input_id=None,limit_seconds=None,accompaniment=False,recording_offset_ms=0):
         if self.recording_busy:return False
         if target not in ('new','insert','replace','multitrack'):raise AudioError('Invalid recording destination.')
         if target in ('insert','replace') and self.document.partial_channels:
@@ -186,6 +196,8 @@ class RecordingActions:
             raise AudioError('Recording into a waveform requires its sample rate and channel count.')
         if target=='replace' and not self.document.selected:raise AudioError('Select audio to replace first.')
         if target=='multitrack' and rate!=self.session.sample_rate:raise AudioError('Use the session sample rate for recording.')
+        if accompaniment and target!='multitrack': raise AudioError('Playback accompaniment requires a multitrack recording.')
+        if not np.isfinite(recording_offset_ms) or not -2000<=recording_offset_ms<=2000: raise AudioError('Invalid recording position offset.')
         if input_id is not None:self.audio_devices.configure(self.audio_devices.output_id,self.audio_devices.buffer_ms,input_id)
         self.player.stop()
         start,end=self.document.selection if target=='replace' else (self.active_model().cursor,self.active_model().cursor)
@@ -194,10 +206,19 @@ class RecordingActions:
             if remaining<=0:raise AudioError('The recording would exceed the 24-hour timeline.')
             limit_seconds=min(limit_seconds,remaining) if limit_seconds is not None else remaining
         self._record_context=dict(target=target,rate=rate,channels=channels,start=start,end=end,
+                                  accompaniment=bool(accompaniment),recording_offset_ms=recording_offset_ms,
+                                  playback_loop=self.player.loop,
                                   document=self.document,session=self.session,revision=self.active_model().revision,
                                   track=self.session.selected_track,
                                   actions={key:action.isEnabled() for key,action in self.actions.items()})
         self.update_recording_actions()
+        if accompaniment and start<self.session.frames:
+            self.player.loop=False
+            self.player.play_session(self.session,start,self.session.frames)
+            if self.player.state=='Stopped':
+                if self.recording_busy:self.end_recording_view()
+                return False
+        self.audio_devices.settings.setValue('recording/offset_ms',recording_offset_ms)
         ok=self.recorder.start(rate,channels,first_channel,limit_seconds)
         if not ok and self.recording_busy:self.end_recording_view()
         return ok
@@ -233,6 +254,12 @@ class RecordingActions:
 
     def recording_samples(self,data,frames):
         if not self.recording_busy:return
+        context=self._record_context
+        if context.get('accompaniment') and 'anchor' not in context:
+            self.player._tick()
+            elapsed=max(0,self.player._last_frame-context['start'])
+            captured=round(frames*context['rate']/self.recorder.take.rate)
+            context['anchor']=context['start']+max(0,elapsed-captured)
         self.recording_view.feed(data,frames)
         self.time_label.setText(clock_text(frames/self.recording_view.rate))
         self.detail_label.setText(f' {frames:,} captured frames ')
@@ -242,6 +269,7 @@ class RecordingActions:
 
     def stop_recording(self):
         if self._applying_recording:return
+        self.player.stop()
         self.recorder.stop()
         if not self.recorder.active and self.recording_busy:self.end_recording_view()
 
@@ -250,10 +278,15 @@ class RecordingActions:
         result=QMessageBox.question(self,'Discard Recording','Discard this take? Existing audio remains unchanged.',
                                    QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Cancel)
         if result==QMessageBox.StandardButton.Discard:
+            self.player.stop()
             self.recorder.stop(keep=False);self.end_recording_view()
 
     def toggle_pause(self):
-        if self.recorder.active:self.recorder.toggle_pause()
+        if self.recorder.active:
+            paused=self.recorder.state=='Paused'
+            if not paused and self.player.state=='Playing':self.player.toggle_pause()
+            self.recorder.toggle_pause()
+            if paused and self.player.state=='Paused':self.player.toggle_pause()
         else:self.player.toggle_pause()
 
     def stop_transport(self):
@@ -271,8 +304,12 @@ class RecordingActions:
         elif target=='multitrack':
             if self.session is not context['session'] or self.session.revision!=context['revision']:
                 raise AudioError('The destination changed; the take is available under Recover Work.')
+            position=context.get('anchor',context['start'])+round(context.get('recording_offset_ms',0)*context['rate']/1000)
+            if position<0:
+                data=data[min(len(data),-position):];position=0
+            if not len(data): raise AudioError('The position offset removes the whole take. Recover it as a new waveform.')
             self.session.import_audio([(data,context['rate'],'Recording '+datetime.now().strftime('%H-%M-%S'))],
-                                      context['track'],context['start'],label='Record')
+                                      context['track'],position,label='Record')
             self.mode='multitrack'
         else:
             if self.document is not context['document'] or self.document.revision!=context['revision']:
@@ -281,6 +318,7 @@ class RecordingActions:
         return True
 
     def recording_finished(self,take):
+        self.player.stop()
         context=self._record_context
         if context is None:
             take.leave_for_recovery();return
@@ -295,8 +333,10 @@ class RecordingActions:
                 self.statusBar().showMessage('Recording kept for recovery. Use File → Recover Work.',12000)
 
     def end_recording_view(self,fit=False):
+        if self._record_context and self._record_context.get('accompaniment'):self.player.stop()
         context=self._record_context
         self._record_context=None;self.recording_view.stop();self.recording_view.bins.clear()
+        if context is not None:self.player.loop=context.get('playback_loop',self.player.loop)
         if context is not None:
             for key,enabled in context.get("actions",{}).items():self.actions[key].setEnabled(enabled)
         self.editor_stack.setCurrentIndex(1 if self.mode=='multitrack' else 0)
@@ -310,12 +350,18 @@ class RecordingActions:
         if self.recording_busy and not self.recorder.active:self.end_recording_view()
         self.error('Recording',message)
 
+    def recording_output_failed(self,message):
+        if self.recording_busy and self._record_context.get('accompaniment'):
+            self.recorder.stop()
+            if self.recording_busy:self.end_recording_view()
+
     def confirm_recording_close(self):
         if not self.recording_busy:return True
         if self._applying_recording or self.recorder.state in ('Starting','Finishing'):return False
         result=QMessageBox.question(self,'Stop Recording','Stop and keep the recording before closing?',
             QMessageBox.StandardButton.Save|QMessageBox.StandardButton.Discard|QMessageBox.StandardButton.Cancel,QMessageBox.StandardButton.Cancel)
         if result==QMessageBox.StandardButton.Cancel:return False
+        self.player.stop()
         self.recorder.stop(keep=result==QMessageBox.StandardButton.Save)
         if self.recording_busy:self.end_recording_view()
         return True

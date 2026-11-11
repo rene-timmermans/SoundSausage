@@ -65,8 +65,9 @@ Uitgebreide compatibiliteit met oudere sessies en externe plug-ins volgen later.
 
 Alle vijf groepen zijn beschikbaar met handleiding, luistervoorbeelden en geteste
 installatiepakketten. Ze vullen de eerder afgeronde Amplitude-groep aan.
-Realtime spooreffecten, externe plug-ins en uitgebreidere sessiecompatibiliteit
-blijven afzonderlijke vervolgstappen.
+Spoorketens, Linux VST3, opname met begeleiding en volledige nieuwe projecten
+zijn uitgewerkt in fase 5. Uitgebreidere import van oude sessies is geen vereiste
+voor de huidige werkwijze.
 
 Iedere groep krijgt meetbare audiocontroles, Undo/Redo, bediening voor selecties
 en lange bestanden, bijgewerkte uitleg en een geteste release.
@@ -78,6 +79,19 @@ afzonderlijk selecteerbaar voor effecten. Kanaalkeuze, Undo/Redo, herstel,
 mono-export en de gedeelde stereotijdas horen bij deze uitbreiding. Alle
 menufuncties krijgen eigen iconen; de beide zoomfuncties blijven herkenbaar.
 De vijf effectgroepen blijven afgerond. Zie [voortgang](VOORTGANG.md).
+
+## 5. Realtime mixen, opname met begeleiding en uitwisseling
+
+- [x] Spooreffecten in kleine audioblokken tijdens afspelen; bewerkbare keten, bypass, Undo/Redo, projectopslag en dezelfde keten bij mixdown.
+- [x] Bestaande sporen beluisteren tijdens opnemen op een nieuw blok; samen pauzeren/stoppen, veilige foutafhandeling en instelbare opnameverschuiving.
+- [x] Externe Linux-effectplug-ins, met gewenste VST3-ondersteuning: vinden, parameters bewerken en in een spoorketen bewaren; ontbrekende plug-ins duidelijk melden.
+- [x] Nieuwe SoundSausage-projecten volledig bewaren en heropenen, inclusief opnamen, spooreffecten en plug-ininstellingen.
+
+Iedere uitbreiding krijgt audiocontroles, bijgewerkte offlinehandleiding en
+installatiepakketten. Exacte ondersteuning van plug-informaten en oude
+sessievarianten staat bij de functie; niet-ondersteunde gegevens worden gemeld.
+
+Distributiecontroles en de installatiepakketten voor 0.15.0 worden nog afgerond.
 
 ## Open punten blijven zichtbaar
 

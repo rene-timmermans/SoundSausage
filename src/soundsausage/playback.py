@@ -113,6 +113,7 @@ class Playback(QObject):
         self._output_id = ""
         self.output_description = ""
         self.format = None
+        self._stream_factory = None
         self._timer = QTimer(self)
         self._timer.setInterval(10)
         self._timer.timeout.connect(self._tick)
@@ -167,6 +168,33 @@ class Playback(QObject):
         self.position.emit(self._start_frame)
         self._feed()
 
+    def play_session(self, session, start=0, end=None):
+        from .mixing import SessionStream
+        from .streaming import StreamPayload
+        self.stop()
+        try:
+            factory = lambda: SessionStream(session, start, end)
+            device = self.devices.output()
+            self.format = output_format(device, session.sample_rate, 2)
+            self._rate = session.sample_rate
+            self._start_frame = self._last_frame = start
+            self._payload = StreamPayload(factory, self._rate, self.format)
+            self._stream_factory = factory
+            self._data = self._payload.stream
+            if not len(self._data): self.stop(); return
+            self._payload.wait_ready()
+            self._output_id = bytes(device.id()).hex()
+            self.output_description = device.description()
+            self.sink = self._sink_factory(device, self.format, self)
+            self.sink.setBufferSize(max(self.format.bytesPerFrame(), min(len(self._payload), self.format.bytesForDuration(self.devices.buffer_ms*1000))))
+            self.sink.stateChanged.connect(self._sink_changed)
+            self._set_state('Starting')
+            self._start_sink()
+        except OperationCancelled:
+            self.stop()
+            raise
+        except (ValueError, OSError, RuntimeError) as error: self._fail(str(error))
+
     def _feed(self):
         if self.sink is None or self._io is None or self._feeding or self.state == "Paused":
             return
@@ -174,11 +202,14 @@ class Playback(QObject):
         try:
             count = min(len(self._payload) - self._sent, self.sink.bytesFree(), 65536)
             if count > 0:
-                written = self._io.write(self._payload[self._sent:self._sent + count])
+                data = self._payload[self._sent:self._sent + count]
+                written = self._io.write(data) if data else 0
                 if written < 0:
                     self._fail("The audio device rejected playback data.")
                 else:
                     self._sent += written
+        except (ValueError, OSError, RuntimeError) as error:
+            self._fail(str(error))
         finally:
             self._feeding = False
 
@@ -195,6 +226,8 @@ class Playback(QObject):
     def meter_samples(self, frame):
         if self._data is None:
             return None
+        if self._stream_factory is not None:
+            return self._payload.meter_samples(int(frame)-self._start_frame)
         end = max(0, min(len(self._data), int(frame) - self._start_frame))
         return self._data[max(0, end - max(1, self._rate // 30)):end]
 
@@ -260,6 +293,11 @@ class Playback(QObject):
                 self.sink.reset()
             finally:
                 self._starting = False
+            if self._stream_factory is not None:
+                from .streaming import StreamPayload
+                self._payload.close()
+                self._payload = StreamPayload(self._stream_factory, self._rate, self.format)
+                self._data = self._payload.stream
             self._start_sink()
 
     def _outputs_changed(self):
@@ -282,6 +320,9 @@ class Playback(QObject):
         self._timer.stop()
         sink, self.sink = self.sink, None
         self._io = None
+        if self._stream_factory is not None:
+            self._payload.close()
+            self._stream_factory = None
         self._data = None
         self._payload = b""
         self._sent = 0

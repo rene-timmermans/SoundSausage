@@ -31,7 +31,8 @@ class AboutDialog(QDialog):
             "<p><b>Licentie</b><br>Vrije software onder de GNU General Public License, versie 3 of later.</p>"
             f"<p><b>Website</b><br><a style='color:{palette.icon.name()}' href='{url}'>{url}</a></p>"
             f"<p style='color:{palette.muted.name()}'>Gebouwd met Python {platform.python_version()}, Qt {qVersion()}, "
-            f"PySide6 {PySide6.__version__}, NumPy {numpy.__version__}, C++, libsamplerate en Rubber Band.</p>")
+            f"PySide6 {PySide6.__version__}, NumPy {numpy.__version__}, C++, libsamplerate, Rubber Band en de VST3-interfaces (MIT).</p>"
+            "<p>VST is een handelsmerk van Steinberg Media Technologies GmbH.</p>")
         self.description.setWordWrap(True)
         self.description.setOpenExternalLinks(True)
         self.description.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)

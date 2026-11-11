@@ -81,6 +81,7 @@ jobs:
           soundsausage --selftest
           soundsausage --audio-selftest
           soundsausage --input-selftest
+          soundsausage --duplex-selftest
       - uses: actions/upload-artifact@v4
         with: { name: debian, path: "soundsausage_*_amd64.deb" }
 
@@ -109,6 +110,7 @@ jobs:
           soundsausage --selftest
           soundsausage --audio-selftest
           soundsausage --input-selftest
+          soundsausage --duplex-selftest
 
   fedora:
     needs: source
@@ -144,6 +146,7 @@ jobs:
           soundsausage --selftest
           soundsausage --audio-selftest
           soundsausage --input-selftest
+          soundsausage --duplex-selftest
       - uses: actions/upload-artifact@v4
         with: { name: fedora, path: "soundsausage-*.rpm" }
 
@@ -183,6 +186,7 @@ jobs:
           soundsausage --selftest
           soundsausage --audio-selftest
           soundsausage --input-selftest
+          soundsausage --duplex-selftest
       - uses: actions/upload-artifact@v4
         with: { name: arch, path: "soundsausage-*.pkg.tar.zst" }
 

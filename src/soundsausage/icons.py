@@ -319,6 +319,13 @@ def draw(p, name, color):
         path = QPainterPath(QPointF(5, 5)); path.cubicTo(24, -1, 26, 25, 7, 21); p.drawPath(path)
         line(5, 5, 5, 11); line(5, 5, 11, 5); line(7, 10, 13, 14); line(13, 14, 7, 18)
     elif name == "exit": rect(3, 3, 10, 18); line(8, 12, 23, 12); line(19, 8, 23, 12); line(19, 16, 23, 12)
+    elif name == "plugin":
+        rect(5, 6, 14, 12); line(9, 2, 9, 6); line(15, 2, 15, 6)
+        line(12, 18, 12, 22); line(9, 12, 15, 12); line(12, 9, 12, 15)
+    elif name == "track_fx":
+        rect(2, 2, 20, 20)
+        for y, x in ((6, 8), (12, 16), (18, 10)):
+            line(4, y, 20, y); rect(x-1.5, y-1.5, 3, 3)
     elif name == "clip_properties":
         rect(2, 3, 20, 18)
         for x, y in ((6, 8), (12, 16), (18, 11)): line(x, 6, x, 19); rect(x-1.5, y-1.5, 3, 3)
