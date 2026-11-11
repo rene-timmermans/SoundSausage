@@ -7,7 +7,7 @@ from shiboken6 import isValid
 from PySide6.QtGui import QActionGroup, QKeySequence
 from .i18n_widgets import QAction
 from PySide6.QtWidgets import QToolButton as NativeToolButton
-from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QStyle, QScrollBar, QStackedWidget
+from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QLayout, QStyle, QScrollBar, QStackedWidget
 from .i18n_widgets import QDialogButtonBox
 from .i18n_widgets import QMainWindow, QWidget, QLabel, QToolBar, QToolButton, QFileDialog, QMessageBox, QDialog, QFormLayout, QDoubleSpinBox, QSpinBox, QComboBox, QCheckBox, QRadioButton, QInputDialog
 
@@ -193,6 +193,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
     def update_minimum_size(self, *_):
         if not isValid(self) or not hasattr(self, "transport"):
             return
+        for child in self.findChildren(QLayout):
+            child.invalidate()
         self.layout().invalidate()
         minimum = self.layout().minimumSize()
         self.setMinimumSize(max(850, minimum.width()), max(540, minimum.height()))

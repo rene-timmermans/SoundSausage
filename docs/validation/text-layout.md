@@ -36,6 +36,10 @@ De statusbalk is de smalle informatieregel onder de niveaumeter. De optie
 verbergt die regel en bewaart de voorkeur in `ui/show_status_bar`.
 
 De rendercontrole gebruikt een virtueel scherm van 800 × 800 logische pixels.
+De distributiecontainers installeren DejaVu Sans en Mono voor de expliciete
+letterproeven. De grote klok berekent ook bij een breder vervangend lettertype
+en tijdwaarden met uren haar benodigde breedte. Alle geneste vensterlayouts
+worden na taal- en letterwijzigingen opnieuw gemeten.
 Hardwarelijsten en de plug-inindex worden voor de indelingscontrole vervangen
 door lege lijsten. Daarvoor worden geen microfoons of externe plug-ins geopend.
 De bestaande controle op een ruim golfvormvlak blijft behouden: meer dan 62%

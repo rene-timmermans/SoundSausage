@@ -73,7 +73,7 @@ class TextLayoutTests(unittest.TestCase):
         QCoreApplication.sendPostedEvents(None,QEvent.Type.DeferredDelete);self.app.processEvents()
         self.stack.close();self.folder.cleanup()
 
-    def settle(self):self.app.processEvents();self.app.processEvents()
+    def settle(self):self.app.processEvents();QCoreApplication.sendPostedEvents(None,QEvent.Type.LayoutRequest);self.app.processEvents()
 
     def create(self,cls):
         w=self.window
@@ -165,6 +165,8 @@ class TextLayoutTests(unittest.TestCase):
             other=MainWindow(Document(self.data,8000),no_audio=True,ui_settings=self.window.ui_settings)
             try:
                 other.resize(850,540);other.show();self.settle()
+                other.time_label.setFont(QFont('DejaVu Sans Mono',32))
+                other.time_label.setText('23:59:59.999');self.settle()
                 self.assertEqual(visible_label_errors(other),[])
                 for field in (*other.fields.values(),*other.view_fields.values(),other.transport.meter):
                     origin=field.mapTo(other,QPointF(0,0).toPoint())
@@ -175,8 +177,12 @@ class TextLayoutTests(unittest.TestCase):
     def test_status_bar_menu_hides_information_and_remembers_the_choice(self):
         w=self.window;bar=w.status_line;action=w.actions['show_status'];menu=w.menus['options']
         self.assertTrue(bar.isVisible());before=w.centralWidget().height()
-        QTimer.singleShot(0,lambda:QTest.mouseClick(menu,Qt.MouseButton.LeftButton,pos=menu.actionGeometry(action).center()))
-        menu.exec(w.mapToGlobal(w.rect().center()));self.settle()
+        menu.popup(w.mapToGlobal(w.rect().topLeft()+QPointF(20,20).toPoint()))
+        self.settle();QTest.qWait(20)
+        position=menu.actionGeometry(action).center()
+        self.assertTrue(menu.rect().contains(position))
+        QTest.mouseMove(menu,position)
+        QTest.mouseClick(menu,Qt.MouseButton.LeftButton,pos=position);self.settle()
         self.assertFalse(action.isChecked());self.assertTrue(bar.isHidden())
         self.assertGreater(w.centralWidget().height(),before)
         self.assertFalse(w.ui_settings.value('ui/show_status_bar',True,type=bool))

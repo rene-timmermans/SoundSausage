@@ -51,7 +51,11 @@ class ChannelZoomGuiTests(unittest.TestCase):
         self.window.choose_channels((1,)); self.app.processEvents()
         wave = self.window.waveform; image = wave.grab().toImage()
         x = round(wave.x_at(8000)); top = round(wave.channel_rect(0).top()+30); bottom = round(wave.channel_rect(1).top()+30)
-        self.assertNotEqual(image.pixelColor(x, top), image.pixelColor(x, bottom))
+        # A gridline can pass exactly through the requested time coordinate.
+        # Compare its neighbourhood so the highlight, rather than that line,
+        # determines the result on every font-dependent plot width.
+        self.assertTrue(any(image.pixelColor(x+dx,top+dy) != image.pixelColor(x+dx,bottom+dy)
+                            for dx in range(-2,3) for dy in range(-2,3)))
 
     def test_header_menu_shortcuts_and_mono_behavior(self):
         self.window.channel_choice.setCurrentIndex(1)

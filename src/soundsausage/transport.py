@@ -115,6 +115,26 @@ class TimeField(QLineEdit):
             self.update_size()
 
 
+class ClockLabel(QLabel):
+    """Keep the clock legible even with a wider fallback font or hour values."""
+    def update_size(self):
+        needed = max(230, self.fontMetrics().horizontalAdvance(self.text()) + 8)
+        if needed != self.minimumWidth():
+            self.setMinimumWidth(needed)
+            window = self.window()
+            if hasattr(window, "update_minimum_size"):
+                window.update_minimum_size()
+
+    def setText(self, text):
+        super().setText(text)
+        self.update_size()
+
+    def changeEvent(self, event):
+        super().changeEvent(event)
+        if event.type() in (QEvent.Type.FontChange, QEvent.Type.StyleChange):
+            self.update_size()
+
+
 class TransportPanel(QWidget):
     def __init__(self, actions, parent=None):
         super().__init__(parent)
@@ -148,12 +168,12 @@ class TransportPanel(QWidget):
         for index, key in enumerate(("zoom_in", "zoom_out", "zoom_full", "zoom_selection")):
             zoom.addWidget(button(key), index // 2, index % 2)
         row.addLayout(zoom)
-        self.time_label = QLabel("0:00.000")
+        self.time_label = ClockLabel("0:00.000")
         self.time_label.setObjectName("TimeDisplay")
         self.time_label.setAccessibleName("Playhead time")
         self.time_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.time_label.setFont(QFont("DejaVu Sans Mono", 27))
-        self.time_label.setMinimumWidth(230)
+        self.time_label.update_size()
         row.addWidget(self.time_label, 1)
         table = QGridLayout()
         table.setSpacing(2)

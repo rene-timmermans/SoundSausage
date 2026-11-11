@@ -110,6 +110,9 @@ class QDialog(QDialog):
             max_width=max(240,available.width()-32)
             max_height=max(200,available.height()-60)
             layout=self._content.layout() if self._content is not None else self.layout()
+            # Nested grids cache their own hints; invalidate them after a
+            # translation or font change before measuring the outer form.
+            for child in self.findChildren(W.QLayout):child.invalidate()
             layout.invalidate()
             minimum=layout.minimumSize()
             preferred=layout.sizeHint()
