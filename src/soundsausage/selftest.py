@@ -113,7 +113,7 @@ def run(window):
         assert abs(measured['offset_ms'] + 10) < .2
         if os.environ.get('SOUNDSAUSAGE_TEST_VST3'):
             from .plugins import scan_plugin, PluginProcess
-            from PySide6.QtTest import QTest
+            from PySide6.QtCore import QCoreApplication, QThread
             registry = os.environ.get('SOUNDSAUSAGE_PLUGIN_REGISTRY')
             os.environ['SOUNDSAUSAGE_PLUGIN_REGISTRY'] = str(path/'plugins.json')
             processor = None
@@ -123,7 +123,8 @@ def run(window):
                     fingerprint=entry['fingerprint'], values={'0':.25}), 8000)
                 processor.open_editor()
                 for _ in range(100):
-                    QTest.qWait(20); snapshot = processor.snapshot()
+                    QCoreApplication.processEvents(); QThread.msleep(20)
+                    snapshot = processor.snapshot()
                     if snapshot['editor_size'] == [400, 220] and snapshot['info']['parameters'][0]['value'] == .75: break
                 assert snapshot['editor_size'] == [400, 220], snapshot
                 assert snapshot['info']['parameters'][0]['value'] == .75, snapshot
