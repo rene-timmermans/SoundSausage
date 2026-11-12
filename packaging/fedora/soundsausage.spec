@@ -18,6 +18,7 @@ Requires:       rubberband-libs >= 3.3
 Requires:       libsamplerate
 Requires:       lilv
 Requires:       libX11
+Requires:       xcb-util-cursor
 %global __brp_python_bytecompile %{nil}
 %global __requires_exclude_from ^/usr/lib/soundsausage/src/.*$
 

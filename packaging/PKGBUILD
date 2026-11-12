@@ -5,7 +5,7 @@ pkgdesc='Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op 
 arch=('x86_64')
 url='https://github.com/rene-timmermans/SoundSausage'
 license=('GPL-3.0-or-later')
-depends=('python>=3.12' 'pyside6>=6.8' 'qt6-multimedia' 'qt6-translations' 'python-numpy' 'python-mutagen' 'ffmpeg' 'libsamplerate' 'rubberband>=3.3' 'lilv' 'libx11')
+depends=('python>=3.12' 'pyside6>=6.8' 'qt6-multimedia' 'qt6-translations' 'python-numpy' 'python-mutagen' 'ffmpeg' 'libsamplerate' 'rubberband>=3.3' 'lilv' 'libx11' 'xcb-util-cursor')
 makedepends=('gcc' 'make')
 source=("soundsausage-${pkgver}.tar.gz")
 sha256sums=('SKIP')

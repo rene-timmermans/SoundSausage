@@ -40,6 +40,12 @@ class SynchronizationTests(unittest.TestCase):
         self.assertEqual(result.ratio,1);self.assertFalse(result.drift_measured)
         self.assertAlmostEqual(result.anchor,50,delta=.1)
 
+    def test_short_apparent_drift_keeps_recorded_duration_unchanged(self):
+        clock=DuplexClock(48000,48000)
+        for i in range(400):clock.observe(i*480,300+i*480*1.002)
+        result=clock.result();self.assertTrue(result.reliable)
+        self.assertFalse(result.drift_measured);self.assertEqual(result.ratio,1)
+
     def test_loopback_measurement_finds_gain_inverted_noisy_stereo_input(self):
         rate=48000;probe,markers=calibration_probe(rate);delay=137
         rng=np.random.default_rng(2)
@@ -79,6 +85,7 @@ class CalibrationProfileTests(unittest.TestCase):
                 self.assertIsNone(read_calibration(devices,48000))
                 save_calibration(devices,48000,0,dict(offset_ms=-23.75,confidence=.98))
                 self.assertEqual(read_calibration(devices,48000)['offset_ms'],-23.75)
+                self.assertIsNone(read_calibration(devices,48000,channels=2))
                 self.assertIsNone(read_calibration(devices,44100))
                 self.assertIsNone(read_calibration(devices,48000,1))
                 devices.configure(devices.output_id,120,devices.input_id)

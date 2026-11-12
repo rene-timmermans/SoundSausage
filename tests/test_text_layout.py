@@ -127,7 +127,7 @@ class TextLayoutTests(unittest.TestCase):
         from soundsausage.synchronization import save_calibration
         w=self.window;w.no_audio=False;w.set_mode('multitrack');w.session.select(8000,16000)
         with patch.object(w.audio_devices,'inputs',return_value=[Device('USB input',b'input')]), patch.object(w.audio_devices,'outputs',return_value=[Device()]):
-            save_calibration(w.audio_devices,w.session.sample_rate,0,dict(offset_ms=-123.456,confidence=.99))
+            save_calibration(w.audio_devices,w.session.sample_rate,0,dict(offset_ms=-123.456,confidence=.99),channels=2)
             for point in (9,11,14):
                 self.app.setFont(QFont('DejaVu Sans',point))
                 for code in ('nl','en','de','fr','es'):

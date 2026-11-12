@@ -39,9 +39,12 @@ class SynchronizationBackendTests(unittest.TestCase):
             self.assertTrue(window.start_recording(target='multitrack',rate=48000,channels=2,accompaniment=True,automatic_sync=True,skip_start_ms=50))
             deadline=time.monotonic()+4.2
             while time.monotonic()<deadline:QTest.qWait(20)
+            context=window._record_context
             window.stop_recording();self.assertFalse(errors)
             clip=window.session.tracks[1].clips[0]
-            measured=measure_latency(window.session.media[clip.media_id].samples,markers,48000,clip.start)
+            diagnostics={}
+            try:measured=measure_latency(window.session.media[clip.media_id].samples,markers,48000,clip.start,diagnostics=diagnostics)
+            except ValueError as error:self.fail(f'{error}; markers={diagnostics}; clock={context.get("sync_result")}; calibration={dialog.calibration_result}; start={clip.start}')
             self.assertLess(abs(measured['offset_ms']),10,measured)
         finally:
             if dialog is not None:dialog.reject();dialog.deleteLater()

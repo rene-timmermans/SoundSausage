@@ -69,7 +69,10 @@ class DuplexClock:
         error=float(np.sqrt(np.mean(residuals**2)))
         if error>self.rate*.02:return ClockResult(float(fallback))
         stderr=error/math.sqrt(max(1,denominator))
-        measured=max(np.ptp(data[:,0]) for data in cleaned)>=self.rate*2 and abs(ratio-1)>max(1e-8,3*stderr)
+        # Short-lived backend scheduling/packet jitter can look like clock drift.
+        # Keep calibration/placement active, but require a longer observation
+        # before changing recorded duration.
+        measured=max(np.ptp(data[:,0]) for data in cleaned)>=self.rate*10 and abs(ratio-1)>max(1e-8,3*stderr)
         if not measured:ratio=1.0
         first=self.first_points or self.points
         begin=self.beginnings[first[0][0]]
@@ -97,7 +100,7 @@ def calibration_probe(rate):
     return output,markers
 
 
-def measure_latency(captured,markers,rate,anchor=0):
+def measure_latency(captured,markers,rate,anchor=0,*,diagnostics=None):
     """Return a signed placement correction; reject silence, aliases and clipping."""
     if captured.ndim!=2 or captured.shape[1] not in (1,2) or not np.isfinite(captured).all():raise AudioError('Invalid calibration recording.')
     if len(captured)<max(len(m) for _,m in markers):raise AudioError('The calibration recording is too short.')
@@ -127,6 +130,8 @@ def measure_latency(captured,markers,rate,anchor=0):
         offsets.append(anchor+index+fraction-expected);scores.append(score)
     if len(offsets)<3:raise AudioError('No reliable loopback signal was found. Check the input/output connection and levels.')
     median=float(np.median(offsets));spread=max(offsets)-min(offsets)
+    if diagnostics is not None:
+        diagnostics.update(offsets_ms=[x*1000/rate for x in offsets],spread_ms=spread*1000/rate,confidence=min(scores))
     if spread>rate*.005:raise AudioError('The calibration timing varied too much. Check the connection and try again.')
     correction=-median*1000/rate
     if abs(correction)>2000:raise AudioError('The measured recording delay exceeds two seconds.')
@@ -138,7 +143,7 @@ def calibration_key(devices,rate,first_channel=0,*,channels=1,input_device=None)
     from .playback import output_format
     source,sink=input_device or devices.input(),devices.output()
     incoming=input_format(source,rate,channels,first_channel);outgoing=output_format(sink,rate,2)
-    data=dict(input=bytes(source.id()).hex(),output=bytes(sink.id()).hex(),rate=rate,
+    data=dict(input=bytes(source.id()).hex(),output=bytes(sink.id()).hex(),rate=rate,channels=channels,
               input_rate=incoming.sampleRate(),input_channels=incoming.channelCount(),
               input_format=incoming.sampleFormat().value,first_channel=first_channel,
               output_rate=outgoing.sampleRate(),output_channels=outgoing.channelCount(),

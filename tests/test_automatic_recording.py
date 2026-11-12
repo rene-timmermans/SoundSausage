@@ -46,7 +46,7 @@ class AutomaticRecordingTests(unittest.TestCase):
         self.assertTrue(w.start_recording(target='multitrack',rate=48000,channels=1,accompaniment=True,skip_start_ms=10,automatic_sync=True))
         context=w._record_context
         with patch.object(w.player,'_tick',side_effect=lambda:setattr(w.player,'_last_frame',4800+offset+round(w.recorder.received_frames*ratio))):
-            for _ in range(320):w.recorder.source.push(np.full((480,2),.2,np.float32).tobytes())
+            for _ in range(1600):w.recorder.source.push(np.full((480,2),.2,np.float32).tobytes())
             count=w.recorder.take.frames;fit=context['clock'].result()
             self.assertTrue(fit.drift_measured)
             w.stop_recording()
@@ -58,7 +58,7 @@ class AutomaticRecordingTests(unittest.TestCase):
         self.errors.assert_not_called()
 
     def test_short_take_uses_calibration_without_unmeasured_drift_stretch(self):
-        w=self.window;save_calibration(w.audio_devices,48000,0,dict(offset_ms=-5,confidence=1))
+        w=self.window;save_calibration(w.audio_devices,48000,0,dict(offset_ms=-5,confidence=1),channels=2)
         self.assertTrue(w.start_recording(target='multitrack',rate=48000,channels=2,accompaniment=True,skip_start_ms=0,automatic_sync=True))
         with patch.object(w.player,'_tick',side_effect=lambda:setattr(w.player,'_last_frame',4800+w.recorder.received_frames)):
             w.recorder.source.push(np.full((480,2),.25,np.float32).tobytes());w.stop_recording()
@@ -67,7 +67,7 @@ class AutomaticRecordingTests(unittest.TestCase):
         np.testing.assert_array_equal(w.session.media[clip.media_id].samples,.25)
 
     def calibration_dialog(self):
-        dialog=CalibrationDialog(self.window,rate=48000);self.dialogs.append(dialog)
+        dialog=CalibrationDialog(self.window,rate=48000,channels=1);self.dialogs.append(dialog)
         dialog.recorder._source_factory=Source;dialog.player._sink_factory=Sink
         return dialog
 

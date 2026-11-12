@@ -30,7 +30,7 @@ Gerapporteerde **verwerkingsvertraging** van plug-ins wordt automatisch per spoo
 
 Zet begeleiding op sporen, kies het doelspoor en plaats de cursor. Druk **R**, kies ingang en nieuwe clip als bestemming en vink **Bestaande sporen afspelen tijdens opnemen** aan. De bestaande sporen spelen met effecten; de ingang wordt niet via de luidsprekers teruggespeeld. **P** pauzeert/hervat beide; **Stoppen/Esc/Spatie/R** houdt de take als één Undo-stap. **Opname verwerpen** verwijdert alleen de nieuwe take. Bij apparaat- of plug-inverlies blijft vastgelegde audio behouden.
 
-**Automatische synchronisatie** koppelt de opnamepositie aan de afspeelklok en meet het verschil tussen de in- en uitvoerklokken. Bij voldoende lange, betrouwbare metingen wordt de opnamelengte na Stop voorzichtig gecorrigeerd. Een korte of onstabiele meting rekt de take niet op. Dit vervangt geen meting van de fysieke in-/uitvoerroute.
+**Automatische synchronisatie** koppelt de opnamepositie aan de afspeelklok en meet het verschil tussen de in- en uitvoerklokken. Bij voldoende lange, betrouwbare metingen wordt de opnamelengte na Stop voorzichtig gecorrigeerd. Een korte of onstabiele meting rekt de take niet op. Duurcorrectie vraagt ruim tien seconden bruikbare klokmetingen. Dit vervangt geen meting van de fysieke in-/uitvoerroute.
 
 Voor die route kies je **Opties → Opname kalibreren**, of de kalibratieknop in het opnamevenster:
 
