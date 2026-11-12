@@ -87,6 +87,21 @@ punchtoelichting zijn in vijf talen en drie lettergroottes gecontroleerd.
 Duurcorrectie vraagt ruim tien seconden bruikbare klokmetingen. Een regressie
 voorkomt dat kortdurende schijndrift de opnamelengte verandert. Apparaten,
 mono/stereo, native formaat, eerste kanaal en buffer bepalen het kalibratieprofiel.
-De definitieve installatiepakketten worden afzonderlijk op vijf distributiedoelen
-getoetst; die publicatiecontrole is nog in uitvoering. De fysieke kalibratie- en
-punchroute en echte externe plug-ins vragen praktijkbevestiging vóór v1.0.
+De definitieve releasebouw doorstaat alle 451 tests zonder overslaan op Debian,
+Fedora en Arch. De geïnstalleerde pakketten slagen voor de gewone, uitvoer-,
+invoer- en duplexzelftest op alle vijf doelen, inclusief Ubuntu 26.04 en Rolling.
+De gewone zelftest opent de native VST3-editor vanuit de geïnstalleerde host;
+daarvoor zijn uitsluitend de normale Qt Core-/Gui-/Widgets-onderdelen nodig.
+De testfixture blijft buiten de releaseassets.
+
+Tag v0.19.0 verwijst naar de geteste broncommit
+`571e7ca3e337df960df5d1c6090df04ae8695fdd`. De acht assets zijn gecontroleerd op
+naam, grootte, uploadstatus en SHA256-digestmetadata; de korte releasepunten
+komen overeen met de bron. De zes definitieve logs bevatten geen onverwachte
+callback-, RuntimeError- of bufferfouten.
+[Releasebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43268472763)
+en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.19.0).
+
+De fysieke kalibratie-/punchroute en echte externe plug-ins vragen nog
+praktijkbevestiging vóór v1.0. Gewone B910-opname en terugluisteren zijn eerder
+bevestigd.

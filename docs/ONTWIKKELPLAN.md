@@ -225,14 +225,14 @@ inclusief Ubuntu 26.04 en Rolling.
 - [x] Automatische compensatie van plug-invertraging bij afspelen en export.
 - [x] Kalibratie van de opnamevertraging en compensatie van klokdrift tussen in- en uitvoer.
 - [x] Punch-in/out met voorloop en precies begrensde opnamen, Undo en herstel.
-- [ ] Vijf talen, volledige offlinehandleidingen en distributiecontroles bijwerken.
+- [x] Vijf talen, volledige offlinehandleidingen en distributiecontroles bijwerken.
 - [ ] Releasecandidate en fysieke praktijkcontrole vóór v1.0.
 
 V1.0 volgt wanneer deze functies, de dagelijkse werkwijze en de pakketten
 geen bekende blokkerende fouten hebben. De vaste apparaat-/plug-incombinaties
 worden in de praktijk gecontroleerd; een kalenderdatum volgt uit die resultaten.
 
-### Stand 0.19.0 — software gereed voor integratiecontrole
+### Stand 0.19.0 — software afgerond
 
 - [x] Eigen X11/XWayland-vensters met VST3-runloop, toetsenbord en statusopslag; LV2 X11-vensters en LADSPA-regelaars.
 - [x] LV2/LADSPA-ontdekking, mono-/stereo-audio, parameters, status en ontbrekende effecten.
@@ -241,7 +241,7 @@ worden in de praktijk gecontroleerd; een kalenderdatum volgt uit die resultaten.
 - [x] Punch-in/out met voorloop, korte overgangen, exacte selectiegrenzen en behoud van originele bronnen.
 - [x] Undo, projectversie 5 en herstelversie 2 bewaren punchgebieden; eerdere bestanden blijven leesbaar.
 - [x] Alle vijf talen en volledige offlinehandleidingen bijwerken.
-- [ ] Volledige distributie-, native venster-, loopback- en geïnstalleerde pakketcontroles voor 0.19.0.
+- [x] Volledige distributie-, native venster-, loopback- en geïnstalleerde pakketcontroles voor 0.19.0.
 - [ ] Fysieke proeftake met de gebruikte in-/uitvoerroute: kalibratie, langere overdub, punch en heropenen.
 - [ ] Eigen venster en status van een echte VST3-/LV2-plug-in in de praktijk bevestigen.
 - [ ] Releasecandidate van v1.0 zonder bekende blokkerende fouten, daarna v1.0.
@@ -253,5 +253,10 @@ extra sidechains en LV2 GTK-/Qt-UI-adapters vallen buiten de huidige ondersteuni
 Een markereditor of eigen favorieten zijn geen blokkerende eis voor v1.0.
 
 De broncontrole voor 0.19.0 slaagt met alle 451 tests en native zelftest op
-Debian/Fedora/Arch, zonder overslaan. De definitieve pakketcontroles volgen in
-de releasebouw. [Broncontrole](https://github.com/rene-timmermans/SoundSausage/actions/runs/43265508881).
+Debian/Fedora/Arch, zonder overslaan. De definitieve pakketcontroles zijn eveneens geslaagd. [Broncontrole](https://github.com/rene-timmermans/SoundSausage/actions/runs/43265508881).
+
+[Release 0.19.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.19.0)
+is gepubliceerd: alle 451 definitieve tests en alle vier installatiezelftests
+op vijf doelen slagen. De nieuwe plug-in- en opnamefuncties zijn softwarematig
+afgerond. Alleen de genoemde fysieke praktijkproeven en releasecandidate blijven
+open vóór v1.0. [Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43268472763).

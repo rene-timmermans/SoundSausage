@@ -299,10 +299,14 @@ bij korte opnamen actief. Profielen onderscheiden mono/stereo en het werkelijke
 native formaat. Punch-in/out bewaart de oorspronkelijke clips, projectgegevens
 en herstelpunten, met één Undo-stap en precies begrensde nieuwe audio.
 
-De definitieve installatiepakketten en vijf geïnstalleerde distributiedoelen
-worden nu gebouwd en gecontroleerd. De stabiele release blijft tot geslaagde
-publicatie 0.18.0. De volledige [controledekking](validation/completion.md)
-beschrijft proeven en praktische grenzen.
+[Release 0.19.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.19.0)
+is gepubliceerd met geteste installatiepakketten. Alle 451 definitieve tests
+slagen zonder overslaan in Debian, Fedora en Arch. De vier geïnstalleerde
+zelftests, inclusief native plug-invenster, slagen op alle vijf doelen: Debian,
+Fedora, Arch, Ubuntu 26.04 en Ubuntu Rolling. Tag, geteste broncommit, korte
+releasepunten en acht assets zijn geverifieerd.
+[Definitieve releasebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43268472763).
+De volledige [controledekking](validation/completion.md) beschrijft de grenzen.
 
 Vóór v1.0 blijven fysieke kalibratie/overdub/punch en een echte externe plug-in
 met eigen venster nodig, gevolgd door een releasecandidate. De gewone B910-
