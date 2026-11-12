@@ -124,9 +124,9 @@ def run(window):
                 processor.open_editor()
                 for _ in range(100):
                     QTest.qWait(20); snapshot = processor.snapshot()
-                    if snapshot['editor_size'] == [400, 220]: break
-                assert snapshot['editor_size'] == [400, 220]
-                assert snapshot['info']['parameters'][0]['value'] == .75
+                    if snapshot['editor_size'] == [400, 220] and snapshot['info']['parameters'][0]['value'] == .75: break
+                assert snapshot['editor_size'] == [400, 220], snapshot
+                assert snapshot['info']['parameters'][0]['value'] == .75, snapshot
                 processor.close_editor()
                 assert processor.snapshot()['editor_size'] is None
             finally:

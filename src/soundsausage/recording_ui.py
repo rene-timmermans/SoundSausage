@@ -137,7 +137,7 @@ class RecordDialog(QDialog):
             if fmt.sampleRate()!=self.rate.value():text+=f'\nInput at {fmt.sampleRate():,} Hz; the take is converted after Stop.'
             if punch:text+='\nOnly the selected interval is replaced. Playback starts with pre-roll; recording stops automatically after the selection.'
             if multi:
-                profile=read_calibration(self.devices,self.rate.value(),self.first.value()-1,input_device=device) if automatic else None
+                profile=read_calibration(self.devices,self.rate.value(),self.first.value()-1,channels=self.channels.currentIndex()+1,input_device=device) if automatic else None
                 self.sync_info.setText(f"Calibrated correction: {profile['offset_ms']:.3f} ms" if profile else
                     'No calibration for these devices yet. Clock drift is measured while backing tracks play.' if automatic else 'The manual recording position offset is used.')
             self.note.setText(text);self.box.button(QDialogButtonBox.StandardButton.Ok).setEnabled(True)
@@ -156,7 +156,7 @@ class RecordDialog(QDialog):
     def calibrate_recording(self):
         from .calibration_ui import CalibrationDialog
         self.devices.configure(self.devices.output_id,self.devices.buffer_ms,self.input.currentData())
-        dialog=CalibrationDialog(self.window,self,rate=self.rate.value(),first_channel=self.first.value()-1)
+        dialog=CalibrationDialog(self.window,self,rate=self.rate.value(),first_channel=self.first.value()-1,channels=self.channels.currentIndex()+1)
         dialog.exec()
         if dialog.calibration_result is not None:self.automatic.setChecked(True)
         dialog.deleteLater();self.sync()
@@ -278,7 +278,7 @@ class RecordingActions:
             raise AudioError('Choose a recording start skip between 0 and 500 ms.')
         if input_id is not None:self.audio_devices.configure(self.audio_devices.output_id,self.audio_devices.buffer_ms,input_id)
         self.player.stop()
-        profile=read_calibration(self.audio_devices,rate,first_channel) if automatic_sync else None
+        profile=read_calibration(self.audio_devices,rate,first_channel,channels=channels) if automatic_sync else None
         start,end=self.document.selection if target=='replace' else (self.active_model().cursor,self.active_model().cursor)
         if target=='punch':
             punch_in,end=self.session.selection;start=max(0,punch_in-round(pre_roll_seconds*rate))

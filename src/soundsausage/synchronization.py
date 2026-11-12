@@ -133,11 +133,11 @@ def measure_latency(captured,markers,rate,anchor=0):
     return dict(offset_ms=correction,confidence=float(min(scores)),spread_ms=spread*1000/rate)
 
 
-def calibration_key(devices,rate,first_channel=0,*,input_device=None):
+def calibration_key(devices,rate,first_channel=0,*,channels=1,input_device=None):
     from .capture import input_format
     from .playback import output_format
     source,sink=input_device or devices.input(),devices.output()
-    incoming=input_format(source,rate,1,first_channel);outgoing=output_format(sink,rate,2)
+    incoming=input_format(source,rate,channels,first_channel);outgoing=output_format(sink,rate,2)
     data=dict(input=bytes(source.id()).hex(),output=bytes(sink.id()).hex(),rate=rate,
               input_rate=incoming.sampleRate(),input_channels=incoming.channelCount(),
               input_format=incoming.sampleFormat().value,first_channel=first_channel,
@@ -146,8 +146,8 @@ def calibration_key(devices,rate,first_channel=0,*,input_device=None):
     return hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()
 
 
-def read_calibration(devices,rate,first_channel=0,*,input_device=None):
-    key=calibration_key(devices,rate,first_channel,input_device=input_device)
+def read_calibration(devices,rate,first_channel=0,*,channels=1,input_device=None):
+    key=calibration_key(devices,rate,first_channel,channels=channels,input_device=input_device)
     value=devices.settings.value('recording/calibration/'+key,'')
     if not value:return None
     try:
@@ -157,8 +157,8 @@ def read_calibration(devices,rate,first_channel=0,*,input_device=None):
     except (KeyError,ValueError,TypeError):return None
 
 
-def save_calibration(devices,rate,first_channel,result):
-    key=calibration_key(devices,rate,first_channel)
+def save_calibration(devices,rate,first_channel,result,*,channels=1):
+    key=calibration_key(devices,rate,first_channel,channels=channels)
     offset=float(result['offset_ms'])
     if not math.isfinite(offset) or abs(offset)>2000:raise AudioError('Invalid calibration result.')
     data=dict(result,version=1)

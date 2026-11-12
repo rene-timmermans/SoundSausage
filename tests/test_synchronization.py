@@ -84,3 +84,15 @@ class CalibrationProfileTests(unittest.TestCase):
                 devices.configure(devices.output_id,120,devices.input_id)
                 self.assertIsNone(read_calibration(devices,48000))
         finally:devices.deleteLater()
+
+    def test_profile_is_not_reused_for_a_different_native_input_layout(self):
+        from PySide6.QtMultimedia import QAudioFormat
+        device=Device('Mono preferred',b'input',supported={(48000,1,QAudioFormat.SampleFormat.Float)})
+        device.isFormatSupported=lambda fmt:fmt.sampleRate()==48000 and fmt.channelCount() in (1,2) and fmt.sampleFormat()==QAudioFormat.SampleFormat.Float
+        devices=AudioDevices(settings=MemorySettings())
+        try:
+            with patch.object(devices,'inputs',return_value=[device]),patch.object(devices,'outputs',return_value=[Device()]):
+                save_calibration(devices,48000,0,dict(offset_ms=-10),channels=1)
+                self.assertIsNotNone(read_calibration(devices,48000,channels=1))
+                self.assertIsNone(read_calibration(devices,48000,channels=2))
+        finally:devices.deleteLater()

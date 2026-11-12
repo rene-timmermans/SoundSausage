@@ -1053,7 +1053,7 @@ Zet begeleiding op sporen, kies het doelspoor en plaats de cursor. Druk **R**, k
 
 Voor die route kies je **Opties → Opname kalibreren**, of de kalibratieknop in het opnamevenster:
 
-1. Kies dezelfde apparaten, samplerate, eerste ingangskanaal en buffer als voor de opname.
+1. Kies dezelfde apparaten, samplerate, mono/stereo, eerste ingangskanaal en buffer als voor de opname.
 2. Verbind uitgang en ingang met een geschikte loopbackkabel. Een microfoon bij een luidspreker kan ook; dan telt de akoestische looptijd mee. Begin met een laag niveau.
 3. Klik **Kalibratie starten**. Ongeveer zes seconden zachte testpulsen meten de verbinding. De ingang wordt niet teruggespeeld.
 4. Alleen een betrouwbaar resultaat wordt opgeslagen. Bij stilte, oversturing, onduidelijke signalen of instabiele timing volgt een melding; een eerdere goede kalibratie blijft bestaan.
