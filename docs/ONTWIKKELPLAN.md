@@ -293,8 +293,9 @@ verbeteren of bewust behouden. Afgeronde of overgeslagen punten direct uit de
 open lijst verwijderen, met een korte reden in het
 [besluitenoverzicht](validation/beperkingen-keuzes.md).
 
-B01 is uitgebreid met golfvormtekenen en afgerond in 0.20.0. B03, de MP3-
-uitvoergrenzen, is nu aan de beurt. Dithering en de
+B01 is uitgebreid met golfvormtekenen en afgerond in 0.20.0. B03 is beoordeeld:
+de bestaande MP3-uitvoergrenzen blijven bewust behouden. B04, de afhandeling
+van MP3-metadata, is nu aan de beurt. Dithering en de
 markereditor krijgen aparte taken. Alle kandidaten bouwen is geen voorwaarde
 voor v1.0; de fysieke proeven onder B33 en een releasecandidate blijven wel
 onderdeel van de eerdere afspraak. Nieuwe functies krijgen passende controles,
@@ -311,5 +312,16 @@ volledige uitleg in alle vijf handleidingen en geteste installatiepakketten.
 [Release 0.20.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.20.0)
 is afgerond: 460 tests op Debian/Fedora/Arch zonder overslaan, vier
 installatiezelftests op vijf doelen en acht gecontroleerde releaseassets.
-De [open todo](TODO.md) gaat verder met B03. B33 en de releasecandidate blijven
+De [open todo](TODO.md) gaat verder met de resterende beoordelingen. B33 en de releasecandidate blijven
 onderdeel van de fysieke afronding naar v1.0.
+
+
+## MP3-uitvoergrenzen — B03 beoordeeld
+
+- [x] De bestaande rates, bitrates en korte fragmenten empirisch controleren.
+- [x] 32/44,1/48 kHz en minimaal 2 ms behouden als bewuste uitvoerkeuze.
+- [x] B03 uit de open todo verwijderen; redenen en vijf handleidingen bijwerken.
+
+Er zijn 26 open deelpunten. B04 (MP3-metadata) is de volgende beoordeling.
+Appversie 0.20.0 en de bestaande pakketten blijven actueel; deze stap wijzigt
+uitsluitend documentatie. Zie de [controle](validation/mp3-output-limits.md).

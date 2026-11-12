@@ -378,3 +378,18 @@ inclusief Ubuntu 26.04 en Rolling. Tag, bron, korte releasepunten en acht assets
 zijn gecontroleerd. B01 is uit de [todo](TODO.md) verwijderd; B03 staat klaar
 voor beoordeling. De eerdere fysieke v1.0-proeven blijven open onder B33.
 [Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43296981861).
+
+
+## MP3-uitvoergrenzen — B03 beoordeeld
+
+De bestaande MP3-uitvoer blijft 128/192/256/320 kb/s bij de dichtstbijzijnde
+32/44,1/48 kHz en minimaal 2 ms audio. Lage rates kunnen een lagere bitrate
+opleveren dan gevraagd; zeer korte fragmenten kunnen bij decoderen langer
+worden. Een matrix met 96 synthetische codecproeven en de twee bestaande
+rate-/bitratecontroles onderbouwt het behoud van de huidige grenzen.
+
+B03 is uit de open todo verwijderd en als bewuste bestandskeuze vastgelegd.
+Er blijven 26 deelpunten open, met B04 (MP3-metadata) als volgende beoordeling.
+STATUS en de vijf handleidingen leggen de keuze uit. Appversie 0.20.0 blijft
+actueel; er is geen functionele wijziging of nieuwe pakketrelease.
+Zie [MP3-uitvoercontrole](validation/mp3-output-limits.md).

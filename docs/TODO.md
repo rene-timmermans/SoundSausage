@@ -13,16 +13,17 @@ De nummers B01–B36 blijven gelijk aan de oorspronkelijke volgorde; B36 is in
 twee afzonderlijke functies gesplitst. De technische ondersteuning staat in
 [STATUS](STATUS.md), de bediening in de [handleiding](HANDLEIDING.md).
 
-## Nu beoordelen: B03 — MP3-uitvoergrenzen
+## Nu beoordelen: B04 — MP3-metadata
 
-MP3-uitvoer kiest momenteel de dichtstbijzijnde samplerate van 32/44,1/48 kHz
-en vereist minstens 2 ms audio. Kortere fragmenten kunnen als WAV worden bewaard.
-De gebruikte encoder ondersteunt ook 8/11,025/12/16/22,05/24 kHz; die zijn nog
-geen uitvoerkeuze in SoundSausage.
+ID3-tekst en hoesafbeeldingen blijven behouden. Na bewerkingen worden de
+opgeslagen duur en ondersteunde gewone tags meegenomen; hoofdstukposities,
+ReplayGain en andere afgeleide gegevens worden nog niet opnieuw berekend.
+Bij niet-overdraagbare WAV-informatie verschijnt een keuze vóór MP3-export.
 
-**Voorstel:** huidige grenzen behouden en dit punt afvoeren, tenzij lagere rates
-voor bijvoorbeeld spraak gewenst zijn. De keuze staat nog open. De vormgeving
-van deze keuze en eventuele wijziging volgt pas na dat besluit.
+Nog beoordelen: welke afgeleide gegevens na knippen, plakken en effecten
+opnieuw berekend, verwijderd of duidelijk gemeld moeten worden. Ook de
+bestaande keuze bij WAV-naar-MP3-export hoort bij dit punt. Er is nog geen
+wijziging voor B04 gestart.
 
 ## Daarna, in volgorde
 
@@ -31,7 +32,6 @@ gewenst gedrag en omvang bepaald voordat de uitvoering begint.
 
 | Punt | Onderwerp en te beoordelen vervolgstap |
 | --- | --- |
-| B04 | MP3-metadata: hoofdstukposities en afgeleide ID3-gegevens bijwerken of expliciet afhandelen; de keuze voor niet-overdraagbare WAV-informatie beoordelen. |
 | B06 | Kanaalgebonden knippen, verwijderen, trimmen, duurwijzigingen en opname: eerst bepalen hoe links en rechts op dezelfde tijdas moeten blijven aansluiten. |
 | B07 | Plakken op één kanaal met een andere duur en Mix Paste voorbij de bestaande lengte: gewenste opvulling en kanaaluitlijning bepalen. |
 | B08 | Plug-inbereik: bepalen welke extra busindelingen, sampleformaten, sidechains of plug-informaten nodig zijn. VST2, Windows-plug-ins en MIDI zijn afzonderlijke keuzes. |

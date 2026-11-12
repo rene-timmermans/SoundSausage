@@ -106,7 +106,10 @@ WAV float32 voor verdere bewerking, of WAV PCM16 voor eenvoudige uitwisseling.
 
 MP3-uitvoer gebruikt de dichtstbijzijnde samplerate van 32.000, 44.100 of
 48.000 Hz. De speelduur blijft behouden; het document blijft op zijn eigen
-samplerate. Selecties korter dan 2 ms kunnen als WAV worden bewaard. Langere
+samplerate. Dit ratebereik past bij alle vier aangeboden MP3-bitrates; bij
+lagere rates kan de encoder een lagere bitrate gebruiken dan gevraagd. De grens
+van 2 ms vermijdt zeer korte fragmenten die na MP3-decodering langer worden.
+Selecties korter dan 2 ms kunnen als WAV worden bewaard. Langere
 opdrachten tonen voortgang en zijn te annuleren; een mislukte of afgebroken
 opslag vervangt het bestaande doelbestand niet. Er is vrije schijfruimte nodig
 voor de omzetting en de bewerkte audio.

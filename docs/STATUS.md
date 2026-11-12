@@ -72,6 +72,7 @@ of voorwaarden voor v1.0.
 
 ## Bestandskeuzes en bediening
 
+- MP3-uitvoer gebruikt de dichtstbijzijnde samplerate van 32/44,1/48 kHz en vereist ten minste 2 ms audio.
 - MP3 comprimeert met kwaliteitsverlies; opnieuw opslaan kan extra detail verliezen. WAV vermijdt een extra MP3-compressiestap.
 - De ingestelde eerste opnamemilliseconden worden verwijderd. Kies 0 ms om het volledige begin te bewaren.
 - Opnamekalibratie vereist een herkenbaar loopbacksignaal; alleen betrouwbare resultaten worden bewaard. Korte/onstabiele klokmetingen rekken audio niet op.
@@ -84,7 +85,6 @@ of voorwaarden voor v1.0.
 ## Ondersteuning en grenzen
 
 - Samplepunten verschijnen vanaf twee logische pixels per sample; het numerieke venster blijft bij ieder zoomniveau beschikbaar. Golfvorm tekenen vervangt de samples langs de getekende lijn; een groep beslaat maximaal één seconde, een hele beweging kan meerdere groepen raken.
-- MP3-uitvoer gebruikt de dichtstbijzijnde samplerate van 32/44,1/48 kHz en vereist ten minste 2 ms audio.
 - MP3-hoofdstukposities, ReplayGain en andere afgeleide ID3-gegevens worden niet opnieuw berekend. Niet-ondersteunde WAV-bestandsinformatie vereist een keuze vóór MP3-export.
 - Stereo heeft een gezamenlijke tijdas. Duurwijzigingen, knippen, verwijderen, trimmen en opname in de bestaande golfvorm vereisen beide kanalen.
 - Op één stereokanaal plakken kan bij gelijke vervangingsduur; Mix Paste blijft binnen de bestaande lengte.

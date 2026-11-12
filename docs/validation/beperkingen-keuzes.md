@@ -41,6 +41,24 @@ pixels; de nieuwe tekenmodus werkt bij ieder zoomniveau. Alle 460 controles
 slagen op Debian/Fedora/Arch zonder overslaan, plus de vier installatiezelftests
 op vijf doelen. Zie [tekencontrole](drawing.md).
 
+## MP3-uitvoergrenzen behouden — B03
+
+De uitvoerkeuzes blijven 128/192/256/320 kb/s bij de dichtstbijzijnde samplerate
+van 32/44,1/48 kHz, met minstens 2 ms audio. B03 is als bewuste exportkeuze
+uit de open todo verwijderd. Kortere fragmenten blijven als WAV te bewaren.
+Lage MP3-samplerates worden geen nieuwe exportoptie zonder een concrete
+behoefte aan compactere uitvoer en passende lagere bitratekeuzes.
+
+De technische beoordeling gebruikt 96 synthetische encode-/decodeproeven:
+negen rates, vier bestaande bitrates en mono/stereo, plus zeer korte fragmenten.
+Bij lage rates verlaagt de gebruikte encoder de gevraagde bitrate in een deel
+van de gevallen. Zeer korte invoer kan na decoderen langer zijn: één sample
+wordt in de geteste route bijvoorbeeld 47 samples. De huidige uitvoergrenzen
+vermijden die gevallen. Zie [onderbouwing](mp3-output-limits.md).
+
+De software blijft 0.20.0; er is geen functionele wijziging of nieuwe release.
+De technische voorwaarden blijven in STATUS en de vijf handleidingen staan.
+
 ## Redactionele correctie — B25
 
 De vergelijking met niet nader gespecificeerde historische effecten vervalt.
