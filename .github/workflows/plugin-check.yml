@@ -1,0 +1,73 @@
+name: Plug-in host checks
+on:
+  push:
+    branches: [work/v1-closure]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: plugin-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  plugins:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        distribution: [debian, fedora, arch]
+        include:
+          - distribution: debian
+            image: debian:trixie
+          - distribution: fedora
+            image: fedora:latest
+          - distribution: arch
+            image: archlinux:latest
+    container: ${{ matrix.image }}
+    env:
+      QT_QPA_PLATFORM: offscreen
+      SOUNDSAUSAGE_LANGUAGE: en
+      SOUNDSAUSAGE_PLUGIN_UI_TEST: '1'
+      DISPLAY: ':97'
+      QT_AUDIO_BACKEND: pulseaudio
+      SOUNDSAUSAGE_AUDIO_TEST: '1'
+      PULSE_SERVER: unix:/tmp/soundsausage-pulse/native
+    steps:
+      - name: Debian dependencies
+        if: matrix.distribution == 'debian'
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates git g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest python3-pyside6.qtmultimedia qt6-qpa-plugins qt6-translations-l10n libsamplerate0 librubberband2 liblilv-0-0 libxcb-cursor0 xvfb pulseaudio pulseaudio-utils fonts-dejavu-core ffmpeg python3-mutagen
+      - name: Fedora dependencies
+        if: matrix.distribution == 'fedora'
+        run: |
+          printf '%s\n' '%_install_langs all' > /etc/rpm/macros.image-language-conf
+          dnf install -y git gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs lilv xorg-x11-server-Xvfb pulseaudio pulseaudio-utils dejavu-sans-fonts ffmpeg-free python3-mutagen
+      - name: Arch dependencies
+        if: matrix.distribution == 'arch'
+        run: pacman -Syu --noconfirm --needed git base-devel pyside6 qt6-multimedia qt6-translations python-numpy libsamplerate rubberband lilv xorg-server-xvfb pulseaudio ttf-dejavu ffmpeg python-mutagen
+      - uses: actions/checkout@v4
+      - name: Isolated display and plug-in checks
+        run: |
+          Xvfb :97 -screen 0 1280x800x24 -nolisten tcp > /tmp/soundsausage-xvfb.log 2>&1 &
+          soundsausage_display_pid=$!
+          trap 'kill "$soundsausage_display_pid" || true' EXIT
+          sleep 2
+          kill -0 "$soundsausage_display_pid" || { cat /tmp/soundsausage-xvfb.log; exit 1; }
+          export SOUNDSAUSAGE_CACHE_DIR="$PWD/build/check-cache"
+          export PYTHONPATH=src:tests
+          getent group pulse >/dev/null || groupadd --system pulse
+          id -u pulse >/dev/null 2>&1 || useradd --system --gid pulse --home-dir /tmp/soundsausage-pulse pulse
+          mkdir -p /tmp/soundsausage-pulse
+          chown pulse:pulse /tmp/soundsausage-pulse
+          env -u PULSE_SERVER -u XDG_CONFIG_HOME -u XDG_RUNTIME_DIR PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' --load='module-remap-source master=soundsausage_test.monitor source_name=soundsausage_loopback source_properties=device.description=SoundSausageLoopback' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          export XDG_CONFIG_HOME="$PWD/build/check-config"
+          for attempt in 1 2 3 4 5; do
+            if pactl info; then break; fi
+            test "$attempt" -lt 5 || { cat /tmp/soundsausage-pulse.log; exit 1; }
+            sleep 1
+          done
+          pactl list short sinks
+          pactl list short sources
+          make all
+          make test
+          SOUNDSAUSAGE_TEST_VST3="$PWD/build/vst3-test-gain.so" python3 -m soundsausage --selftest

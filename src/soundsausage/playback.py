@@ -168,12 +168,12 @@ class Playback(QObject):
         self.position.emit(self._start_frame)
         self._feed()
 
-    def play_session(self, session, start=0, end=None):
+    def play_session(self, session, start=0, end=None,*,punch=None):
         from .mixing import SessionStream
         from .streaming import StreamPayload
         self.stop()
         try:
-            factory = lambda: SessionStream(session, start, end)
+            factory = lambda: SessionStream(session, start, end,punch=punch)
             device = self.devices.output()
             self.format = output_format(device, session.sample_rate, 2)
             self._rate = session.sample_rate

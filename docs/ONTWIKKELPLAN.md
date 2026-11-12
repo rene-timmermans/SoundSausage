@@ -217,3 +217,41 @@ bevat de definitieve installatiepakketten. Alle 415 controles slagen in Debian,
 Fedora en Arch; de vier geïnstalleerde zelftests slagen op alle vijf doelen,
 inclusief Ubuntu 26.04 en Rolling.
 [Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43078651988).
+
+## Afronding naar v1.0 — software 0.19.0 gebouwd
+
+- [x] Eigen Linux VST3-plug-invensters, met parameter-/statusopslag en crashisolatie.
+- [x] LV2- en LADSPA-audio-effecten toevoegen, met betrouwbare ontdekking en project-/herstelopslag.
+- [x] Automatische compensatie van plug-invertraging bij afspelen en export.
+- [x] Kalibratie van de opnamevertraging en compensatie van klokdrift tussen in- en uitvoer.
+- [x] Punch-in/out met voorloop en precies begrensde opnamen, Undo en herstel.
+- [ ] Vijf talen, volledige offlinehandleidingen en distributiecontroles bijwerken.
+- [ ] Releasecandidate en fysieke praktijkcontrole vóór v1.0.
+
+V1.0 volgt wanneer deze functies, de dagelijkse werkwijze en de pakketten
+geen bekende blokkerende fouten hebben. De vaste apparaat-/plug-incombinaties
+worden in de praktijk gecontroleerd; een kalenderdatum volgt uit die resultaten.
+
+### Stand 0.19.0 — software gereed voor integratiecontrole
+
+- [x] Eigen X11/XWayland-vensters met VST3-runloop, toetsenbord en statusopslag; LV2 X11-vensters en LADSPA-regelaars.
+- [x] LV2/LADSPA-ontdekking, mono-/stereo-audio, parameters, status en ontbrekende effecten.
+- [x] Gerapporteerde plug-invertraging compenseren bij afspelen en export, met behoud van muzikale delay.
+- [x] Apparaatgebonden loopbackkalibratie, automatische klokmetingen en betrouwbare driftcorrectie; handmatig alternatief behouden.
+- [x] Punch-in/out met voorloop, korte overgangen, exacte selectiegrenzen en behoud van originele bronnen.
+- [x] Undo, projectversie 5 en herstelversie 2 bewaren punchgebieden; eerdere bestanden blijven leesbaar.
+- [x] Alle vijf talen en volledige offlinehandleidingen bijwerken.
+- [ ] Volledige distributie-, native venster-, loopback- en geïnstalleerde pakketcontroles voor 0.19.0.
+- [ ] Fysieke proeftake met de gebruikte in-/uitvoerroute: kalibratie, langere overdub, punch en heropenen.
+- [ ] Eigen venster en status van een echte VST3-/LV2-plug-in in de praktijk bevestigen.
+- [ ] Releasecandidate van v1.0 zonder bekende blokkerende fouten, daarna v1.0.
+
+De B910-proef voor gewone opname en terugluisteren blijft bevestigd. De nieuwe
+synchronisatie- en punchroute vraagt een aanvullende praktijktake; een virtuele
+loopback vervangt geen controle van fysieke apparaatklokken. MIDI, Windows/VST2,
+extra sidechains en LV2 GTK-/Qt-UI-adapters vallen buiten de huidige ondersteuning.
+Een markereditor of eigen favorieten zijn geen blokkerende eis voor v1.0.
+
+De broncontrole voor 0.19.0 slaagt met alle 451 tests en native zelftest op
+Debian/Fedora/Arch, zonder overslaan. De definitieve pakketcontroles volgen in
+de releasebouw. [Broncontrole](https://github.com/rene-timmermans/SoundSausage/actions/runs/43265508881).

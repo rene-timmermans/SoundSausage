@@ -29,11 +29,12 @@ from soundsausage.recording_ui import RecordDialog
 from soundsausage.trackfx_ui import TrackEffectsDialog
 from soundsausage.plugins_ui import PluginDialog
 from soundsausage.sample_ui import SampleDialog
+from soundsausage.calibration_ui import CalibrationDialog
 
 EFFECTS=(AmplifyDialog,ChannelMixerDialog,DynamicsDialog,EnvelopeDialog,NormalizeDialog,
          GraphicEqualizerDialog,ParametricEqualizerDialog,FilterDialog,DelayDialog,EchoDialog,ReverbDialog,
          NoiseReductionDialog,ClickRemovalDialog,StretchDialog,PitchShiftDialog,DistortionDialog,ConvolutionDialog)
-OTHERS=(AboutDialog,ManualDialog,AudioHardwareDialog,RecordDialog,TrackEffectsDialog,PluginDialog,SpectrumDialog,SampleDialog)
+OTHERS=(AboutDialog,ManualDialog,AudioHardwareDialog,RecordDialog,TrackEffectsDialog,PluginDialog,SpectrumDialog,SampleDialog,CalibrationDialog)
 
 
 def visible_label_errors(dialog):
@@ -120,6 +121,24 @@ class TextLayoutTests(unittest.TestCase):
             dialog.reject()
         np.testing.assert_array_equal(self.window.document.read(),self.data)
         self.assertEqual(self.window.document.undo_stack,[])
+
+    def test_recording_sync_and_punch_details_fit_with_an_available_device(self):
+        from test_playback import Device
+        from soundsausage.synchronization import save_calibration
+        w=self.window;w.no_audio=False;w.set_mode('multitrack');w.session.select(8000,16000)
+        with patch.object(w.audio_devices,'inputs',return_value=[Device('USB input',b'input')]), patch.object(w.audio_devices,'outputs',return_value=[Device()]):
+            save_calibration(w.audio_devices,w.session.sample_rate,0,dict(offset_ms=-123.456,confidence=.99),channels=2)
+            for point in (9,11,14):
+                self.app.setFont(QFont('DejaVu Sans',point))
+                for code in ('nl','en','de','fr','es'):
+                    self.manager.set_language(code,False)
+                    dialog=self.create(RecordDialog);dialog.target.setCurrentIndex(dialog.target.findData('punch'))
+                    dialog.show();self.settle()
+                    self.assertEqual(visible_label_errors(dialog),[],(point,code))
+                    self.assertIn(tr('Only the selected interval is replaced.'),dialog.note.text())
+                    self.assertIn(tr('Playback starts with pre-roll; recording stops automatically after the selection.'),dialog.note.text())
+                    dialog.reject();dialog.deleteLater();self.dialogs.remove(dialog)
+        w.no_audio=True
 
     def test_painted_labels_are_inside_bounds_and_do_not_overlap(self):
         original=QPainter.drawText

@@ -46,6 +46,21 @@ def digest(path):
     with Path(path).open('rb') as source: return hashlib.file_digest(source,'sha256').hexdigest()
 
 
+def bundle_digest(path):
+    root=Path(path).resolve();files=sorted(p for p in root.rglob('*') if p.is_file() and p.suffix in ('.ttl','.so'))
+    if len(files)>4096:raise AudioError('The plug-in bundle contains too many files.')
+    value=hashlib.sha256()
+    for file in files:
+        value.update(str(file.relative_to(root)).encode());value.update(digest(file).encode())
+    return value.hexdigest()
+
+
+def fingerprint(entry):
+    if entry.get('format')=='LV2':
+        return hashlib.sha256((bundle_digest(entry['bundle'])+digest(entry['path'])).encode()).hexdigest()
+    return digest(entry['path'])
+
+
 def read_registry():
     path=registry_path()
     if not path.exists():return {}
@@ -76,14 +91,14 @@ def send(sock,value):
     sock.sendall(struct.pack('<I',len(data))+data)
 
 
-def receive(sock,timeout=3,poll=None):
+def receive(sock,timeout=3,poll=None,poll_interval=.05):
     deadline=time.monotonic()+timeout
     def read(count):
         result=bytearray()
         while len(result)<count:
             remaining=deadline-time.monotonic()
             if remaining<=0:raise AudioError('The plug-in stopped responding.')
-            if not select.select([sock],[],[],min(.05,remaining) if poll else remaining)[0]:
+            if not select.select([sock],[],[],min(poll_interval,remaining) if poll else remaining)[0]:
                 if poll:poll();continue
                 raise AudioError('The plug-in stopped responding.')
             data=sock.recv(count-len(result))
@@ -113,9 +128,14 @@ class Helper:
             if not result.get('ok'):raise AudioError(result.get('error','The plug-in failed.'))
             return result
         except (OSError,ValueError) as error:
-            self.close();raise AudioError(str(error)) from error
+            self.close(graceful=False);raise AudioError(str(error)) from error
 
-    def close(self):
+    def close(self,graceful=True):
+        if graceful and self.process.poll() is None and self.sock.read_fd>=0:
+            try:
+                send(self.sock,dict(op='shutdown'));receive(self.sock,timeout=.15)
+                self.process.wait(timeout=.15)
+            except (OSError,ValueError,subprocess.TimeoutExpired):pass
         self.sock.close()
         if self.process.poll() is None:
             self.process.terminate()
@@ -123,28 +143,36 @@ class Helper:
             except subprocess.TimeoutExpired:self.process.kill();self.process.wait(timeout=.5)
 
 
-def scan_plugin(path):
+def scan_plugin(path,format='VST3'):
     from .operations import progress
-    binary=plugin_binary(path);before=digest(binary);helper=Helper()
-    try: result=helper.request(dict(op='scan',path=str(binary)),timeout=15,poll=lambda:progress(0,1,'VST3-plug-in onderzoeken'))['plugins']
+    if Path(path).suffix.lower()=='.lv2':format='LV2'
+    if format not in ('VST3','LV2','LADSPA'):raise AudioError('Unsupported plug-in format.')
+    binary=Path(path).resolve() if format!='VST3' else plugin_binary(path)
+    if format=='LV2' and (not binary.is_dir() or binary.suffix.lower()!='.lv2'):raise AudioError('Choose an installed LV2 bundle.')
+    if format=='LADSPA' and (not binary.is_file() or binary.suffix!='.so'):raise AudioError('Choose a LADSPA shared library.')
+    signature=bundle_digest if format=='LV2' else digest
+    before=signature(binary);helper=Helper()
+    try: result=helper.request(dict(op='scan',format=format,path=str(binary)),timeout=20,poll=lambda:progress(0,1,'Plug-in onderzoeken'))['plugins']
     finally:helper.close()
-    if digest(binary)!=before:raise AudioError('The plug-in changed during scanning. Scan it again.')
-    if not result:raise AudioError('No VST3 audio effects were found.')
+    if signature(binary)!=before:raise AudioError('The plug-in changed during scanning. Scan it again.')
+    if not result:raise AudioError('No audio effects were found.')
     registry=read_registry();keys=[]
     for item in result:
-        key='vst3:'+item['id']
-        registry[key]=dict(id=key,class_id=item['id'],name=item['name'],path=str(binary),fingerprint=before,format='VST3')
+        key=format.lower()+':'+item['id']
+        entry=dict(id=key,class_id=item['id'],name=item['name'],path=item.get('path',str(binary)),format=format)
+        if format=='LV2':entry['bundle']=item['bundle']
+        entry['fingerprint']=fingerprint(entry);registry[key]=entry
         keys.append(key)
     save_registry(registry);return [registry[key] for key in keys]
 
 
 class PluginProcess:
     def __init__(self,settings,rate):
-        self.helper=None
+        self.helper=None;self.rate=rate
         if set(settings)-{'plugin_id','name','fingerprint','values','state'}:raise AudioError('Unknown plug-in setting.')
         key=settings.get('plugin_id');entry=read_registry().get(key)
-        if entry is None:raise AudioError(f"Missing plug-in: {settings.get('name',key)}. Add its VST3 bundle in Track Effects.")
-        if settings.get('fingerprint',entry['fingerprint'])!=entry['fingerprint'] or digest(entry['path'])!=entry['fingerprint']:
+        if entry is None:raise AudioError(f"Missing plug-in: {settings.get('name',key)}. Add the installed plug-in in Track Effects.")
+        if settings.get('fingerprint',entry['fingerprint'])!=entry['fingerprint'] or fingerprint(entry)!=entry['fingerprint']:
             raise AudioError('The plug-in differs from the saved version. Scan and select the installed version again.')
         self.helper=Helper()
         try:self.info=self.helper.request(dict(op='open',entry=entry,settings=settings,rate=rate),timeout=10)['info']
@@ -155,6 +183,9 @@ class PluginProcess:
             for first in range(0,len(data),1024):self.process(data[first:first+1024])
             return data
         result=self.helper.request(dict(op='process',frames=len(data),data=base64.b64encode(data.tobytes()).decode()))
+        latency=result.get('latency',0)
+        if type(latency) is not int or not 0<=latency<=round(self.rate*10):raise AudioError('The plug-in reported an invalid processing delay.')
+        self.info['latency']=latency
         raw=base64.b64decode(result['data'],validate=True)
         if len(raw)!=data.nbytes:raise AudioError('The plug-in returned an invalid audio length.')
         output=np.frombuffer(raw,np.float32).reshape(data.shape)
@@ -163,6 +194,15 @@ class PluginProcess:
 
     def snapshot(self):
         return self.helper.request(dict(op='snapshot'))
+
+    def restore(self,state):
+        self.info=self.helper.request(dict(op='restore',state=state))['info']
+
+    def open_editor(self):
+        return self.helper.request(dict(op='editor_open'),timeout=10)
+
+    def close_editor(self):
+        return self.helper.request(dict(op='editor_close'))
 
     def close(self):
         if self.helper is not None:self.helper.close();self.helper=None

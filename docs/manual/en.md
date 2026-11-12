@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.18.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.19.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -24,7 +24,7 @@ Two thin horizontal lines mark the bottom edge of the left channel and the top e
 
 WAV text, cues and labels are retained. Cues follow editing, pasting and selection export; the destination title is kept. Recorder-specific fields are preserved verbatim, not recalculated after effects. Extra metadata is limited to 16 MiB; oversized input is rejected and omitted output fields require confirmation. Mixdown does not merge all source markers. Large WAV exports use RF64 when necessary.
 
-**New Multitrack Session**, **Open Session**, **Save Session** and **Save Session As** manage editable projects. A SoundSausage project (`.celp`) contains the audio, clips, lines, track settings, effect order/bypass/tails and VST3 settings. Save a project as well as the final WAV or MP3 to retain separate tracks. Older SoundSausage versions remain readable; projects with track racks need app 0.15.0 or newer. Legacy `.ses` import is limited; use a new SoundSausage project for continued work.
+**New Multitrack Session**, **Open Session**, **Save Session** and **Save Session As** manage editable projects. A SoundSausage project (`.celp`) contains the audio, clips, lines, track settings, effect order/bypass/tails and VST3 settings. Save a project as well as the final WAV or MP3 to retain separate tracks. Older SoundSausage versions remain readable; newly saved projects need app 0.19.0 or newer. Legacy `.ses` import is limited; use a new SoundSausage project for continued work.
 
 **Close / Ctrl+W** closes the current waveform; in multitrack it is **Close Session**. Save, discard or cancel when asked. The other view and clipboard remain available. **Exit / Ctrl+Q** closes the application and checks unsaved work.
 
@@ -142,15 +142,45 @@ In **Move Clips**, drag the centre to move, edges to trim; trimming retains sour
 
 Double-click or **Edit Copy in Waveform** opens a clip copy for offline effects. **Window → Apply Waveform to Clip** explicitly returns the result; merely switching views does not apply it. Session Undo restores old audio/lines. Sample rate is converted back, lines scale with changed length, and later clips do not move: check overlaps. **Mix Down Session / Mix Down** exports the entire session, regardless of time selection, with mute/solo, gain/pan, lines, effects and tails. Save Session keeps the editable project. Volume/pan/mute/solo/racks can change during playback; Undo and view changes stop it.
 
-## 10. Realtime track effects and VST3
+## 10. Realtime track effects, plug-ins and recording
 
-Click **FX** by a track or **Transform → Track Effects**. Add an effect, choose settings/preset, OK adds it, Apply changes it while the window stays open. Up/Down changes order, a checkmark bypasses, Edit/double-click edits, Remove deletes. Up to 16 effects per track run top-to-bottom after clip gain/lines/fades, before track volume/pan. Mono sources become stereo. Tail after last clip adds 0–60 s. Chains are included in playback, mixdown, projects and recovery. Restart/seek/bypass starts empty effect memory; internal edits can restart decay, VST3 parameter edits retain the instance.
+Click **FX** beside a track or **Transform → Track Effects**. Add an effect, choose settings/preset, then OK to confirm or Apply to change it while the window stays open. Edit/double-click reopens settings. Up/Down changes order; the checkmark bypasses; Remove deletes. Changes have Undo/Redo. Up to sixteen effects run after clip gain/lines/fades and before track volume/pan. Mono becomes stereo. Tail after last clip adds 0–60 seconds. Playback and mixdown use the same chain without changing the sources.
 
-Realtime racks support fixed Amplify, Channel Mixer, Dynamics, Graphic/Parametric EQ, filters, Delay, Echo, Reverb, Invert and VST3. For gain variation use Volume Line. Normalize, noise/click repair, time/pitch, distortion and convolution remain offline waveform edits. Apply can update while listening; audio already buffered still uses old settings. Source recordings remain unchanged.
+Racks offer fixed Amplify, Channel Mixer, Dynamics, Graphic/Parametric EQ, filters, Delay, Echo, Reverb, Invert and external plug-ins. Apply updates while listening; already buffered audio retains old settings. Restart, seek and bypass changes clear effect memory. Normalize, restoration, time/pitch, distortion and convolution remain waveform edits through Edit Copy in Waveform. Use Volume Line for a changing clip gain.
 
-Install a **64-bit native Linux VST3 audio effect**, choose VST3 Plug-in then **Add VST3 Bundle**, and select its `.vst3` directory. Multiple effects appear separately. Search parameter names and change their normalized 0–100% position (50% need not mean 50% volume); discrete parameters have steps, read-only ones cannot change. Apply auditions on the track; OK confirms/closes. The original custom plug-in editor is not embedded. Supported: one stereo input bus/output bus and float32 processing. No VST2, Windows VST, MIDI instruments, sidechains or other formats. Unsupported requirements are reported without changing the project.
+### VST3, LV2 and LADSPA
 
-Plug-in delay is displayed but not automatically compensated across tracks. Each plug-in runs in a helper process; crash, timeout or invalid audio stops playback and preserves a recording take. Projects store parameters and at most 1 MiB state per effect, not plug-in code or external libraries/samples. On another machine install/add the matching bundle. Missing/changed versions retain settings but playback/export requires the matching effect or deliberate bypass; effects are never silently dropped.
+Install a **64-bit native Linux audio effect**. In Track Effects choose **External Plug-in → Add**, select the format and **Add Plug-in**. Select a `.vst3` bundle, `.lv2` bundle or LADSPA shared library (`.so`). Effects within a bundle appear separately. Choose the effect, search its parameters and change their normalized 0–100% position: 50% need not mean half volume. Discrete parameters have steps; read-only ones stay fixed. Apply auditions on the track; OK confirms/closes.
+
+**Open Plug-in Window** opens a supported VST3 or LV2 custom editor. Its parameters and saveable state are included when confirming. Custom windows require **X11 or XWayland**. General parameter controls remain available if the editor is absent or unsupported; LADSPA always uses these controls. LV2 editors needing a GTK/Qt adapter are not embedded.
+
+VST3 supports one stereo input/output bus with float32 processing. LV2/LADSPA support mono/stereo effects with matching inputs/outputs; mono effects use separate instances per stereo channel. MIDI instruments, extra sidechains, VST2 and Windows plug-ins are unsupported. Missing required LV2 features or port types are reported; MIDI/Atom processing is unavailable. LV2 state requiring external files cannot be saved completely and raises a message: choose an effect with self-contained saveable state.
+
+Each plug-in runs in an isolated helper. Crashes, timeout or invalid audio stop playback while preserving captured recording audio. Projects save parameters and at most 1 MiB state per effect. Install plug-in code and its external libraries/samples separately. On another computer add the same version. Missing/changed plug-ins are reported; playback/export needs a matching effect or deliberate bypass.
+
+### Automatic plug-in delay compensation
+
+Reported algorithmic processing delay is compensated per track in playback and mixdown. Chain delays add together; bypass/settings changes update processing. Timeline positions and mix length remain unchanged. Musical echo, predelay and reverb remain audible. Compensation depends on correct plug-in reporting and allows at most ten seconds per track. Invalid or continuously changing latency raises a message.
+
+### Recording with backing and synchronization
+
+Place backing clips on tracks, select a target track and position the cursor. Press **R**, choose input and a new-clip destination, and enable **Play existing tracks while recording**. Existing tracks and effects play; the input is not monitored through speakers. **P** pauses/resumes both; **Stop/Esc/Space/R** keeps the take as one Undo step. Discard removes only this take. Device/plug-in failure preserves captured audio.
+
+**Automatic synchronization** links placement to the playback clock and measures the difference between input/output clocks. A sufficiently long, reliable measurement gently corrects the duration after Stop. Short or unstable measurements do not stretch the take. Duration correction needs more than ten seconds of usable clock observations. This does not measure the physical input/output route.
+
+Use **Options → Calibrate Recording**, or the recording dialog’s calibration button, for that route. Choose the same devices, rate, mono/stereo mode, first input channel and buffer as for recording. Connect output to input with a suitable loopback cable; a microphone near a speaker also works but includes acoustic delay. Start at a low level. **Start Calibration** plays quiet pulses for about six seconds without monitoring the input. Only a reliable result is saved; silence, clipping, ambiguous signals or unstable timing leave an earlier good profile intact. Verify with a short take; calibrate again after changing the device combination or settings.
+
+Automatic synchronization applies the matching device profile. Without a profile clock synchronization still works, but physical delay can remain. For manual adjustment disable automatic and use **Recording position offset**: negative moves earlier, positive later; −15 ms corrects a take arriving 15 ms late. Automatic and manual offsets are exclusive.
+
+### Punch-in/out
+
+Select a target track and a time range on the multitrack ruler or with **Edit → Set Selection**. Choose **Options → Punch In/Out** or **Shift+R**. Set input, synchronization, **Pre-roll** (default 2 s) and **Crossfade** (default 5 ms). The selection fixes the recording bounds and backing is enabled.
+
+The input warms up before playback. Original audio plays during pre-roll. Inside the selected interval only the target track is muted while the replacement is captured; other tracks keep playing. Recording stops automatically after a short synchronization finish. Only corrected audio inside the selection becomes a new clip.
+
+Crossfades blend old/new inside the interval, at most 100 ms. Audio outside remains intact. Original clips retain their sources, with the punched portion covered. Ctrl+Z restores everything in one step. Select an old clip and **Restore Covered Audio** to clear all its covered regions; remove/mute the new take to avoid hearing both. Early Stop keeps only the captured portion inside the interval. Stopping before the interval changes no session audio; the raw take remains under **File → Recover Work**. Recovery of an uncommitted recording offers the raw take, including pre/post-roll, for manual placement. Completed punch regions survive project saves and crash recovery.
+
+**Save Session / Save Session As** retains sources, clips, lines, chains, plug-in state and punch regions; Open Session restores them. Mix Down exports WAV or MP3 through the same effects. Keep the project for separate-track editing. Newly saved projects need SoundSausage **0.19.0 or newer**; earlier project versions remain readable. Missing plug-ins do not prevent opening/recovering source audio.
 
 ## 11. Recording with backing tracks
 
@@ -181,4 +211,4 @@ Place backing clips on tracks, select a different target track and position the 
 
 No input: check chosen device/channel and Linux microphone level, reconnect then start a new take. No output: check routing, volume, mute/solo and Audio Hardware. Distortion/red peaks: lower summed gain and normalize before PCM; Mix Paste and overlapping clips add. Paste rejected: check channel count or exact mono replacement length. Effect disabled: open a waveform/copy; Channel Mixer needs stereo, time-changing edits need both channels. Moving points instead of clips: choose Move Clips. Disk full: free space for copies/results/Undo without deleting active work files. Damaged recovery: original files remain; remove a copy only if no longer needed.
 
-Work in progress includes custom plug-in editors, more formats, automatic latency/drift compensation, punch-in/out, custom favourites and a marker editor. Realtime chains, Linux VST3 and recording with backing are available as described above. Save your project before leaving. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).
+Work in progress includes custom favourites and a marker editor. Realtime chains, Linux VST3 and recording with backing are available as described above. Save your project before leaving. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

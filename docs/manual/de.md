@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.18.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.19.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 ## 1. Sprache und Hilfe
 
@@ -24,7 +24,7 @@ Zwei dünne horizontale Linien markieren die Unterkante des linken und die Oberk
 
 WAV-Texte, Cuepunkte und Beschriftungen bleiben erhalten. Cuepunkte folgen Bearbeitung, Einfügen und Auswahlexport; der Zieltitel bleibt erhalten. Recorderfelder werden wörtlich bewahrt und nach Effekten nicht neu berechnet. Zusätzliche Metadaten sind auf 16 MiB begrenzt. Größere Eingaben werden abgewiesen; ausgelassene Exportfelder benötigen Bestätigung. Die Mischung vereinigt keine Quellmarker. Große WAVs verwenden bei Bedarf RF64.
 
-**Neue Mehrspursitzung**, **Sitzung öffnen**, **Sitzung speichern** und **Sitzung speichern unter** verwalten bearbeitbare Projekte. Ein SoundSausage-Projekt (`.celp`) enthält Audio, Clips, Linien, Spureinstellungen, Effektreihenfolge/Bypass/Nachklang und VST3-Einstellungen. Zusätzlich zur WAV das Projekt speichern, um einzelne Spuren zu behalten. Frühere SoundSausage-Projektversionen bleiben lesbar; Effektketten benötigen App 0.15.0 oder neuer. Alter `.ses`-Import ist begrenzt; zum Weiterarbeiten ein neues SoundSausage-Projekt verwenden.
+**Neue Mehrspursitzung**, **Sitzung öffnen**, **Sitzung speichern** und **Sitzung speichern unter** verwalten bearbeitbare Projekte. Ein SoundSausage-Projekt (`.celp`) enthält Audio, Clips, Linien, Spureinstellungen, Effektreihenfolge/Bypass/Nachklang und VST3-Einstellungen. Zusätzlich zur WAV das Projekt speichern, um einzelne Spuren zu behalten. Frühere SoundSausage-Projektversionen bleiben lesbar; neu gespeicherte Projekte benötigen App 0.19.0 oder neuer. Alter `.ses`-Import ist begrenzt; zum Weiterarbeiten ein neues SoundSausage-Projekt verwenden.
 
 **Schließen / Strg+W** schließt die aktuelle Wellenform; in Mehrspur heißt es **Sitzung schließen**. Bei Nachfrage speichern, verwerfen oder abbrechen. Andere Ansicht und Zwischenablage bleiben verfügbar. **Beenden / Strg+Q** beendet die Anwendung und fragt nach ungespeicherter Arbeit.
 
@@ -142,15 +142,45 @@ In **Clips verschieben** Mitte ziehen zum Verschieben, Ränder zum Kürzen; Quel
 
 Doppelklick oder **Kopie in Wellenform bearbeiten** öffnet eine Clipkopie für Offlineeffekte. **Fenster → Wellenform auf Clip anwenden** übernimmt ausdrücklich; bloßer Ansichtswechsel nicht. Sitzungs-Rückgängig stellt Audio/Linien her. Rate wird zurückgewandelt, Linien folgen neuer Länge, spätere Clips bewegen sich nicht: Überlappungen prüfen. **Sitzung abmischen / Abmischen** exportiert ganze Sitzung unabhängig von Auswahl, mit Stumm/Solo, Pegeln, Linien, Effekten und Nachklang. Sitzung speichern erhält das Projekt. Pegel/Pan/Stumm/Solo/Ketten sind beim Abspielen änderbar; Rückgängig/Ansichtswechsel stoppen.
 
-## 10. Echtzeit-Spureffekte und VST3
+## 10. Echtzeit-Spureffekte, Plug-ins und Aufnahme
 
-**FX** an der Spur oder **Effekte → Spureffekte** öffnen. Effekt hinzufügen, Einstellungen/Preset wählen, OK fügt hinzu, Anwenden ändert bei offenem Fenster. Auf/Ab ändert Reihenfolge, Häkchen umgeht, Bearbeiten/Doppelklick bearbeitet, Entfernen löscht. Maximal 16 Effekte laufen oben nach unten nach Clippegel/Linien/Blenden, vor Spurpegel/Pan. Mono wird Stereo. Nachklang nach letztem Clip fügt 0–60 s hinzu. Ketten gelten für Wiedergabe, Mischung, Projekt und Wiederherstellung. Neustart/Suchen/Bypass leert Effektgedächtnis; interne Änderungen können Ausklang neu starten, VST3-Parameter behalten die Instanz.
+**FX** an der Spur oder **Effekte → Spureffekte** öffnen. Effekt hinzufügen, Einstellungen/Preset wählen und mit OK bestätigen oder mit Anwenden bei offenem Fenster ändern. Bearbeiten/Doppelklick öffnet die Einstellungen erneut. Auf/Ab ändert die Reihenfolge, das Häkchen umgeht den Effekt, Entfernen löscht ihn. Änderungen haben Rückgängig/Wiederholen. Maximal sechzehn Effekte laufen nach Clippegel/Linien/Blenden und vor Spurpegel/Pan. Mono wird Stereo. Nachklang nach letztem Clip fügt 0–60 Sekunden hinzu. Wiedergabe und Mischung verwenden dieselbe Kette; die Quellen bleiben erhalten.
 
-Echtzeitketten unterstützen feste Verstärkung, Kanalmischer, Dynamik, grafischen/parametrischen EQ, Filter, Delay, Echo, Hall, Polaritätsumkehr und VST3. Für Verstärkungsverlauf die Lautstärkelinie verwenden. Normalisieren, Rausch-/Klickreparatur, Zeit/Tonhöhe, Verzerrung und Faltung bleiben offline. Anwenden aktualisiert beim Hören; bereits gepufferter Ton nutzt alte Werte. Quellen bleiben erhalten.
+Verfügbar sind feste Verstärkung, Kanalmischer, Dynamik, grafischer/parametrischer EQ, Filter, Delay, Echo, Hall, Polaritätsumkehr und externe Plug-ins. Anwenden aktualisiert beim Hören; bereits gepuffertes Audio nutzt alte Werte. Neustart, Suchen und Bypasswechsel leeren das Effektgedächtnis. Normalisieren, Restaurierung, Zeit/Tonhöhe, Verzerrung und Faltung bleiben Wellenformbearbeitungen über Kopie in Wellenform bearbeiten. Für veränderlichen Clippegel die Lautstärkelinie verwenden.
 
-Einen **nativen 64-Bit Linux-VST3-Audioeffekt** installieren, VST3-Plug-in, dann **VST3-Bundle hinzufügen** wählen und `.vst3`-Ordner auswählen. Mehrere Effekte erscheinen einzeln. Parameternamen suchen, normalisierte 0–100%-Position ändern (50% ist nicht zwingend halbe Lautstärke). Diskrete haben Schritte, schreibgeschützte bleiben fest. Anwenden spielt auf der Spur, OK bestätigt/schließt. Eigener Plug-in-Editor wird nicht eingebettet. Unterstützt: ein Stereo-Ein-/Ausgangsbus, Float32. Keine VST2, Windows-VST, MIDI-Instrumente, Sidechains oder andere Formate. Fehlende Funktionen werden ohne Projektänderung gemeldet.
+### VST3, LV2 und LADSPA
 
-Plug-in-Verzögerung wird angezeigt, aber nicht zwischen Spuren ausgeglichen. Ein Hilfsprozess je Plug-in: Absturz, Zeitüberschreitung oder ungültiges Audio stoppt Wiedergabe und bewahrt Aufnahme. Projekte speichern Parameter und höchstens 1 MiB Zustand je Effekt, keinen Code oder externe Bibliotheken/Samples. Auf anderem Rechner passende Bundles installieren/hinzufügen. Fehlende/geänderte Versionen behalten Einstellungen; Wiedergabe/Export verlangt passenden Effekt oder bewusstes Umgehen. Kein stilles Weglassen.
+Einen **nativen 64-Bit-Linux-Audioeffekt** installieren. In Spureffekte **Externes Plug-in → Hinzufügen**, Format und **Plug-in hinzufügen** wählen. Ein `.vst3`-Bündel, `.lv2`-Bündel oder eine LADSPA-Bibliothek (`.so`) auswählen. Enthaltene Effekte erscheinen einzeln. Effekt wählen, Parameter suchen und normalisierte Position 0–100 % ändern: 50 % bedeutet nicht unbedingt halbe Lautstärke. Diskrete Parameter haben Schritte, schreibgeschützte bleiben fest. Anwenden spielt auf der Spur; OK bestätigt/schließt.
+
+**Plug-in-Fenster öffnen** öffnet einen unterstützten eigenen VST3-/LV2-Editor. Seine Parameter und speicherbaren Zustände werden beim Bestätigen übernommen. Eigene Fenster benötigen **X11 oder XWayland**. Fehlt der Editor oder wird er nicht unterstützt, bleiben allgemeine Parameterregler verfügbar. LADSPA verwendet immer diese Regler. LV2-Editoren mit erforderlichem GTK-/Qt-Adapter werden nicht eingebettet.
+
+VST3 unterstützt einen Stereo-Ein-/Ausgangsbus mit Float32. LV2/LADSPA unterstützen Mono-/Stereoeffekte mit gleich vielen Ein-/Ausgängen; Monoeffekte erhalten pro Stereokanal eine eigene Instanz. MIDI-Instrumente, zusätzliche Sidechains, VST2 und Windows-Plug-ins fehlen. Nicht unterstützte erforderliche LV2-Funktionen/Anschlusstypen werden gemeldet; MIDI/Atom-Verarbeitung fehlt. LV2-Zustände mit externen Dateien lassen sich nicht vollständig speichern und erzeugen eine Meldung. Dafür einen Effekt mit eigenständig speicherbarem Zustand wählen.
+
+Jedes Plug-in läuft in einem getrennten Hilfsprozess. Absturz, Zeitüberschreitung oder ungültiges Audio stoppen die Wiedergabe; aufgezeichnete Samples bleiben erhalten. Projekte speichern Parameter und höchstens 1 MiB Zustand je Effekt. Plug-in, Bibliotheken und externe Samples separat installieren. Auf anderen Rechnern dieselbe Version hinzufügen. Fehlende/geänderte Plug-ins werden gemeldet; Wiedergabe/Export verlangen den passenden Effekt oder bewusstes Umgehen.
+
+### Automatischer Plug-in-Latenzausgleich
+
+Gemeldete algorithmische Verarbeitungsverzögerung wird je Spur bei Wiedergabe und Mischung ausgeglichen. Kettenverzögerungen werden addiert; Bypass-/Einstellungsänderungen aktualisieren die Verarbeitung. Zeitpositionen und Mischlänge bleiben gleich. Musikalisches Echo, Vorverzögerung und Hall bleiben hörbar. Der Ausgleich benötigt korrekte Plug-in-Meldungen und ist auf zehn Sekunden je Spur begrenzt. Ungültige oder ständig wechselnde Latenz wird gemeldet.
+
+### Aufnahme mit Begleitung und Synchronisierung
+
+Begleitclips auf Spuren platzieren, Zielspur und Cursor wählen. **R** drücken, Eingang und neues Clipziel wählen und **Vorhandene Spuren während der Aufnahme wiedergeben** aktivieren. Die Spuren spielen mit Effekten; der Eingang wird nicht über Lautsprecher zurückgespielt. **P** pausiert/setzt beide fort; **Stopp/Esc/Leertaste/R** behält die Aufnahme als einen Rückgängig-Schritt. Verwerfen entfernt nur diese Aufnahme. Geräte-/Plug-in-Ausfall bewahrt aufgezeichnetes Audio.
+
+**Automatische Synchronisierung** koppelt die Position an die Wiedergabeuhr und misst die Abweichung der Ein-/Ausgangstakte. Bei ausreichend langer, zuverlässiger Messung wird nach Stopp die Dauer leicht korrigiert. Kurze/instabile Messungen dehnen die Aufnahme nicht. Die Dauerkorrektur benötigt über zehn Sekunden brauchbare Taktmessungen. Der physische Signalweg wird damit nicht gemessen.
+
+Dafür **Optionen → Aufnahme kalibrieren** oder die Kalibrierungsschaltfläche im Aufnahmefenster wählen. Dieselben Geräte, Abtastrate, Mono/Stereo, ersten Eingangskanal und Puffer wie bei der Aufnahme einstellen. Ausgang und Eingang mit geeignetem Loopback-Kabel verbinden. Ein Mikrofon vor einem Lautsprecher misst auch die akustische Laufzeit. Mit niedrigem Pegel beginnen. **Kalibrierung starten** spielt etwa sechs Sekunden leise Impulse ohne Eingangsmonitoring. Nur zuverlässige Ergebnisse werden gespeichert. Stille, Übersteuerung, mehrdeutige Signale oder instabile Zeiten lassen ein früheres gutes Profil unverändert. Mit kurzer Aufnahme prüfen; bei Geräte-/Einstellungswechsel erneut kalibrieren.
+
+Die automatische Synchronisierung verwendet das passende Geräteprofil. Ohne Profil funktioniert der Taktausgleich, aber physische Verzögerung kann bleiben. Alternativ automatisch ausschalten und **Aufnahmeposition verschieben** verwenden: negativ früher, positiv später; −15 ms korrigiert 15 ms verspätetes Audio. Automatische und manuelle Korrektur schließen sich aus.
+
+### Punch-in/out
+
+Zielspur und Zeitbereich am Mehrspurlineal oder über **Bearbeiten → Auswahl festlegen** wählen. **Optionen → Punch-in/out** oder **Shift+R** öffnen. Eingang, Synchronisierung, **Vorlauf** (2 s) und **Überblendung** (5 ms) einstellen. Die Auswahl bestimmt die Aufnahmegrenzen; Begleitung ist aktiv.
+
+Der Eingang läuft vor der Wiedergabe warm. Im Vorlauf spielt das Original; innerhalb der Auswahl wird nur die Zielspur stummgeschaltet, während die neue Passage aufgenommen wird. Andere Spuren spielen weiter. Nach kurzer Synchronisierungsnachlaufzeit stoppt die Aufnahme automatisch. Nur korrigiertes Audio innerhalb der Auswahl wird als neuer Clip eingefügt.
+
+Überblendungen mischen Alt/Neu innerhalb der Grenzen, höchstens 100 ms. Audio außerhalb bleibt erhalten. Alte Clips behalten ihre Quellen und werden im Punch-Bereich verdeckt. Strg+Z stellt alles in einem Schritt wieder her. Am alten Clip **Überdecktes Audio wiederherstellen** wählen, um alle seine Abdeckungen zu entfernen; neue Aufnahme löschen/stummschalten, damit nicht beide gleichzeitig spielen. Früher Stopp behält nur den tatsächlich aufgenommenen Abschnitt im Intervall. Stopp vor dem Intervall ändert die Sitzung nicht; die rohe Aufnahme bleibt unter **Datei → Arbeit wiederherstellen**. Wiederherstellung einer unbestätigten Aufnahme bietet die Rohaufnahme samt Vor-/Nachlauf zur manuellen Platzierung. Abgeschlossene Punch-Bereiche bleiben im Projekt und in der Absturzwiederherstellung erhalten.
+
+**Sitzung speichern / Sitzung speichern unter** bewahrt Audio, Clips, Linien, Ketten, Plug-in-Zustände und Punch-Bereiche. Sitzung öffnen stellt sie wieder her; Mischung exportiert WAV/MP3 mit denselben Effekten. Das Projekt für getrennte Spuren behalten. Neu gespeicherte Projekte benötigen SoundSausage **0.19.0 oder neuer**; frühere Projektversionen bleiben lesbar. Fehlende Plug-ins verhindern das Öffnen/Wiederherstellen der Quellen nicht.
 
 ## 11. Aufnahme mit Begleitspuren
 
@@ -181,4 +211,4 @@ Begleitclips auf Spuren setzen, andere Zielspur und Cursorposition wählen. **R*
 
 Kein Eingang: Gerät/Kanal und Linux-Mikrofonpegel prüfen, neu verbinden und neue Aufnahme starten. Kein Ausgang: Route, Pegel, Stumm/Solo, Audiogeräte prüfen. Verzerrung/rote Peaks: Gesamtpegel senken, vor PCM normalisieren; gemischtes Einfügen/überlappende Clips addieren. Einfügen abgewiesen: Kanalanzahl oder genaue Mono-Ersatzlänge prüfen. Effekt aus: Wellenform/Kopie öffnen; Kanalmischer braucht Stereo, Zeitänderungen beide Kanäle. Punkte statt Clips: Clips verschieben wählen. Platte voll: Platz schaffen, keine aktiven Arbeitsdateien löschen. Defekte Wiederherstellung: Originale bleiben; Kopie nur bei Verzicht entfernen.
 
-In Arbeit: eigene Plug-in-Editoren, weitere Formate, automatischer Latenz-/Driftausgleich, Punch-in/out, eigene Favoriten und Markereditor. Echtzeitketten, Linux-VST3 und Aufnahme mit Begleitung sind wie beschrieben verfügbar. Vor Beenden Projekt speichern. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).
+In Arbeit: eigene Favoriten und Markereditor. Echtzeitketten, Linux-VST3 und Aufnahme mit Begleitung sind wie beschrieben verfügbar. Vor Beenden Projekt speichern. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

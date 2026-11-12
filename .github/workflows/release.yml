@@ -22,6 +22,8 @@ env:
   QT_AUDIO_BACKEND: pulseaudio
   PULSE_SERVER: unix:/tmp/soundsausage-pulse/native
   SOUNDSAUSAGE_AUDIO_TEST: '1'
+  SOUNDSAUSAGE_PLUGIN_UI_TEST: '1'
+  DISPLAY: ':97'
 
 concurrency:
   group: release-${{ github.ref }}
@@ -55,14 +57,16 @@ jobs:
       - name: Build dependencies
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest python3-pyside6.qtmultimedia qt6-qpa-plugins qt6-translations-l10n libsamplerate0 librubberband2 pulseaudio fonts-dejavu-core ffmpeg python3-mutagen
+          apt-get install -y --no-install-recommends g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest python3-pyside6.qtmultimedia qt6-qpa-plugins qt6-translations-l10n libsamplerate0 librubberband2 pulseaudio liblilv-0-0 libxcb-cursor0 xvfb fonts-dejavu-core ffmpeg python3-mutagen
       - name: Private virtual audio device
         run: |
           getent group pulse >/dev/null || groupadd --system pulse
           id -u pulse >/dev/null 2>&1 || useradd --system --gid pulse --home-dir /tmp/soundsausage-pulse pulse
           mkdir -p /tmp/soundsausage-pulse
           chown pulse:pulse /tmp/soundsausage-pulse
-          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          Xvfb :97 -screen 0 1280x800x24 -nolisten tcp > /tmp/soundsausage-xvfb.log 2>&1 &
+          sleep 1
+          env -u PULSE_SERVER -u XDG_CONFIG_HOME -u XDG_RUNTIME_DIR PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' --load='module-remap-source master=soundsausage_test.monitor source_name=soundsausage_loopback source_properties=device.description=SoundSausageLoopback' || { cat /tmp/soundsausage-pulse.log; exit 1; }
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build, test and package
@@ -79,7 +83,10 @@ jobs:
           cd ..
           dpkg-deb --root-owner-group --build root "soundsausage_${VERSION}-1_amd64.deb"
       - name: Install and smoke test
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
         run: |
+          export SOUNDSAUSAGE_TEST_VST3="$PWD/soundsausage-$VERSION/build/vst3-test-gain.so"
           apt-get install -y ./soundsausage_*_amd64.deb
           cd /tmp
           soundsausage --selftest
@@ -88,6 +95,10 @@ jobs:
           soundsausage --duplex-selftest
       - uses: actions/upload-artifact@v4
         with: { name: debian, path: "soundsausage_*_amd64.deb" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: check-plugin
+          path: soundsausage-${{ needs.source.outputs.version }}/build/vst3-test-gain.so
 
   ubuntu:
     needs: debian
@@ -100,6 +111,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with: { name: debian }
+      - uses: actions/download-artifact@v4
+        with: { name: check-plugin }
       - name: Install the same package and smoke test
         env:
           UBUNTU_IMAGE: ${{ matrix.image }}
@@ -109,10 +122,11 @@ jobs:
           docker run --rm -i --network host \
             --add-host "mirrors.edge.kernel.org:$ubuntu_mirror_address" \
             -e SOUNDSAUSAGE_LANGUAGE -e QT_QPA_PLATFORM -e QT_AUDIO_BACKEND \
-            -e PULSE_SERVER -e SOUNDSAUSAGE_AUDIO_TEST \
+            -e PULSE_SERVER -e SOUNDSAUSAGE_AUDIO_TEST -e SOUNDSAUSAGE_PLUGIN_UI_TEST -e DISPLAY \
             -v /etc/resolv.conf:/etc/resolv.conf:ro \
             -v "$PWD:/packages:ro" "$UBUNTU_IMAGE" sh -eu <<'UBUNTU_CHECK'
           cd /packages
+          export SOUNDSAUSAGE_TEST_VST3=/packages/vst3-test-gain.so
           cat /etc/resolv.conf
           getent ahostsv4 mirrors.edge.kernel.org
           sed -i -E 's#https?://(archive|security)\.ubuntu\.com/ubuntu/?#http://mirrors.edge.kernel.org/ubuntu/#g' /etc/apt/sources.list.d/ubuntu.sources
@@ -123,12 +137,14 @@ jobs:
             test "$attempt" -lt 3 || exit 1
             sleep 5
           done
-          DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y ./soundsausage_*_amd64.deb pulseaudio
+          DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y ./soundsausage_*_amd64.deb pulseaudio xvfb libxcb-cursor0
           getent group pulse >/dev/null || groupadd --system pulse
           id -u pulse >/dev/null 2>&1 || useradd --system --gid pulse --home-dir /tmp/soundsausage-pulse pulse
           mkdir -p /tmp/soundsausage-pulse
           chown pulse:pulse /tmp/soundsausage-pulse
-          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          Xvfb :97 -screen 0 1280x800x24 -nolisten tcp > /tmp/soundsausage-xvfb.log 2>&1 &
+          sleep 1
+          env -u PULSE_SERVER -u XDG_CONFIG_HOME -u XDG_RUNTIME_DIR PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' --load='module-remap-source master=soundsausage_test.monitor source_name=soundsausage_loopback source_properties=device.description=SoundSausageLoopback' || { cat /tmp/soundsausage-pulse.log; exit 1; }
           cd /tmp
           soundsausage --selftest
           soundsausage --audio-selftest
@@ -145,7 +161,7 @@ jobs:
         run: |
           printf '%s\n' '%_install_langs all' > /etc/rpm/macros.image-language-conf
           rpm --eval '%{_install_langs}'
-          dnf install -y rpm-build gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs pulseaudio dejavu-sans-fonts dejavu-sans-mono-fonts ffmpeg-free python3-mutagen
+          dnf install -y rpm-build gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs pulseaudio lilv xorg-x11-server-Xvfb dejavu-sans-fonts dejavu-sans-mono-fonts ffmpeg-free python3-mutagen
           test -f /usr/share/qt6/translations/qtbase_nl.qm
       - name: Private virtual audio device
         run: |
@@ -153,7 +169,9 @@ jobs:
           id -u pulse >/dev/null 2>&1 || useradd --system --gid pulse --home-dir /tmp/soundsausage-pulse pulse
           mkdir -p /tmp/soundsausage-pulse
           chown pulse:pulse /tmp/soundsausage-pulse
-          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          Xvfb :97 -screen 0 1280x800x24 -nolisten tcp > /tmp/soundsausage-xvfb.log 2>&1 &
+          sleep 1
+          env -u PULSE_SERVER -u XDG_CONFIG_HOME -u XDG_RUNTIME_DIR PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' --load='module-remap-source master=soundsausage_test.monitor source_name=soundsausage_loopback source_properties=device.description=SoundSausageLoopback' || { cat /tmp/soundsausage-pulse.log; exit 1; }
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build, test and package
@@ -169,7 +187,10 @@ jobs:
           rpmbuild -bb --define '_topdir /tmp/rpmbuild' --define "ss_version $VERSION" "soundsausage-$VERSION/packaging/fedora/soundsausage.spec"
           cp /tmp/rpmbuild/RPMS/x86_64/soundsausage-*.rpm .
       - name: Install and smoke test
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
         run: |
+          export SOUNDSAUSAGE_TEST_VST3="$PWD/soundsausage-$VERSION/build/vst3-test-gain.so"
           dnf install -y ./soundsausage-*.rpm
           cd /tmp
           soundsausage --selftest
@@ -184,14 +205,16 @@ jobs:
     runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
-      - run: pacman -Syu --noconfirm --needed base-devel pyside6 qt6-multimedia qt6-translations python-numpy libsamplerate rubberband pulseaudio ttf-dejavu ffmpeg python-mutagen
+      - run: pacman -Syu --noconfirm --needed base-devel pyside6 qt6-multimedia qt6-translations python-numpy libsamplerate rubberband pulseaudio lilv xorg-server-xvfb ttf-dejavu ffmpeg python-mutagen
       - name: Private virtual audio device
         run: |
           getent group pulse >/dev/null || groupadd --system pulse
           id -u pulse >/dev/null 2>&1 || useradd --system --gid pulse --home-dir /tmp/soundsausage-pulse pulse
           mkdir -p /tmp/soundsausage-pulse
           chown pulse:pulse /tmp/soundsausage-pulse
-          env -u PULSE_SERVER PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' || { cat /tmp/soundsausage-pulse.log; exit 1; }
+          Xvfb :97 -screen 0 1280x800x24 -nolisten tcp > /tmp/soundsausage-xvfb.log 2>&1 &
+          sleep 1
+          env -u PULSE_SERVER -u XDG_CONFIG_HOME -u XDG_RUNTIME_DIR PULSE_RUNTIME_PATH=/tmp/soundsausage-pulse/runtime PULSE_STATE_PATH=/tmp/soundsausage-pulse/state pulseaudio --system -n --daemonize=yes --exit-idle-time=-1 --log-target=file:/tmp/soundsausage-pulse.log --load='module-native-protocol-unix socket=/tmp/soundsausage-pulse/native auth-anonymous=1' --load='module-null-sink sink_name=soundsausage_test rate=48000 channels=2' --load='module-null-source source_name=soundsausage_input rate=48000 channels=2' --load='module-remap-source master=soundsausage_test.monitor source_name=soundsausage_loopback source_properties=device.description=SoundSausageLoopback' || { cat /tmp/soundsausage-pulse.log; exit 1; }
       - uses: actions/download-artifact@v4
         with: { name: source }
       - name: Build as an ordinary user
@@ -209,7 +232,10 @@ jobs:
           su builder -c 'cd /home/builder/pkg && makepkg --noconfirm'
           cp /home/builder/pkg/soundsausage-*.pkg.tar.zst .
       - name: Install and smoke test
+        env:
+          VERSION: ${{ needs.source.outputs.version }}
         run: |
+          export SOUNDSAUSAGE_TEST_VST3="$PWD/soundsausage-$VERSION/build/vst3-test-gain.so"
           pacman -U --noconfirm soundsausage-*.pkg.tar.zst
           cd /tmp
           soundsausage --selftest
@@ -228,7 +254,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { path: dist, merge-multiple: true }
+        with: { name: source, path: dist }
+      - uses: actions/download-artifact@v4
+        with: { name: debian, path: dist }
+      - uses: actions/download-artifact@v4
+        with: { name: fedora, path: dist }
+      - uses: actions/download-artifact@v4
+        with: { name: arch, path: dist }
       - name: Tag and publish all tested installers
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

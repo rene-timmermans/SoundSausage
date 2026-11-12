@@ -63,8 +63,30 @@ def resample(samples, source_rate, target_rate, *, block_frames=262144):
                 result.flush();storage.release_pages(result)
             progress(b,frames,"Samplerate afronden")
         return storage.seal(result)
-    result = storage.allocate((frames, channels), zero=True)
     required = max(len(samples), (frames * int(source_rate) + int(target_rate) - 1) // int(target_rate))
+    return _convert(samples,frames,target_rate/source_rate,required,block_frames)
+
+
+def resample_frames(samples,frames,rate,*,block_frames=262144):
+    """Correct a measured device-clock ratio to an exact number of output frames."""
+    validate_audio(samples,rate)
+    if type(frames) is not int or frames<0:raise AudioError('Invalid corrected recording length.')
+    if not len(samples):
+        if frames:raise AudioError('Cannot correct the duration of an empty recording.')
+        return storage.copy_array(samples)
+    if frames==len(samples):return storage.copy_array(samples)
+    if not frames:return storage.seal(np.empty((0,samples.shape[1]),np.float32))
+    ratio=frames/len(samples)
+    if not 1/256<=ratio<=256:
+        middle=max(1,round(len(samples)*ratio**.5))
+        return resample_frames(resample_frames(samples,middle,rate,block_frames=block_frames),frames,rate,block_frames=block_frames)
+    # One explicit zero frame avoids rounding down the last sinc output frame.
+    return _convert(samples,frames,ratio,len(samples)+1,block_frames)
+
+
+def _convert(samples,frames,ratio,required,block_frames):
+    channels=samples.shape[1]
+    result = storage.allocate((frames, channels), zero=True)
     lib = _library()
     error = C.c_int()
     state = lib.src_new(0, channels, C.byref(error))  # SRC_SINC_BEST_QUALITY
@@ -85,7 +107,7 @@ def resample(samples, source_rate, target_rate, *, block_frames=262144):
             final = consumed + len(source) == required
             info = SrcData(source.ctypes.data_as(C.POINTER(C.c_float)),
                            output.ctypes.data_as(C.POINTER(C.c_float)), len(source), len(output),
-                           0, 0, int(final), target_rate / source_rate)
+                           0, 0, int(final), ratio)
             status = lib.src_process(state, C.byref(info))
             if status:
                 raise AudioError(lib.src_strerror(status).decode("utf-8", "replace"))

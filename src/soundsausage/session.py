@@ -9,7 +9,7 @@ import numpy as np
 
 from .audio import AudioError, MAX_AUDIO_BYTES, validate_audio
 from .dsp import Dsp
-from . import storage, peaks
+from . import storage, peaks, punch
 from .operations import blocks, progress
 from .resample import resample, frame_count
 from .envelopes import validate_points, remap_points
@@ -70,6 +70,7 @@ class SessionClip:
     muted: bool = False
     volume_envelope: tuple = ()
     pan_envelope: tuple = ()
+    punch_ranges: tuple = ()
 
     @property
     def frames(self):
@@ -342,15 +343,19 @@ class Session:
             if not isinstance(points, tuple) or any(not isinstance(point, tuple) for point in points):
                 raise AudioError("Envelope points must be immutable.")
             validate_points(points, kind, len(source.samples))
+        if not isinstance(clip.punch_ranges,tuple) or any(not isinstance(row,tuple) for row in clip.punch_ranges):
+            raise AudioError('Punch regions must be immutable.')
+        punch.validate_ranges(clip.punch_ranges,len(source.samples))
 
     def configure_clip(self, clip_id, track_id=None, **settings):
         track, original = self.find_clip(clip_id)
-        if not set(settings) <= {"name", "start", "source_start", "source_end", "gain", "pan", "fade_in", "fade_out", "muted", "volume_envelope", "pan_envelope"}:
+        if not set(settings) <= {"name", "start", "source_start", "source_end", "gain", "pan", "fade_in", "fade_out", "muted", "volume_envelope", "pan_envelope", "punch_ranges"}:
             raise AudioError("Unknown clip setting.")
         for kind in ("volume", "pan"):
             key = kind + "_envelope"
             if key in settings:
                 settings[key] = validate_points(settings[key], kind, len(self.media[original.media_id].samples))
+        if 'punch_ranges' in settings:settings['punch_ranges']=punch.validate_ranges(settings['punch_ranges'],len(self.media[original.media_id].samples))
         clip = replace(original, **settings)
         self._validate_clip(clip)
         destination = self.track_index(track_id or track.id)
@@ -358,7 +363,7 @@ class Session:
             return
         tracks = [replace(t, clips=tuple(c for c in t.clips if c.id != clip_id)) for t in self.tracks]
         tracks[destination] = replace(tracks[destination], clips=(*tracks[destination].clips, clip))
-        label = "Volume Line" if set(settings) == {"volume_envelope"} else "Pan Line" if set(settings) == {"pan_envelope"} else "Clip Settings"
+        label = "Volume Line" if set(settings) == {"volume_envelope"} else "Pan Line" if set(settings) == {"pan_envelope"} else "Restore Covered Audio" if set(settings)=={'punch_ranges'} else "Clip Settings"
         self._commit(tracks, label, selected_clip=clip.id, selected_track=tracks[destination].id)
 
     def set_envelope(self, clip_id, kind, points):
@@ -408,12 +413,39 @@ class Session:
                     original.source_start, original.source_end, len(samples), neutral), kind, len(samples))
                   for kind, neutral in (("volume", 1.0), ("pan", 0.0))}
         clip = replace(original, media_id=media.id, source_start=0, source_end=len(samples),
-                       fade_in=fade_in, fade_out=fade_out, **curves)
+                       fade_in=fade_in, fade_out=fade_out,
+                       punch_ranges=punch.remap(original.punch_ranges,original.source_start,original.source_end,len(samples)),**curves)
         if clip.end > self.sample_rate * MAX_SECONDS:
             raise AudioError("The edited clip would exceed the timeline limit.")
         tracks = [replace(t, clips=tuple(clip if c.id == clip_id else c for c in t.clips)) for t in self.tracks]
         self._media[media.id] = media
         self._commit(tracks, "Apply Waveform to Clip", selected_clip=clip.id, selected_track=track.id)
+
+    def punch_audio(self,samples,track_id,start,*,fade_frames=0,name=None):
+        """Cover only this take's range on one track, retaining all original audio."""
+        validate_audio(samples,self.sample_rate)
+        if not len(samples):raise AudioError('There is no audio inside the punch selection.')
+        start=integer(start,'Punch begin',0,self.sample_rate*MAX_SECONDS)
+        end=start+len(samples)
+        if end>self.sample_rate*MAX_SECONDS:raise AudioError('The punch recording exceeds the timeline limit.')
+        fade=integer(fade_frames,'Crossfade',0,len(samples)//2)
+        target=self.track_index(track_id)
+        if len(self.media)>=MAX_MEDIA or sum(m.samples.nbytes for m in self.media.values())+samples.nbytes>MAX_AUDIO_BYTES:
+            raise AudioError('The recording would exceed the session’s source-audio limit.')
+        if sum(len(track.clips) for track in self.tracks)>=MAX_CLIPS:raise AudioError('There are too many clips in this session.')
+        clips=[]
+        for clip in self.tracks[target].clips:
+            if not clip.muted and clip.start<end and clip.end>start:
+                a=clip.source_start+start-clip.start;b=clip.source_start+end-clip.start
+                values=punch.validate_ranges((*clip.punch_ranges,(a,b,fade)),len(self.media[clip.media_id].samples))
+                clip=replace(clip,punch_ranges=values)
+            clips.append(clip)
+        media=self._prepare_media(samples,self.sample_rate,tr('Punch Recording') if name is None else name)
+        clip=SessionClip(identifier(),media.id,media.name,start,0,len(samples),fade_in=fade,fade_out=fade)
+        tracks=list(self.tracks);tracks[target]=replace(tracks[target],clips=(*clips,clip))
+        self._media[media.id]=media
+        self._commit(tracks,'Punch Recording',selected_clip=clip.id,selected_track=track_id)
+        return clip.id
 
     def render(self, start=0, end=None):
         end = self.frames if end is None else end

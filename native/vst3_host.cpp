@@ -2,6 +2,8 @@
 // process.
 #define INIT_CLASS_IID
 #include "pluginterfaces/base/ibstream.h"
+#include "pluginterfaces/gui/iplugview.h"
+#include "pluginterfaces/gui/iplugviewcontentscalesupport.h"
 #include "pluginterfaces/vst/ivstaudioprocessor.h"
 #include "pluginterfaces/vst/ivsteditcontroller.h"
 #include "pluginterfaces/vst/ivsthostapplication.h"
@@ -10,13 +12,18 @@
 #include <algorithm>
 #include <atomic>
 #include <cmath>
+#include <chrono>
+#include <functional>
+#include <iomanip>
 #include <cstring>
 #include <dlfcn.h>
 #include <map>
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <sstream>
 #include <vector>
+#include <poll.h>
 using namespace Steinberg;
 using namespace Steinberg::Vst;
 namespace {
@@ -37,6 +44,9 @@ std::string quote(const std::string &s) {
       out += c;
   }
   return out + '"';
+}
+std::string decimal(double value) {
+  std::ostringstream stream; stream << std::setprecision(17) << value; return stream.str();
 }
 std::string utf8(const TChar *s) {
   std::string out;
@@ -161,9 +171,12 @@ public:
   void PLUGIN_API setMessageID(FIDString id) override { name = id ? id : ""; }
   IAttributeList *PLUGIN_API getAttributes() override { return attrs; }
 };
+#include "vst3_editor.h"
 class Host final : public IHostApplication, public IComponentHandler {
 public:
   std::atomic<uint32> refs{1};
+  EditorFrame* run_loop = nullptr;
+  std::function<void(ParamID, ParamValue)> edit;
   int32 restartFlags = 0;
   uint32 PLUGIN_API addRef() override { return ++refs; }
   uint32 PLUGIN_API release() override { return --refs; }
@@ -172,6 +185,8 @@ public:
       *obj = static_cast<IHostApplication *>(this);
     else if (equal(id, IComponentHandler::iid))
       *obj = static_cast<IComponentHandler *>(this);
+    else if (equal(id, Linux::IRunLoop::iid) && run_loop)
+      return run_loop->queryInterface(id, obj);
     else {
       *obj = nullptr;
       return kNoInterface;
@@ -200,7 +215,9 @@ public:
     return kNoInterface;
   }
   tresult PLUGIN_API beginEdit(ParamID) override { return kResultOk; }
-  tresult PLUGIN_API performEdit(ParamID, ParamValue) override {
+  tresult PLUGIN_API performEdit(ParamID id, ParamValue value) override {
+    if (!std::isfinite(value) || value < 0 || value > 1) return kInvalidArgument;
+    if (edit) edit(id, value);
     return kResultOk;
   }
   tresult PLUGIN_API endEdit(ParamID) override { return kResultOk; }
@@ -374,7 +391,10 @@ struct Module {
 };
 struct Instance {
   std::unique_ptr<Module> module;
+  EditorFrame editor;
   Host host;
+  IPlugView* view = nullptr;
+  bool attached = false;
   IComponent *component = nullptr;
   IAudioProcessor *processor = nullptr;
   IEditController *controller = nullptr;
@@ -388,6 +408,11 @@ struct Instance {
   std::vector<float> left, right, outLeft, outRight;
   Instance(const char *path, const char *classId, double rate)
       : module(new Module(path)), rate(rate) {
+    host.run_loop = &editor;
+    IPluginFactory3* factory3 = nullptr;
+    if (module->factory->queryInterface(IPluginFactory3::iid, (void**)&factory3) == kResultOk && factory3) {
+      factory3->setHostContext(static_cast<IHostApplication*>(&host)); factory3->release();
+    }
     FUID cid;
     if (!cid.fromString(classId))
       throw std::runtime_error("Invalid VST3 class identifier.");
@@ -397,6 +422,10 @@ struct Instance {
       throw std::runtime_error("Cannot create VST3 component.");
   }
   void setup() {
+    host.edit = [this](ParamID id, ParamValue value) {
+      int32 index; auto* queue = pending.addParameterData(id, index);
+      if (queue) queue->addPoint(0, value, index);
+    };
     if (component->initialize(static_cast<IHostApplication *>(&host)) !=
         kResultOk)
       throw std::runtime_error("VST3 initialization failed.");
@@ -465,6 +494,7 @@ struct Instance {
     processing = true;
   }
   ~Instance() {
+    closeEditor();
     if (processing)
       processor->setProcessing(false);
     if (active)
@@ -490,6 +520,37 @@ struct Instance {
         component->terminate();
       component->release();
     }
+    editor.clear();
+    module.reset(); // Factory teardown may still call the live host context.
+  }
+  void closeEditor() {
+    if (view) {
+      if (attached) view->removed();
+      attached = false; view->setFrame(nullptr); view->release(); view = nullptr;
+      editor.view = nullptr;
+    }
+  }
+  void openEditor(uintptr_t parent, double scale) {
+    closeEditor();
+    if (!controller || !parent || !(view = controller->createView(ViewType::kEditor)))
+      throw std::runtime_error("This plug-in has no custom editor. Use its parameter controls.");
+    if (view->isPlatformTypeSupported(kPlatformTypeX11EmbedWindowID) != kResultTrue) {
+      closeEditor(); throw std::runtime_error("This plug-in editor does not support Linux X11/XWayland.");
+    }
+    editor.view = view; view->setFrame(&editor);
+    IPlugViewContentScaleSupport* scaling = nullptr;
+    if (view->queryInterface(IPlugViewContentScaleSupport::iid, (void**)&scaling) == kResultOk && scaling) {
+      scaling->setContentScaleFactor(scale); scaling->release();
+    }
+    ViewRect size;
+    if (view->getSize(&size) != kResultOk || size.getWidth() < 16 || size.getHeight() < 16 || size.getWidth() > 8192 || size.getHeight() > 8192) {
+      closeEditor(); throw std::runtime_error("The plug-in editor returned an invalid window size.");
+    }
+    editor.width = size.getWidth(); editor.height = size.getHeight();
+    if (view->attached(reinterpret_cast<void*>(parent), kPlatformTypeX11EmbedWindowID) != kResultOk) {
+      closeEditor(); throw std::runtime_error("The plug-in editor could not open. Use its parameter controls.");
+    }
+    attached = true; view->onSize(&size);
   }
   void process(float *interleaved, int frames) {
     if (frames < 0 || frames > block)
@@ -585,6 +646,40 @@ void *ss_vst_open(const char *path, const char *id, double rate) {
   }
 }
 void ss_vst_close(void *handle) { delete static_cast<Instance *>(handle); }
+uint32 ss_vst_latency(void* handle) { return static_cast<Instance*>(handle)->processor->getLatencySamples(); }
+int ss_vst_editor_open(void* handle, uintptr_t parent, double scale) {
+  try { static_cast<Instance*>(handle)->openEditor(parent, scale); return 0; }
+  catch (const std::exception& e) { error = e.what(); return -1; }
+}
+void ss_vst_editor_close(void* handle) { static_cast<Instance*>(handle)->closeEditor(); }
+int ss_vst_editor_size(void* handle, int* width, int* height) {
+  auto* p = static_cast<Instance*>(handle); *width = p->editor.width; *height = p->editor.height;
+  return p->view ? 1 : 0;
+}
+int ss_vst_editor_resize(void* handle, int width, int height) {
+  try {
+    auto* p = static_cast<Instance*>(handle);
+    if (!p->view || width < 16 || height < 16 || width > 8192 || height > 8192) return -1;
+    if (p->view->canResize() != kResultTrue) return 0;
+    ViewRect size(0, 0, width, height); p->view->checkSizeConstraint(&size);
+    return p->editor.resizeView(p->view, &size) == kResultOk ? 0 : -1;
+  } catch (const std::exception& e) { error = e.what(); return -1; }
+}
+int ss_vst_editor_idle(void* handle) {
+  try { static_cast<Instance*>(handle)->editor.tick(); return 0; }
+  catch (const std::exception& e) { error = e.what(); return -1; }
+}
+int ss_vst_editor_key(void* handle, uint16 key, int16 code, int16 modifiers, int down) {
+  auto* p = static_cast<Instance*>(handle);
+  if (!p->view) return 0;
+  return (down ? p->view->onKeyDown(key,code,modifiers) : p->view->onKeyUp(key,code,modifiers)) == kResultTrue;
+}
+int ss_vst_editor_wheel(void* handle, float amount) {
+  auto* p = static_cast<Instance*>(handle); return p->view && p->view->onWheel(amount) == kResultTrue;
+}
+void ss_vst_editor_focus(void* handle, int focused) {
+  auto* p = static_cast<Instance*>(handle); if (p->view) p->view->onFocus(focused != 0);
+}
 int ss_vst_process(void *handle, float *data, int frames) {
   try {
     static_cast<Instance *>(handle)->process(data, frames);
@@ -637,7 +732,7 @@ int ss_vst_info(void *handle, char *out, int capacity) {
            ",\"steps\":" + std::to_string(info.stepCount) + ",\"readonly\":" +
            (info.flags & ParameterInfo::kIsReadOnly ? "true" : "false") +
            ",\"value\":" +
-           std::to_string(p->controller->getParamNormalized(info.id)) + "}";
+           decimal(p->controller->getParamNormalized(info.id)) + "}";
     }
     return copyText(s + "]}", out, capacity);
   } catch (const std::exception &e) {

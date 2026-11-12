@@ -45,6 +45,8 @@
   "FX",
   "Home",
   "L",
+  "LADSPA",
+  "LV2",
   "M",
   "Mixdown.wav",
   "Noise.ssnoise",
@@ -54,6 +56,8 @@
   "S",
   "Selection.wav",
   "Shift+F3",
+  "Shift+R",
+  "SoundSausage — ",
   "SoundSausage-mix",
   "Space",
   "Tab",
@@ -63,5 +67,5 @@
   "VST3",
   "Website",
   "sec",
-  "{0}{1} \u2014 SoundSausage"
+  "{0}{1} — SoundSausage"
 ]

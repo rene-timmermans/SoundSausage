@@ -18,12 +18,13 @@ from .operations import progress
 from . import storage
 from .metadata import MAX_METADATA_BYTES
 from .session import Session, Track, SessionClip, MAX_TRACKS, MAX_CLIPS, MAX_MEDIA, integer, text, number
+from .punch import validate_ranges
 from .envelopes import validate_points
 from .trackfx import chain
 
 
 PROJECT_FORMAT = "cooledit-linux-project"
-PROJECT_VERSION = 4
+PROJECT_VERSION = 5
 MAX_MANIFEST_BYTES = 32 * 1024 * 1024
 _IDENTIFIER = re.compile(r"^[0-9a-f]{32}$")
 
@@ -93,7 +94,7 @@ def _load_project(path, dsp):
         manifest = json.loads(archive.read("project.json").decode("utf-8"), parse_constant=_reject_constant)
         if not isinstance(manifest, dict) or manifest.get("format") != PROJECT_FORMAT:
             raise AudioError("This is not a SoundSausage project.")
-        if type(manifest.get("version")) is not int or manifest["version"] not in (1, 2, 3, PROJECT_VERSION):
+        if type(manifest.get("version")) is not int or manifest["version"] not in (1, 2, 3, 4, PROJECT_VERSION):
             raise AudioError("This project version is not supported.")
         rate = integer(manifest.get("sample_rate"), "Sample rate", 1000, 384000)
         tracks_data, media_data = manifest.get("tracks"), manifest.get("media")
@@ -174,6 +175,10 @@ def _load_project(path, dsp):
                         if envelope_key not in entry:
                             raise AudioError("The project is missing an envelope field.")
                         entry[envelope_key] = validate_points(entry[envelope_key], kind, len(bank[source_id].samples))
+                if manifest['version']<5 and entry.get('punch_ranges'):raise AudioError('An older project version cannot contain punch regions.')
+                source_id=entry.get('media_id')
+                if source_id not in bank:raise AudioError('A clip refers to missing audio.')
+                entry['punch_ranges']=validate_ranges(entry.get('punch_ranges',()),len(bank[source_id].samples))
                 clip = SessionClip(**entry)
                 _id(clip.id)
                 _id(clip.media_id)

@@ -5,7 +5,7 @@ CXXFLAGS ?= -O2 -std=c++20 -Wall -Wextra -Wpedantic
 
 all: build/libsoundsausage_dsp.so build/libsoundsausage_vst3.so
 
-build/libsoundsausage_vst3.so: native/vst3_host.cpp $(wildcard third_party/vst3/pluginterfaces/base/*) $(wildcard third_party/vst3/pluginterfaces/vst/*)
+build/libsoundsausage_vst3.so: native/vst3_host.cpp native/vst3_editor.h $(wildcard third_party/vst3/pluginterfaces/base/*) $(wildcard third_party/vst3/pluginterfaces/vst/*) $(wildcard third_party/vst3/pluginterfaces/gui/*)
 	mkdir -p build
 	$(CXX) $(CXXFLAGS) -fPIC -shared -Ithird_party/vst3 native/vst3_host.cpp third_party/vst3/pluginterfaces/base/funknown.cpp -ldl -o $@.tmp
 	mv -f $@.tmp $@

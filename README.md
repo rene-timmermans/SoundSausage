@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.18.0**.
+De huidige versie is **0.19.0**.
 
 ## Wat het kan
 
@@ -29,20 +29,21 @@ De huidige versie is **0.18.0**.
 - Meerdere sporen combineren, clips verplaatsen en trimmen, met volume, pan, mute en solo.
 - Volume- en panlijnen op clips tekenen en bewerken.
 - Realtime spoorketens met volume, dynamiek, EQ, filters, delay, echo en galm.
-- Linux VST3-effecten toevoegen en hun parameters en status bij het project bewaren.
+- Linux VST3-, LV2- en LADSPA-effecten, met eigen plug-invensters waar ondersteund.
+- Automatische compensatie van plug-invertraging in afspelen en eindmix.
 - Andere sporen beluisteren tijdens opnemen, met samen pauzeren en stoppen.
+- Opnamekalibratie en automatische synchronisatie van opnamepositie en klokdrift.
+- Punch-in/out met voorloop, korte overgangen en behoud van de oorspronkelijke audio.
 - Projecten opslaan met alle gebruikte audio en een complete mix exporteren.
 - Eenvoudige oudere sessies importeren.
 - Inzoomen op de golfvorm, afspelen in een lus en frequenties analyseren.
 
-Spoorketens met realtime effecten en Linux VST3, opnemen met begeleiding en
-projecten met alle effectinstellingen zijn beschikbaar. Eigen plug-invensters,
-meer plug-informaten en automatische latencycompensatie volgen later.
+Spooreffecten, plug-ins, gesynchroniseerde opname en punch-in/out zijn beschikbaar.
 Zie [status en beperkingen](docs/STATUS.md).
 
 ## Installeren en starten
 
-Benodigd: Python 3.12–3.14, een C++20-compiler, Make, Qt Multimedia, FFmpeg, libsamplerate en Rubber Band (3.3 of nieuwer). De Python-afhankelijkheden bevatten ook Mutagen voor MP3-bestandsinformatie.
+Benodigd: Python 3.12–3.14, een C++20-compiler, Make, Qt Multimedia, FFmpeg, libsamplerate, Rubber Band (3.3 of nieuwer), Lilv en X11. De Python-afhankelijkheden bevatten ook Mutagen voor MP3-bestandsinformatie.
 Op Arch is Qt Multimedia een aparte afhankelijkheid naast PySide6.
 
 Installatiepakketten voor Debian/Ubuntu, Fedora en Arch staan bij de
@@ -67,8 +68,8 @@ Wissel met **Tab** tussen golfvorm en multitrack. **Spatie** start en stopt het 
 **Ctrl+W** sluit de huidige golfvorm of sessie; het programma blijft open. Bij niet-opgeslagen wijzigingen kun je opslaan, verwerpen of annuleren.
 In multitrack sleep je WAV- of MP3-bestanden op een spoor en verplaats of trim je clips met de muis.
 Met **Volumelijn** en **Balanslijn** teken je de lijnen op een clip.
-**FX** opent een bewerkbare spoorketen; effecten en VST3-instellingen werken
-tijdens luisteren en in mixdown. Zie [spooreffecten, VST3 en opnemen met begeleiding](docs/REALTIME.md).
+**FX** opent een bewerkbare spoorketen; effecten en plug-ininstellingen werken
+tijdens luisteren en in mixdown. Zie [spooreffecten, plug-ins en opnemen met begeleiding](docs/REALTIME.md).
 
 De effecten staan onder **Effecten**; versterken en normaliseren vind je in **Amplitude**.
 Daar staan ook **Kanaalmixer**, **Dynamiekbewerking** en **Volumeverloop**.
@@ -97,6 +98,8 @@ De taalkeuze blijft bewaard. De handleidingen zijn ook rechtstreeks te lezen:
 [Deutsch](docs/manual/de.md), [Français](docs/manual/fr.md), [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**0.19.0** Eigen plug-invensters, LV2/LADSPA, automatische plug-invertraging en opnamesynchronisatie, plus punch-in/out met voorloop en behoud van de originele audio.
 
 **0.18.0** Directe samplebewerking bij sterke vergroting: punten verslepen, exacte waarden invoeren en iedere correctie ongedaan maken.
 

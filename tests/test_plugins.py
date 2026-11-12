@@ -6,10 +6,13 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 import numpy as np
 from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Qt,QEvent
+from PySide6.QtGui import QKeyEvent
 
 from soundsausage.plugins import scan_plugin, PluginProcess, read_registry
 from soundsausage.trackfx import effect
@@ -117,6 +120,35 @@ class PluginTests(unittest.TestCase):
             dialog.value.setValue(75);settings=dialog.settings()
             self.assertEqual(settings['values']['0'],.75);self.assertTrue(settings['state'])
         finally:dialog.close_processor();dialog.reject();dialog.deleteLater();self.app.processEvents()
+
+    @unittest.skipUnless(os.environ.get('SOUNDSAUSAGE_PLUGIN_UI_TEST')=='1','Native X11 window check is enabled on the distribution runners.')
+    def test_custom_window_runs_native_callbacks_resizes_and_saves_changes(self):
+        self.assertTrue(os.environ.get('DISPLAY'),'Run the plug-in window checks under Xvfb.')
+        processor=PluginProcess(self.settings,8000)
+        try:
+            processor.open_editor();deadline=time.monotonic()+4
+            while time.monotonic()<deadline:
+                snapshot=processor.snapshot()
+                if snapshot['info']['parameters'][0]['value']==.75 and snapshot['editor_size']==[400,220]:break
+                time.sleep(.02)
+            self.assertEqual(snapshot['info']['parameters'][0]['value'],.75)
+            self.assertEqual(snapshot['editor_size'],[400,220])
+            self.assertTrue(processor.helper.request(dict(op='editor_key',key=65,code=145,modifiers=4))['handled'])
+            snapshot=processor.snapshot();self.assertEqual(snapshot['info']['parameters'][0]['value'],.375)
+            processor.close_editor();self.assertIsNone(processor.snapshot()['editor_size'])
+            saved=dict(self.settings,values={},state=snapshot['state'])
+        finally:processor.close()
+        restored=PluginProcess(saved,8000)
+        try:
+            data=np.ones((100,2),np.float32);restored.process(data);np.testing.assert_array_equal(data,.75)
+        finally:restored.close()
+
+    def test_native_editor_keyboard_mapping_preserves_text_and_control_shortcuts(self):
+        from soundsausage.plugin_editor import key_message
+        event=QKeyEvent(QEvent.Type.KeyPress,Qt.Key.Key_A,Qt.KeyboardModifier.ControlModifier|Qt.KeyboardModifier.ShiftModifier,'A')
+        self.assertEqual(key_message(event),(65,145,5))
+        event=QKeyEvent(QEvent.Type.KeyPress,Qt.Key.Key_Return,Qt.KeyboardModifier.NoModifier,'\r')
+        self.assertEqual(key_message(event),(0,4,0))
 
     def test_unregistered_project_cannot_supply_an_executable_path(self):
         with self.assertRaisesRegex(ValueError,'Unknown plug-in setting'):

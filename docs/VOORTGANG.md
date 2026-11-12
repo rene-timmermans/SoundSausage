@@ -270,3 +270,40 @@ bevat de definitieve installatiepakketten. Alle 415 controles slagen in Debian,
 Fedora en Arch; de vier geïnstalleerde zelftests slagen op alle vijf doelen,
 inclusief Ubuntu 26.04 en Rolling.
 [Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43078651988).
+
+## Afronding naar v1.0 — actief
+
+- [ ] Eigen Linux VST3-plug-invensters, met parameter-/statusopslag en crashisolatie.
+- [ ] LV2- en LADSPA-audio-effecten toevoegen, met betrouwbare ontdekking en project-/herstelopslag.
+- [ ] Automatische compensatie van plug-invertraging bij afspelen en export.
+- [ ] Kalibratie van de opnamevertraging en compensatie van klokdrift tussen in- en uitvoer.
+- [ ] Punch-in/out met voorloop en precies begrensde opnamen, Undo en herstel.
+- [ ] Vijf talen, volledige offlinehandleidingen en distributiecontroles bijwerken.
+- [ ] Releasecandidate en fysieke praktijkcontrole vóór v1.0.
+
+V1.0 volgt wanneer deze functies, de dagelijkse werkwijze en de pakketten
+geen bekende blokkerende fouten hebben. De vaste apparaat-/plug-incombinaties
+worden in de praktijk gecontroleerd; een kalenderdatum volgt uit die resultaten.
+
+### Integratie 0.19.0 — 12 november 2026
+
+Alle 451 controles slagen zonder overslaan op Debian, Fedora en Arch, inclusief
+echte Qt/PulseAudio-loopbackkalibratie, automatisch geplaatste opname, native
+VST3-/LV2-X11-vensters en de aanvullende native installatiezelftest.
+[Broncontrole](https://github.com/rene-timmermans/SoundSausage/actions/runs/43265508881).
+De vijf offlinehandleidingen en 1430 bronvormen zijn volledig bijgewerkt.
+
+Duurcorrectie vereist ruim tien seconden bruikbare klokmetingen; kortdurende
+backendscheduling verandert de opnamelengte niet. Apparaatkalibratie blijft ook
+bij korte opnamen actief. Profielen onderscheiden mono/stereo en het werkelijke
+native formaat. Punch-in/out bewaart de oorspronkelijke clips, projectgegevens
+en herstelpunten, met één Undo-stap en precies begrensde nieuwe audio.
+
+De definitieve installatiepakketten en vijf geïnstalleerde distributiedoelen
+worden nu gebouwd en gecontroleerd. De stabiele release blijft tot geslaagde
+publicatie 0.18.0. De volledige [controledekking](validation/completion.md)
+beschrijft proeven en praktische grenzen.
+
+Vóór v1.0 blijven fysieke kalibratie/overdub/punch en een echte externe plug-in
+met eigen venster nodig, gevolgd door een releasecandidate. De gewone B910-
+opname-/afspeelproef blijft bevestigd. Zie het [ontwikkelplan](ONTWIKKELPLAN.md).
