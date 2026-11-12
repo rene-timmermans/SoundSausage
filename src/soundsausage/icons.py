@@ -300,6 +300,10 @@ def draw(p, name, color):
     elif name == "convert_rate":
         for x in (3, 8, 13, 18, 23): line(x, 14, x, 22)
         line(3, 6, 21, 6); line(3, 6, 7, 2); line(21, 6, 17, 10)
+    elif name == "draw_waveform":
+        p.drawPolyline(QPolygonF([QPointF(2, 18), QPointF(6, 11), QPointF(10, 16), QPointF(14, 10)]))
+        p.drawPolygon(QPolygonF([QPointF(10, 12), QPointF(12, 7), QPointF(20, 1), QPointF(23, 4), QPointF(15, 11)]))
+        line(12, 7, 15, 10)
     elif name == "edit_sample":
         p.drawPolyline(QPolygonF([QPointF(2, 17), QPointF(8, 9), QPointF(15, 15), QPointF(22, 6)]))
         for x, y in ((2, 17), (8, 9), (15, 15), (22, 6)): rect(x-1, y-1, 2, 2)

@@ -34,6 +34,10 @@ def run(window):
     doc.undo(); np.testing.assert_array_equal(doc.read(), original)
     doc.redo(); np.testing.assert_array_equal(doc.read(), changed)
     doc.undo()
+    doc.draw_samples(0, ((0,3,-.25,.25),))
+    np.testing.assert_array_equal(doc.read()[:,0], [-.25,0,.25])
+    np.testing.assert_array_equal(doc.read()[:,1], original[:,1])
+    doc.undo(); np.testing.assert_array_equal(doc.read(), original)
     doc.apply("channel_mix", matrix=((0, 1), (1, 0)))
     np.testing.assert_array_equal(doc.read(), original[:, ::-1])
     doc.undo()
@@ -164,6 +168,7 @@ def run(window):
             assert tr('Channel Mixer') in manual.browser.toPlainText()
             assert tr('Audio Hardware') in manual.browser.toPlainText()
             assert tr('Edit Sample') in manual.browser.toPlainText()
+            assert tr('Draw Waveform') in manual.browser.toPlainText()
             assert tr('Start Calibration') in manual.browser.toPlainText()
             assert 'LADSPA' in manual.browser.toPlainText()
             for cls in (CalibrationDialog, RecordDialog):

@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.19.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.20.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -68,11 +68,19 @@ A stereo waveform shares one timeline: duration-changing edits (cut/delete/trim,
 
 ### Editing individual samples
 
-Zoom with **+** or **Ctrl+wheel** until square sample points appear (at least eight screen pixels apart). The horizontal axis now shows sample indices starting at 0. Drag a point vertically to change only that sample in that channel. Its sample position stays fixed even when the pointer crosses other points or channels. Dragging previews the change; release commits it, **Escape** cancels. **Shift+drag** still selects audio.
+Zoom with **+** or **Ctrl+wheel** until square sample points appear (at least two logical screen pixels apart). The horizontal axis now shows sample indices starting at 0. Drag a point vertically to change only that sample in that channel. Its sample position stays fixed even when the pointer crosses other points or channels. Dragging previews the change; release commits it, **Escape** cancels. **Shift+drag** still selects audio.
 
 Double-click or right-click a point for **Edit Sample**, or use **Edit → Edit Sample** at any zoom level. It starts at the cursor and first selected channel; the index and channel can be changed. Enter a normalized value or display it as signed 8-, 16- or 24-bit. Zero is silence; −1/+1 are normal full scale. For example, −16384 in the 16-bit display equals −0.5 normalized. Switching display ranges changes neither audio nor file encoding. **OK** applies one value; **Cancel** preserves the original.
 
 Each completed drag or accepted value is one Undo/Redo step. Every other sample, the other channel, duration and metadata remain intact. Dragging is limited to −1 … +1; existing float headroom remains available numerically. Playback stops when editing begins; editing is locked during recording. For multitrack clips, edit a waveform copy and explicitly apply it back to the clip. Listen after each correction: for a click spanning several samples, adjust each point towards the surrounding waveform. An abrupt jump to zero can itself click. Save as WAV float32 for an exact internal-value round trip; MP3 saving recompresses the whole file with loss.
+
+### Draw Waveform
+
+Enable **Edit → Draw Waveform**, press **D**, or use the pencil button beside the zoom controls. Drag the left mouse button directly on the waveform; hitting individual sample points is unnecessary. The drawn line replaces sample values within −1 to +1; it does not shift the original waveform vertically.
+
+Zoom determines the group size: about two logical screen pixels of audio, rounded up to whole samples. Close up, one sample changes; zoomed out, multiple samples change together. Each group covers at most one second. A longer gesture can touch several groups and change more than one second in total. Straight lines join successive pointer positions; drawing over a group again replaces its previous drawing.
+
+The starting channel stays fixed even when the pointer crosses the other channel. Other samples, the other channel, duration and metadata remain intact. Shaded groups and the new line preview the edit. Release commits the whole gesture as one Undo step. **Escape**, focus loss, zooming or disabling drawing cancels the preview. **Shift+drag** still selects audio; press **D** again for normal operation. Drawing is disabled during recording. Zoom in for precise repairs: drawing while zoomed out also replaces the fine detail in each touched group. Listen afterwards and use **Ctrl+Z** if needed. For multitrack, edit a waveform copy and apply it back to the clip.
 
 ## 7. Applying effects
 

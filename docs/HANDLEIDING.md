@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.19.1. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.20.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -377,7 +377,7 @@ hebben eigen iconen die het Linux-palet en de accentkleur volgen.
 ### Afzonderlijke samples bewerken
 
 Zoom met **+** of **Ctrl+muiswiel** in op een tikje totdat de vierkante
-samplepunten zichtbaar zijn (vanaf acht schermpixels tussen samples). De as
+samplepunten zichtbaar zijn (vanaf twee logische schermpixels tussen samples). De as
 onder de golfvorm toont dan sample-indexen, geteld vanaf 0. Sleep een punt
 verticaal om uitsluitend die sample in dat kanaal te wijzigen. De horizontale
 positie blijft vast; ook wanneer de muis andere punten of het andere kanaal
@@ -406,6 +406,35 @@ samples kun je de betrokken punten één voor één naar het verloop van de
 omliggende golf brengen. Een grote sprong naar nul kan zelf een tik veroorzaken.
 Bewaar bij voorkeur als WAV float32 om de interne correctie exact te behouden;
 MP3 opnieuw opslaan comprimeert het gehele bestand opnieuw met kwaliteitsverlies.
+
+### Golfvorm tekenen
+
+Schakel **Bewerken → Golfvorm tekenen** in, druk op **D** of gebruik de
+potloodknop naast de zoomknoppen. Teken met de linkermuisknop rechtstreeks op de
+golfvorm; afzonderlijke samplepunten raken is niet nodig. De getekende lijn
+vervangt de samplewaarden, binnen −1 tot +1. Dit verschuift de bestaande golf
+niet: het verloop onder de lijn wordt opnieuw getekend.
+
+De zoom bepaalt de grootte van een groep: ongeveer twee logische schermpixels
+audio per groep, afgerond naar hele samples. Bij sterke vergroting verandert
+één sample; verder uitgezoomd veranderen meerdere samples samen. Een groep
+beslaat nooit meer dan één seconde audio. Een langere sleepbeweging kan meerdere
+groepen raken en dus in totaal meer dan één seconde wijzigen. Tussen opeenvolgende
+muisposities wordt het getekende verloop met rechte lijnen verbonden; bij opnieuw
+over hetzelfde stukje tekenen telt de laatste beweging.
+
+Het kanaal waarin je begint blijft vast, ook als de muis het andere kanaal
+passeert. Andere samples, het andere kanaal, duur en metadata blijven behouden.
+Tijdens tekenen toont een gemarkeerd vlak de betrokken groepjes met de nieuwe
+lijn. Loslaten bevestigt de hele beweging als één **Ongedaan maken**-stap.
+**Escape**, focusverlies, zoomen of uitschakelen van de tekenmodus annuleert
+het voorbeeld. **Shift+slepen** blijft audio selecteren; druk opnieuw op **D**
+om terug te keren naar de gewone bediening. Tijdens opnemen is tekenen geblokkeerd.
+
+Zoom voldoende in voor nauwkeurig herstel: een uitgezoomde correctie vervangt
+ook de kleine details binnen het geraakte groepje. Beluister het resultaat en
+gebruik zo nodig **Ctrl+Z**. Voor een multitrackclip bewerk je de golfvormkopie
+en pas je die daarna toe op de clip.
 
 ## 5. Effecten toepassen
 

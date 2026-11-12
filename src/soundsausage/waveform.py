@@ -10,6 +10,7 @@ from .theme import colors, blend, readable
 from .peaks import piece_peaks
 from .plot_layout import text_width, separated_labels
 from .i18n import tr
+from .drawing import DrawingStroke
 
 
 def envelope_polygon(minimum, maximum, channel, left, width, center, scale, clamp=1.08):
@@ -41,6 +42,7 @@ class Waveform(QWidget):
     sample_edit_started = Signal()
     sample_edited = Signal(object, object, float)
     sample_edit_requested = Signal(object, object)
+    waveform_drawn = Signal(object, object)
 
     def __init__(self, document, parent=None):
         super().__init__(parent)
@@ -54,6 +56,9 @@ class Waveform(QWidget):
         self._cache = None
         self.sample_editable = True
         self._sample_drag = None
+        self._sample_hover = None
+        self.drawing = False
+        self._drawing_stroke = None
         self.setMinimumSize(500, 230)
         self.setMouseTracking(True)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
@@ -62,6 +67,8 @@ class Waveform(QWidget):
 
     def set_document(self, document, fit=True):
         self._sample_drag = None
+        self._sample_hover = None
+        self._drawing_stroke = None
         self.document = document
         self.setCursor(Qt.CursorShape.IBeamCursor if document.frames else Qt.CursorShape.ArrowCursor)
         self.playhead = None
@@ -80,6 +87,8 @@ class Waveform(QWidget):
 
     def set_view(self, start, end):
         self._sample_drag = None
+        self._sample_hover = None
+        self._drawing_stroke = None
         total = max(1, self.document.frames)
         length = min(total, max(1, int(end) - int(start)))
         self.view_start = max(0, min(int(start), total - length))
@@ -124,8 +133,11 @@ class Waveform(QWidget):
         rect = self.plot_rect(); height = (rect.height()-8*(self.document.channels-1))/self.document.channels
         return QRectF(rect.left(), rect.top()+channel*(height+8), rect.width(), height)
 
+    def sample_spacing(self):
+        return self.plot_rect().width() / (self.view_end - self.view_start)
+
     def sample_points_visible(self):
-        return bool(self.document.frames and self.plot_rect().width() / (self.view_end - self.view_start) >= 8)
+        return bool(self.document.frames and self.sample_spacing() >= 2)
 
     def sample_y(self, channel, value):
         lane = self.channel_rect(channel)
@@ -144,10 +156,30 @@ class Waveform(QWidget):
 
     def cancel_sample_drag(self):
         self._sample_drag = None
+        self._sample_hover = None
+        self._drawing_stroke = None
         self.update()
 
+    def set_drawing(self, enabled):
+        self.cancel_sample_drag()
+        self.drawing = bool(enabled)
+        self.setCursor(Qt.CursorShape.CrossCursor if self.drawing else Qt.CursorShape.IBeamCursor)
+
+    def _draw_at(self, position):
+        stroke = self._drawing_stroke
+        lane = self.channel_rect(stroke.channel)
+        value = (lane.center().y()-position.y())/(lane.height()*.45)
+        frame = min(self.view_end-1, max(self.view_start, self.frame_at(position.x())))
+        stroke.add(frame, value)
+        self.update()
+
+    def leaveEvent(self, event):
+        self._sample_hover = None
+        self.update()
+        super().leaveEvent(event)
+
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key.Key_Escape and self._sample_drag is not None:
+        if event.key() == Qt.Key.Key_Escape and (self._sample_drag is not None or self._drawing_stroke is not None):
             self.cancel_sample_drag()
             event.accept()
         else:
@@ -252,12 +284,32 @@ class Waveform(QWidget):
                                         for i, row in enumerate(minimum)])
                     painter.drawPolyline(points)
                     if self.sample_points_visible():
-                        painter.setBrush(c.waveform)
+                        # Keep adjacent sample markers separate at the lower zoom levels.
+                        size = min(4.0, self.sample_spacing() - 1.0)
                         for point in points:
-                            painter.drawRect(QRectF(point.x()-2, point.y()-2, 4, 4))
-                        painter.setBrush(Qt.BrushStyle.NoBrush)
+                            painter.fillRect(QRectF(point.x()-size/2, point.y()-size/2, size, size), c.waveform)
                     elif len(points) == 1:
                         painter.drawEllipse(points[0], 2, 2)
+            active = self._sample_drag[:2] if self._sample_drag is not None else self._sample_hover
+            if self.sample_editable and self.sample_points_visible() and active is not None:
+                frame, channel = active
+                if self.view_start <= frame < self.view_start + len(minimum):
+                    value = float(minimum[frame-self.view_start, channel])
+                    painter.setPen(QPen(c.plot_text, 1))
+                    painter.setBrush(Qt.BrushStyle.NoBrush)
+                    painter.drawRect(QRectF(self.x_at(frame)-3, self.sample_y(channel, value)-3, 6, 6))
+            painter.restore()
+        if self._drawing_stroke is not None:
+            stroke = self._drawing_stroke
+            lane = self.channel_rect(stroke.channel)
+            painter.save()
+            painter.setClipRect(lane)
+            for start, end, first, last in stroke.patches():
+                x1, x2 = self.x_at(start), self.x_at(end)
+                painter.fillRect(QRectF(x1, lane.top(), x2-x1, lane.height()), blend(c.plot, c.accent, .18))
+                painter.setPen(QPen(c.plot_text, 2))
+                painter.drawLine(QPointF(x1, self.sample_y(stroke.channel, first)),
+                                 QPointF(x2, self.sample_y(stroke.channel, last)))
             painter.restore()
         else:
             painter.setPen(c.plot_text)
@@ -290,6 +342,20 @@ class Waveform(QWidget):
         self.update()
 
     def mousePressEvent(self, event):
+        if (self.drawing and self.sample_editable and self.document.frames and
+                event.button() == Qt.MouseButton.LeftButton and
+                not event.modifiers() & Qt.KeyboardModifier.ShiftModifier and
+                self.plot_rect().contains(event.position())):
+            channel = self.channel_at(event.position().y())
+            if channel is not None:
+                self.setFocus()
+                self.sample_edit_started.emit()
+                self._drawing_stroke = DrawingStroke(self.document, channel,
+                    self.view_end-self.view_start, self.plot_rect().width())
+                self._anchor = None
+                self._draw_at(event.position())
+                event.accept()
+                return
         sample = self.sample_at(event.position())
         if sample is not None and not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
             if event.button() == Qt.MouseButton.RightButton:
@@ -314,6 +380,9 @@ class Waveform(QWidget):
             self.setFocus()
 
     def mouseMoveEvent(self, event):
+        if self._drawing_stroke is not None and event.buttons() & Qt.MouseButton.LeftButton:
+            self._draw_at(event.position())
+            return
         if self._sample_drag is not None and event.buttons() & Qt.MouseButton.LeftButton:
             frame, channel, _ = self._sample_drag
             lane = self.channel_rect(channel)
@@ -321,7 +390,13 @@ class Waveform(QWidget):
             self._sample_drag = frame, channel, value
             self.update()
             return
-        self.setCursor(Qt.CursorShape.SizeVerCursor if self.sample_at(event.position()) is not None else
+        sample = self.sample_at(event.position())
+        hovered = sample[:2] if sample is not None else None
+        if hovered != self._sample_hover:
+            self._sample_hover = hovered
+            self.update()
+        self.setCursor(Qt.CursorShape.CrossCursor if self.drawing and self.sample_editable else
+                       Qt.CursorShape.SizeVerCursor if sample is not None else
                        Qt.CursorShape.IBeamCursor if self.document.frames else Qt.CursorShape.ArrowCursor)
         if self._anchor is not None and event.buttons() & Qt.MouseButton.LeftButton:
             channel = self.channel_at(event.position().y())
@@ -330,9 +405,16 @@ class Waveform(QWidget):
             self._select(self._anchor, self.frame_at(event.position().x()))
 
     def mouseReleaseEvent(self, event):
+        if self._drawing_stroke is not None and event.button() == Qt.MouseButton.LeftButton:
+            self._draw_at(event.position())
+            stroke = self._drawing_stroke
+            self._drawing_stroke = None
+            self.waveform_drawn.emit(stroke.channel, stroke.patches())
+            self.update()
         if self._sample_drag is not None and event.button() == Qt.MouseButton.LeftButton:
             sample = self._sample_drag
             self._sample_drag = None
+            self._sample_hover = None
             self.sample_edited.emit(*sample)
             self.update()
         self._anchor = None
@@ -340,6 +422,9 @@ class Waveform(QWidget):
         self._keep_channels = False
 
     def mouseDoubleClickEvent(self, event):
+        if self.drawing and not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
+            self.mousePressEvent(event)
+            return
         if event.button() == Qt.MouseButton.LeftButton:
             sample = self.sample_at(event.position())
             if sample is not None and not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:

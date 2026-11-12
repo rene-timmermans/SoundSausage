@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.19.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.20.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 ## 1. Idioma y ayuda
 
@@ -68,11 +68,19 @@ El estéreo comparte una línea temporal: cortar/eliminar/recortar, estirar, ins
 
 ### Editar muestras individuales
 
-Amplíe con **+** o **Ctrl+rueda** hasta ver los puntos cuadrados (al menos ocho píxeles entre muestras). El eje horizontal muestra índices desde 0. Arrastre un punto verticalmente para cambiar solo esa muestra de ese canal. Su posición queda fija aunque el puntero cruce otros puntos o canales. El arrastre muestra una vista previa; soltar confirma y **Escape** cancela. **Mayús+arrastrar** sigue seleccionando audio.
+Amplíe con **+** o **Ctrl+rueda** hasta ver los puntos cuadrados (al menos dos píxeles lógicos entre muestras). El eje horizontal muestra índices desde 0. Arrastre un punto verticalmente para cambiar solo esa muestra de ese canal. Su posición queda fija aunque el puntero cruce otros puntos o canales. El arrastre muestra una vista previa; soltar confirma y **Escape** cancela. **Mayús+arrastrar** sigue seleccionando audio.
 
 Un doble clic o clic derecho abre **Editar muestra**. **Editar → Editar muestra** funciona con cualquier ampliación. Empieza en el cursor y el primer canal elegido; el índice y canal se pueden cambiar. Introduzca un valor normalizado o muéstrelo como 8, 16 o 24 bits con signo. Cero es silencio; −1/+1 son el nivel máximo normal. Por ejemplo, −16384 en la vista de 16 bits equivale a −0,5 normalizado. Cambiar el rango mostrado no modifica audio ni formato. **Aceptar** aplica un valor; **Cancelar** conserva el original.
 
 Cada arrastre terminado o valor confirmado forma un paso Deshacer/Rehacer. Las demás muestras, el otro canal, la duración y los metadatos se conservan. Arrastrar está limitado a −1 … +1; los picos flotantes existentes siguen disponibles numéricamente. La reproducción se detiene al empezar una corrección; la edición queda bloqueada al grabar. Para clips multipista, edite una copia de forma de onda y aplíquela expresamente al clip. Escuche tras cada corrección; para un clic de varias muestras, acerque cada punto a la onda contigua. Un salto brusco a cero puede crear otro clic. WAV float32 conserva los valores internos exactos; guardar como MP3 recomprime todo el archivo con pérdidas.
+
+### Dibujar forma de onda
+
+Activa **Editar → Dibujar forma de onda**, pulsa **D** o usa el lápiz junto a los controles de zoom. Dibuja directamente sobre la forma de onda con el botón izquierdo; no hace falta acertar en un punto individual. La línea dibujada sustituye los valores entre −1 y +1; no desplaza verticalmente la forma de onda original.
+
+El zoom determina el tamaño del grupo: aproximadamente dos píxeles lógicos de audio, redondeados hacia arriba a muestras enteras. De cerca cambia una muestra; al alejar el zoom cambian varias juntas. Cada grupo abarca como máximo un segundo. Un gesto largo puede tocar varios grupos y cambiar más de un segundo en total. Líneas rectas unen las posiciones sucesivas del puntero; volver a dibujar sobre un grupo sustituye su dibujo anterior.
+
+El canal inicial queda fijo aunque el puntero cruce el otro canal. Las demás muestras, el otro canal, la duración y los metadatos se conservan. Los grupos sombreados y la línea nueva muestran la vista previa. Al soltar se confirma todo el gesto en un solo paso de deshacer. **Escape**, perder el foco, cambiar el zoom o desactivar el dibujo cancelan la vista previa. **Mayús+arrastrar** sigue seleccionando audio; pulsa otra vez **D** para volver al funcionamiento normal. Dibujar está bloqueado durante la grabación. Acerca el zoom para reparaciones precisas: al dibujar de lejos también se sustituyen los detalles finos de cada grupo tocado. Escucha después y usa **Ctrl+Z** si hace falta. En multipista, edita una copia de la forma de onda y aplícala al clip.
 
 ## 7. Aplicar efectos
 

@@ -271,14 +271,14 @@ Fedora en Arch; de vier geïnstalleerde zelftests slagen op alle vijf doelen,
 inclusief Ubuntu 26.04 en Rolling.
 [Distributiebouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43078651988).
 
-## Afronding naar v1.0 — actief
+## Afronding naar v1.0 — software afgerond in 0.19.0
 
-- [ ] Eigen Linux VST3-plug-invensters, met parameter-/statusopslag en crashisolatie.
-- [ ] LV2- en LADSPA-audio-effecten toevoegen, met betrouwbare ontdekking en project-/herstelopslag.
-- [ ] Automatische compensatie van plug-invertraging bij afspelen en export.
-- [ ] Kalibratie van de opnamevertraging en compensatie van klokdrift tussen in- en uitvoer.
-- [ ] Punch-in/out met voorloop en precies begrensde opnamen, Undo en herstel.
-- [ ] Vijf talen, volledige offlinehandleidingen en distributiecontroles bijwerken.
+- [x] Eigen Linux VST3-plug-invensters, met parameter-/statusopslag en crashisolatie.
+- [x] LV2- en LADSPA-audio-effecten toevoegen, met betrouwbare ontdekking en project-/herstelopslag.
+- [x] Automatische compensatie van plug-invertraging bij afspelen en export.
+- [x] Kalibratie van de opnamevertraging en compensatie van klokdrift tussen in- en uitvoer.
+- [x] Punch-in/out met voorloop en precies begrensde opnamen, Undo en herstel.
+- [x] Vijf talen, volledige offlinehandleidingen en distributiecontroles bijwerken.
 - [ ] Releasecandidate en fysieke praktijkcontrole vóór v1.0.
 
 V1.0 volgt wanneer deze functies, de dagelijkse werkwijze en de pakketten
@@ -336,3 +336,27 @@ en Fedora. Het versieoverzicht linkt naar alle 21 gepubliceerde releases.
 Bouwinstructies staan bij de uitgebreidere installatiedocumentatie.
 De secties, lokale verwijzingen, releaselinks en pakketnamen zijn gecontroleerd.
 Appversie 0.19.1 en de resterende praktijkproeven voor v1.0 blijven het uitgangspunt.
+
+
+## Beperkingen punt voor punt beoordelen
+
+De [open todo](TODO.md) volgt de oorspronkelijke 36 punten met vaste nummers.
+Dithering en de markereditor zijn afzonderlijke taken, B36a en B36b.
+Negen regels zijn afgevoerd als bewuste werking, formaatkenmerk, al bevestigde
+controle of eerder uitgesloten uitbreiding. De
+[besluiten en redenen](validation/beperkingen-keuzes.md) blijven bewaard.
+Bij aanvang zijn er 28 open deelpunten, met B01 als eerste inhoudelijke beoordeling.
+Voor B01 is een tekenmodus gebouwd: samples vervangen door de getekende lijn,
+ook uitgezoomd zonder losse punten. Maximaal één seconde per geraakt groepje;
+een hele beweging mag meerdere groepen wijzigen. Voorbeeld, annuleren en één
+Undo-stap behouden tijdas, metadata en het andere kanaal. Losse punten verschijnen
+vanaf twee logische pixels per sample. Definitieve publicatie volgt na controles.
+
+STATUS onderscheidt bediening, ondersteuningsgrenzen en praktijkcontrole.
+De vergelijking met historische effecten is verwijderd; het concrete ontbreken
+van vooruitblik bij Dynamics blijft ter beoordeling. De softwaretaken van
+0.19.0 zijn ook in de eerdere v1.0-checklist als afgerond gemarkeerd.
+De todo is aangemaakt; de nieuwe samplebediening wordt versie 0.20.0.
+Definitieve distributiecontroles en publicatie staan nog open.
+Fysieke kalibratie-/overdub-/punch- en echte plug-inproeven blijven nodig vóór
+v1.0. Overige kandidaten worden pas na hun beoordeling uitvoeringswerk.

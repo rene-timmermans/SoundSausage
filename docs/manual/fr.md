@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.19.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.20.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 ## 1. Langue et aide
 
@@ -68,11 +68,19 @@ La stéréo partage une ligne temporelle : couper/supprimer/rogner, étirer, ins
 
 ### Modifier des échantillons individuels
 
-Zoomez avec **+** ou **Ctrl+molette** jusqu’aux points carrés (au moins huit pixels entre échantillons). L’axe horizontal indique alors les indices à partir de 0. Glissez un point verticalement pour modifier uniquement cet échantillon de ce canal. Sa position reste fixe, même si le pointeur traverse d’autres points ou canaux. Le déplacement donne un aperçu ; relâcher valide, **Échap** annule. **Maj+glisser** permet toujours de sélectionner l’audio.
+Zoomez avec **+** ou **Ctrl+molette** jusqu’aux points carrés (au moins deux pixels logiques entre échantillons). L’axe horizontal indique alors les indices à partir de 0. Glissez un point verticalement pour modifier uniquement cet échantillon de ce canal. Sa position reste fixe, même si le pointeur traverse d’autres points ou canaux. Le déplacement donne un aperçu ; relâcher valide, **Échap** annule. **Maj+glisser** permet toujours de sélectionner l’audio.
 
 Un double-clic ou clic droit sur un point ouvre **Modifier un échantillon**. **Édition → Modifier un échantillon** fonctionne à tout niveau de zoom. La position initiale est celle du curseur dans le premier canal sélectionné ; indice et canal sont modifiables. Affichez une valeur normalisée ou en 8, 16 ou 24 bits signés. Zéro est le silence ; −1/+1 représentent le niveau maximal normal. Par exemple, −16384 en affichage 16 bits correspond à −0,5 normalisé. Changer la plage d’affichage ne change ni l’audio ni l’encodage. **OK** applique une valeur ; **Annuler** préserve l’original.
 
 Chaque déplacement terminé ou valeur confirmée forme une étape Annuler/Rétablir. Tous les autres échantillons, l’autre canal, la durée et les métadonnées restent inchangés. Le glissement est limité à −1 … +1 ; les crêtes flottantes existantes restent accessibles numériquement. La lecture s’arrête au début d’une correction ; l’édition est bloquée pendant l’enregistrement. Pour une région multipiste, modifiez sa copie en forme d’onde puis appliquez-la explicitement à la région. Écoutez après chaque correction ; pour un clic de plusieurs échantillons, rapprochez chaque point du tracé voisin. Une transition brutale vers zéro peut créer un clic. WAV float32 conserve exactement les valeurs internes ; enregistrer en MP3 recompresse tout le fichier avec pertes.
+
+### Dessiner la forme d’onde
+
+Activez **Édition → Dessiner la forme d’onde**, appuyez sur **D** ou utilisez le crayon près des boutons de zoom. Dessinez directement sur la forme d’onde avec le bouton gauche ; inutile de viser un point individuel. La ligne dessinée remplace les valeurs entre −1 et +1 ; elle ne déplace pas verticalement la forme d’onde d’origine.
+
+Le zoom détermine la taille du groupe : environ deux pixels logiques d’audio, arrondis au nombre entier supérieur d’échantillons. À fort zoom, un échantillon change ; en dézoomant, plusieurs changent ensemble. Chaque groupe couvre au plus une seconde. Un geste plus long peut toucher plusieurs groupes et modifier plus d’une seconde au total. Des lignes droites relient les positions successives du pointeur ; repasser sur un groupe remplace son dessin précédent.
+
+Le canal de départ reste fixe même si le pointeur traverse l’autre canal. Les autres échantillons, l’autre canal, la durée et les métadonnées sont conservés. Les groupes colorés et la nouvelle ligne montrent l’aperçu. Relâcher valide tout le geste en une seule annulation. **Échap**, la perte du focus, un changement de zoom ou la désactivation du dessin annulent l’aperçu. **Maj+glisser** sélectionne toujours l’audio ; appuyez à nouveau sur **D** pour revenir au fonctionnement normal. Le dessin est bloqué pendant l’enregistrement. Zoomez pour les corrections précises : dézoomer remplace aussi les petits détails des groupes touchés. Écoutez ensuite et utilisez **Ctrl+Z** au besoin. En multipiste, modifiez une copie de la forme d’onde puis appliquez-la au clip.
 
 ## 7. Appliquer des effets
 

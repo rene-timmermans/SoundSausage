@@ -125,6 +125,41 @@ class SampleEditGuiTests(unittest.TestCase):
         self.assertTrue(self.window.actions['edit_sample'].isEnabled())
         self.window.set_mode('multitrack'); self.assertFalse(self.window.actions['edit_sample'].isEnabled())
 
+    def test_sample_points_appear_at_two_logical_pixels_with_exact_neighbour_hit_testing(self):
+        width = self.wave.plot_rect().width()
+        length = int(width / 2)
+        self.wave.set_view(0, length)
+        self.assertTrue(self.wave.sample_points_visible())
+        self.assertGreaterEqual(self.wave.sample_spacing(), 2)
+        for channel in (0, 1):
+            for frame in (length//2-1, length//2, length//2+1):
+                sample = self.wave.sample_at(self.point(frame, channel))
+                self.assertEqual(sample[:2], (frame, channel))
+        self.wave.set_view(0, length+1)
+        self.assertFalse(self.wave.sample_points_visible())
+        self.assertIsNone(self.wave.sample_at(self.point(length//2, 0)))
+
+    def test_lower_zoom_drag_locks_one_sample_and_highlights_the_hovered_point(self):
+        self.wave.set_view(100, 100+int(self.wave.plot_rect().width()/2.25))
+        self.assertLess(self.wave.sample_spacing(), 8)
+        self.assertTrue(self.wave.sample_points_visible())
+        doc = self.window.document
+        for channel in (0, 1):
+            with self.subTest(channel=channel):
+                first = self.point(320, channel)
+                QTest.mouseMove(self.wave, first, 5)
+                self.assertEqual(self.wave._sample_hover, (320, channel))
+                self.wave.grab()  # Paint the compact markers and hover highlight.
+                QTest.mousePress(self.wave, Qt.MouseButton.LeftButton, pos=first)
+                QTest.mouseMove(self.wave, first+QPoint(25, -30), 5)
+                np.testing.assert_array_equal(doc.read(), self.data)
+                self.wave.grab()  # Paint the preview without changing neighbouring samples.
+                QTest.mouseRelease(self.wave, Qt.MouseButton.LeftButton, pos=first+QPoint(25, -30))
+                np.testing.assert_array_equal(np.argwhere(doc.read()!=self.data), [[320, channel]])
+                self.assertEqual(len(doc.undo_stack), 1)
+                doc.undo()
+                np.testing.assert_array_equal(doc.read(), self.data)
+
     def test_double_click_and_menu_open_exact_editor_and_cancel_leaves_audio_intact(self):
         doc = self.window.document
         def accept_value():

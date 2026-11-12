@@ -242,6 +242,40 @@ class Document:
         self._commit(pieces, self.selection, "Edit Sample")
         self.cursor = cursor
 
+    def draw_samples(self, channel, patches):
+        """Confirm disjoint strokes atomically, preserving timing and the other channel."""
+        patches = tuple(patches)
+        previous = 0
+        for start, end, first, last in patches:
+            if (type(channel) is not int or not 0 <= channel < self.channels or
+                    type(start) is not int or type(end) is not int or
+                    not previous <= start < end <= self.frames or end-start > self.sample_rate or
+                    not np.isfinite((first, last)).all() or not -1 <= first <= 1 or not -1 <= last <= 1):
+                raise AudioError("Invalid waveform drawing range.")
+            previous = end
+        force_disk = sum(end-start for start,end,_,_ in patches)*self.channels*4 > storage.MEMORY_THRESHOLD
+        pieces = ()
+        previous = 0
+        changed = False
+        for index, (start, end, first, last) in enumerate(patches):
+            progress(index, len(patches), "Draw Waveform")
+            values = np.linspace(first, last, end-start, dtype=np.float32)
+            original = self.view(start, end)
+            if np.array_equal(original[:,channel], values):
+                continue
+            result = storage.allocate((end-start, self.channels), force_disk=force_disk)
+            result[:] = original
+            result[:,channel] = values
+            pieces += self._slices(previous, start) + (storage.seal(result, checked=True),)
+            previous = end
+            changed = True
+        progress(len(patches), len(patches), "Draw Waveform")
+        if changed:
+            pieces += self._slices(previous, self.frames)
+            cursor = self.cursor
+            self._commit(pieces, self.selection, "Draw Waveform")
+            self.cursor = cursor
+
     def delete(self):
         if not self.selected:
             return

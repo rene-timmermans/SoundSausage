@@ -1,4 +1,4 @@
-# SoundSausage 0.19.1
+# SoundSausage 0.20.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -15,6 +15,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Twee dunne kanaalranden tussen links en rechts, begrensd tot het tekenvlak, ook bij live opname.
 - De huidige golfvorm of sessie sluiten via Bestand → Sluiten of Ctrl+W, met een keuze voor niet-opgeslagen wijzigingen.
 - Directe samplebewerking: zichtbare punten verslepen of exact invoeren, per kanaal en met Undo/Redo.
+- Golfvorm tekenen met potloodknop of D: ook zonder losse punten, zoomafhankelijke groepen tot één seconde en één Undo-stap per sleepbeweging.
 - Golfvormbewerking met selecties, knippen, plakken, Mix Paste, trimmen en undo/redo.
 - Links/rechts apart kiezen door slepen, een zichtbare kanaalkeuze of sneltoetsen.
 - Effecten, Preview, kopiëren en selectie-export op gekozen kanalen; het andere kanaal blijft behouden.
@@ -62,25 +63,36 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Vertaalde vensters groeien met hun inhoud; grote formulieren krijgen een scrollgebied met bereikbare bevestigingsknoppen.
 - De keuze voor de onderste statusregel blijft bij de volgende start bewaard.
 
-## Beperkingen
+## Open punten en beoordeling
 
-- Samplepunten verschijnen vanaf acht logische pixels per sample. Slepen wijzigt één punt binnen −1 tot +1; het numerieke venster blijft ook bij minder vergroting beschikbaar.
+De [todo](TODO.md) bevat de actuele beoordeling, punt voor punt. Afgeronde en
+bewust overgeslagen punten verdwijnen daaruit. Onderstaande eigenschappen
+beschrijven de huidige ondersteuning; ze zijn niet automatisch bouwopdrachten
+of voorwaarden voor v1.0.
+
+## Bestandskeuzes en bediening
 
 - MP3 comprimeert met kwaliteitsverlies; opnieuw opslaan kan extra detail verliezen. WAV vermijdt een extra MP3-compressiestap.
+- De ingestelde eerste opnamemilliseconden worden verwijderd. Kies 0 ms om het volledige begin te bewaren.
+- Opnamekalibratie vereist een herkenbaar loopbacksignaal; alleen betrouwbare resultaten worden bewaard. Korte/onstabiele klokmetingen rekken audio niet op.
+- Een profiel hoort bij apparaten, rate, ingangskanaal en buffer; veranderde instellingen vragen een passende kalibratie.
+- Een plug-in en zijn eigen externe bestanden blijven apart geïnstalleerd; gewijzigde/ontbrekende plug-ins worden gemeld.
+- Import van oudere sessies ondersteunt nog geen automation of cues. Bewaren kan als zelfstandig project.
+- Sessies bewaren audio op één samplerate; geïmporteerde audio wordt daarnaartoe omgezet.
+- Grote bewerkingen vragen vrije schijfruimte voor bronkopieën, resultaten en Undo.
+
+## Ondersteuning en grenzen
+
+- Samplepunten verschijnen vanaf twee logische pixels per sample; het numerieke venster blijft bij ieder zoomniveau beschikbaar. Golfvorm tekenen vervangt de samples langs de getekende lijn; een groep beslaat maximaal één seconde, een hele beweging kan meerdere groepen raken.
 - MP3-uitvoer gebruikt de dichtstbijzijnde samplerate van 32/44,1/48 kHz en vereist ten minste 2 ms audio.
 - MP3-hoofdstukposities, ReplayGain en andere afgeleide ID3-gegevens worden niet opnieuw berekend. Niet-ondersteunde WAV-bestandsinformatie vereist een keuze vóór MP3-export.
-- De ingestelde eerste opnamemilliseconden worden verwijderd. Kies 0 ms om het volledige begin te bewaren.
 - Stereo heeft een gezamenlijke tijdas. Duurwijzigingen, knippen, verwijderen, trimmen en opname in de bestaande golfvorm vereisen beide kanalen.
 - Op één stereokanaal plakken kan bij gelijke vervangingsduur; Mix Paste blijft binnen de bestaande lengte.
-
 - VST3: één stereo-invoer/-uitvoerbus en float32. LV2/LADSPA: mono/stereo met evenveel in-/uitgangen. Geen VST2, Windows-plug-ins, MIDI-instrumenten of extra sidechains.
 - Eigen vensters vereisen X11/XWayland; LV2 GTK-/Qt-adapters en MIDI/Atom-poorten ontbreken. Niet-ondersteunde vereiste functies worden gemeld.
 - Compensatie vereist correct gerapporteerde algoritmische vertraging, maximaal tien seconden per spoor. Muzikale delay blijft intact.
 - LV2-status met externe bestanden wordt niet als volledig bewaarbaar geaccepteerd.
-- Opnamekalibratie vereist een herkenbaar loopbacksignaal; alleen betrouwbare resultaten worden bewaard. Korte/onstabiele klokmetingen rekken audio niet op.
-- Een profiel hoort bij apparaten, rate, ingangskanaal en buffer; veranderde instellingen vragen een passende kalibratie.
 - Punch-in/out vervangt één spoorinterval per take; herstel van een nog onbevestigde take biedt de ruwe opname aan om handmatig te plaatsen.
-- Een plug-in en zijn eigen externe bestanden blijven apart geïnstalleerd; gewijzigde/ontbrekende plug-ins worden gemeld.
 - Normalize, restauratie, tijd/toonhoogte, vervorming en convolutie blijven golfvormbewerkingen. Amplify, Channel Mixer, Dynamics, EQ, filters, delay, echo, galm en Invert zijn ook realtime spooreffecten.
 - Starten, zoeken of bypass inschakelen begint met nieuw effectgeheugen. Spoorketens zijn begrensd tot zestien effecten en 60 seconden uitklank per spoor.
 - Convolutie vereist een ongewijzigd responsbestand voor herhalen; stereo is kanaalgewijs.
@@ -90,18 +102,18 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Click Removal behandelt korte geïsoleerde tikken, geen langdurige kraken of clipping.
 - Galm en echo hebben begrensde, optionele uitklank; extreme feedback kan langer dan 60 seconden doorlopen.
 - EQ en filters veranderen fase; korte selecties kunnen aan de randen een overgang geven.
-- Dynamics gebruikt piekdetectie zonder vooruitblik. Exact dezelfde uitkomst als historische effecten is niet aangetoond.
-- Import van oudere sessies ondersteunt nog geen automation of cues. Bewaren kan als zelfstandig project.
-- Sessies bewaren audio op één samplerate; geïmporteerde audio wordt daarnaartoe omgezet.
-- Grote bewerkingen vragen vrije schijfruimte voor bronkopieën, resultaten en Undo.
+- Dynamics gebruikt piekdetectie zonder vooruitblik.
 - Multitrack blijft begrensd tot 24 uur, 32 sporen en 128 bronbestanden.
 - Bijzondere metadata wordt letterlijk bewaard; afgeleide meetgegevens worden niet opnieuw berekend.
 - Een eindmix voegt markers of tags uit verschillende bronnen nog niet samen.
 - De audiobackend rapporteert de verwerkte frames; exacte fysieke luidsprekerlatentie en naadloos lussen zijn niet gegarandeerd.
-- Virtuele loopback en onafhankelijke plug-infixtures toetsen synchronisatie; de nieuwe kalibratie-/punchroute en eigen vensters vragen ook fysieke praktijkcontrole vóór v1.0.
 - Uitvoer vereist een door Qt ondersteund mono-/stereoapparaat; multikanaals routering ontbreekt.
-- Virtuele in-/uitvoercontroles zijn geautomatiseerd; opname, pauze/hervatten en terugluisteren zijn ook met een USB-microfoon in de praktijk bevestigd.
 - Dithering en een markereditor ontbreken nog.
+
+## Praktijkcontrole
+
+- Virtuele in-/uitvoercontroles zijn geautomatiseerd; opname, pauze/hervatten en terugluisteren zijn ook met een USB-microfoon in de praktijk bevestigd.
+- Virtuele loopback en onafhankelijke plug-infixtures toetsen synchronisatie; de nieuwe kalibratie-/punchroute en eigen vensters vragen ook fysieke praktijkcontrole vóór v1.0.
 
 Zie de [projectbeschrijving](../README.md), [volume- en panlijnen](ENVELOPES.md) en
 het [projectformaat](PROJECTFORMAAT.md) voor meer informatie.

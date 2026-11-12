@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.19.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.20.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 ## 1. Sprache und Hilfe
 
@@ -68,11 +68,19 @@ Stereo hat eine gemeinsame Zeitachse. Längenänderungen (Schneiden/Löschen/Zus
 
 ### Einzelne Samples bearbeiten
 
-Mit **+** oder **Strg+Mausrad** einzoomen, bis quadratische Samplepunkte erscheinen (mindestens acht Bildschirmpixel Abstand). Die horizontale Achse zeigt dann Sample-Indizes ab 0. Einen Punkt vertikal ziehen, um nur dieses Sample in diesem Kanal zu ändern. Die Sampleposition bleibt fest, auch wenn der Zeiger andere Punkte oder Kanäle überquert. Ziehen zeigt eine Vorschau; Loslassen bestätigt, **Escape** bricht ab. **Umschalt+Ziehen** wählt weiterhin Audio aus.
+Mit **+** oder **Strg+Mausrad** einzoomen, bis quadratische Samplepunkte erscheinen (mindestens zwei logische Bildschirmpixel Abstand). Die horizontale Achse zeigt dann Sample-Indizes ab 0. Einen Punkt vertikal ziehen, um nur dieses Sample in diesem Kanal zu ändern. Die Sampleposition bleibt fest, auch wenn der Zeiger andere Punkte oder Kanäle überquert. Ziehen zeigt eine Vorschau; Loslassen bestätigt, **Escape** bricht ab. **Umschalt+Ziehen** wählt weiterhin Audio aus.
 
 Doppel- oder Rechtsklick auf einen Punkt öffnet **Sample bearbeiten**. **Bearbeiten → Sample bearbeiten** ist bei jeder Zoomstufe verfügbar. Das Fenster beginnt am Cursor und im ersten gewählten Kanal; Index und Kanal sind einstellbar. Werte normalisiert oder als 8, 16 oder 24 Bit mit Vorzeichen anzeigen. Null ist Stille; −1/+1 sind der normale Vollpegel. −16384 in der 16-Bit-Anzeige entspricht beispielsweise −0,5 normalisiert. Ein anderer Anzeigebereich ändert weder Audio noch Dateiformat. **OK** übernimmt einen Wert; **Abbrechen** erhält das Original.
 
 Jedes abgeschlossene Ziehen und jeder bestätigte Wert ist ein Schritt Rückgängig/Wiederherstellen. Alle anderen Samples, der andere Kanal, Dauer und Metadaten bleiben erhalten. Ziehen ist auf −1 … +1 begrenzt; bestehende Float-Pegel darüber bleiben numerisch verfügbar. Wiedergabe stoppt beim Bearbeitungsbeginn; während der Aufnahme ist Bearbeiten gesperrt. Mehrspurclips über eine Wellenformkopie bearbeiten und ausdrücklich auf den Clip anwenden. Nach jeder Korrektur hören; bei mehreren betroffenen Samples die Punkte einzeln dem umgebenden Verlauf annähern. Ein abrupter Sprung auf null kann selbst klicken. WAV float32 bewahrt die internen Werte exakt; MP3-Speichern komprimiert die gesamte Datei erneut verlustbehaftet.
+
+### Wellenform zeichnen
+
+**Bearbeiten → Wellenform zeichnen** einschalten, **D** drücken oder die Stiftschaltfläche neben den Zoomknöpfen verwenden. Mit der linken Maustaste direkt auf der Wellenform zeichnen; einzelne Samplepunkte müssen nicht getroffen werden. Die gezeichnete Linie ersetzt Samplewerte innerhalb −1 bis +1; die ursprüngliche Wellenform wird nicht vertikal verschoben.
+
+Der Zoom bestimmt die Gruppengröße: ungefähr zwei logische Bildschirmpixel Audio, auf ganze Samples aufgerundet. Stark vergrößert ändert sich ein Sample, weiter herausgezoomt ändern sich mehrere gemeinsam. Jede Gruppe umfasst höchstens eine Sekunde. Eine längere Bewegung darf mehrere Gruppen und insgesamt mehr als eine Sekunde ändern. Aufeinanderfolgende Zeigerpositionen werden geradlinig verbunden; erneutes Zeichnen über einer Gruppe ersetzt die vorherige Zeichnung.
+
+Der Anfangskanal bleibt fest, auch beim Überqueren des anderen Kanals. Andere Samples, der andere Kanal, Dauer und Metadaten bleiben erhalten. Markierte Gruppen und die neue Linie zeigen eine Vorschau. Loslassen bestätigt die gesamte Bewegung als einen Rückgängig-Schritt. **Escape**, Fokusverlust, Zoomen oder Ausschalten des Zeichenmodus verwirft die Vorschau. **Umschalt+Ziehen** wählt weiterhin Audio aus; **D** erneut drücken für die normale Bedienung. Während einer Aufnahme ist Zeichnen gesperrt. Für präzise Reparaturen einzoomen: herausgezoomtes Zeichnen ersetzt auch feine Details in der betroffenen Gruppe. Danach anhören und bei Bedarf **Strg+Z** nutzen. Bei Mehrspur eine Wellenformkopie bearbeiten und auf den Clip anwenden.
 
 ## 7. Effekte anwenden
 

@@ -286,6 +286,10 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.action("select_all", "Select &Entire Wave", self.select_all, "Ctrl+A")
         self.action("select_range", "Set Selection…", self.select_range)
         self.action("edit_sample", "Edit Sample…", self.edit_sample_dialog)
+        drawing = self.action("draw_waveform", "Draw Waveform", lambda: None, "D")
+        drawing.setCheckable(True)
+        drawing.toggled.connect(lambda checked: self.waveform.set_drawing(checked))
+        drawing.setToolTip("Draw directly on the waveform; zoom controls the group size, up to one second per group. Shift+drag selects; Escape cancels.")
         self.channel_actions = QActionGroup(self)
         for key, label, channel, shortcut in (("channels_both", "Both (L+R)", None, "Alt+B"),
                 ("channels_left", "Left (L)", (0,), "Alt+L"), ("channels_right", "Right (R)", (1,), "Alt+R")):
@@ -373,6 +377,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.waveform.sample_edit_started.connect(self.player.stop)
         self.waveform.sample_edited.connect(self.edit_sample)
         self.waveform.sample_edit_requested.connect(self.edit_sample_dialog)
+        self.waveform.waveform_drawn.connect(self.draw_waveform)
         self.scroll.valueChanged.connect(self.scroll_view)
         wave_layout.addWidget(self.waveform, 1)
         self.multitrack = MultitrackEditor(self.session)
@@ -436,6 +441,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             self.actions[key].setEnabled(has_audio)
         self.actions["channel_mix"].setEnabled(has_audio and doc.channels == 2)
         self.actions["edit_sample"].setEnabled(has_audio and self.mode == "waveform")
+        self.actions["draw_waveform"].setEnabled(has_audio and self.mode == "waveform")
         self.actions["play"].setEnabled(has_audio and not self.no_audio)
         self.actions["undo"].setEnabled(bool(doc.undo_stack))
         self.actions["redo"].setEnabled(bool(doc.redo_stack))
@@ -553,6 +559,10 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
     def edit_sample(self, frame, channel, value):
         if self.mode == "waveform" and not self.recording_busy:
             self.edit(lambda: self.document.set_sample(frame, channel, value))
+
+    def draw_waveform(self, channel, patches):
+        if self.mode == "waveform" and not self.recording_busy:
+            self.edit(lambda: self.document.draw_samples(channel, patches))
 
     def edit_sample_dialog(self, frame=None, channel=None):
         if self.mode != "waveform" or self.recording_busy or not self.document.frames:

@@ -282,3 +282,19 @@ paarse tegel; de mascotte binnen Over blijft vrijstaand.
 - [x] Taalkeuze en vijf volledige handleidingen rechtstreeks bereikbaar maken.
 - [x] Korte productwijzigingen per gepubliceerde release, met links naar de releasepagina's.
 - [x] Bouwinstructies behouden in de installatiedocumentatie en alle verwijzingen controleren.
+
+
+## Vervolg: beperkingen beoordelen
+
+De [todo](TODO.md) is de actuele werklijst voor de beoordeling van de beperkingen
+van 0.19.1. De oorspronkelijke volgorde en nummers blijven herkenbaar.
+Per punt eerst het praktische probleem en gewenste gedrag bepalen; daarna
+verbeteren of bewust behouden. Afgeronde of overgeslagen punten direct uit de
+open lijst verwijderen, met een korte reden in het
+[besluitenoverzicht](validation/beperkingen-keuzes.md).
+
+De lijst start met B01, de bestaande directe samplebewerking. Dithering en de
+markereditor krijgen aparte taken. Alle kandidaten bouwen is geen voorwaarde
+voor v1.0; de fysieke proeven onder B33 en een releasecandidate blijven wel
+onderdeel van de eerdere afspraak. Nieuwe functies krijgen passende controles,
+volledige uitleg in alle vijf handleidingen en geteste installatiepakketten.

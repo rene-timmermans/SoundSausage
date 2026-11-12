@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.19.1**.
+De huidige versie is **0.20.0**.
 
 ## Wat het kan
 
@@ -91,6 +91,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.20.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.20.0)** Golfvormen rechtstreeks tekenen, ook bij minder vergroting. De zoom bepaalt hoeveel samples tegelijk veranderen, tot één seconde per groep. Afzonderlijke samplepunten verschijnen al bij minder ver inzoomen.
 
 **[0.19.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.19.1)** Het programma-icoon met paarse achtergrond verschijnt ook in de titelbalk van het hoofdvenster en losse vensters.
 

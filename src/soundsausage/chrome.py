@@ -75,7 +75,7 @@ def create_menus(window):
     channels = edit.addMenu("Select Channels")
     window.menus["channels"] = channels
     add(channels, ("channels_both", "channels_left", "channels_right"))
-    add(edit, (None, "edit_sample", "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
+    add(edit, (None, "edit_sample", "draw_waveform", "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
     view = menu("view", "&View")
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
     transform = menu("transform", "&Transform")
@@ -144,7 +144,7 @@ def create_toolbars(window):
 
     bar("Working Mode", (("mode_wave", "mode_multi"),))
     bar("File and Edit", (("new", "open", "save"), ("cut", "copy", "paste", "trim"), ("undo", "redo")))
-    bar("View", (("zoom_in", "zoom_out", "zoom_full", "zoom_selection"),))
+    bar("View", (("zoom_in", "zoom_out", "zoom_full", "zoom_selection"), ("draw_waveform",)))
     window.addToolBarBreak()
     window.effects_toolbar = bar("Transform", (("amplify", "normalize", "fade_in", "fade_out"),
                                               ("invert", "reverse", "silence", "frequency")))
