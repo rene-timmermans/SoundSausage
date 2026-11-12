@@ -28,22 +28,16 @@ def taskbar_icon():
 
 
 def application_icon(*, device_pixel_ratio=None):
-    """Supply small caption icons and larger taskbar icons in one native set.
-
-    Linux window managers use the same window icon property for captions and
-    taskbars. Publish both variants at their respective pixel sizes instead of
-    overriding the window with a single image that also replaces its task icon.
-    """
+    """Use the purple application tile for both window captions and taskbars."""
     if device_pixel_ratio is None:
         screen = QGuiApplication.primaryScreen()
         device_pixel_ratio = screen.devicePixelRatio() if screen else 1.0
     ratio = float(device_pixel_ratio)
     if ratio not in _APPLICATION_ICONS:
-        small, large = mascot_icon(), taskbar_icon()
+        source = taskbar_icon()
         icon = QIcon()
         for size in (16, 20, 22, 24, 32, 40, 48, 64, 128, 256):
             pixels = max(1, round(size * ratio))
-            source = small if size <= 24 else large
             icon.addPixmap(source.pixmap(pixels, pixels))
         _APPLICATION_ICONS[ratio] = icon
     return QIcon(_APPLICATION_ICONS[ratio])

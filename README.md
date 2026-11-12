@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.19.0**.
+De huidige versie is **0.19.1**.
 
 ## Wat het kan
 
@@ -98,6 +98,8 @@ De taalkeuze blijft bewaard. De handleidingen zijn ook rechtstreeks te lezen:
 [Deutsch](docs/manual/de.md), [Français](docs/manual/fr.md), [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**0.19.1** Het programma-icoon met paarse achtergrond verschijnt ook in de titelbalken.
 
 **0.19.0** Eigen plug-invensters, LV2/LADSPA, automatische plug-invertraging en opnamesynchronisatie, plus punch-in/out met voorloop en behoud van de originele audio.
 

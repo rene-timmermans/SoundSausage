@@ -311,3 +311,10 @@ De volledige [controledekking](validation/completion.md) beschrijft de grenzen.
 Vóór v1.0 blijven fysieke kalibratie/overdub/punch en een echte externe plug-in
 met eigen venster nodig, gevolgd door een releasecandidate. De gewone B910-
 opname-/afspeelproef blijft bevestigd. Zie het [ontwikkelplan](ONTWIKKELPLAN.md).
+
+## Venstericonen — 0.19.1
+
+- [x] Paarse programmategel op alle iconenmaten, ook in titelbalken en losse vensters.
+- [x] De vrijstaande mascotte in Over behouden; transparante buitenhoeken blijven intact.
+- [x] Vijf offlinehandleidingen bijwerken.
+- [ ] Bestaande icoon-/Over- en installatiecontroles, definitieve pakketten en publicatie.

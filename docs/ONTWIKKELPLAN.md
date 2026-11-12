@@ -260,3 +260,10 @@ is gepubliceerd: alle 451 definitieve tests en alle vier installatiezelftests
 op vijf doelen slagen. De nieuwe plug-in- en opnamefuncties zijn softwarematig
 afgerond. Alleen de genoemde fysieke praktijkproeven en releasecandidate blijven
 open vóór v1.0. [Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43268472763).
+
+## Venstericonen — 0.19.1
+
+- [x] Paarse programmategel op alle iconenmaten, ook in titelbalken en losse vensters.
+- [x] De vrijstaande mascotte in Over behouden; transparante buitenhoeken blijven intact.
+- [x] Vijf offlinehandleidingen bijwerken.
+- [ ] Bestaande icoon-/Over- en installatiecontroles, definitieve pakketten en publicatie.

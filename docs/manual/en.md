@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.19.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.19.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -9,6 +9,8 @@ Choose **Options → Language** and select Nederlands, English, Deutsch, França
 **Help → Manual** or **F1** opens this manual offline, alongside the editor. **Ctrl+F** focuses search; **F3** finds the next occurrence and **Shift+F3** the previous one. The previous/next buttons wrap at the ends. Only an explicitly clicked website link needs internet. **About** shows the version, author, license, website and components.
 
 ## 2. Quick start and workspace
+
+The application icon with its purple background appears in window title bars and the taskbar. **Help → About** displays the separate mascot beside the application information.
 
 Open a WAV or MP3 with **File → Open**. Press **Space** to listen or stop. Drag over a fragment, choose **Transform → Amplitude → Normalize**, listen with **Preview**, then confirm with **OK**. **Ctrl+Z** undoes the edit. Use **Save As** to keep a separate result. For several recordings, create a **New Multitrack Session**, import WAV or MP3 files and finish with **Mix Down**.
 

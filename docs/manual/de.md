@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.19.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.19.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 ## 1. Sprache und Hilfe
 
@@ -9,6 +9,8 @@ Unter **Optionen → Sprache** Nederlands, English, Deutsch, Français oder Espa
 **Hilfe → Handbuch** oder **F1** öffnet dieses Handbuch ohne Internet neben dem Editor. **Strg+F** aktiviert die Suche; **F3** findet den nächsten, **Umschalt+F3** den vorherigen Treffer. Die Suchknöpfe setzen am anderen Ende fort. Nur angeklickte Weblinks benötigen Internet. **Über** zeigt Version, Autor, Lizenz, Website und Komponenten.
 
 ## 2. Schnellstart und Arbeitsbereich
+
+Das Programmsymbol mit violettem Hintergrund erscheint in den Fenstertitelleisten und der Taskleiste. **Hilfe → Über** zeigt das freigestellte Maskottchen neben den Programminformationen.
 
 Eine WAV- oder MP3-Datei mit **Datei → Öffnen** öffnen. **Leertaste** startet oder stoppt. Einen Abschnitt markieren, **Effekte → Amplitude → Normalisieren** wählen, mit **Vorschau** anhören und mit **OK** anwenden. **Strg+Z** macht die Änderung rückgängig. Mit **Speichern unter** ein separates Ergebnis speichern. Für mehrere Aufnahmen **Neue Mehrspursitzung** erstellen, WAVs oder MP3s importieren und mit **Abmischen** abschließen.
 

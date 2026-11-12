@@ -14,7 +14,7 @@ class ApplicationIconTests(unittest.TestCase):
     def setUpClass(cls):
         cls.app = QApplication.instance() or QApplication([])
 
-    def test_caption_and_taskbar_variants_have_different_backgrounds_at_both_scales(self):
+    def test_caption_and_taskbar_keep_purple_background_at_both_scales(self):
         for ratio in (1, 2):
             icon = application_icon(device_pixel_ratio=ratio)
             for size in (16, 20, 24, 32, 48, 64):
@@ -23,10 +23,8 @@ class ApplicationIconTests(unittest.TestCase):
                     self.assertEqual(image.width(), size * ratio)
                     # Left of the character, but inside the rounded tile.
                     background = image.pixelColor(round(image.width() * .08), image.height() // 2)
-                    if size <= 24:
-                        self.assertLessEqual(background.alpha(), 10)
-                    else:
-                        self.assertGreaterEqual(background.alpha(), 240)
+                    self.assertGreaterEqual(background.alpha(), 240)
+                    self.assertGreater(background.blue(), background.green())
                     self.assertGreaterEqual(image.pixelColor(image.width() // 2, image.height() // 2).alpha(), 240)
 
     def test_taskbar_corners_are_transparent_and_purple_background_is_retained(self):
