@@ -325,3 +325,14 @@ op Debian/Fedora/Arch; de vier installatiezelftests slagen op alle vijf doelen,
 inclusief Ubuntu 26.04 en Rolling. Kleine en grote venstericonen gebruiken de
 paarse tegel; de mascotte binnen Over blijft vrijstaand.
 [Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43271010006).
+
+## GitHub-projectpagina
+
+De projectpagina groepeert de mogelijkheden onder werkruimte, opname/bewerking,
+effecten, multitrack/plug-ins, bestanden/herstel en hulp. De vijf hoofdsecties
+zijn Wat het kan, Installeren, Taal, Wat er nieuw is en Licentie.
+De installatietabel bevat pakket- en verwijdercommando's voor Arch, Debian/Ubuntu
+en Fedora. Het versieoverzicht linkt naar alle 21 gepubliceerde releases.
+Bouwinstructies staan bij de uitgebreidere installatiedocumentatie.
+De secties, lokale verwijzingen, releaselinks en pakketnamen zijn gecontroleerd.
+Appversie 0.19.1 en de resterende praktijkproeven voor v1.0 blijven het uitgangspunt.

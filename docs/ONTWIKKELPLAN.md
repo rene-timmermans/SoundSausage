@@ -274,3 +274,11 @@ op Debian/Fedora/Arch; de vier installatiezelftests slagen op alle vijf doelen,
 inclusief Ubuntu 26.04 en Rolling. Kleine en grote venstericonen gebruiken de
 paarse tegel; de mascotte binnen Over blijft vrijstaand.
 [Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43271010006).
+
+## Projectpresentatie op GitHub
+
+- [x] Dezelfde hoofdindeling als PixelPickle: Wat het kan, Installeren, Taal, Wat er nieuw is en Licentie.
+- [x] Mogelijkheden groeperen en installatie-/verwijdercommando's per distributie tonen.
+- [x] Taalkeuze en vijf volledige handleidingen rechtstreeks bereikbaar maken.
+- [x] Korte productwijzigingen per gepubliceerde release, met links naar de releasepagina's.
+- [x] Bouwinstructies behouden in de installatiedocumentatie en alle verwijzingen controleren.

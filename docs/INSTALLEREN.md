@@ -44,8 +44,25 @@ de audiokern, bestandsopslag, iconen en effectvensters.
 
 ## Zelf bouwen
 
-Zie de [README](../README.md) voor bouwen vanuit de broncode. De pakketdefinities
-staan in `packaging/`. Een nieuwe versie krijgt releasepunten in
-`docs/releases/<versie>.md`; na een versie-update op `main` bouwt GitHub Actions
+Voor bouwen vanuit de broncode zijn Python 3.12–3.14, een C++20-compiler, Make,
+Qt Multimedia, FFmpeg, libsamplerate, Rubber Band (3.3 of nieuwer), Lilv en X11
+nodig. Installeer de systeembibliotheken via de pakketbeheerder van je distributie.
+Op Arch is Qt Multimedia een apart pakket naast PySide6. De Python-afhankelijkheden
+staan in `requirements.txt`, inclusief Mutagen voor MP3-bestandsinformatie.
+
+```bash
+git clone https://github.com/rene-timmermans/SoundSausage.git
+cd SoundSausage
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+./run.sh
+```
+
+Het startscript bouwt de audiokern automatisch. Voorbeeldprojecten staan in
+[examples](../examples/).
+
+De pakketdefinities staan in `packaging/`. Een nieuwe versie krijgt releasepunten
+in `docs/releases/<versie>.md`; na een versie-update op `main` bouwt GitHub Actions
 de pakketten en publiceert ze bij de tag `v<versie>`, zodra alle controles slagen.
 Bestaande releases worden niet overschreven.
