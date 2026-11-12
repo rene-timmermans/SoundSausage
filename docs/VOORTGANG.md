@@ -350,13 +350,31 @@ Voor B01 is een tekenmodus gebouwd: samples vervangen door de getekende lijn,
 ook uitgezoomd zonder losse punten. Maximaal één seconde per geraakt groepje;
 een hele beweging mag meerdere groepen wijzigen. Voorbeeld, annuleren en één
 Undo-stap behouden tijdas, metadata en het andere kanaal. Losse punten verschijnen
-vanaf twee logische pixels per sample. Definitieve publicatie volgt na controles.
+vanaf twee logische pixels per sample. De definitieve publicatie is afgerond in 0.20.0.
 
 STATUS onderscheidt bediening, ondersteuningsgrenzen en praktijkcontrole.
 De vergelijking met historische effecten is verwijderd; het concrete ontbreken
 van vooruitblik bij Dynamics blijft ter beoordeling. De softwaretaken van
 0.19.0 zijn ook in de eerdere v1.0-checklist als afgerond gemarkeerd.
-De todo is aangemaakt; de nieuwe samplebediening wordt versie 0.20.0.
-Definitieve distributiecontroles en publicatie staan nog open.
+De todo is aangemaakt en B01 is afgerond in 0.20.0. Er blijven 27 open
+deelpunten over, met B03 (MP3-uitvoergrenzen) als volgende beoordeling.
 Fysieke kalibratie-/overdub-/punch- en echte plug-inproeven blijven nodig vóór
 v1.0. Overige kandidaten worden pas na hun beoordeling uitvoeringswerk.
+
+
+## Golfvorm tekenen — 0.20.0
+
+- [x] Potloodknop, Bewerken → Golfvorm tekenen en D, ook zonder losse samplepunten.
+- [x] Getekende lijn als samplewaarden, zoomafhankelijke groepen tot één seconde per groep.
+- [x] Kanaalbehoud, voorbeeld, annuleren en één Undo-stap per hele beweging.
+- [x] Eerder zichtbare losse punten met compacte markering en kader onder de muis.
+- [x] Vijf volledige handleidingen en catalogi bijwerken.
+- [x] Definitieve bron-, installatie- en publicatiecontroles.
+
+[Release 0.20.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.20.0)
+is gepubliceerd met geteste pakketten. Alle 460 controles slagen zonder overslaan
+op Debian/Fedora/Arch; de vier installatiezelftests slagen op alle vijf doelen,
+inclusief Ubuntu 26.04 en Rolling. Tag, bron, korte releasepunten en acht assets
+zijn gecontroleerd. B01 is uit de [todo](TODO.md) verwijderd; B03 staat klaar
+voor beoordeling. De eerdere fysieke v1.0-proeven blijven open onder B33.
+[Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43296981861).

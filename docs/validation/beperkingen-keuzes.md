@@ -25,7 +25,7 @@ voorwaarden en ondersteuning blijven in STATUS en de handleiding terug te vinden
 
 ## Eerste inhoudelijke beoordeling — B01
 
-De broncode bevestigt de drempel van acht logische pixels, het vaste sample en
+De broncode van 0.19.1 bevestigt de drempel van acht logische pixels, het vaste sample en
 kanaal tijdens slepen, het bereik −1 tot +1 en numerieke invoer bij elk zoomniveau.
 De bestaande handleiding beschrijft dit in hoofdstuk 4. De eerdere opdracht
 voor nauwkeurig herstel van losse tikjes is hiermee beschikbaar.
@@ -33,7 +33,13 @@ voor nauwkeurig herstel van losse tikjes is hiermee beschikbaar.
 Besluit: de getekende lijn vervangt de samples. Bij uitzoomen groeit een groep
 tot maximaal één seconde; een hele sleepbeweging mag meerdere groepen raken.
 Er zijn geen aanwijsbare punten nodig in de tekenmodus. De bestaande exacte
-invoer blijft beschikbaar. B01 blijft open tot verificatie en publicatie.
+invoer blijft beschikbaar.
+
+B01 is afgerond in [0.20.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.20.0)
+en uit de open todo verwijderd. Losse punten verschijnen vanaf twee logische
+pixels; de nieuwe tekenmodus werkt bij ieder zoomniveau. Alle 460 controles
+slagen op Debian/Fedora/Arch zonder overslaan, plus de vier installatiezelftests
+op vijf doelen. Zie [tekencontrole](drawing.md).
 
 ## Redactionele correctie — B25
 

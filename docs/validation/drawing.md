@@ -49,11 +49,19 @@ installatiezelftest controleert tekenen, kanaalbehoud en Undo, en de nieuwe
 handleidingsectie in alle vijf talen. De catalogi hebben 1434 bronvormen zonder
 ontbrekende vertalingen. Het voorbeeld is visueel gecontroleerd.
 
-De eerste volledige lokale run telde 460 tests met negen expliciet uitgeschakelde
-backend-/nativevensterproeven en één stagingfout terwijl de handleidingen nog
-werden bijgewerkt. De afzonderlijke stagingcontrole en de gewone zelftest slagen
-met de complete vijf handleidingen. Een definitieve volledige run volgt met een
-ongewijzigde bronstand; de distributiebouw schakelt de backendproeven wel in.
+De definitieve lokale volledige suite slaagt met 460 tests en negen expliciete
+backend-/nativevensterskips. De gewone zelftest, staginginstallatie en achttien
+gerichte controles bij 150% schaal slagen eveneens.
 
-Definitieve volledige suite, distributiepakketten en publicatie worden na de
-releasebouw hieronder vastgelegd.
+## Definitieve distributie en publicatie
+
+Alle 460 tests slagen zonder overslaan op Debian, Fedora en Arch. De vier
+installatiezelftests — gewoon, uitvoer, invoer en duplex — slagen op die drie
+doelen en op Ubuntu 26.04 en Rolling. Tag en geteste broncommit komen overeen;
+de korte releasepunten en acht assets zijn op naam, grootte, uploadstatus en
+digestmetadata gecontroleerd. De zes bouw-/publicatielogs bevatten geen
+onverwachte fouten. De fysieke synchronisatie-/punch-/plug-inproeven vóór v1.0
+blijven afzonderlijk open als B33.
+
+[Bouw 0.20.0](https://github.com/rene-timmermans/SoundSausage/actions/runs/43296981861)
+en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.20.0).

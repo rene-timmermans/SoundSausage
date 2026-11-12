@@ -293,8 +293,23 @@ verbeteren of bewust behouden. Afgeronde of overgeslagen punten direct uit de
 open lijst verwijderen, met een korte reden in het
 [besluitenoverzicht](validation/beperkingen-keuzes.md).
 
-De lijst start met B01, de bestaande directe samplebewerking. Dithering en de
+B01 is uitgebreid met golfvormtekenen en afgerond in 0.20.0. B03, de MP3-
+uitvoergrenzen, is nu aan de beurt. Dithering en de
 markereditor krijgen aparte taken. Alle kandidaten bouwen is geen voorwaarde
 voor v1.0; de fysieke proeven onder B33 en een releasecandidate blijven wel
 onderdeel van de eerdere afspraak. Nieuwe functies krijgen passende controles,
 volledige uitleg in alle vijf handleidingen en geteste installatiepakketten.
+
+
+## Golfvorm tekenen — 0.20.0
+
+- [x] Ook bij minder zoom rechtstreeks tekenen; samples volgen het getekende verloop.
+- [x] Maximaal één seconde per groep, meerdere groepen per beweging toegestaan.
+- [x] Voorbeeld, annuleren, kanaalbehoud, Undo/Redo en eerdere losse samplepunten.
+- [x] Vijf handleidingen, controles en geteste installatiepakketten.
+
+[Release 0.20.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.20.0)
+is afgerond: 460 tests op Debian/Fedora/Arch zonder overslaan, vier
+installatiezelftests op vijf doelen en acht gecontroleerde releaseassets.
+De [open todo](TODO.md) gaat verder met B03. B33 en de releasecandidate blijven
+onderdeel van de fysieke afronding naar v1.0.

@@ -28,6 +28,7 @@ De huidige versie is **0.20.0**.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
 - Links en rechts afzonderlijk selecteren en bewerken, met behoud van het andere kanaal.
 - Samplepunten verslepen of hun waarde exact invoeren om kleine tikjes plaatselijk te corrigeren.
+- Met de potloodknop rechtstreeks op de golfvorm tekenen, ook bij minder vergroting, met één stap ongedaan maken.
 
 **Effecten en geluid**
 

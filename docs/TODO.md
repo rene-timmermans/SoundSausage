@@ -1,6 +1,6 @@
 # Open punten
 
-Stand: 12 november 2026, SoundSausage 0.19.1.
+Stand: 12 november 2026, SoundSausage 0.20.0.
 
 Deze lijst wordt punt voor punt beoordeeld, in de volgorde van het oorspronkelijke
 beperkingenoverzicht. Een vermelding is een onderzoeksvraag, geen toezegging dat
@@ -13,18 +13,16 @@ De nummers B01–B36 blijven gelijk aan de oorspronkelijke volgorde; B36 is in
 twee afzonderlijke functies gesplitst. De technische ondersteuning staat in
 [STATUS](STATUS.md), de bediening in de [handleiding](HANDLEIDING.md).
 
-## Nu afronden: B01 — tekenen bij minder vergroting
+## Nu beoordelen: B03 — MP3-uitvoergrenzen
 
-De nieuwe tekenmodus vervangt samples door de getekende lijn, ook wanneer geen
-losse punten zichtbaar zijn. De zoom bepaalt de groepsgrootte; ieder groepje
-beslaat maximaal één seconde. Een sleepbeweging kan meerdere groepen raken.
-Potloodknop, **Bewerken → Golfvorm tekenen** en **D** schakelen de modus.
-Voorbeeld, annuleren, één Undo-stap en behoud van het andere kanaal horen erbij.
-Losse samplepunten verschijnen voortaan vanaf twee logische pixels per sample.
+MP3-uitvoer kiest momenteel de dichtstbijzijnde samplerate van 32/44,1/48 kHz
+en vereist minstens 2 ms audio. Kortere fragmenten kunnen als WAV worden bewaard.
+De gebruikte encoder ondersteunt ook 8/11,025/12/16/22,05/24 kHz; die zijn nog
+geen uitvoerkeuze in SoundSausage.
 
-**Stand:** lokaal gebouwd, documentatie in vijf talen bijgewerkt; definitieve
-controle en publicatie nog afronden. Daarna B01 direct uit deze open lijst
-verwijderen. Het volgende te beoordelen punt is B03, de MP3-uitvoergrenzen.
+**Voorstel:** huidige grenzen behouden en dit punt afvoeren, tenzij lagere rates
+voor bijvoorbeeld spraak gewenst zijn. De keuze staat nog open. De vormgeving
+van deze keuze en eventuele wijziging volgt pas na dat besluit.
 
 ## Daarna, in volgorde
 
@@ -33,7 +31,6 @@ gewenst gedrag en omvang bepaald voordat de uitvoering begint.
 
 | Punt | Onderwerp en te beoordelen vervolgstap |
 | --- | --- |
-| B03 | MP3-uitvoer: andere samplerates en fragmenten korter dan 2 ms. Bepalen of die werkelijk nodig zijn en hoe onverwachte omzetting wordt voorkomen. |
 | B04 | MP3-metadata: hoofdstukposities en afgeleide ID3-gegevens bijwerken of expliciet afhandelen; de keuze voor niet-overdraagbare WAV-informatie beoordelen. |
 | B06 | Kanaalgebonden knippen, verwijderen, trimmen, duurwijzigingen en opname: eerst bepalen hoe links en rechts op dezelfde tijdas moeten blijven aansluiten. |
 | B07 | Plakken op één kanaal met een andere duur en Mix Paste voorbij de bestaande lengte: gewenste opvulling en kanaaluitlijning bepalen. |
