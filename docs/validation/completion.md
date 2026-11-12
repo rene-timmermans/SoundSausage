@@ -69,9 +69,20 @@ ook met verbonden apparaten en een lange kalibratietekst. De installatiezelftest
 bevat punch, klokmeting en de nieuwe vensters in vijf talen; in CI opent hij ook
 een native plug-invenster vanuit de geïnstalleerde host.
 
-## Integratiestatus
+## Integratiestatus — 12 november 2026
 
-De lokale gewone zelftest slaagt. De volledige suite en de definitieve
-installatiecontroles zijn nog in uitvoering; onderstaande resultaten worden
-pas na voltooiing aangevuld. Geen fysieke kalibratie-/punchproef of echte
-externe plug-invensterproef als afgerond tellen zonder bevestiging.
+De lokale volledige suite slaagt met 448 controles; acht expliciete tests voor
+backend/native vensters zijn lokaal uitgeschakeld. De daarna toegevoegde LV2-
+vensterfixture heeft zes geslaagde audio-/statustests en één expliciet uitgeschakelde
+native UI-test. De huidige volledige kandidaat telt 449 controles. De gewone
+installatiezelftest en de geïnstalleerde stagingcontrole slagen. De vijf talen
+bevatten 1430 bronvormen zonder ontbrekende vertalingen. Twee definitieve
+regressies toetsen ook de samengestelde punchtoelichting in alle vijf talen.
+
+De nieuwste distributierondes wachten sinds 11 november op GitHub zonder
+begonnen jobs. [Testronde](https://github.com/rene-timmermans/SoundSausage/actions/runs/43097870027).
+Hierdoor zijn de nieuwe echte backendkalibratie, native LV2-vensterproef en
+installatiepakketten nog niet definitief geverifieerd of gepubliceerd. De eerdere
+VST3-X11-proef is wel op alle drie distributies geslaagd. De stabiele release
+blijft 0.18.0. Fysieke kalibratie/punch en een echt extern plug-invenster vragen
+nog praktijkbevestiging vóór v1.0.

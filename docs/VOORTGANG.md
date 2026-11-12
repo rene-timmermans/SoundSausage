@@ -285,17 +285,23 @@ V1.0 volgt wanneer deze functies, de dagelijkse werkwijze en de pakketten
 geen bekende blokkerende fouten hebben. De vaste apparaat-/plug-incombinaties
 worden in de praktijk gecontroleerd; een kalenderdatum volgt uit die resultaten.
 
-### Integratie 0.19.0
+### Integratie 0.19.0 — 12 november 2026
 
 De plug-inuitbreiding, automatische synchronisatie en punch-in/out zijn gebouwd.
-De gerichte model-/opname-/hersteltests slagen. De eerdere native X11-plug-inproef
-slaagde op Debian, Fedora en Arch; een nieuwe integratieronde omvat ook echte
-Qt/PulseAudio-loopbackkalibratie. Alle 1427 bronvormen zijn vertaald en de vijf
-volledige offlinehandleidingen bijgewerkt. De 21 taal-/venstercontroles slagen.
-De volledige suite, distributiecontrole en pakketpublicatie zijn nog in uitvoering;
-de stabiele GitHub-release blijft tot afronden 0.18.0.
+Alle 448 lokale controles slagen, met acht expliciete backend-/vensterskips.
+Een aanvullende onafhankelijke LV2-X11-fixture is gebouwd en zijn zes audio-/
+statuscontroles slagen; de native vensterproef wacht op CI. De kandidaat telt
+nu 449 tests. De gewone zelftest en staginginstallatie slagen; 1430 bronvormen
+zijn volledig vertaald en alle vijf offlinehandleidingen zijn bijgewerkt.
+De nieuwe opnamevensters zijn met verbonden apparaten en grotere letters getoetst.
 
-Vóór v1.0 blijven een fysieke kalibratie/overdub/punchproef en een echte externe
-plug-in met eigen venster nodig, gevolgd door een releasecandidate. De bestaande
-gewone B910-opname-/afspeelproef blijft bevestigd. Zie de concrete lijst onderaan
-het [ontwikkelplan](ONTWIKKELPLAN.md).
+De eerdere VST3-X11-proef slaagde op Debian/Fedora/Arch. De nieuwe volledige
+integratierondes staan sinds 11 november zonder begonnen jobs in de GitHub-wachtrij;
+nieuwe echte loopbackkalibratie en definitieve pakketcontroles zijn nog niet uitgevoerd.
+De oorzaak is niet zichtbaar via de beschikbare Actions-API. De stabiele release
+blijft 0.18.0. [Lopende testronde](https://github.com/rene-timmermans/SoundSausage/actions/runs/43097870027).
+
+Vóór v1.0 blijven fysieke kalibratie/overdub/punch en een echte externe plug-in
+met eigen venster nodig, gevolgd door een releasecandidate. De gewone B910-
+opname-/afspeelproef blijft bevestigd. Zie de concrete lijst onderaan het
+[ontwikkelplan](ONTWIKKELPLAN.md) en [controledekking](validation/completion.md).

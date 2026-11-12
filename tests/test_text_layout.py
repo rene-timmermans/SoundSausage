@@ -135,6 +135,8 @@ class TextLayoutTests(unittest.TestCase):
                     dialog=self.create(RecordDialog);dialog.target.setCurrentIndex(dialog.target.findData('punch'))
                     dialog.show();self.settle()
                     self.assertEqual(visible_label_errors(dialog),[],(point,code))
+                    self.assertIn(tr('Only the selected interval is replaced.'),dialog.note.text())
+                    self.assertIn(tr('Playback starts with pre-roll; recording stops automatically after the selection.'),dialog.note.text())
                     dialog.reject();dialog.deleteLater();self.dialogs.remove(dialog)
         w.no_audio=True
 
