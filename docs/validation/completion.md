@@ -105,3 +105,15 @@ en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releas
 De fysieke kalibratie-/punchroute en echte externe plug-ins vragen nog
 praktijkbevestiging vóór v1.0. Gewone B910-opname en terugluisteren zijn eerder
 bevestigd.
+
+## Venstericonen — 0.19.1
+
+De bestaande icooncontrole toetst nu de paarse achtergrond voor alle caption- en
+taakbalkmaten bij zowel 1× als 2× schermschaal. Transparante buitenhoeken en de
+vrijstaande Over-mascotte blijven afzonderlijk gecontroleerd. De zes gerichte
+icoon-/Over-/stagingproeven slagen lokaal. De definitieve bouw slaagt opnieuw
+met alle 451 tests op Debian/Fedora/Arch en vier geïnstalleerde zelftests op alle
+vijf doelen. Tag, geteste broncommit en acht assets zijn geverifieerd; de vijf
+offlinehandleidingen zijn bijgewerkt.
+[Bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43271010006)
+en [release](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.19.1).

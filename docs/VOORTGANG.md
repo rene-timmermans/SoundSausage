@@ -317,4 +317,11 @@ opname-/afspeelproef blijft bevestigd. Zie het [ontwikkelplan](ONTWIKKELPLAN.md)
 - [x] Paarse programmategel op alle iconenmaten, ook in titelbalken en losse vensters.
 - [x] De vrijstaande mascotte in Over behouden; transparante buitenhoeken blijven intact.
 - [x] Vijf offlinehandleidingen bijwerken.
-- [ ] Bestaande icoon-/Over- en installatiecontroles, definitieve pakketten en publicatie.
+- [x] Bestaande icoon-/Over- en installatiecontroles, definitieve pakketten en publicatie.
+
+[Release 0.19.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.19.1)
+is gepubliceerd met geteste pakketten. Alle 451 controles slagen zonder overslaan
+op Debian/Fedora/Arch; de vier installatiezelftests slagen op alle vijf doelen,
+inclusief Ubuntu 26.04 en Rolling. Kleine en grote venstericonen gebruiken de
+paarse tegel; de mascotte binnen Over blijft vrijstaand.
+[Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43271010006).
