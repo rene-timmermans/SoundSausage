@@ -20,6 +20,7 @@ from .audio_devices import AudioDevices
 from .playback import QtAudio
 from .resample import frame_count
 from . import storage
+from .system_audio import SystemOutputDevice, SystemAudioSource, SYSTEM_OUTPUT
 
 
 def input_format(device, rate, channels, first_channel=0):
@@ -192,6 +193,7 @@ class Recorder(QObject):
         self.devices=devices if devices is not None else AudioDevices(self)
         self._source_factory=source_factory or QAudioSource
         self.devices.inputs_changed.connect(self._inputs_changed)
+        self.devices.outputs_changed.connect(self._outputs_changed)
         self.devices.changed.connect(self._settings_changed)
         self.source=None;self._io=None;self.take=None;self.format=None
         self.state='Stopped';self._starting=False;self._draining=False;self._tail=b''
@@ -224,7 +226,8 @@ class Recorder(QObject):
             self._fade_frames=max(2,round(self.format.sampleRate()*.005)) if self._skip_remaining else 0
             self._fade_position=0
             self.take=Take(self.format.sampleRate(),channels,device.description())
-            self.source=self._source_factory(device,self.format,self)
+            factory = SystemAudioSource if isinstance(device, SystemOutputDevice) else self._source_factory
+            self.source=factory(device,self.format,self)
             source=self.source
             source.setBufferSize(max(self.format.bytesPerFrame(),self.format.bytesForDuration(100000)))
             source.stateChanged.connect(self._source_changed)
@@ -353,6 +356,10 @@ class Recorder(QObject):
 
     def _settings_changed(self):
         if self.active:self._fail("The audio settings changed during recording. The captured audio has been retained.")
+
+    def _outputs_changed(self):
+        if self.devices.input_id == SYSTEM_OUTPUT:
+            self._inputs_changed()
 
     def shutdown(self):
         self.stop(keep=True)

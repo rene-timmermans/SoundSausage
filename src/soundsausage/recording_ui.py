@@ -1,5 +1,5 @@
 """Recording setup, bounded live waveform and editor transaction integration."""
-from .i18n import Literal
+from .i18n import Literal, install_language
 from collections import deque
 from datetime import datetime
 import time
@@ -23,6 +23,7 @@ from .theme import colors,blend
 from .icons import make_icon
 from .waveform import clock_text
 from .i18n_widgets import set_text
+from .system_audio import SYSTEM_OUTPUT, SYSTEM_OUTPUT_LABEL
 
 
 class RecordDialog(QDialog):
@@ -79,28 +80,34 @@ class RecordDialog(QDialog):
         self.box.accepted.connect(self.accept);self.box.rejected.connect(self.reject);form.addRow(self.box)
         self.reload(self.devices.input_id)
         self.devices.inputs_changed.connect(self.reload)
+        self.devices.outputs_changed.connect(self.reload)
         for field in (self.input,self.target,self.channels):field.currentIndexChanged.connect(self.sync)
         self.rate.valueChanged.connect(self.sync);self.first.valueChanged.connect(self.sync)
         self.automatic.toggled.connect(self.sync);self.accompaniment.toggled.connect(self.sync)
+        install_language().changed.connect(self._language_changed)
         self.sync()
 
+    def _language_changed(self, *_):
+        if self.isVisible() and self.input.currentData() == SYSTEM_OUTPUT:
+            self.sync()
+
     def reload(self,selected=None):
+        self._system_device=None
         selected=(self.input.currentData() or '') if selected is None else selected
         self.input.clear();self.input.addItem('System Default','')
         for device in (() if self.window.no_audio else self.devices.inputs()):self.input.addItem(Literal(device.description()),bytes(device.id()).hex())
+        self.input.addItem(SYSTEM_OUTPUT_LABEL, SYSTEM_OUTPUT)
         index=self.input.findData(selected)
         if selected and index<0:self.input.addItem('Selected input (disconnected)',selected);index=self.input.count()-1
         self.input.setCurrentIndex(max(0,index))
         if hasattr(self,'box'):self.sync()
 
     def device(self):
-        inputs=self.devices.inputs();selected=self.input.currentData()
-        if selected:
-            for device in inputs:
-                if bytes(device.id()).hex()==selected:return device
-            raise AudioError('The selected input is disconnected.')
-        if not inputs:raise AudioError('Connect a microphone or audio interface to start recording.')
-        return next((d for d in inputs if d.isDefault()),inputs[0])
+        if self.input.currentData() == SYSTEM_OUTPUT:
+            if self._system_device is None:
+                self._system_device = self.devices.input(SYSTEM_OUTPUT)
+            return self._system_device
+        return self.devices.input(self.input.currentData())
 
     def sync(self,*_):
         target=self.target.currentData()
@@ -132,6 +139,8 @@ class RecordDialog(QDialog):
             self.first.setMaximum(max(1,maximum-(self.channels.currentIndex()+1)+1))
             fmt=input_format(device,self.rate.value(),self.channels.currentIndex()+1,self.first.value()-1)
             text=f'Device: {device.description()}'
+            if self.input.currentData() == SYSTEM_OUTPUT:
+                text+='\nRecords the default system output, including other apps and any backing tracks played there. Pause excludes paused audio. A new take uses the current default output.'
             if existing and self.window.document.partial_channels:
                 text+='\nOnly the chosen channel shifts. The other stays in place; shorter audio is padded with silence.'
             if fmt.channelCount()==1 and self.channels.currentIndex()==1:

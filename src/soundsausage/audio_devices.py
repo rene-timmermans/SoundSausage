@@ -7,6 +7,7 @@ from .i18n_widgets import QDialogButtonBox
 from .i18n_widgets import QDialog, QFormLayout, QComboBox, QSpinBox, QLabel
 
 from .audio import AudioError
+from .system_audio import SYSTEM_OUTPUT, SYSTEM_OUTPUT_LABEL, SystemOutputDevice
 
 
 class AudioDevices(QObject):
@@ -50,13 +51,18 @@ class AudioDevices(QObject):
             raise AudioError("The selected audio output is unavailable. Choose an output in Options → Audio Hardware.")
         return next((device for device in devices if device.isDefault()), devices[0])
 
-    def input(self):
+    def input(self, selected=None):
+        selected = self.input_id if selected is None else selected
+        if selected == SYSTEM_OUTPUT:
+            device = SystemOutputDevice.resolve()
+            self._ensure_monitor()
+            return device
         devices = self.inputs()
         if not devices:
             raise AudioError("No recording input is available. Connect a microphone or audio interface and check the system's audio settings.")
-        if self.input_id:
+        if selected:
             for device in devices:
-                if bytes(device.id()).hex() == self.input_id:
+                if bytes(device.id()).hex() == selected:
                     return device
             raise AudioError("The selected recording input is unavailable. Choose an input in Options → Audio Hardware.")
         return next((device for device in devices if device.isDefault()), devices[0])
@@ -88,6 +94,7 @@ class AudioHardwareDialog(QDialog):
         self.output.setAccessibleName("Playback device")
         self.input = QComboBox()
         self.input.setAccessibleName("Recording device")
+        self.input.setToolTip('System Audio records the default output selected in the system sound settings. No microphone is used.')
         self.buffer = QSpinBox()
         self.buffer.setRange(20, 500)
         self.buffer.setSuffix(" ms")
@@ -128,6 +135,7 @@ class AudioHardwareDialog(QDialog):
         self.input.addItem("System Default", "")
         for device in self.devices.inputs():
             self.input.addItem(Literal(device.description()),bytes(device.id()).hex())
+        self.input.addItem(SYSTEM_OUTPUT_LABEL, SYSTEM_OUTPUT)
         index = self.input.findData(selected)
         if selected and index < 0:
             self.input.addItem("Selected input (disconnected)",selected)

@@ -14,6 +14,7 @@ Requires:       qt6-qttranslations
 Requires:       python3-numpy
 Requires:       python3-mutagen
 Requires:       /usr/bin/ffmpeg
+Requires:       pulseaudio-utils
 Requires:       rubberband-libs >= 3.3
 Requires:       libsamplerate
 Requires:       lilv

@@ -1,4 +1,4 @@
-# SoundSausage 0.24.0
+# SoundSausage 0.25.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -14,6 +14,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - ID3-hoofdstukken volgen knippen, trimmen, plakken, omkeren en tijdrekken; inhoudsopgave, selectie-export en Undo/Redo blijven samenhangend.
 - Achterhaalde ReplayGain-, volume-, timing- en encodergegevens opschonen; actuele duur en nieuwe MP3-encoderinformatie bewaren.
 - Ondersteunde WAV INFO-tekst naar MP3 meenemen; onbekende, misvormde en conflicterende velden vóór export melden.
+- Systeemgeluid van de standaard Linux-uitgang opnemen via Systeemgeluid (wat je hoort), met stereo, pauze/hervatten en behoud bij fouten. Keuze in Audioapparaten en het opnamevenster; PulseAudio/PipeWire-clienthulpmiddelen worden meegeïnstalleerd.
 - Opnamebegin eenmalig overslaan, 0–500 ms met onthouden keuze en korte fade-in; beginwaarde 50 ms.
 - Twee dunne kanaalranden tussen links en rechts, begrensd tot het tekenvlak, ook bij live opname.
 - De huidige golfvorm of sessie sluiten via Bestand → Sluiten of Ctrl+W, met een keuze voor niet-opgeslagen wijzigingen.
@@ -89,6 +90,8 @@ of voorwaarden voor v1.0.
 
 ## Ondersteuning en grenzen
 
+- Systeemgeluid volgt de systeemstandaard bij een nieuwe take, niet de afzonderlijke afspeelkeuze in de app. Opname omvat alleen die uitgang, inclusief begeleiding op dezelfde uitgang. Wissel uitgangen tussen takes; gemeld verlies bewaart de take. De monitor volgt de audiomixer, niet noodzakelijk de fysieke luidsprekersterkte.
+
 - Samplepunten verschijnen vanaf twee logische pixels per sample; het numerieke venster blijft bij ieder zoomniveau beschikbaar. Golfvorm tekenen vervangt de samples langs de getekende lijn; een groep beslaat maximaal één seconde, een hele beweging kan meerdere groepen raken.
 - ID3-hoofdstukken gebruiken milliseconden; lege of door gedeeltelijk omkeren versnipperde hoofdstukken vervallen. Herkende verouderde metingen en niet-ondersteunde getimede ID3-velden vervallen na audioverandering. Nieuwe ReplayGain-metingen worden niet berekend; onbekende privévelden blijven letterlijk behouden.
 - Stereo houdt een gezamenlijke tijdas. Bij knippen, verwijderen, invoegen, plakken, tijdrekken, uitklank en opname op één kanaal verschuift alleen dat kanaal; het andere blijft exact op zijn positie. Het kortere kanaal krijgt achteraan stilte, die bij opslaan onderdeel van de audio blijft.
@@ -120,7 +123,7 @@ of voorwaarden voor v1.0.
 ## Praktijkcontrole
 
 - Virtuele in-/uitvoercontroles zijn geautomatiseerd; opname, pauze/hervatten en terugluisteren zijn ook met een USB-microfoon in de praktijk bevestigd.
-- Virtuele loopback en onafhankelijke plug-infixtures toetsen synchronisatie; de nieuwe kalibratie-/punchroute en eigen vensters vragen ook fysieke praktijkcontrole vóór v1.0.
+- Virtuele loopback en onafhankelijke plug-infixtures toetsen synchronisatie; systeemgeluid, de nieuwe kalibratie-/punchroute en eigen vensters vragen ook fysieke praktijkcontrole vóór v1.0.
 
 Zie de [projectbeschrijving](../README.md), [volume- en panlijnen](ENVELOPES.md) en
 het [projectformaat](PROJECTFORMAAT.md) voor meer informatie.

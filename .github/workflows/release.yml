@@ -57,7 +57,7 @@ jobs:
       - name: Build dependencies
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest python3-pyside6.qtmultimedia qt6-qpa-plugins qt6-translations-l10n libsamplerate0 librubberband2 pulseaudio liblilv-0-0 libxcb-cursor0 xvfb fonts-dejavu-core ffmpeg python3-mutagen
+          apt-get install -y --no-install-recommends g++ make python3 python3-numpy python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtwidgets python3-pyside6.qttest python3-pyside6.qtmultimedia qt6-qpa-plugins qt6-translations-l10n libsamplerate0 librubberband2 pulseaudio pulseaudio-utils liblilv-0-0 libxcb-cursor0 xvfb fonts-dejavu-core ffmpeg python3-mutagen
       - name: Private virtual audio device
         run: |
           getent group pulse >/dev/null || groupadd --system pulse
@@ -93,6 +93,7 @@ jobs:
           soundsausage --audio-selftest
           soundsausage --input-selftest
           soundsausage --duplex-selftest
+          soundsausage --system-audio-selftest
       - uses: actions/upload-artifact@v4
         with: { name: debian, path: "soundsausage_*_amd64.deb" }
       - uses: actions/upload-artifact@v4
@@ -150,6 +151,7 @@ jobs:
           soundsausage --audio-selftest
           soundsausage --input-selftest
           soundsausage --duplex-selftest
+          soundsausage --system-audio-selftest
           UBUNTU_CHECK
 
   fedora:
@@ -161,7 +163,7 @@ jobs:
         run: |
           printf '%s\n' '%_install_langs all' > /etc/rpm/macros.image-language-conf
           rpm --eval '%{_install_langs}'
-          dnf install -y rpm-build gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs pulseaudio lilv xorg-x11-server-Xvfb dejavu-sans-fonts dejavu-sans-mono-fonts ffmpeg-free python3-mutagen
+          dnf install -y rpm-build gcc-c++ make python3-pyside6 qt6-qtmultimedia qt6-qttranslations python3-numpy libsamplerate rubberband-libs pulseaudio pulseaudio-utils lilv xorg-x11-server-Xvfb dejavu-sans-fonts dejavu-sans-mono-fonts ffmpeg-free python3-mutagen
           test -f /usr/share/qt6/translations/qtbase_nl.qm
       - name: Private virtual audio device
         run: |
@@ -197,6 +199,7 @@ jobs:
           soundsausage --audio-selftest
           soundsausage --input-selftest
           soundsausage --duplex-selftest
+          soundsausage --system-audio-selftest
       - uses: actions/upload-artifact@v4
         with: { name: fedora, path: "soundsausage-*.rpm" }
 
@@ -205,7 +208,7 @@ jobs:
     runs-on: ubuntu-latest
     container: archlinux:latest
     steps:
-      - run: pacman -Syu --noconfirm --needed base-devel pyside6 qt6-multimedia qt6-translations python-numpy libsamplerate rubberband pulseaudio lilv xorg-server-xvfb ttf-dejavu ffmpeg python-mutagen
+      - run: pacman -Syu --noconfirm --needed base-devel pyside6 qt6-multimedia qt6-translations python-numpy libsamplerate rubberband pulseaudio libpulse lilv xorg-server-xvfb ttf-dejavu ffmpeg python-mutagen
       - name: Private virtual audio device
         run: |
           getent group pulse >/dev/null || groupadd --system pulse
@@ -242,6 +245,7 @@ jobs:
           soundsausage --audio-selftest
           soundsausage --input-selftest
           soundsausage --duplex-selftest
+          soundsausage --system-audio-selftest
       - uses: actions/upload-artifact@v4
         with: { name: arch, path: "soundsausage-*.pkg.tar.zst" }
 

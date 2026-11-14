@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.24.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.25.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -16,6 +16,7 @@ Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente ca
   - [Metadatos MP3 después de editar](#ss-topic-metadatos-mp3-despues-de-editar)
 - [4. Reproducción, zoom y dispositivos](#ss-topic-4-reproduccion-zoom-y-dispositivos)
 - [5. Grabar](#ss-topic-5-grabar)
+  - [Grabar audio del sistema (lo que oyes)](#ss-topic-grabar-audio-del-sistema-lo-que-oyes)
 - [6. Selección, canales y edición](#ss-topic-6-seleccion-canales-y-edicion)
   - [Editar muestras individuales](#ss-topic-editar-muestras-individuales)
   - [Dibujar forma de onda](#ss-topic-dibujar-forma-de-onda)
@@ -140,6 +141,31 @@ Conecta un micrófono/interfaz, elige la entrada en **Dispositivos de audio** y 
 La entrada no se monitoriza por los altavoces. Ajusta la ganancia en la interfaz/micrófono o Linux; bajar después no repara una entrada saturada. Perder el dispositivo detiene y conserva el audio en lugar de cambiar de micrófono. Las tomas se escriben por bloques y se guardan aproximadamente cada segundo. Recuperar abre una forma aparte. Cancelar la conversión tras detener deja la toma en **Recuperar trabajo** y conserva el documento anterior.
 
 **Omitir al inicio** elimina una vez los primeros milisegundos de cada toma para excluir un clic de arranque. El valor inicial es 50 ms, ajustable de 0 a 500 ms y recordado. Con 0 ms se conserva todo el inicio; después de una omisión se aplica una entrada gradual de 5 ms. El audio omitido no se graba. Reloj, vista, niveles y duración máxima siguen el audio conservado. Pausar/reanudar no repite la omisión. Con acompañamiento, la posición del clip tiene en cuenta el tiempo omitido para mantener la sincronización.
+
+<a id="ss-topic-grabar-audio-del-sistema-lo-que-oyes"></a>
+
+### Grabar audio del sistema (lo que oyes)
+
+Elige **Opciones → Dispositivos de audio → Dispositivo de grabación → Audio del
+sistema (lo que oyes)**, también disponible en la ventana de grabación. La selección
+se recuerda y graba la salida predeterminada de Linux sin micrófono. Elige la salida
+en los ajustes de sonido del sistema, reproduce la otra aplicación, pulsa **R** e
+inicia la grabación. **Estéreo** conserva ambos canales; Mono usa el primer canal de
+entrada 1 (izquierdo) o 2 (derecho). **P** pausa/reanuda sin incluir la pausa.
+Detener conserva la toma; después edita y guarda como WAV o MP3.
+
+Cada toma nueva resuelve la salida predeterminada actual del sistema, que puede
+ser distinta del dispositivo de reproducción elegido en SoundSausage. Solo incluye
+sonido enviado a esa salida, también las pistas de acompañamiento de SoundSausage
+que suenen allí. Los niveles siguen al mezclador de audio y pueden diferir del
+volumen físico de los altavoces. La entrada no se reproduce otra vez por altavoces.
+
+Requiere PulseAudio o la compatibilidad PulseAudio de PipeWire; los paquetes incluyen
+las utilidades cliente. Si falta la salida, el servidor o una utilidad, se muestra
+un mensaje sin recurrir al micrófono. Cambia de salida entre tomas. Un cambio o
+pérdida de salida notificado detiene y conserva la toma; corrige la ruta y comienza
+de nuevo. **Predeterminado del sistema** sigue siendo el micrófono/entrada
+predeterminado, distinto de **Audio del sistema**.
 
 <a id="ss-topic-6-seleccion-canales-y-edicion"></a>
 

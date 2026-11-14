@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.24.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.25.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -16,6 +16,7 @@ Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige un
   - [MP3-Metadaten nach dem Bearbeiten](#ss-topic-mp3-metadaten-nach-dem-bearbeiten)
 - [4. Wiedergabe, Zoom und Audiogeräte](#ss-topic-4-wiedergabe-zoom-und-audiogerate)
 - [5. Aufnehmen](#ss-topic-5-aufnehmen)
+  - [Systemaudio aufnehmen (was Sie hören)](#ss-topic-systemaudio-aufnehmen-was-sie-horen)
 - [6. Auswahl, Kanäle und Bearbeitung](#ss-topic-6-auswahl-kanale-und-bearbeitung)
   - [Einzelne Samples bearbeiten](#ss-topic-einzelne-samples-bearbeiten)
   - [Wellenform zeichnen](#ss-topic-wellenform-zeichnen)
@@ -140,6 +141,31 @@ Mikrofon/Interface anschließen, Eingang in **Audiogeräte** wählen und **R** d
 Der Eingang wird nicht über Lautsprecher wiedergegeben. Verstärkung am Interface/Mikrofon oder in Linux einstellen; bereits übersteuerter Eingang wird durch späteres Absenken nicht repariert. Geräteverlust stoppt und behält Audio, statt das Mikrofon zu wechseln. Aufnahmen werden blockweise geschrieben und etwa sekündlich gesichert. Wiederherstellung öffnet eine separate Wellenform. Wird die Umwandlung nach Stopp abgebrochen, bleibt die Aufnahme unter **Arbeit wiederherstellen** verfügbar; das alte Dokument bleibt unverändert.
 
 **Am Anfang überspringen** entfernt die ersten Millisekunden einmal pro Aufnahme, um einen Einschaltknacks auszuschließen. Der Anfangswert beträgt 50 ms, einstellbar von 0 bis 500 ms und gespeichert. Bei 0 ms bleibt der gesamte Anfang erhalten; nach einem Schnitt folgt eine Einblendung von 5 ms. Entferntes Audio wird nicht aufgenommen. Uhr, Liveansicht, Pegel und Höchstdauer folgen dem behaltenen Audio. Pause/Fortsetzen wiederholt den Schnitt nicht. Bei Begleitwiedergabe berücksichtigt die Clipposition die entfernte Zeit und erhält die Ausrichtung.
+
+<a id="ss-topic-systemaudio-aufnehmen-was-sie-horen"></a>
+
+### Systemaudio aufnehmen (was Sie hören)
+
+Wählen Sie **Optionen → Audiogeräte → Aufnahmegerät → Systemaudio (was Sie hören)**
+oder diese Quelle im Aufnahmefenster. Sie nimmt den Linux-Standardausgang ohne
+Mikrofon auf; die Auswahl wird gespeichert. Wählen Sie den gewünschten Ausgang
+in den Klangeinstellungen des Systems, starten Sie die andere App und dann mit
+**R** die Aufnahme. **Stereo** erhält beide Kanäle; Mono nutzt Eingangskanal 1
+(links) oder 2 (rechts). **P** pausiert/setzt fort, ohne Pausenzeit aufzuzeichnen.
+Stop behält die Aufnahme; anschließend wie üblich bearbeiten und als WAV/MP3 speichern.
+
+Jede neue Aufnahme ermittelt den aktuellen System-Standardausgang. Er kann vom
+separaten Wiedergabegerät in SoundSausage abweichen. Nur Ton auf diesem Ausgang
+wird erfasst, auch dort abgespielte SoundSausage-Begleitspuren. Die Monitorpegel
+folgen dem Audiomixer und können von der physischen Lautsprecherlautstärke abweichen.
+Die Eingabe wird nicht erneut über Lautsprecher wiedergegeben.
+
+PulseAudio oder die PulseAudio-Unterstützung von PipeWire ist nötig; die Pakete
+enthalten die Client-Werkzeuge. Fehlende Ausgabe, Verbindung oder Werkzeuge ergeben
+eine Meldung, niemals einen Wechsel zum Mikrofon. Wechseln Sie Ausgänge zwischen
+Aufnahmen. Eine gemeldete Ausgangsänderung oder Trennung stoppt die Aufnahme und
+behält die Take; Route korrigieren und neu starten. **Systemstandard** bleibt die
+Standard-Mikrofonquelle und ist etwas anderes als **Systemaudio**.
 
 <a id="ss-topic-6-auswahl-kanale-und-bearbeitung"></a>
 

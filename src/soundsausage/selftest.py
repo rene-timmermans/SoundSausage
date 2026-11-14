@@ -345,3 +345,42 @@ def run_duplex(window,rate=48000):
         if window.recording_busy:window.end_recording_view()
         window.session.mark_saved();window.session=original_session;window.error=original_error
         window.multitrack.set_session(original_session);window.set_mode(original_mode)
+
+
+def run_system_audio(window=None, rate=48000):
+    """Explicit output-monitor test with two short tones; never an ordinary selftest."""
+    from PySide6.QtCore import QEventLoop, QTimer, QSettings
+    from .audio_devices import AudioDevices
+    from .capture import Recorder
+    from .playback import Playback
+    from .system_audio import SYSTEM_OUTPUT
+    loop=QEventLoop(); errors=[]; takes=[]
+    with tempfile.TemporaryDirectory(prefix='soundsausage-system-audio-check-') as folder:
+        devices=AudioDevices(settings=QSettings(str(Path(folder)/'audio.ini'),QSettings.Format.IniFormat))
+        devices.input_id=SYSTEM_OUTPUT
+        recorder=Recorder(devices=devices); player=Playback(devices=devices)
+        recorder.finished.connect(takes.append); recorder.finished.connect(lambda take:loop.quit())
+        recorder.failed.connect(errors.append); recorder.failed.connect(lambda message:loop.quit())
+        player.failed.connect(errors.append); player.failed.connect(lambda message:loop.quit())
+        timeout=QTimer();timeout.setSingleShot(True);timeout.timeout.connect(loop.quit)
+        try:
+            timebase=np.arange(rate//2)/rate
+            tone=np.column_stack((.25*np.sin(2*np.pi*997*timebase),.2*np.sin(2*np.pi*1501*timebase))).astype(np.float32)
+            player.loop=True
+            if not recorder.start(rate,2,limit_seconds=.8):raise RuntimeError('; '.join(errors))
+            player.play(tone,rate)
+            timeout.start(7000);loop.exec()
+            if errors or recorder.active or len(takes)!=1:raise RuntimeError('; '.join(errors) or 'System output capture did not finish.')
+            data=takes[0].samples
+            assert takes[0].rate==rate and data.shape==(round(rate*.8),2)
+            spectrum=abs(np.fft.rfft(data,axis=0))**2
+            frequencies=np.fft.rfftfreq(len(data),1/rate)
+            low=spectrum[(frequencies>970)&(frequencies<1025)].sum(axis=0)
+            high=spectrum[(frequencies>1470)&(frequencies<1530)].sum(axis=0)
+            assert np.sqrt(np.mean(data.astype(np.float64)**2))>.01, 'The system monitor recorded silence.'
+            assert low[0]>5*high[0] and high[1]>5*low[1], 'The monitor did not capture the separate output channels.'
+            print(f'SoundSausage {__version__}: system audio selftest OK ({rate} Hz, default output, stereo tones captured)')
+        finally:
+            timeout.stop();player.shutdown();recorder.stop(keep=False)
+            for take in takes:take.discard()
+            recorder.deleteLater();player.deleteLater();devices.deleteLater()

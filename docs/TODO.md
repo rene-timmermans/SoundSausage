@@ -1,6 +1,6 @@
 # Open punten richting v1.0
 
-Stand: 14 november 2026, SoundSausage 0.24.0.
+Stand: 14 november 2026, SoundSausage 0.25.0 in eindcontrole.
 
 Er blijven **twee gekozen punten**: B36b en B33. B23/B24 zijn
 [afgerond in 0.24.0](validation/tails-and-boundaries.md), B21 in 0.23.0 en
@@ -27,7 +27,7 @@ De softwarewijziging voor B36b is nog niet begonnen.
 | Punt | Uitwerking |
 | --- | --- |
 | B36b | Markereditor: markers toevoegen, verplaatsen, benoemen en verwijderen, met behoud bij bewerken en opslaan. |
-| B33 | De afgeronde app fysiek toetsen: kalibratie, langere overdub, punch/heropenen en echte VST3-/LV2-vensters met statusopslag. |
+| B33 | De afgeronde app fysiek toetsen: kalibratie, langere overdub, punch/heropenen, systeemgeluid en echte VST3-/LV2-vensters met statusopslag. |
 
 ## Afronden naar de eerste v1
 

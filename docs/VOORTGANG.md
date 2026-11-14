@@ -2,6 +2,12 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
+0.25.0 staat in eindcontrole: Systeemgeluid (wat je hoort) neemt de standaarduitgang
+op, met bronkeuze in beide opnamevensters en vijf bijgewerkte handleidingen.
+Gerichte proeven dekken bronkeuze, stereo, pauzeren, fouten en veilig behoud.
+De pakketroute krijgt een extra geïnstalleerde controle met afspeeltonen.
+De twee bestaande v1-punten B36b en B33 blijven open.
+
 SoundSausage 0.24.0 is gepubliceerd en geverifieerd. B23/B24 zijn afgerond:
 automatische uitklank, langere galm/echo en instelbare selectieovergangen bij
 EQ/filters. De natuurlijke causale fase blijft behouden. Vorige en Volgende

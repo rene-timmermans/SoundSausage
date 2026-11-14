@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.24.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.25.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -16,6 +16,7 @@ Click a topic to jump directly to it. Contents brings you back; Previous and Nex
   - [MP3 metadata after editing](#ss-topic-mp3-metadata-after-editing)
 - [4. Playback, zoom and audio devices](#ss-topic-4-playback-zoom-and-audio-devices)
 - [5. Recording](#ss-topic-5-recording)
+  - [Record system audio (what you hear)](#ss-topic-record-system-audio-what-you-hear)
 - [6. Selection, channels and editing](#ss-topic-6-selection-channels-and-editing)
   - [Editing individual samples](#ss-topic-editing-individual-samples)
   - [Draw Waveform](#ss-topic-draw-waveform)
@@ -139,6 +140,30 @@ Connect a microphone/interface, choose the recording device in **Audio Hardware*
 The input is not monitored through speakers. Adjust gain on the interface/microphone or Linux sound settings; clipped input cannot be repaired by lowering it later. Device loss stops and retains captured audio rather than switching microphones. Takes are written in blocks, checkpointed roughly each second. Recovery opens the last checkpoint as a separate waveform. Cancelling conversion after Stop leaves the take available under **Recover Work** and the old document unchanged.
 
 **Skip at start** removes the first input milliseconds once per take to exclude a startup click. The initial value is 50 ms, adjustable from 0 to 500 ms and remembered. At 0 ms the full start is kept; a nonzero cut is followed by a 5 ms fade-in. Removed audio is not recorded. Clock, live view, meters and maximum duration follow retained audio. Pause/resume does not repeat the cut. With backing playback, clip placement accounts for the removed time to retain alignment.
+
+<a id="ss-topic-record-system-audio-what-you-hear"></a>
+
+### Record system audio (what you hear)
+
+Choose **Options → Audio Hardware → Recording device → System Audio (What You Hear)**,
+or select that input in the recording setup. It records Linux’s default output,
+without a microphone, and remembers the choice. Set the desired output in the
+system sound settings, start the other app, press **R** and start recording.
+Choose **Stereo** for both channels; Mono uses first input channel 1 (left) or 2
+(right). **P** pauses/resumes without including paused time. Stop keeps the take;
+edit and save as WAV or MP3 as usual.
+
+Each new take resolves the current default system output. This may differ from
+SoundSausage’s separately chosen playback device. Only sound sent to that output
+is included; backing tracks from SoundSausage on the same output are included too.
+Monitor levels follow the audio mixer and may differ from physical speaker volume.
+The captured input is not played through speakers again.
+
+Requires PulseAudio or PipeWire’s PulseAudio support; installers include the client
+utilities. Missing output, server or utilities produces a message, never a fallback
+to the microphone. Change default outputs between takes. A reported output change
+or loss stops capture and retains the take; fix the route and start again.
+**System Default** still means the default microphone/input, unlike **System Audio**.
 
 <a id="ss-topic-6-selection-channels-and-editing"></a>
 

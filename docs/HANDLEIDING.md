@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.24.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.25.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -34,6 +34,7 @@ Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vori
 - [3a. Opnemen](#ss-topic-3a-opnemen)
   - [Een opname maken](#ss-topic-een-opname-maken)
   - [Het opnamebegin overslaan](#ss-topic-het-opnamebegin-overslaan)
+  - [Systeemgeluid opnemen (wat je hoort)](#ss-topic-systeemgeluid-opnemen-wat-je-hoort)
   - [Ingang en herstel](#ss-topic-ingang-en-herstel)
   - [Een dagelijkse werkwijze](#ss-topic-een-dagelijkse-werkwijze)
 - [4. Selecteren en de golfvorm bewerken](#ss-topic-4-selecteren-en-de-golfvorm-bewerken)
@@ -413,6 +414,34 @@ Het overgeslagen geluid komt niet in de opname. De klok, golfvorm, meters en
 **Maximale duur** volgen de bewaarde audio. Pauzeren en hervatten herhalen de
 uitsnede niet. Bij opname met begeleiding wordt de uitgesneden tijd in de
 clippositie meegenomen, zodat het overgebleven geluid op zijn plaats blijft.
+
+<a id="ss-topic-systeemgeluid-opnemen-wat-je-hoort"></a>
+
+### Systeemgeluid opnemen (wat je hoort)
+
+Kies **Opties → Audioapparaten → Opnameapparaat → Systeemgeluid (wat je hoort)** om
+de standaarduitgang van Linux op te nemen. Dezelfde keuze staat onder **Ingang**
+in het opnamevenster. Er wordt geen microfoon gebruikt. De bron blijft onthouden.
+
+1. Kies in de geluidsinstellingen van Linux de uitgang waarop de gewenste app afspeelt.
+2. Speel bijvoorbeeld muziek uit een browser af, druk in SoundSausage op **R** en kies Systeemgeluid.
+3. Kies **Stereo** om links en rechts te bewaren, of **Mono** met ingangskanaal 1 voor links of 2 voor rechts.
+4. Start de opname. **P** pauzeert/hervat zonder de pauzetijd mee te nemen; **Stop** bewaart de opname. Bewerk en bewaar daarna als WAV of MP3.
+
+Een nieuwe opname bepaalt de actuele standaarduitgang. Die kan verschillen van
+het afspeelapparaat dat afzonderlijk in SoundSausage is gekozen. Alleen geluid
+op die ene uitgang wordt opgenomen; apps op een andere uitgang ontbreken.
+Ook SoundSausage-begeleiding die op dezelfde uitgang afspeelt komt in de opname.
+De teruggelezen niveaus volgen de audiomixer en kunnen afwijken van de fysieke
+luidsprekersterkte. Invoer wordt niet opnieuw via de luidsprekers afgespeeld.
+
+Deze bron werkt met PulseAudio of de PulseAudio-ondersteuning van PipeWire.
+De installatiepakketten nemen de benodigde clienthulpmiddelen mee. Een ontbrekende
+uitgang, verbinding of hulpmiddel geeft een melding; er wordt niet op een microfoon
+teruggevallen. Wissel de standaarduitgang tussen opnamen. Als een uitgangswissel
+of verlies tijdens opnemen wordt gemeld, blijft de reeds opgenomen take bewaard.
+Stop, herstel de route en start opnieuw. De gewone keuze **Systeemstandaard** blijft
+de standaardmicrofoon of audio-ingang, en verschilt dus van **Systeemgeluid**.
 
 <a id="ss-topic-ingang-en-herstel"></a>
 

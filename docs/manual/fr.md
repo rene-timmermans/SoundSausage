@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.24.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.25.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -16,6 +16,7 @@ Cliquez sur un sujet pour y accéder. Sommaire revient ici ; Précédent et Suiv
   - [Métadonnées MP3 après modification](#ss-topic-metadonnees-mp3-apres-modification)
 - [4. Lecture, zoom et matériel audio](#ss-topic-4-lecture-zoom-et-materiel-audio)
 - [5. Enregistrer](#ss-topic-5-enregistrer)
+  - [Enregistrer l’audio système (ce que vous entendez)](#ss-topic-enregistrer-laudio-systeme-ce-que-vous-entendez)
 - [6. Sélection, canaux et édition](#ss-topic-6-selection-canaux-et-edition)
   - [Modifier des échantillons individuels](#ss-topic-modifier-des-echantillons-individuels)
   - [Dessiner la forme d’onde](#ss-topic-dessiner-la-forme-donde)
@@ -140,6 +141,31 @@ Branchez un micro/interface, choisissez l'entrée dans **Périphériques audio**
 L'entrée n'est pas renvoyée aux haut-parleurs. Réglez le gain sur l'interface/micro ou dans Linux ; baisser ensuite ne répare pas une entrée écrêtée. La perte d'un périphérique arrête et conserve l'audio capturé au lieu de changer de micro. Les prises sont écrites par blocs, avec sauvegarde environ chaque seconde. La récupération ouvre une forme séparée. Annuler la conversion après arrêt garde la prise dans **Récupérer le travail** et laisse l'ancien document intact.
 
 **Début à ignorer** retire une fois les premières millisecondes de chaque prise pour exclure un clic de démarrage. La valeur initiale est 50 ms, réglable de 0 à 500 ms et mémorisée. À 0 ms, le début est conservé ; une coupe est suivie d’un fondu d’entrée de 5 ms. L’audio retiré n’est pas enregistré. Horloge, vue, niveaux et durée maximale suivent l’audio conservé. Pause/reprise ne répète pas la coupe. Avec accompagnement, la position du clip tient compte du temps retiré pour préserver l’alignement.
+
+<a id="ss-topic-enregistrer-laudio-systeme-ce-que-vous-entendez"></a>
+
+### Enregistrer l’audio système (ce que vous entendez)
+
+Choisissez **Options → Périphériques audio → Périphérique d’enregistrement → Audio
+système (ce que vous entendez)**, également disponible dans la fenêtre d’enregistrement.
+La source, mémorisée, enregistre la sortie Linux par défaut sans microphone.
+Choisissez cette sortie dans les réglages audio du système, lancez l’autre application,
+puis appuyez sur **R** et démarrez. **Stéréo** conserve les deux canaux ; Mono utilise
+le premier canal d’entrée 1 (gauche) ou 2 (droite). **P** met en pause/reprend sans
+inclure la pause. Stop conserve la prise ; modifiez et enregistrez en WAV/MP3.
+
+Chaque nouvelle prise détermine la sortie système par défaut actuelle, qui peut
+différer du périphérique de lecture choisi séparément dans SoundSausage. Seul le
+son envoyé à cette sortie est inclus, y compris les accompagnements SoundSausage
+qui y jouent. Les niveaux suivent le mixeur audio et peuvent différer du volume
+physique des haut-parleurs. L’entrée n’est pas rejouée dans les haut-parleurs.
+
+Nécessite PulseAudio ou la compatibilité PulseAudio de PipeWire ; les paquets
+incluent les outils clients. Une sortie, un serveur ou un outil manquant produit
+un message, sans jamais sélectionner le microphone à sa place. Changez la sortie
+entre les prises. Un changement ou une perte de sortie signalé arrête et conserve
+la prise ; corrigez le routage et recommencez. **Valeur par défaut du système** reste
+l’entrée microphone par défaut, distincte de **Audio système**.
 
 <a id="ss-topic-6-selection-canaux-et-edition"></a>
 

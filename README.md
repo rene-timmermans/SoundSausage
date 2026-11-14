@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.24.0**.
+De huidige versie is **0.25.0**.
 
 ## Wat het kan
 
@@ -23,6 +23,7 @@ De huidige versie is **0.24.0**.
 **Opnemen en bewerken**
 
 - Mono of stereo opnemen via een microfoon of audio-interface, met keuze van ingang en uitgang, live golfvorm en niveaus.
+- Systeemgeluid opnemen van de standaarduitgang, bijvoorbeeld muziek uit een browser, met Systeemgeluid (wat je hoort).
 - Opnemen naar een nieuwe golfvorm, invoegen bij de cursor, een selectie vervangen of een nieuwe clip op een spoor maken.
 - Pauzeren, hervatten en een take in één stap ongedaan maken; een kort opnamebegin overslaan om inschakeltikjes te vermijden.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
@@ -92,6 +93,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.25.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.0)** Systeemgeluid opnemen van de standaarduitgang, met bronkeuze in Audioapparaten en het opnamevenster, stereo en pauzeren/hervatten.
 
 **[0.24.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.24.0)** Automatische uitklank en langere galm/echo. Soepele selectieranden bij EQ en filters. Vorige/Volgende bladeren door handleidingonderwerpen; werkbalk- en afspeeliconen gebruiken de themakleur op neutrale knoppen.
 
