@@ -9,6 +9,8 @@ on:
       - tests/**
       - third_party/**
       - packaging/**
+      - Makefile
+      - tools/run_tests.py
       - .github/workflows/release.yml
       - docs/releases/**
   workflow_dispatch:
