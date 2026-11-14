@@ -66,7 +66,18 @@ def draw(p, name, color):
         elif badge == "pen": line(15, 22, 22, 15); line(19, 15, 22, 18)
         elif badge == "copy": rect(15, 14, 6, 6); rect(18, 17, 5, 6)
         return
-    if name == "open":
+    if name=='remaster':
+        for x,h in ((3,3),(6,7),(9,4),(12,9)):line(x,15-h,x,15+h/2)
+        line(18,2,18,12);line(13,7,23,7);line(15,4,21,10);line(15,10,21,4)
+        line(17,16,17,22);line(14,19,20,19)
+    elif name in ('marker_add','markers','marker_previous','marker_next'):
+        line(5,3,5,22);line(5,3,18,3);line(18,3,15,9);line(15,9,5,9)
+        if name=='marker_add':line(14,17,23,17);line(18.5,12.5,18.5,21.5)
+        elif name=='markers':
+            for y in (13,17,21):line(10,y,22,y)
+        elif name=='marker_previous':line(21,16,10,16);line(10,16,14,12);line(10,16,14,20)
+        else:line(10,16,21,16);line(21,16,17,12);line(21,16,17,20)
+    elif name == "open":
         path = QPainterPath(QPointF(3, 19))
         for x, y in ((3, 6), (9, 6), (11, 9), (20, 9), (20, 12), (7, 12), (3, 19), (18, 19), (22, 12)):
             path.lineTo(x, y)

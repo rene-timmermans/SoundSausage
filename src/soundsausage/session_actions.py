@@ -70,6 +70,7 @@ class SessionActions:
         if "mode_multi" not in self.actions:
             return
         multi = self.mode == "multitrack"
+        self.actions['remaster'].setEnabled(not multi and self.document.frames>0)
         self.actions['track_fx'].setEnabled(multi)
         if hasattr(self, "effects_toolbar"):
             self.effects_toolbar.setVisible(not multi)
@@ -283,9 +284,14 @@ class SessionActions:
             return
         try:
             audio = self.session.render()
+            information=metadata.crop(self.session.metadata,0,len(audio),sample_rate=self.session.sample_rate)
+            if not self._metadata_permission(encoding,information=information,
+                    sample_rate=self.session.sample_rate,frames=len(audio),extra_chunks=()):
+                return
             # The supplied original PCM16 mixes saturate at -32767 and +32767.
             # Keep the float render's headroom and ordinary waveform saves intact.
-            write_audio(path, audio, self.session.sample_rate, encoding, pcm16_symmetric=True)
+            write_audio(path, audio, self.session.sample_rate, encoding, pcm16_symmetric=True,
+                        metadata=information)
         except (ValueError, OSError, RuntimeError) as error:
             self.error("Mix Down", error)
             return

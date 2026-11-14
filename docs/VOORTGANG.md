@@ -1,13 +1,25 @@
 # Ontwikkelroute
 
-## Actuele stand richting v1.0 — 14 november 2026
+## Nieuwe uitbreiding — 0.26.0 in afronding
+
+De markereditor voegt markeringen toe, benoemt/verplaatst/verwijdert ze en bewaart
+ze in WAV/MP3 en projecten/herstel. Metadata-only Undo wijzigt geen samples.
+Remaster vermindert kort wegzakkend midden/hoog bij drums, met begrensd herstel,
+gedeelde stereoregeling en vergelijking op gelijk luistervolume. Beide functies
+zijn vertaald en beschreven in alle vijf geïndexeerde offlinehandleidingen.
+Gerichte controles slagen; de volledige bouw/publicatie wordt na afloop vastgelegd
+in de [validatie](validation/markers-and-remaster.md). B33 omvat de nog open
+fysieke proeven en Remaster-luistercontrole; de F11-proef is al bevestigd.
+
+## Vorige stabiele stand — 14 november 2026
 
 SoundSausage 0.25.2 is gepubliceerd en geverifieerd. De versie corrigeert haperend afspelen bij volledig scherm en grote
 vensters. De golfvorm krijgt een herbruikbaar beeld; zoomen en formaatwisselingen
 bereiden piekgegevens tijdens afspelen op de achtergrond voor. Cursor en meters
 worden maximaal dertigmaal per seconde getekend; de audioklok blijft onafhankelijk.
 Een eigen Qt-audiothread verzorgt de geluidsuitvoer en de audioklok, onafhankelijk
-van de vensterweergave. De lege werkruimte blijft leeg.
+van de vensterweergave. De hoorbare praktijkcontrole bevestigt dat het haperen
+in volledig scherm is verdwenen. De lege werkruimte blijft leeg.
 
 Alle 569 controles slagen zonder overslaan op Debian, Fedora en Arch, inclusief
 F11, 4K, zoomen en een bewust geblokkeerde GUI met opgenomen uitgangstonen.

@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.25.2. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.26.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -20,7 +20,9 @@ Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente ca
 - [6. Selección, canales y edición](#ss-topic-6-seleccion-canales-y-edicion)
   - [Editar muestras individuales](#ss-topic-editar-muestras-individuales)
   - [Dibujar forma de onda](#ss-topic-dibujar-forma-de-onda)
+- [6a. Marcadores](#ss-topic-6a-marcadores)
 - [7. Aplicar efectos](#ss-topic-7-aplicar-efectos)
+  - [Remaster](#ss-topic-remaster)
   - [Amplitud](#ss-topic-amplitud)
     - [Amplificar / fundido](#ss-topic-amplificar-fundido)
     - [Mezclador de canales](#ss-topic-mezclador-de-canales)
@@ -89,7 +91,7 @@ Dos finas líneas horizontales marcan el borde inferior del canal izquierdo y el
 
 Se conservan textos WAV, marcadores y etiquetas. Los marcadores siguen las ediciones, pegados y exportaciones de selección; se mantiene el título de destino. Los campos específicos de grabadoras se conservan literalmente y no se recalculan después de efectos. Los metadatos adicionales tienen un límite de 16 MiB: se rechaza una entrada mayor y se confirman las omisiones al exportar. La mezcla no reúne todos los marcadores de origen. Los WAV grandes usan RF64 cuando hace falta.
 
-**Nueva sesión multipista**, **Abrir sesión**, **Guardar sesión** y **Guardar sesión como** gestionan proyectos editables. Un proyecto SoundSausage (`.celp`) contiene audio, clips, curvas, ajustes de pistas, orden/omisión/colas de efectos y ajustes VST3. Guarda el proyecto además del WAV final para conservar las pistas separadas. Los proyectos SoundSausage anteriores siguen siendo legibles; los proyectos nuevos guardados requieren la aplicación 0.19.0 o posterior. La importación antigua `.ses` es limitada; continúa en un proyecto SoundSausage nuevo.
+**Nueva sesión multipista**, **Abrir sesión**, **Guardar sesión** y **Guardar sesión como** gestionan proyectos editables. Un proyecto SoundSausage (`.celp`) contiene audio, clips, curvas, ajustes de pistas, orden/omisión/colas de efectos y ajustes VST3. Guarda el proyecto además del WAV final para conservar las pistas separadas. Los proyectos SoundSausage anteriores siguen siendo legibles; los proyectos nuevos guardados requieren la aplicación 0.26.0 o posterior. La importación antigua `.ses` es limitada; continúa en un proyecto SoundSausage nuevo.
 
 **Cerrar / Ctrl+W** cierra la forma de onda actual; en multipista se llama **Cerrar sesión**. Elige guardar, descartar o cancelar. La otra vista y el portapapeles siguen disponibles. **Salir / Ctrl+Q** cierra la aplicación y comprueba los cambios sin guardar.
 
@@ -117,7 +119,7 @@ La precisión es de un milisegundo; los restos que se redondean a duración cero
 
 Las **mediciones** pueden quedar desactualizadas tras editar audio. Se eliminan los valores reconocidos de ReplayGain, R128, MP3Gain y picos, huellas, ajustes de volumen relativo y datos del codificador anterior. También desaparecen datos temporales incompatibles, como letras sincronizadas, índices de búsqueda antiguos y posiciones de sincronización. ReplayGain no se vuelve a calcular. Cambiar el tempo elimina el valor BPM existente; cambiar el tono elimina la tonalidad existente. Otras ediciones conservan ambos valores. Las letras normales sin tiempos y los campos privados desconocidos se conservan literalmente. Volver a codificar MP3 también elimina mediciones y posiciones antiguas, pues la compresión cambia el sonido y la estructura. Los datos del codificador proceden del nuevo archivo real.
 
-**WAV a MP3:** se transfieren los campos INFO compatibles de título, artista, álbum, género, fecha, número de pista, derechos de autor y comentarios. Las etiquetas ID3 existentes tienen prioridad. Se avisa antes de exportar de campos incompatibles, INFO mal formado y valores en conflicto. **No** cancela y conserva un destino existente; **Sí** continúa con las omisiones indicadas. Las etiquetas ID3 adicionales de un WAV también se indican antes de omitirlas. La información del software anterior se sustituye por la del nuevo codificador. Los marcadores WAV y otros datos incompatibles requieren también esta elección.
+**WAV a MP3:** se transfieren los campos INFO compatibles de título, artista, álbum, género, fecha, número de pista, derechos de autor y comentarios. Las etiquetas ID3 existentes tienen prioridad. Se avisa antes de exportar de campos incompatibles, INFO mal formado y valores en conflicto. **No** cancela y conserva un destino existente; **Sí** continúa con las omisiones indicadas. Las etiquetas ID3 adicionales de un WAV también se indican antes de omitirlas. La información del software anterior se sustituye por la del nuevo codificador. Los marcadores WAV compatibles se convierten en capítulos MP3; otros datos incompatibles requieren esta elección.
 
 Los metadatos adicionales siguen limitados a 16 MiB. Los ID3 WAV ilegibles se conservan sin interpretar; exportar MP3 informa de un error y mantiene el destino. La mezcla no reúne los metadatos de todas las pistas. Las conversiones largas muestran progreso y se pueden cancelar; reserva espacio para convertir y editar.
 
@@ -203,11 +205,46 @@ El zoom determina el tamaño del grupo: aproximadamente dos píxeles lógicos de
 
 El canal inicial queda fijo aunque el puntero cruce el otro canal. Las demás muestras, el otro canal, la duración y los metadatos se conservan. Los grupos sombreados y la línea nueva muestran la vista previa. Al soltar se confirma todo el gesto en un solo paso de deshacer. **Escape**, perder el foco, cambiar el zoom o desactivar el dibujo cancelan la vista previa. **Mayús+arrastrar** sigue seleccionando audio; pulsa otra vez **D** para volver al funcionamiento normal. Dibujar está bloqueado durante la grabación. Acerca el zoom para reparaciones precisas: al dibujar de lejos también se sustituyen los detalles finos de cada grupo tocado. Escucha después y usa **Ctrl+Z** si hace falta. En multipista, edita una copia de la forma de onda y aplícala al clip.
 
+<a id="ss-topic-6a-marcadores"></a>
+
+## 6a. Marcadores
+
+**M** añade un marcador en el cursor. **Editar → Lista de marcadores** (**Ctrl+Mayús+M**) permite nombrar, mover, eliminar o **Ir a** un marcador. **Alt+Izquierda/Derecha** salta al anterior/siguiente. Un doble clic en una bandera sobre la forma de onda abre sus propiedades. Arrastre para mover; **Escape** cancela y soltar crea un paso de Deshacer.
+
+Las propiedades permiten segundos y una trama exacta. Los nombres nuevos admiten hasta 256 caracteres sin caracteres de control. Un capítulo MP3 existente puede tener un final posterior al inicio y dentro del audio. Los marcadores nuevos son puntos, no nuevos intervalos de capítulo.
+
+Los marcadores son comunes a ambos canales. Los cambios temporales con **Ambos** los desplazan juntos; editar un solo canal conserva sus posiciones compartidas. Nombrar o mover no cambia muestras. En multipista conservan posiciones absolutas al mover clips. Pueden estar después del último clip sin alargar la mezcla. Los marcadores de origen permanecen con su fuente; la mezcla solo exporta los de sesión dentro de su duración. No se combinan automáticamente los marcadores de las fuentes.
+
+WAV guarda puntos cue y nombres. MP3 los convierte en capítulos con posiciones de milisegundos; WAV conserva precisión de trama. Proyectos y recuperación conservan los marcadores de sesión, con Deshacer/Rehacer durante la edición. Los proyectos nuevos requieren **0.26.0 o posterior**; los antiguos siguen siendo legibles. Hasta 4096 marcadores son editables. Los datos cue inusuales se conservan, pero se rechaza editarlos si no es seguro. El juego de caracteres WAV existente puede limitar los nombres.
+
 <a id="ss-topic-7-aplicar-efectos"></a>
 
 ## 7. Aplicar efectos
 
 Los efectos de forma de onda de **Efectos** tratan el intervalo y canales elegidos, o toda su duración sin selección temporal. El otro canal queda intacto y se oye en la vista previa estéreo. **Escuchar** reproduce hasta los ocho primeros segundos sin aplicar; vuelve a pulsar, cambia un ajuste o cierra para detener. **Aceptar** aplica un paso de deshacer; **Cancelar** conserva el original. **F2 / Repetir última orden** repite ajustes en la selección/canales actuales. Normalización, tiempo/tono y distorsión de alta calidad analizan toda la selección antes de la vista previa.
+
+<a id="ss-topic-remaster"></a>
+
+### Remaster
+
+Use **Efectos → Remaster…** cuando voces o instrumentos bajen brevemente tras golpes fuertes de batería en una mezcla terminada. Use toda la forma de onda o seleccione un pasaje problemático. Coloque primero el cursor cerca de un ejemplo claramente audible.
+
+Empiece con **Recuperación equilibrada**; **Recuperación suave** cambia menos y **Recuperación intensa** interviene más.
+
+| Ajuste | Uso |
+| --- | --- |
+| Reducción del bombeo | Intensidad 0–100%; empezar cerca del 60%. |
+| Recuperación máxima | Límite del aumento local, 0–9 dB; predeterminado 4 dB. |
+| Umbral de percusión | 0–12 dB. Más bajo responde a más ataques; más alto limita la recuperación a golpes fuertes. |
+| Tiempo de recuperación | 50–500 ms. Más largo mantiene la detección de batería durante más tiempo. |
+| Techo de salida | −12 a 0 dBFS; predeterminado −1 dBFS. Una atenuación constante limita picos de muestra; no es otro compresor ni un limitador true peak. |
+| Escuchar desde | Inicio en segundos dentro del intervalo procesado. |
+
+**Original** y **Vista previa** reproducen hasta ocho segundos desde la posición elegida. La primera escucha analiza y procesa todo el intervalo con progreso cancelable. Cambiar solo la posición o igualar volumen reutiliza el cálculo. **Igualar el volumen de escucha del original y la vista previa** compara niveles medios iguales solo al escuchar, sin cambiar el resultado guardado.
+
+La recuperación aumenta medios/agudos sostenidos cerca de ataques detectados, con control estéreo enlazado. Los graves por debajo de unos 180 Hz no reciben aumento; la transición llega hasta unos 600 Hz. La atenuación constante final sí afecta a todo el intervalo procesado. **Izquierda/Derecha** limita el proceso a ese canal. Duración y marcadores se mantienen. **OK** aplica, **Ctrl+Z** restaura y **F2** repite. Use **Guardar como** para un WAV separado.
+
+Compare también un pasaje tranquilo. Los ajustes fuertes pueden cambiar equilibrio o timbre. Una mezcla terminada no contiene pistas separadas de voz/batería para una reconstrucción exacta; no se pueden reconstruir exactamente detalles perdidos o recortados. Remaster edita la forma de onda sin conexión y no es un efecto de pista en tiempo real.
 
 <a id="ss-topic-amplitud"></a>
 
@@ -429,7 +466,7 @@ La entrada se prepara antes de reproducir. Durante la pregrabación suena el ori
 
 Los fundidos mezclan antiguo/nuevo dentro de los límites, hasta 100 ms. El audio exterior queda intacto. Los clips originales conservan las fuentes y se cubre la región punch. Ctrl+Z restaura todo en un paso. En el clip antiguo use **Restaurar audio cubierto** para eliminar todas sus regiones cubiertas; borre/silencie la toma nueva para no oír ambas. Detener antes de tiempo conserva solo la parte capturada dentro del intervalo. Antes del intervalo no cambia la sesión; la toma bruta queda en **Archivo → Recuperar trabajo**. Recuperar una toma sin confirmar ofrece el audio bruto, con pregrabación/final, para colocarlo manualmente. Las regiones punch completadas se conservan en el proyecto y la recuperación tras fallo.
 
-**Guardar sesión / Guardar sesión como** conserva audio, clips, curvas, cadenas, estado de plug-ins y regiones punch. Abrir sesión los restaura; la mezcla exporta WAV/MP3 con los mismos efectos. Conserve el proyecto para editar pistas separadas. Los proyectos nuevos guardados requieren SoundSausage **0.19.0 o posterior**; los anteriores siguen legibles. Los plug-ins ausentes no impiden abrir/recuperar las fuentes.
+**Guardar sesión / Guardar sesión como** conserva audio, clips, curvas, cadenas, estado de plug-ins y regiones punch. Abrir sesión los restaura; la mezcla exporta WAV/MP3 con los mismos efectos. Conserve el proyecto para editar pistas separadas. Los proyectos nuevos guardados requieren SoundSausage **0.26.0 o posterior**; los anteriores siguen legibles. Los plug-ins ausentes no impiden abrir/recuperar las fuentes.
 
 <a id="ss-topic-11-grabar-con-acompanamiento"></a>
 
@@ -437,7 +474,7 @@ Los fundidos mezclan antiguo/nuevo dentro de los límites, hasta 100 ms. El audi
 
 Coloca acompañamiento en pistas, elige otra pista de destino y sitúa el cursor. Pulsa **R**, elige entrada/nuevo clip y activa «Reproducir pistas existentes al grabar». Pistas y efectos parten del cursor; la entrada no va a altavoces. **P** pausa/reanuda ambos; **Detener/Esc/Espacio/R** detiene y conserva la toma como un paso de deshacer. Puede seguir grabando tras terminar el acompañamiento; una duración máxima detiene ambos. Descartar quita solo la nueva toma. Un fallo conserva muestras capturadas. Las ediciones quedan bloqueadas.
 
-El desplazamiento de posición mueve el clip insertado: negativo antes, positivo después. Si llega 15 ms tarde, prueba −15 ms. Graba un clic conocido por tu ruta real de entrada/salida, compara posiciones, introduce la diferencia y comprueba con otra toma. Recalibra tras cambiar dispositivo/búfer. El audio anterior a cero se recorta al insertar. Se recuerda el desplazamiento; calibración física automática, corrección de deriva, compensación de complementos y punch-in/out siguen en desarrollo. Prueba una toma corta antes de una sesión larga.
+El desplazamiento de posición mueve el clip insertado: negativo antes, positivo después. Si llega 15 ms tarde, prueba −15 ms. Graba un clic conocido por tu ruta real de entrada/salida, compara posiciones, introduce la diferencia y comprueba con otra toma. Recalibra tras cambiar dispositivo/búfer. El audio anterior a cero se recorta al insertar. Se recuerda el desplazamiento; la calibración automática, corrección de deriva, compensación de complementos y punch-in/out se describen en el capítulo anterior. Prueba una toma corta antes de una sesión larga.
 
 <a id="ss-topic-12-atajos-favoritos-y-solucion-de-problemas"></a>
 
@@ -464,4 +501,4 @@ El desplazamiento de posición mueve el clip insertado: negativo antes, positivo
 
 Sin entrada: revisa dispositivo/canal y nivel de micrófono Linux, reconecta y empieza otra toma. Sin salida: comprueba ruta, volumen, silencio/solo y dispositivos. Distorsión/picos rojos: baja ganancia sumada y normaliza antes de PCM; pegar mezclando y clips solapados suman. Pegado rechazado: revisa el número de canales del portapapeles. Efecto desactivado: abre forma/copia; el mezclador necesita estéreo; elige los canales que quieras editar. Puntos en lugar de clips: elige mover clips. Disco lleno: libera espacio sin borrar archivos de trabajo activos. Recuperación dañada: quedan originales; elimina copia solo si ya no hace falta.
 
-En desarrollo: favoritos personalizados y editor de marcadores. Cadenas en tiempo real, Linux VST3 y acompañamiento están disponibles como se describe. Guarda antes de salir. Novedades: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).
+En desarrollo: favoritos personalizados. Cadenas en tiempo real, Linux VST3 y acompañamiento están disponibles como se describe. Guarda antes de salir. Novedades: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

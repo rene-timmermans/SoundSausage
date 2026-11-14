@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.25.2. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.26.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -20,7 +20,9 @@ Click a topic to jump directly to it. Contents brings you back; Previous and Nex
 - [6. Selection, channels and editing](#ss-topic-6-selection-channels-and-editing)
   - [Editing individual samples](#ss-topic-editing-individual-samples)
   - [Draw Waveform](#ss-topic-draw-waveform)
+- [6a. Markers](#ss-topic-6a-markers)
 - [7. Applying effects](#ss-topic-7-applying-effects)
+  - [Remaster](#ss-topic-remaster)
   - [Amplitude](#ss-topic-amplitude)
     - [Amplify / Fade](#ss-topic-amplify-fade)
     - [Channel Mixer](#ss-topic-channel-mixer)
@@ -88,7 +90,7 @@ Two thin horizontal lines mark the bottom edge of the left channel and the top e
 
 WAV text, cues and labels are retained. Cues follow editing, pasting and selection export; the destination title is kept. Recorder-specific fields are preserved verbatim, not recalculated after effects. Extra metadata is limited to 16 MiB; oversized input is rejected and omitted output fields require confirmation. Mixdown does not merge all source markers. Large WAV exports use RF64 when necessary.
 
-**New Multitrack Session**, **Open Session**, **Save Session** and **Save Session As** manage editable projects. A SoundSausage project (`.celp`) contains the audio, clips, lines, track settings, effect order/bypass/tails and VST3 settings. Save a project as well as the final WAV or MP3 to retain separate tracks. Older SoundSausage versions remain readable; newly saved projects need app 0.19.0 or newer. Legacy `.ses` import is limited; use a new SoundSausage project for continued work.
+**New Multitrack Session**, **Open Session**, **Save Session** and **Save Session As** manage editable projects. A SoundSausage project (`.celp`) contains the audio, clips, lines, track settings, effect order/bypass/tails and VST3 settings. Save a project as well as the final WAV or MP3 to retain separate tracks. Older SoundSausage versions remain readable; newly saved projects need app 0.26.0 or newer. Legacy `.ses` import is limited; use a new SoundSausage project for continued work.
 
 **Close / Ctrl+W** closes the current waveform; in multitrack it is **Close Session**. Save, discard or cancel when asked. The other view and clipboard remain available. **Exit / Ctrl+Q** closes the application and checks unsaved work.
 
@@ -116,7 +118,7 @@ Chapter precision is one millisecond; fragments that round to zero duration disa
 
 **Measurements** can become stale after an audio edit. Recognised ReplayGain, R128, MP3Gain, peak values, fingerprints, relative-volume adjustments and old encoder details are removed. Unsupported timed information, including synchronised lyrics, old seek indexes and synchronisation positions, also disappears. ReplayGain is not recalculated. A tempo change removes the existing BPM value; a pitch change removes the existing key. Other edits preserve these two values. Ordinary lyrics without time codes and unknown private fields remain literal. Re-encoding to MP3 also removes stale measurements and file positions because compression changes audio and layout; encoder information is taken from the actual new file.
 
-**WAV to MP3:** supported INFO title, artist, album, genre, date, track number, copyright and comments are transferred. Existing ID3 values take priority. Unsupported fields, malformed INFO and conflicting values are reported before export. Choose **No** to cancel and preserve an existing target, or **Yes** to continue with the listed omissions. Additional ID3 tags in a WAV are also listed before being omitted. Old software information is replaced with the new encoder details. Unsupported WAV cues and other file data also require this choice.
+**WAV to MP3:** supported INFO title, artist, album, genre, date, track number, copyright and comments are transferred. Existing ID3 values take priority. Unsupported fields, malformed INFO and conflicting values are reported before export. Choose **No** to cancel and preserve an existing target, or **Yes** to continue with the listed omissions. Additional ID3 tags in a WAV are also listed before being omitted. Old software information is replaced with the new encoder details. Supported WAV cues become MP3 chapters. Other unsupported file data still requires this choice.
 
 Extra metadata remains limited to 16 MiB. Unreadable embedded WAV ID3 stays opaque; MP3 export reports an error and preserves the target. Mixdown does not combine metadata from all tracks. Long conversions show progress and can be cancelled; reserve free disk space for conversion and editing.
 
@@ -201,11 +203,46 @@ Zoom determines the group size: about two logical screen pixels of audio, rounde
 
 The starting channel stays fixed even when the pointer crosses the other channel. Other samples, the other channel, duration and metadata remain intact. Shaded groups and the new line preview the edit. Release commits the whole gesture as one Undo step. **Escape**, focus loss, zooming or disabling drawing cancels the preview. **Shift+drag** still selects audio; press **D** again for normal operation. Drawing is disabled during recording. Zoom in for precise repairs: drawing while zoomed out also replaces the fine detail in each touched group. Listen afterwards and use **Ctrl+Z** if needed. For multitrack, edit a waveform copy and apply it back to the clip.
 
+<a id="ss-topic-6a-markers"></a>
+
+## 6a. Markers
+
+Press **M** to add a marker at the cursor. Open **Edit → Marker List** with **Ctrl+Shift+M** to name, move, remove or **Go to** a marker. **Alt+Left/Right** visits the previous/next marker. Double-click a flag above the waveform for its properties; drag a flag to move it. **Escape** cancels a drag; releasing makes one Undo step.
+
+Properties offer seconds and an exact sample frame. New names allow up to 256 characters without control characters. Existing MP3 chapters may also have an end position, after their start and inside the audio. New markers are points, not new chapter ranges.
+
+Waveform markers are shared by both channels. Time edits with **Both** move them together; one-channel edits retain their shared positions. Moving or naming changes no samples. In multitrack, session markers retain absolute timeline positions when clips move. They may be beyond the last clip but do not extend the mix. Source markers remain with each source; a mixdown exports only session markers inside its audio duration. Source markers are not automatically merged.
+
+WAV retains cue points and labels. MP3 export converts them to chapters with millisecond positions; WAV positions retain sample-frame precision. Projects and recovery retain session markers, with Undo/Redo while editing. Newly saved projects require **0.26.0 or newer**; older projects remain readable. Up to 4096 markers are editable. Unusual cue data stays preserved, but editing is refused when it cannot be done safely. An existing WAV character set can restrict name characters.
+
 <a id="ss-topic-7-applying-effects"></a>
 
 ## 7. Applying effects
 
 Waveform effects under **Transform** affect the selected range/channels, or their whole duration without a time selection. The other channel remains unchanged and audible in stereo Preview. **Preview** plays at most the first eight seconds without committing; click again, change a setting or close to stop. **OK** applies one Undo step; **Cancel** preserves the waveform. **F2 / Repeat Last Command** repeats the last settings on the current selection/channels. Some effects analyse the full selection before previewing: Normalize, time/pitch and high-quality distortion.
+
+<a id="ss-topic-remaster"></a>
+
+### Remaster
+
+Choose **Transform → Remaster…** when voices or instruments briefly sink behind strong drums in a finished mix. Use the whole waveform or select a problem range. Place the cursor near a clearly audible example before opening the dialog.
+
+Start with **Balanced recovery**; **Gentle recovery** changes less, **Strong recovery** intervenes further.
+
+| Setting | Use |
+| --- | --- |
+| Pumping reduction | Recovery strength, 0–100%; start around 60%. |
+| Maximum recovery | Limit on the local lift, 0–9 dB; default 4 dB. |
+| Drum threshold | 0–12 dB. Lower reacts to more onsets; higher confines recovery to stronger drum events. |
+| Recovery time | 50–500 ms. Longer retains drum detection for longer. |
+| Output ceiling | −12 to 0 dBFS; default −1 dBFS. One constant attenuation keeps sample peaks below this ceiling; it is not another compressor or a true-peak limiter. |
+| Preview from | Start time in seconds within the processed range. |
+
+**Original** and **Preview** play up to eight seconds from the chosen position. The first audition analyses and processes the complete range, with cancellable progress. That calculation is reused when only the listening position or volume matching changes. **Match listening volume for original and preview** compares equal average levels; this affects listening only, not the saved result.
+
+Recovery lifts sustained mid/high sound near detected drum onsets, using one linked stereo control. Bass below about 180 Hz receives no recovery lift, with a crossover extending to about 600 Hz. Final constant output attenuation still affects the complete processed range. **Left/Right** confines processing to that channel. Duration and markers stay fixed. **OK** applies, **Ctrl+Z** restores the original and **F2** repeats settings. Use **Save As** for a separate WAV if desired.
+
+Also compare a quieter section. Strong settings may change balance or timbre. A finished mix has no separate vocal/drum tracks to reconstruct exactly; missing or clipped detail cannot be recovered exactly. Remaster is an offline waveform edit, not a realtime track insert.
 
 <a id="ss-topic-amplitude"></a>
 
@@ -423,7 +460,7 @@ The input warms up before playback. Original audio plays during pre-roll. Inside
 
 Crossfades blend old/new inside the interval, at most 100 ms. Audio outside remains intact. Original clips retain their sources, with the punched portion covered. Ctrl+Z restores everything in one step. Select an old clip and **Restore Covered Audio** to clear all its covered regions; remove/mute the new take to avoid hearing both. Early Stop keeps only the captured portion inside the interval. Stopping before the interval changes no session audio; the raw take remains under **File → Recover Work**. Recovery of an uncommitted recording offers the raw take, including pre/post-roll, for manual placement. Completed punch regions survive project saves and crash recovery.
 
-**Save Session / Save Session As** retains sources, clips, lines, chains, plug-in state and punch regions; Open Session restores them. Mix Down exports WAV or MP3 through the same effects. Keep the project for separate-track editing. Newly saved projects need SoundSausage **0.19.0 or newer**; earlier project versions remain readable. Missing plug-ins do not prevent opening/recovering source audio.
+**Save Session / Save Session As** retains sources, clips, lines, chains, plug-in state and punch regions; Open Session restores them. Mix Down exports WAV or MP3 through the same effects. Keep the project for separate-track editing. Newly saved projects need SoundSausage **0.26.0 or newer**; earlier project versions remain readable. Missing plug-ins do not prevent opening/recovering source audio.
 
 <a id="ss-topic-11-recording-with-backing-tracks"></a>
 
@@ -431,7 +468,7 @@ Crossfades blend old/new inside the interval, at most 100 ms. Audio outside rema
 
 Place backing clips on tracks, select a different target track and position the cursor. Press **R**, select input and a new-clip destination, enable “Play existing tracks while recording”. Existing tracks and effects play from the cursor; input is not sent to speakers. **P** pauses/resumes both; **Stop/Esc/Space/R** stops both and keeps the take as one Undo step. Recording can continue after the backing ends; a maximum duration stops both. Discard removes only this take. Device/plug-in failure retains captured samples. Document edits are locked during recording.
 
-“Recording position offset” adjusts the inserted clip: negative earlier, positive later. If a take is 15 ms late, try −15 ms. Record a known click through your actual input/output route, compare positions, enter the difference and verify with a second take. Recalibrate after changing devices/buffer. Audio before timeline zero is trimmed on insertion. Offset is remembered, but automatic physical calibration, drift correction between clocks, plug-in delay compensation and punch-in/out remain work in progress. Check a short take before a long session.
+“Recording position offset” adjusts the inserted clip: negative earlier, positive later. If a take is 15 ms late, try −15 ms. Record a known click through your actual input/output route, compare positions, enter the difference and verify with a second take. Recalibrate after changing devices/buffer. Audio before timeline zero is trimmed on insertion. The offset is remembered; automatic calibration, drift correction, plug-in delay compensation and punch-in/out are described in the preceding chapter. Check a short take before a long session.
 
 <a id="ss-topic-12-shortcuts-favourites-and-troubleshooting"></a>
 
@@ -458,4 +495,4 @@ Place backing clips on tracks, select a different target track and position the 
 
 No input: check chosen device/channel and Linux microphone level, reconnect then start a new take. No output: check routing, volume, mute/solo and Audio Hardware. Distortion/red peaks: lower summed gain and normalize before PCM; Mix Paste and overlapping clips add. Paste rejected: check the clipboard channel count. Effect disabled: open a waveform/copy; Channel Mixer needs stereo; choose the channels to edit. Moving points instead of clips: choose Move Clips. Disk full: free space for copies/results/Undo without deleting active work files. Damaged recovery: original files remain; remove a copy only if no longer needed.
 
-Work in progress includes custom favourites and a marker editor. Realtime chains, Linux VST3 and recording with backing are available as described above. Save your project before leaving. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).
+Work in progress includes custom favourites. Realtime chains, Linux VST3 and recording with backing are available as described above. Save your project before leaving. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.25.2. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.26.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -46,7 +46,9 @@ Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vori
   - [Zoomen en functie-iconen](#ss-topic-zoomen-en-functie-iconen)
   - [Afzonderlijke samples bewerken](#ss-topic-afzonderlijke-samples-bewerken)
   - [Golfvorm tekenen](#ss-topic-golfvorm-tekenen)
+- [4b. Markeringen](#ss-topic-4b-markeringen)
 - [5. Effecten toepassen](#ss-topic-5-effecten-toepassen)
+  - [Remaster](#ss-topic-remaster)
   - [Versterken / vervagen](#ss-topic-versterken-vervagen)
   - [Kanalenmixer](#ss-topic-kanalenmixer)
   - [Dynamiekbewerking](#ss-topic-dynamiekbewerking)
@@ -268,8 +270,8 @@ en conflicterende waarden worden vóór export gemeld. Kies **Nee** om te
 annuleren en het bestaande doelbestand te bewaren, of **Ja** om met de genoemde
 weglatingen door te gaan. Bevat een WAV meerdere ID3-tags, dan wordt ook
 het weglaten van extra tags vooraf gemeld. Oude software-informatie wordt vervangen door de
-nieuwe encoderinformatie. WAV-cuepunten en andere informatie die MP3 niet kan
-bewaren, vallen ook onder deze keuze.
+nieuwe encoderinformatie. Ondersteunde WAV-cuepunten worden MP3-hoofdstukken. Andere niet-ondersteunde
+bestandsinformatie valt onder deze keuze.
 
 De totale extra bestandsinformatie blijft begrensd tot 16 MiB. Onleesbare
 ID3-informatie in een WAV blijft als ruwe informatie bewaard; MP3-export meldt
@@ -685,6 +687,18 @@ ook de kleine details binnen het geraakte groepje. Beluister het resultaat en
 gebruik zo nodig **Ctrl+Z**. Voor een multitrackclip bewerk je de golfvormkopie
 en pas je die daarna toe op de clip.
 
+<a id="ss-topic-4b-markeringen"></a>
+
+## 4b. Markeringen
+
+Druk **M** om bij de cursor een markering toe te voegen. Open **Bewerken → Markeringenlijst** met **Ctrl+Shift+M** om markeringen te benoemen, verplaatsen, verwijderen of met **Ga naar** te bezoeken. **Alt+Links/Rechts** springt naar de vorige/volgende markering. Dubbelklik op een vlag boven de golfvorm voor de eigenschappen. Versleep een vlag voor een nieuwe positie; **Escape** annuleert het slepen. Loslaten maakt één stap voor **Ongedaan maken**.
+
+De eigenschappen bieden een tijd in seconden en een exact sampleframe. Nieuwe namen mogen maximaal 256 tekens bevatten, zonder besturingstekens. Bestaande MP3-hoofdstukken hebben eventueel ook een eindpositie; die moet na het begin en binnen de opname liggen. Nieuwe markeringen zijn punten, geen nieuwe hoofdstukbereiken.
+
+Golfvormmarkeringen gelden voor beide kanalen. Tijdwijzigingen met **Beide** verplaatsen ze mee; bij bewerken van één kanaal blijven ze op hun gedeelde positie. Verplaatsen en benoemen verandert geen samples. In multitrack blijven sessiemarkeringen op hun absolute tijdlijnpositie als clips verschuiven. Ze mogen voorbij de laatste clip staan, maar verlengen de eindmix niet. Bronmarkeringen blijven bij de bron bewaard; de eindmix bevat alleen eigen sessiemarkeringen binnen de audioduur. Bronmarkeringen worden niet automatisch samengevoegd.
+
+WAV bewaart cuepunten en labels. Bij MP3-export worden deze hoofdstukken met millisecondenposities; WAV-posities blijven op sampleframes nauwkeurig. Projecten en crashherstel bewaren sessiemarkeringen, inclusief Undo/Redo tijdens het werken. Nieuw opgeslagen projecten vereisen **0.26.0 of nieuwer**; oudere projecten blijven leesbaar. Maximaal 4096 markeringen zijn bewerkbaar. Afwijkende cuegegevens blijven bewaard, maar worden geweigerd als veilig bewerken niet mogelijk is. Een bestaande WAV-tekenset kan de beschikbare naamtekens beperken.
+
 <a id="ss-topic-5-effecten-toepassen"></a>
 
 ## 5. Effecten toepassen
@@ -703,6 +717,29 @@ Een instelling wijzigen of het venster sluiten stopt het ook. **OK** past toe;
 **F2** of **Bewerken → Laatste opdracht herhalen** herhaalt het laatste golfvormeffect met
 dezelfde instellingen op de nieuwe selectie en de huidige kanaalkeuze. Controleer
 het tijdvak en de kanalen voordat je herhaalt.
+
+<a id="ss-topic-remaster"></a>
+
+### Remaster
+
+Gebruik **Effecten → Remaster…** als stemmen of instrumenten kort wegzakken bij harde drums in een reeds gemixte opname. Kies een hele opname of selecteer een probleemfragment. Zet de cursor bij een duidelijk hoorbaar voorbeeld voordat je het venster opent.
+
+Begin met **Evenwichtig herstel**; **Voorzichtig herstel** verandert minder, **Sterk herstel** grijpt verder in. De instellingen zijn:
+
+| Instelling | Gebruik |
+| --- | --- |
+| Pompeffect verminderen | Sterkte van het herstel, 0–100%. Begin rond 60%. |
+| Maximaal herstel | Bovengrens van de plaatselijke verhoging, 0–9 dB; standaard 4 dB. |
+| Drumdrempel | 0–12 dB. Lager reageert op meer aanzetten; hoger beperkt het herstel tot sterkere drums. |
+| Hersteltijd | 50–500 ms. Langer laat de drumdetectie langer doorwerken. |
+| Uitvoerplafond | −12 tot 0 dBFS; standaard −1 dBFS. Eén constante verzwakking houdt de samplepieken onder dit plafond; dit is geen extra compressor of true-peaklimiter. |
+| Voorbeeld vanaf | Startpositie in seconden binnen het bewerkingsbereik. |
+
+**Origineel** en **Voorbeeld** spelen maximaal acht seconden vanaf de gekozen positie. Het eerste luistervoorbeeld analyseert en verwerkt het hele bereik; een voortgangsvenster biedt annuleren. De berekening wordt hergebruikt als alleen de luisterpositie of volumevergelijking wijzigt. **Luistervolume van origineel en voorbeeld gelijkmaken** vergelijkt op gelijk gemiddeld niveau; dit verandert alleen het luisteren, niet het opgeslagen resultaat.
+
+Het herstel verhoogt aanhoudend midden/hoog rond gedetecteerde drumaanzetten en gebruikt voor stereo dezelfde regeling. De bas onder circa 180 Hz krijgt geen herstelversterking; de overgang loopt door tot circa 600 Hz. De uiteindelijke constante uitvoerverzwakking geldt wel voor het hele bewerkte bereik. **Links/Rechts** beperkt de bewerking tot dat kanaal. Duur en markerposities blijven gelijk. **OK** past de bewerking toe, **Ctrl+Z** herstelt het origineel en **F2** herhaalt de instellingen. Bewaar desgewenst met **Opslaan als** een nieuwe WAV.
+
+Vergelijk altijd ook een rustig gedeelte. Sterke instellingen kunnen de balans of klankkleur veranderen; een voltooide mix bevat geen afzonderlijke zang- of drumsporen om exact terug te halen. Ontbrekende of afgekapte details zijn niet exact te reconstrueren. Remaster is een golfvormbewerking en staat niet in de realtime spoorketen.
 
 <a id="ss-topic-versterken-vervagen"></a>
 
@@ -1498,7 +1535,7 @@ Vroeg stoppen bewaart alleen het werkelijk opgenomen deel binnen het interval. S
 
 ### Sessies bewaren en heropenen
 
-**Sessie opslaan / Sessie opslaan als** bewaart gebruikte audio, clips, lijnen, spoorketens, plug-ininstellingen en punchgebieden. **Sessie openen** herstelt deze bewerkbare sessie. **Eindmix maken** maakt een WAV of MP3 met dezelfde effecten. Bewaar het project om afzonderlijke sporen te kunnen blijven veranderen. Nieuwe projecten vereisen SoundSausage **0.19.0 of nieuwer**; eerdere projectversies blijven leesbaar. Een ontbrekende plug-in verhindert het openen en herstellen van de bronnen niet.
+**Sessie opslaan / Sessie opslaan als** bewaart gebruikte audio, clips, lijnen, spoorketens, plug-ininstellingen en punchgebieden. **Sessie openen** herstelt deze bewerkbare sessie. **Eindmix maken** maakt een WAV of MP3 met dezelfde effecten. Bewaar het project om afzonderlijke sporen te kunnen blijven veranderen. Nieuwe projecten vereisen SoundSausage **0.26.0 of nieuwer**; eerdere projectversies blijven leesbaar. Een ontbrekende plug-in verhindert het openen en herstellen van de bronnen niet.
 
 <a id="ss-topic-9-een-andere-samplerate-kiezen"></a>
 
@@ -1576,7 +1613,7 @@ golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
   blijven beschikbaar. Verwijder de betreffende kopie alleen wanneer je die niet
   meer wilt bewaren.
 
-Een markereditor en zelfgekozen favorieten blijven vervolgmogelijkheden. Spooreffecten, VST3/LV2/LADSPA, synchronisatie en punch-in/out zijn beschikbaar zoals in hoofdstuk 8a beschreven.
+Zelfgekozen favorieten blijven een vervolgmogelijkheid. Spooreffecten, VST3/LV2/LADSPA, synchronisatie en punch-in/out zijn beschikbaar zoals in hoofdstuk 8a beschreven.
 
 Bewaar een project voordat je de toepassing verlaat. De actuele voortgang en
 nieuwe versies staan op de [SoundSausage-website](https://github.com/rene-timmermans/SoundSausage).

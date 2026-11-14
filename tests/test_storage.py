@@ -98,7 +98,8 @@ class StorageTests(unittest.TestCase):
             doc.metadata=audio.metadata
             doc.apply('gain',initial=.5)
             self.assertEqual(len(doc.undo_stack),1)
-            self.assertEqual(Document._storage_bytes([doc._snapshot(''),*doc.undo_stack]),0)
+            # Audio stays disk-backed; only shared cue metadata occupies the RAM budget.
+            self.assertEqual(Document._storage_bytes([doc._snapshot(''),*doc.undo_stack]),52)
             np.testing.assert_array_equal(doc.view()[-1],[.625,-.75])
             doc.undo();np.testing.assert_array_equal(doc.view()[-1],[1.25,-1.5])
             doc.redo();np.testing.assert_array_equal(doc.view()[262143],[.375,-.0625])

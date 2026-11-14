@@ -104,6 +104,7 @@ class SessionSnapshot:
     cursor: int
     state_id: int
     label: str
+    metadata: tuple = ()
 
 
 def balance(gain, pan):
@@ -140,6 +141,7 @@ class Session:
         self.revision = 0
         self.undo_stack = []
         self.redo_stack = []
+        self.metadata = ()
 
     @property
     def tracks(self):
@@ -158,6 +160,10 @@ class Session:
     @property
     def duration(self):
         return self.frames / self.sample_rate
+
+    @property
+    def marker_frames(self):
+        return self.sample_rate * MAX_SECONDS
 
     @property
     def dirty(self):
@@ -200,7 +206,7 @@ class Session:
 
     def _snapshot(self, label):
         return SessionSnapshot(self.tracks, self.sample_rate, self.selected_clip,
-                               self.selected_track, self.selection, self.cursor, self._state_id, label)
+                               self.selected_track, self.selection, self.cursor, self._state_id, label, self.metadata)
 
     def _restore(self, snapshot):
         self._tracks = snapshot.tracks
@@ -208,6 +214,7 @@ class Session:
         self.selected_track, self.selected_clip = snapshot.selected_track, snapshot.selected_clip
         self.selection, self.cursor = snapshot.selection, snapshot.cursor
         self._state_id = snapshot.state_id
+        self.metadata = snapshot.metadata
         self.revision += 1
 
     def _collect_media(self):
@@ -215,14 +222,18 @@ class Session:
         keep = {clip.media_id for state in states for track in state.tracks for clip in track.clips}
         self._media = {key: value for key, value in self._media.items() if key in keep}
 
-    def _commit(self, tracks, label, rate=None, selected_clip=None, selected_track=None):
+    def _commit(self, tracks, label, rate=None, selected_clip=None, selected_track=None, metadata=None):
         tracks = tuple(tracks)
-        if tracks == self.tracks and (rate is None or rate == self.sample_rate):
+        if tracks == self.tracks and (rate is None or rate == self.sample_rate) and (metadata is None or metadata == self.metadata):
             return
         self.undo_stack.append(self._snapshot(label))
         self.redo_stack.clear()
         self.undo_stack = self.undo_stack[-50:]
         self._tracks = tracks
+        if rate is not None and rate!=self.sample_rate and metadata is None:
+            from .metadata import resample as resample_metadata
+            self.metadata=resample_metadata(self.metadata,self.sample_rate,rate)
+        if metadata is not None:self.metadata=metadata
         if rate is not None:
             self.sample_rate = rate
         self._state_id = next(_ids)
@@ -235,6 +246,12 @@ class Session:
         if selected_clip:
             self.choose_clip(selected_clip)
         self._collect_media()
+
+    def set_marker_metadata(self, information, label):
+        selection,cursor=self.selection,self.cursor
+        self._commit(self.tracks,label,selected_clip=self.selected_clip,
+                     selected_track=self.selected_track,metadata=information)
+        self.selection,self.cursor=selection,cursor
 
     def add_track(self, name=None):
         if len(self.tracks) >= MAX_TRACKS:

@@ -117,7 +117,7 @@ def write_mp3(path,samples,sample_rate,encoding='mp3_192',*,metadata=()):
     if len(samples)*1000<sample_rate*2:
         raise AudioError('MP3 export needs at least 2 ms of audio. Use WAV for shorter selections.')
     _,ID3,ID3NoHeaderError,TLEN,MutagenError=_id3_api()
-    tags, _ = id3_metadata.export_tags(metadata)
+    tags, _ = id3_metadata.export_tags(metadata,sample_rate=sample_rate,frames=len(samples))
     id3_metadata.sanitise(tags, len(samples), sample_rate)
     path=Path(path);temporary=None
     mode=stat.S_IMODE(path.stat().st_mode) if path.exists() else 0o644

@@ -25,12 +25,15 @@ from .sample_ui import SampleDialog
 from .multitrack import MultitrackEditor
 from .session_actions import SessionActions
 from . import chrome, metadata, storage, id3_metadata
+from . import markers
+from .marker_ui import MarkerDialog, MarkerListDialog
 from .errors import OperationCancelled
 from .progress_ui import long_operation
 from .transport import TransportPanel
 from .special_ui import DistortionDialog, ConvolutionDialog
 from .time_pitch_ui import StretchDialog, PitchShiftDialog
 from .restoration_ui import NoiseReductionDialog, ClickRemovalDialog
+from .remaster_ui import RemasterDialog
 from .restoration import learn_profile
 from .space_ui import DelayDialog, EchoDialog, ReverbDialog
 from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog
@@ -326,6 +329,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.action("noise_profile", "Capture Noise Profile", self.capture_noise_profile)
         self.action("noise_reduction", "Noise Reduction…", lambda: self.amplitude_dialog(NoiseReductionDialog))
         self.action("click_removal", "Click Removal…", lambda: self.amplitude_dialog(ClickRemovalDialog))
+        self.action('remaster','Remaster…',lambda:self.amplitude_dialog(RemasterDialog))
         self.action("delay", "Delay…", lambda: self.amplitude_dialog(DelayDialog))
         self.action("echo", "Echo…", lambda: self.amplitude_dialog(EchoDialog))
         self.action("reverb", "Reverb…", lambda: self.amplitude_dialog(ReverbDialog))
@@ -392,6 +396,9 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.waveform.sample_edited.connect(self.edit_sample)
         self.waveform.sample_edit_requested.connect(self.edit_sample_dialog)
         self.waveform.waveform_drawn.connect(self.draw_waveform)
+        self.waveform.marker_started.connect(self.player.stop)
+        self.waveform.marker_moved.connect(self.move_marker)
+        self.waveform.marker_edit_requested.connect(self.edit_marker_dialog)
         self.scroll.valueChanged.connect(self.scroll_view)
         wave_layout.addWidget(self.waveform, 1)
         self.multitrack = MultitrackEditor(self.session)
@@ -414,6 +421,9 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.view_fields = self.transport.view_fields
         layout.addWidget(self.transport)
         self.multitrack.timeline.view_changed.connect(self.multitrack_view_changed)
+        self.multitrack.timeline.marker_started.connect(self.player.stop)
+        self.multitrack.timeline.marker_moved.connect(self.move_marker)
+        self.multitrack.timeline.marker_edit_requested.connect(self.edit_marker_dialog)
 
     def _create_status(self):
         self.state_label = QLabel("Stopped")
@@ -451,7 +461,11 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.detail_label.setText(f" {clock_text(doc.duration)} · {doc.frames:,} frames ")
         self.selection_changed(*doc.selection)
         has_audio = doc.frames > 0
-        for key in ("distortion", "convolution", "stretch", "pitch_shift", "noise_profile", "noise_reduction", "click_removal", "delay", "echo", "reverb", "graphic_eq", "parametric_eq", "filter", "amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
+        has_markers=bool(markers.for_model(doc))
+        self.actions['marker_add'].setEnabled(has_audio)
+        for key in ('markers','marker_previous','marker_next'):self.actions[key].setEnabled(has_audio or has_markers)
+        if getattr(self,'marker_dialog',None) is not None and self.marker_dialog.isVisible():self.marker_dialog.reload()
+        for key in ("remaster", "distortion", "convolution", "stretch", "pitch_shift", "noise_profile", "noise_reduction", "click_removal", "delay", "echo", "reverb", "graphic_eq", "parametric_eq", "filter", "amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
             self.actions[key].setEnabled(has_audio)
         self.actions["channel_mix"].setEnabled(has_audio and doc.channels == 2)
         self.actions["edit_sample"].setEnabled(has_audio and self.mode == "waveform")
@@ -587,6 +601,63 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.edit_sample(*dialog.sample_edit())
         dialog.deleteLater()
+
+    def add_marker(self, properties=False):
+        if self.recording_busy or not self.active_model().frames:return
+        model=self.active_model();limit=getattr(model,'marker_frames',model.frames)
+        values=dict(start=min(model.cursor,limit-1),name=tr('Marker {0}').format(len(markers.for_model(model))+1))
+        if properties:
+            dialog=MarkerDialog(model,parent=self)
+            if dialog.exec()!=QDialog.DialogCode.Accepted:dialog.deleteLater();return
+            values=dialog.values();dialog.deleteLater()
+        def apply():
+            information,_=markers.add(model.metadata,model.sample_rate,limit,**values)
+            model.set_marker_metadata(information,'Add Marker')
+        self.edit(apply)
+
+    def open_markers(self):
+        if self.recording_busy:return
+        if getattr(self,'marker_dialog',None) is None:self.marker_dialog=MarkerListDialog(self)
+        self.marker_dialog.reload();self.marker_dialog.show();self.marker_dialog.raise_();self.marker_dialog.activateWindow()
+
+    def edit_marker_dialog(self,key):
+        if self.recording_busy:return
+        model=self.active_model();marker=next((m for m in markers.for_model(model) if m.key==key),None)
+        if marker is None:return
+        dialog=MarkerDialog(model,marker,self)
+        if dialog.exec()==QDialog.DialogCode.Accepted:
+            values=dialog.values()
+            self.edit(lambda:model.set_marker_metadata(markers.edit(model.metadata,model.sample_rate,
+                getattr(model,'marker_frames',model.frames),key,**values),'Edit Marker'))
+        dialog.deleteLater()
+
+    def remove_marker(self,key):
+        if self.recording_busy:return
+        model=self.active_model()
+        self.edit(lambda:model.set_marker_metadata(markers.edit(model.metadata,model.sample_rate,
+            getattr(model,'marker_frames',model.frames),key,remove=True),'Remove Marker'))
+
+    def move_marker(self,key,frame):
+        if self.recording_busy:return
+        model=self.active_model()
+        self.edit(lambda:model.set_marker_metadata(markers.move(model.metadata,model.sample_rate,
+            getattr(model,'marker_frames',model.frames),key,frame),'Move Marker'))
+        self.visit_marker(key)
+
+    def visit_marker(self,key):
+        if self.recording_busy:return
+        model=self.active_model();marker=next((m for m in markers.for_model(model) if m.key==key),None)
+        if marker is None:return
+        self.player.stop();model.select(marker.start,marker.start)
+        view=self.active_view();length=view.view_end-view.view_start
+        if not view.view_start<=marker.start<view.view_end:
+            start=max(0,marker.start-length//2);view.set_view(start,start+length)
+        self.selection_changed(*model.selection);view.update()
+
+    def step_marker(self,direction):
+        model=self.active_model();items=markers.for_model(model)
+        candidates=[m for m in items if m.start>model.cursor] if direction>0 else [m for m in reversed(items) if m.start<model.cursor]
+        if candidates:self.visit_marker(candidates[0].key)
 
     def effect(self, name, **settings):
         self.edit(lambda: self.document.apply(name, **settings))
@@ -807,14 +878,17 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             if answer!=QMessageBox.StandardButton.Yes:return None,None
         return result,encoding
 
-    def _metadata_permission(self,encoding=None):
+    def _metadata_permission(self,encoding=None,*,information=None,sample_rate=None,frames=None,extra_chunks=None):
+        information=self.document.metadata if information is None else information
+        sample_rate=self.document.sample_rate if sample_rate is None else sample_rate
+        frames=self.document.frames if frames is None else frames
+        extra_chunks=self.document.extra_chunks if extra_chunks is None else extra_chunks
         mp3=encoding in MP3_ENCODINGS
-        preserved = {kind.decode("ascii","replace") for kind,raw in self.document.metadata
-                     if not mp3 or kind.lower()==b'id3 ' or (kind==b'LIST' and raw[:4]==b'INFO')}
-        omitted={name for name in self.document.extra_chunks if name not in preserved}
+        preserved = {kind.decode("ascii","replace") for kind,raw in information}
+        omitted={name for name in extra_chunks if name not in preserved}
         if mp3:
             try:
-                _, details = id3_metadata.export_tags(self.document.metadata)
+                _, details = id3_metadata.export_tags(information,sample_rate=sample_rate,frames=frames)
             except AudioError as error:
                 self.error('MP3 Metadata', error)
                 return False
@@ -1079,6 +1153,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         if self.confirm_recording_close() and self._confirm_discard() and self.confirm_session_discard():
             if self._manual_dialog is not None:
                 self._manual_dialog.close()
+            if getattr(self,'marker_dialog',None) is not None:
+                self.marker_dialog.close()
             self.player.shutdown()
             self.recorder.shutdown()
             if self.recovery is not None:

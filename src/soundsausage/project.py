@@ -21,10 +21,11 @@ from .session import Session, Track, SessionClip, MAX_TRACKS, MAX_CLIPS, MAX_MED
 from .punch import validate_ranges
 from .envelopes import validate_points
 from .trackfx import chain
+from . import metadata
 
 
 PROJECT_FORMAT = "cooledit-linux-project"
-PROJECT_VERSION = 5
+PROJECT_VERSION = 6
 MAX_MANIFEST_BYTES = 32 * 1024 * 1024
 _IDENTIFIER = re.compile(r"^[0-9a-f]{32}$")
 
@@ -47,7 +48,7 @@ def save_project(session, path):
     active = {clip.media_id for track in session.tracks for clip in track.clips}
     media = [session.media[key] for key in sorted(active)]
     manifest = dict(format=PROJECT_FORMAT, version=PROJECT_VERSION, sample_rate=session.sample_rate,
-        tracks=[asdict(track) for track in session.tracks],
+        tracks=[asdict(track) for track in session.tracks], metadata=metadata.encode(session.metadata),
         media=[dict(id=item.id, name=item.name, frames=len(item.samples), channels=item.samples.shape[1],
                     file=f"media/{item.id}.wav") for item in media])
     encoded = json.dumps(manifest, ensure_ascii=False, indent=2, allow_nan=False).encode("utf-8")
@@ -94,7 +95,7 @@ def _load_project(path, dsp):
         manifest = json.loads(archive.read("project.json").decode("utf-8"), parse_constant=_reject_constant)
         if not isinstance(manifest, dict) or manifest.get("format") != PROJECT_FORMAT:
             raise AudioError("This is not a SoundSausage project.")
-        if type(manifest.get("version")) is not int or manifest["version"] not in (1, 2, 3, 4, PROJECT_VERSION):
+        if type(manifest.get("version")) is not int or manifest["version"] not in (1, 2, 3, 4, 5, PROJECT_VERSION):
             raise AudioError("This project version is not supported.")
         rate = integer(manifest.get("sample_rate"), "Sample rate", 1000, 384000)
         tracks_data, media_data = manifest.get("tracks"), manifest.get("media")
@@ -103,6 +104,9 @@ def _load_project(path, dsp):
         if not isinstance(media_data, list) or len(media_data) > MAX_MEDIA:
             raise AudioError("Invalid media list.")
         session = Session(rate, 1, dsp=dsp, adopt_first_rate=False)
+        if manifest['version']<6 and manifest.get('metadata'):
+            raise AudioError('An older project version cannot contain session markers.')
+        session.metadata=metadata.decode(manifest['metadata'] if manifest['version']>=6 else [])
         bank, expected_names, total = {}, {"project.json"}, 0
         for record in media_data:
             if not isinstance(record, dict):

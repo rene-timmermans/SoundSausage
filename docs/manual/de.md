@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.25.2. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.26.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -20,7 +20,9 @@ Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige un
 - [6. Auswahl, Kanäle und Bearbeitung](#ss-topic-6-auswahl-kanale-und-bearbeitung)
   - [Einzelne Samples bearbeiten](#ss-topic-einzelne-samples-bearbeiten)
   - [Wellenform zeichnen](#ss-topic-wellenform-zeichnen)
+- [6a. Markierungen](#ss-topic-6a-markierungen)
 - [7. Effekte anwenden](#ss-topic-7-effekte-anwenden)
+  - [Remaster](#ss-topic-remaster)
   - [Amplitude](#ss-topic-amplitude)
     - [Verstärken / Blenden](#ss-topic-verstarken-blenden)
     - [Kanalmischer](#ss-topic-kanalmischer)
@@ -89,7 +91,7 @@ Zwei dünne horizontale Linien markieren die Unterkante des linken und die Oberk
 
 WAV-Texte, Cuepunkte und Beschriftungen bleiben erhalten. Cuepunkte folgen Bearbeitung, Einfügen und Auswahlexport; der Zieltitel bleibt erhalten. Recorderfelder werden wörtlich bewahrt und nach Effekten nicht neu berechnet. Zusätzliche Metadaten sind auf 16 MiB begrenzt. Größere Eingaben werden abgewiesen; ausgelassene Exportfelder benötigen Bestätigung. Die Mischung vereinigt keine Quellmarker. Große WAVs verwenden bei Bedarf RF64.
 
-**Neue Mehrspursitzung**, **Sitzung öffnen**, **Sitzung speichern** und **Sitzung speichern unter** verwalten bearbeitbare Projekte. Ein SoundSausage-Projekt (`.celp`) enthält Audio, Clips, Linien, Spureinstellungen, Effektreihenfolge/Bypass/Nachklang und VST3-Einstellungen. Zusätzlich zur WAV das Projekt speichern, um einzelne Spuren zu behalten. Frühere SoundSausage-Projektversionen bleiben lesbar; neu gespeicherte Projekte benötigen App 0.19.0 oder neuer. Alter `.ses`-Import ist begrenzt; zum Weiterarbeiten ein neues SoundSausage-Projekt verwenden.
+**Neue Mehrspursitzung**, **Sitzung öffnen**, **Sitzung speichern** und **Sitzung speichern unter** verwalten bearbeitbare Projekte. Ein SoundSausage-Projekt (`.celp`) enthält Audio, Clips, Linien, Spureinstellungen, Effektreihenfolge/Bypass/Nachklang und VST3-Einstellungen. Zusätzlich zur WAV das Projekt speichern, um einzelne Spuren zu behalten. Frühere SoundSausage-Projektversionen bleiben lesbar; neu gespeicherte Projekte benötigen App 0.26.0 oder neuer. Alter `.ses`-Import ist begrenzt; zum Weiterarbeiten ein neues SoundSausage-Projekt verwenden.
 
 **Schließen / Strg+W** schließt die aktuelle Wellenform; in Mehrspur heißt es **Sitzung schließen**. Bei Nachfrage speichern, verwerfen oder abbrechen. Andere Ansicht und Zwischenablage bleiben verfügbar. **Beenden / Strg+Q** beendet die Anwendung und fragt nach ungespeicherter Arbeit.
 
@@ -117,7 +119,7 @@ Kapitel sind auf eine Millisekunde genau; auf null Dauer gerundete Reste entfall
 
 **Messwerte** können nach einer Audiobearbeitung veraltet sein. Erkannte ReplayGain-, R128-, MP3Gain- und Spitzenwerte, Fingerabdrücke, relative Lautstärkeanpassungen und alte Encoderangaben werden entfernt. Nicht unterstützte zeitgebundene Angaben wie synchronisierte Liedtexte, alte Suchindizes und Synchronisationspositionen entfallen ebenfalls. ReplayGain wird nicht neu berechnet. Eine Tempoänderung entfernt den vorhandenen BPM-Wert; eine Tonhöhenänderung entfernt die vorhandene Tonart. Andere Bearbeitungen erhalten diese beiden Werte. Gewöhnliche Liedtexte ohne Zeitcodes und unbekannte private Felder bleiben unverändert. Erneutes MP3-Codieren entfernt ebenfalls alte Messwerte und Dateipositionen, da Kompression Audio und Dateiaufbau verändert. Encoderangaben stammen aus der tatsächlich neu geschriebenen Datei.
 
-**WAV nach MP3:** unterstützte INFO-Felder für Titel, Künstler, Album, Genre, Datum, Titelnummer, Urheberrecht und Kommentare werden übernommen. Vorhandene ID3-Werte haben Vorrang. Nicht unterstützte Felder, fehlerhafte INFO-Daten und widersprüchliche Werte werden vor dem Export gemeldet. **Nein** bricht ab und erhält eine vorhandene Zieldatei; **Ja** setzt mit den aufgeführten Auslassungen fort. Zusätzliche ID3-Tags in einer WAV-Datei werden vor dem Weglassen ebenfalls aufgeführt. Alte Softwareangaben werden durch die neuen Encoderangaben ersetzt. Nicht unterstützte WAV-Marker und andere Dateidaten erfordern diese Entscheidung ebenfalls.
+**WAV nach MP3:** unterstützte INFO-Felder für Titel, Künstler, Album, Genre, Datum, Titelnummer, Urheberrecht und Kommentare werden übernommen. Vorhandene ID3-Werte haben Vorrang. Nicht unterstützte Felder, fehlerhafte INFO-Daten und widersprüchliche Werte werden vor dem Export gemeldet. **Nein** bricht ab und erhält eine vorhandene Zieldatei; **Ja** setzt mit den aufgeführten Auslassungen fort. Zusätzliche ID3-Tags in einer WAV-Datei werden vor dem Weglassen ebenfalls aufgeführt. Alte Softwareangaben werden durch die neuen Encoderangaben ersetzt. Unterstützte WAV-Markierungen werden MP3-Kapitel; andere nicht unterstützte Dateidaten erfordern diese Entscheidung weiterhin.
 
 Zusätzliche Metadaten bleiben auf 16 MiB begrenzt. Unlesbare eingebettete WAV-ID3-Daten bleiben unverändert; MP3-Export meldet einen Fehler und erhält das Ziel. Die Mischung vereinigt nicht alle Spurmetadaten. Lange Umwandlungen zeigen Fortschritt und sind abbrechbar; freien Speicher für Umwandlung und Bearbeitung vorsehen.
 
@@ -203,11 +205,46 @@ Der Zoom bestimmt die Gruppengröße: ungefähr zwei logische Bildschirmpixel Au
 
 Der Anfangskanal bleibt fest, auch beim Überqueren des anderen Kanals. Andere Samples, der andere Kanal, Dauer und Metadaten bleiben erhalten. Markierte Gruppen und die neue Linie zeigen eine Vorschau. Loslassen bestätigt die gesamte Bewegung als einen Rückgängig-Schritt. **Escape**, Fokusverlust, Zoomen oder Ausschalten des Zeichenmodus verwirft die Vorschau. **Umschalt+Ziehen** wählt weiterhin Audio aus; **D** erneut drücken für die normale Bedienung. Während einer Aufnahme ist Zeichnen gesperrt. Für präzise Reparaturen einzoomen: herausgezoomtes Zeichnen ersetzt auch feine Details in der betroffenen Gruppe. Danach anhören und bei Bedarf **Strg+Z** nutzen. Bei Mehrspur eine Wellenformkopie bearbeiten und auf den Clip anwenden.
 
+<a id="ss-topic-6a-markierungen"></a>
+
+## 6a. Markierungen
+
+**M** fügt eine Markierung am Cursor hinzu. **Bearbeiten → Markierungsliste** (**Strg+Umschalt+M**) erlaubt Benennen, Verschieben, Entfernen und **Gehe zu**. **Alt+Links/Rechts** springt zur vorherigen/nächsten Markierung. Ein Doppelklick auf eine Fahne über der Wellenform öffnet ihre Eigenschaften. Ziehen verschiebt; **Escape** bricht ab, Loslassen erzeugt einen Rückgängig-Schritt.
+
+Eigenschaften bieten Sekunden und einen exakten Sampleframe. Neue Namen erlauben bis zu 256 Zeichen ohne Steuerzeichen. Vorhandene MP3-Kapitel können eine Endposition nach ihrem Anfang und innerhalb des Audios haben. Neue Markierungen sind Punkte, keine neuen Kapitelbereiche.
+
+Wellenformmarkierungen gelten für beide Kanäle. Zeitänderungen mit **Beide** verschieben sie gemeinsam; bei einem Kanal bleiben ihre gemeinsamen Positionen erhalten. Verschieben und Benennen ändert keine Samples. In Mehrspur bleiben Sitzungsmarkierungen beim Verschieben von Clips an absoluten Zeitpositionen. Sie dürfen hinter dem letzten Clip liegen, verlängern aber die Mischung nicht. Quellmarkierungen bleiben bei der Quelle; die Mischung exportiert nur Sitzungsmarkierungen innerhalb der Audiodauer. Quellmarkierungen werden nicht automatisch zusammengeführt.
+
+WAV speichert Cue-Punkte und Namen; MP3 exportiert diese als Kapitel mit Millisekundenpositionen. WAV behält Sampleframe-Genauigkeit. Projekte und Wiederherstellung speichern Sitzungsmarkierungen; Rückgängig/Wiederholen gilt während der Bearbeitung. Neu gespeicherte Projekte benötigen **0.26.0 oder neuer**; ältere bleiben lesbar. Bis zu 4096 Markierungen sind bearbeitbar. Ungewöhnliche Cue-Daten bleiben erhalten; unsichere Bearbeitung wird abgelehnt. Ein bestehender WAV-Zeichensatz kann Namenszeichen einschränken.
+
 <a id="ss-topic-7-effekte-anwenden"></a>
 
 ## 7. Effekte anwenden
 
 Wellenformeffekte unter **Effekte** bearbeiten die Auswahl/Kanäle oder ohne Zeitauswahl deren ganze Dauer. Der andere Kanal bleibt unverändert und in Stereo hörbar. **Vorschau** spielt höchstens die ersten acht Sekunden ohne Übernahme; erneut klicken, Einstellungen ändern oder schließen stoppt. **OK** übernimmt einen Rückgängig-Schritt; **Abbrechen** erhält die Wellenform. **F2 / Letzten Befehl wiederholen** wiederholt Einstellungen auf aktueller Auswahl/Kanälen. Normalisieren, Zeit/Tonhöhe und hochwertige Verzerrung analysieren vor der Vorschau die ganze Auswahl.
+
+<a id="ss-topic-remaster"></a>
+
+### Remaster
+
+**Effekte → Remaster…** verringert das kurze Absinken von Stimmen oder Instrumenten bei kräftigem Schlagzeug in einer fertigen Mischung. Die ganze Wellenform oder einen Problembereich wählen und den Cursor vor dem Öffnen an eine deutlich hörbare Stelle setzen.
+
+Mit **Ausgewogene Wiederherstellung** beginnen; **Sanfte Wiederherstellung** verändert weniger, **Starke Wiederherstellung** greift stärker ein.
+
+| Einstellung | Verwendung |
+| --- | --- |
+| Pumpen verringern | Stärke 0–100%; zunächst etwa 60%. |
+| Maximale Wiederherstellung | Höchstwert der örtlichen Anhebung, 0–9 dB; Vorgabe 4 dB. |
+| Schlagzeugschwelle | 0–12 dB. Niedriger reagiert auf mehr Einsätze, höher nur auf stärkere. |
+| Erholungszeit | 50–500 ms. Länger hält die Schlagzeugerkennung länger aufrecht. |
+| Ausgangsgrenze | −12 bis 0 dBFS; Vorgabe −1 dBFS. Eine konstante Absenkung begrenzt Sample-Spitzen; kein weiterer Kompressor oder True-Peak-Limiter. |
+| Vorhören ab | Start in Sekunden innerhalb des bearbeiteten Bereichs. |
+
+**Original** und **Vorschau** spielen bis zu acht Sekunden ab der gewählten Position. Das erste Vorhören analysiert und verarbeitet den gesamten Bereich mit abbrechbarem Fortschritt. Nur Position oder Lautstärkeabgleich ändern nutzt die Berechnung erneut. **Abhörlautstärke von Original und Vorschau angleichen** gleicht mittlere Pegel nur beim Hören an, nicht im gespeicherten Ergebnis.
+
+Anhaltende Mitten/Höhen nahe erkannter Schläge werden angehoben, mit gekoppelter Stereoregelung. Unter etwa 180 Hz erfolgt keine Wiederherstellungsanhebung; der Übergang reicht bis etwa 600 Hz. Die abschließende konstante Absenkung betrifft den gesamten bearbeiteten Bereich. **Links/Rechts** beschränkt die Bearbeitung auf einen Kanal. Dauer und Markierungen bleiben gleich. **OK** wendet an, **Strg+Z** stellt das Original wieder her, **F2** wiederholt. Mit **Speichern unter** bei Bedarf eine neue WAV speichern.
+
+Auch leise Stellen vergleichen. Starke Werte können Balance oder Klangfarbe ändern. Eine fertige Mischung enthält keine getrennten Gesangs-/Schlagzeugspuren zur exakten Rekonstruktion; fehlende oder abgeschnittene Details lassen sich nicht exakt wiederherstellen. Remaster ist eine Offline-Wellenformbearbeitung, kein Echtzeit-Spureffekt.
 
 <a id="ss-topic-amplitude"></a>
 
@@ -429,7 +466,7 @@ Der Eingang läuft vor der Wiedergabe warm. Im Vorlauf spielt das Original; inne
 
 Überblendungen mischen Alt/Neu innerhalb der Grenzen, höchstens 100 ms. Audio außerhalb bleibt erhalten. Alte Clips behalten ihre Quellen und werden im Punch-Bereich verdeckt. Strg+Z stellt alles in einem Schritt wieder her. Am alten Clip **Überdecktes Audio wiederherstellen** wählen, um alle seine Abdeckungen zu entfernen; neue Aufnahme löschen/stummschalten, damit nicht beide gleichzeitig spielen. Früher Stopp behält nur den tatsächlich aufgenommenen Abschnitt im Intervall. Stopp vor dem Intervall ändert die Sitzung nicht; die rohe Aufnahme bleibt unter **Datei → Arbeit wiederherstellen**. Wiederherstellung einer unbestätigten Aufnahme bietet die Rohaufnahme samt Vor-/Nachlauf zur manuellen Platzierung. Abgeschlossene Punch-Bereiche bleiben im Projekt und in der Absturzwiederherstellung erhalten.
 
-**Sitzung speichern / Sitzung speichern unter** bewahrt Audio, Clips, Linien, Ketten, Plug-in-Zustände und Punch-Bereiche. Sitzung öffnen stellt sie wieder her; Mischung exportiert WAV/MP3 mit denselben Effekten. Das Projekt für getrennte Spuren behalten. Neu gespeicherte Projekte benötigen SoundSausage **0.19.0 oder neuer**; frühere Projektversionen bleiben lesbar. Fehlende Plug-ins verhindern das Öffnen/Wiederherstellen der Quellen nicht.
+**Sitzung speichern / Sitzung speichern unter** bewahrt Audio, Clips, Linien, Ketten, Plug-in-Zustände und Punch-Bereiche. Sitzung öffnen stellt sie wieder her; Mischung exportiert WAV/MP3 mit denselben Effekten. Das Projekt für getrennte Spuren behalten. Neu gespeicherte Projekte benötigen SoundSausage **0.26.0 oder neuer**; frühere Projektversionen bleiben lesbar. Fehlende Plug-ins verhindern das Öffnen/Wiederherstellen der Quellen nicht.
 
 <a id="ss-topic-11-aufnahme-mit-begleitspuren"></a>
 
@@ -437,7 +474,7 @@ Der Eingang läuft vor der Wiedergabe warm. Im Vorlauf spielt das Original; inne
 
 Begleitclips auf Spuren setzen, andere Zielspur und Cursorposition wählen. **R** drücken, Eingang/neuen Clip wählen, „Vorhandene Spuren während Aufnahme abspielen“ aktivieren. Begleitung samt Effekten startet am Cursor, Eingang geht nicht an Lautsprecher. **P** pausiert beide; **Stopp/Esc/Leertaste/R** stoppt und behält die Aufnahme als einen Rückgängig-Schritt. Nach Begleitende kann Aufnahme weiterlaufen; Höchstdauer stoppt beide. Verwerfen entfernt nur die neue Aufnahme. Geräte-/Plug-in-Ausfall bewahrt Samples. Dokumentänderungen sind gesperrt.
 
-„Aufnahmepositionsversatz“ verschiebt den Clip: negativ früher, positiv später. Bei 15 ms Verspätung −15 ms probieren. Bekannten Klick über echte Ein-/Ausgangsroute aufnehmen, Positionen vergleichen, Differenz eingeben und zweite Aufnahme prüfen. Nach Geräte-/Pufferwechsel neu messen. Audio vor Zeit null wird beim Einfügen gekürzt. Versatz bleibt gespeichert. Automatische physische Kalibrierung, Taktdriftkorrektur, Plug-in-Latenzausgleich und Punch-in/out sind in Arbeit. Vor langer Sitzung kurz testen.
+„Aufnahmepositionsversatz“ verschiebt den Clip: negativ früher, positiv später. Bei 15 ms Verspätung −15 ms probieren. Bekannten Klick über echte Ein-/Ausgangsroute aufnehmen, Positionen vergleichen, Differenz eingeben und zweite Aufnahme prüfen. Nach Geräte-/Pufferwechsel neu messen. Audio vor Zeit null wird beim Einfügen gekürzt. Versatz bleibt gespeichert. Automatische Kalibrierung, Taktdriftkorrektur, Plug-in-Latenzausgleich und Punch-in/out sind im vorigen Kapitel beschrieben. Vor langer Sitzung kurz testen.
 
 <a id="ss-topic-12-tastenkurzel-favoriten-und-probleme"></a>
 
@@ -464,4 +501,4 @@ Begleitclips auf Spuren setzen, andere Zielspur und Cursorposition wählen. **R*
 
 Kein Eingang: Gerät/Kanal und Linux-Mikrofonpegel prüfen, neu verbinden und neue Aufnahme starten. Kein Ausgang: Route, Pegel, Stumm/Solo, Audiogeräte prüfen. Verzerrung/rote Peaks: Gesamtpegel senken, vor PCM normalisieren; gemischtes Einfügen/überlappende Clips addieren. Einfügen abgewiesen: Kanalanzahl der Zwischenablage prüfen. Effekt aus: Wellenform/Kopie öffnen; Kanalmischer braucht Stereo; zu bearbeitende Kanäle wählen. Punkte statt Clips: Clips verschieben wählen. Platte voll: Platz schaffen, keine aktiven Arbeitsdateien löschen. Defekte Wiederherstellung: Originale bleiben; Kopie nur bei Verzicht entfernen.
 
-In Arbeit: eigene Favoriten und Markereditor. Echtzeitketten, Linux-VST3 und Aufnahme mit Begleitung sind wie beschrieben verfügbar. Vor Beenden Projekt speichern. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).
+In Arbeit: eigene Favoriten. Echtzeitketten, Linux-VST3 und Aufnahme mit Begleitung sind wie beschrieben verfügbar. Vor Beenden Projekt speichern. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

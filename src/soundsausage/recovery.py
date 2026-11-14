@@ -15,6 +15,7 @@ from .session import Session, Media, Track, SessionClip, text, number, integer, 
 from .envelopes import validate_points
 from .trackfx import chain
 from .operations import operation
+from . import metadata
 
 MAX_JOURNAL_BYTES=64*1024*1024
 _pins={}
@@ -71,10 +72,11 @@ class Recovery:
             media=[dict(id=item.id,name=item.name,buffer=buffer(item.samples),metadata=_metadata(item.metadata))
                    for key,item in session.media.items() if key in active]
             multitrack=dict(rate=session.sample_rate,tracks=[asdict(track) for track in session.tracks],media=media,
+                            metadata=metadata.encode(session.metadata),
                             selection=list(session.selection),cursor=session.cursor,selected_clip=session.selected_clip,
                             selected_track=session.selected_track,dirty=session.dirty,path=str(session.path) if session.path else None,
                             adopt_first_rate=session.adopt_first_rate)
-            record=dict(format='soundsausage-recovery',version=2,time=time.time(),document=doc,session=multitrack,
+            record=dict(format='soundsausage-recovery',version=3,time=time.time(),document=doc,session=multitrack,
                         mode=mode,editing_clip_id=editing_clip_id)
             encoded=json.dumps(record,ensure_ascii=False,allow_nan=False,separators=(',',':')).encode('utf-8')
             if len(encoded)>MAX_JOURNAL_BYTES:
@@ -129,7 +131,7 @@ def restore(owner,dsp=None):
         raise AudioError('The recovery journal is too large.')
     try:
         record=json.loads(path.read_text('utf-8'))
-        if record.get('format')!='soundsausage-recovery' or record.get('version') not in (1,2):
+        if record.get('format')!='soundsausage-recovery' or record.get('version') not in (1,2,3):
             raise AudioError('Unsupported recovery journal.')
         descriptors=list(record['document']['pieces'])+[item['buffer'] for item in record['session']['media']]
         protected={(storage.cache_root()/item['file']).resolve() for item in descriptors}
@@ -169,6 +171,8 @@ def restore(owner,dsp=None):
         document.revision=1
         item=record['session']
         session=Session(integer(item['rate'],'Sample rate',1000,384000),1,dsp=document.dsp,adopt_first_rate=item['adopt_first_rate'])
+        if record['version']<3 and item.get('metadata'):raise AudioError('Invalid recovery metadata.')
+        session.metadata=metadata.decode(item['metadata'] if record['version']>=3 else [])
         if not 1<=len(item['tracks'])<=MAX_TRACKS or len(item['media'])>MAX_MEDIA:
             raise AudioError('Invalid recovery track/media count.')
         from .project import _id

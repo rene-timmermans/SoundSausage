@@ -178,18 +178,22 @@ class Document:
     @staticmethod
     def _storage_bytes(states):
         buffers = {}
+        information = {}
         for state in states:
+            for _,raw in state.metadata:information[id(raw)]=len(raw)
             for piece in state.pieces:
                 owner = piece
                 while isinstance(owner.base, np.ndarray):
                     owner = owner.base
                 buffers[id(owner)] = 0 if storage.lease_of(owner) else owner.nbytes
-        return sum(buffers.values())
+        return sum(buffers.values())+sum(information.values())
 
-    def _commit(self, pieces, selection, label, sample_rate=None, metadata=None):
+    def _commit(self, pieces, selection, label, sample_rate=None, metadata=None, *, audio_changed=True):
         pieces = tuple(piece for piece in pieces if len(piece))
-        information = id3_metadata.audio_changed(self.metadata if metadata is None else metadata,
-            sum(len(piece) for piece in pieces), self.sample_rate if sample_rate is None else sample_rate)
+        information = self.metadata if metadata is None else metadata
+        if audio_changed:
+            information = id3_metadata.audio_changed(information,
+                sum(len(piece) for piece in pieces), self.sample_rate if sample_rate is None else sample_rate)
         self.undo_stack.append(self._snapshot(label))
         self.redo_stack.clear()
         self._pieces = pieces
@@ -202,6 +206,12 @@ class Document:
         self.undo_stack = self.undo_stack[-50:]
         while len(self.undo_stack) > 1 and self._storage_bytes([self._snapshot(label), *self.undo_stack]) > 256 * 1024 * 1024:
             self.undo_stack.pop(0)
+
+    def set_marker_metadata(self, information, label):
+        if information == self.metadata:return
+        cursor=self.cursor
+        self._commit(self._pieces,self.selection,label,metadata=information,audio_changed=False)
+        self.cursor=cursor
 
     def replace(self, start, end, samples, label="Paste", *, new_metadata=None):
         validate_audio(samples, self.sample_rate)

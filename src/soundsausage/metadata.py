@@ -1,9 +1,29 @@
 """WAV metadata kept with audio; cue and sampler positions follow edits."""
 import struct
+import base64
 from . import id3_metadata
 
 MAX_METADATA_BYTES = 16 * 1024 * 1024
 CORE_CHUNKS = {b'fmt ', b'data', b'fact', b'ds64', b'JUNK', b'PAD '}
+
+
+def encode(chunks):
+    return [[kind.decode('latin1'),base64.b64encode(raw).decode('ascii')] for kind,raw in chunks]
+
+
+def decode(value):
+    from .errors import AudioError
+    if not isinstance(value,list):raise AudioError('Invalid project marker information.')
+    result=[];total=0
+    for entry in value:
+        if not isinstance(entry,list) or len(entry)!=2 or not all(isinstance(x,str) for x in entry):
+            raise AudioError('Invalid project marker information.')
+        kind,encoded=entry;kind=kind.encode('latin1')
+        if len(kind)!=4 or kind in CORE_CHUNKS:raise AudioError('Invalid project marker information.')
+        raw=base64.b64decode(encoded,validate=True);total+=len(raw)
+        if total>MAX_METADATA_BYTES:raise AudioError('Marker information is too large.')
+        result.append((kind,raw))
+    return tuple(result)
 
 
 def remap(chunks, position, *, time_reference=None):

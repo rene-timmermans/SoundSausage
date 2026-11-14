@@ -261,14 +261,17 @@ def info_items(raw):
         offset = stop+(length & 1)
 
 
-def export_tags(chunks):
+def export_tags(chunks, *, sample_rate=None, frames=None):
     """Map known INFO fields; report every omitted field, including conflicts."""
     from mutagen import id3
     raw = next((raw for kind, raw in chunks if kind.lower() == b'id3 '), None)
     tags = load(raw, strict=True) if raw is not None else id3.ID3()
     omitted = set()
+    from .markers import export_cues
+    handled=export_cues(chunks,sample_rate,frames,tags)
     id3_count = 0
-    for kind, raw in chunks:
+    for index,(kind, raw) in enumerate(chunks):
+        if index in handled:continue
         if kind.lower() == b'id3 ':
             id3_count += 1
             if id3_count > 1:

@@ -207,7 +207,8 @@ class MediaGuiTests(unittest.TestCase):
         w=self.window;w.document.metadata=((b'LIST',b'INFO'),(b'LIST',b'adtl'),(b'cue ',struct.pack('<I',0)))
         with patch('soundsausage.window.QMessageBox.question',return_value=QMessageBox.StandardButton.No) as question:
             self.assertFalse(w._metadata_permission('mp3_192'))
-        self.assertIn('cue',question.call_args.args[2]);self.assertIn('LIST',question.call_args.args[2])
+        self.assertNotIn('cue',question.call_args.args[2])  # Supported (empty) cue data is handled.
+        self.assertIn('LIST',question.call_args.args[2])  # Opaque associated information is still reported.
 
 
 if __name__=='__main__':unittest.main()

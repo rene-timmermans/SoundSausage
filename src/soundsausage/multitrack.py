@@ -19,6 +19,7 @@ from .theme import colors, blend, readable
 from .icons import make_icon
 from .envelope_ui import EnvelopeTimeline
 from .waveform import envelope_polygon, draw_envelope
+from .marker_view import MarkerOverlay
 
 
 HEADER = 184
@@ -92,7 +93,10 @@ class TrackControls(QWidget):
             field.setMaximumWidth(max(76, text_width(field.fontMetrics(), example) + 24))
 
 
-class Timeline(EnvelopeTimeline, QWidget):
+class Timeline(MarkerOverlay, EnvelopeTimeline, QWidget):
+    marker_started = Signal()
+    marker_moved = Signal(str, object)
+    marker_edit_requested = Signal(str)
     selection_changed = Signal()
     edited = Signal()
     view_changed = Signal(object, object)
@@ -104,6 +108,7 @@ class Timeline(EnvelopeTimeline, QWidget):
     def __init__(self, session, editor):
         super().__init__()
         self.session = session
+        self.init_markers()
         self.editor = editor
         self.view_start = 0
         self.view_end = session.sample_rate * 10
@@ -134,7 +139,7 @@ class Timeline(EnvelopeTimeline, QWidget):
             control.update_metrics()
         self.header_width = max([HEADER] + [control.sizeHint().width() + 4 for control in self._controls])
         self.row_height = max([ROW] + [control.sizeHint().height() + 3 for control in self._controls])
-        self.ruler_height = max(RULER, self.fontMetrics().height() + 8)
+        self.ruler_height = max(RULER, self.fontMetrics().height() + 8) + self.marker_height()
         self.clip_title_height = max(20, self.fontMetrics().height() + 4)
         self.setMinimumHeight(self.ruler_height + self.row_height * len(self.session.tracks) + 12)
         for index, control in enumerate(self._controls):
@@ -155,6 +160,7 @@ class Timeline(EnvelopeTimeline, QWidget):
         self.update()
 
     def set_session(self, session, fit=False):
+        self.cancel_marker()
         self.session = session
         self.cancel_envelope_gesture()
         self._point_selection = None
@@ -331,6 +337,7 @@ class Timeline(EnvelopeTimeline, QWidget):
         unit_width = text_width(self.fontMetrics(), "sec")
         painter.drawText(QRectF(8, 3, self.header_width - unit_width - 24, line), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, "Tracks")
         painter.drawText(QRectF(self.header_width - unit_width - 8, 3, unit_width, line), Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter, "sec")
+        self.draw_markers(painter)
 
     def hit_clip(self, point):
         for row, track, clip in reversed(list(self._display_clips())):
@@ -339,6 +346,7 @@ class Timeline(EnvelopeTimeline, QWidget):
         return None
 
     def mousePressEvent(self, event):
+        if event.button()==Qt.MouseButton.LeftButton and self.marker_press(event.position()):return
         if event.button() != Qt.MouseButton.LeftButton:
             return
         self.setFocus()
@@ -364,6 +372,8 @@ class Timeline(EnvelopeTimeline, QWidget):
         self.update()
 
     def mouseMoveEvent(self, event):
+        if self._marker_drag is not None and event.buttons() & Qt.MouseButton.LeftButton:
+            self.marker_move(event.position());return
         if self.envelope_move(event.position(), event.buttons()):
             return
         if self._drag and event.buttons() & Qt.MouseButton.LeftButton:
@@ -397,6 +407,7 @@ class Timeline(EnvelopeTimeline, QWidget):
                 self.setCursor(Qt.CursorShape.IBeamCursor)
 
     def mouseReleaseEvent(self, event):
+        if event.button()==Qt.MouseButton.LeftButton and self.marker_release():return
         if event.button() == Qt.MouseButton.LeftButton and self.envelope_release():
             return
         if self._drag and self._preview:
@@ -415,6 +426,7 @@ class Timeline(EnvelopeTimeline, QWidget):
         self.update()
 
     def mouseDoubleClickEvent(self, event):
+        if event.button()==Qt.MouseButton.LeftButton and self.marker_double_click(event.position()):return
         hit = self.hit_clip(event.position())
         if hit and self.envelope_mode != "move" and event.position().y() >= self.clip_rect(hit[2], hit[0]).top() + 21:
             self.cancel_envelope_gesture()

@@ -63,6 +63,19 @@ def run(window):
     assert border.view()[50, 0] == .5 and border.view()[249, 0] == .5
     assert border.view()[150, 0] < .3
     doc.select_channels()
+    from . import markers
+    info,key=markers.add((),doc.sample_rate,doc.frames,1,'Installation marker')
+    doc.set_marker_metadata(info,'Add Marker')
+    doc.set_marker_metadata(markers.move(doc.metadata,doc.sample_rate,doc.frames,key,2),'Move Marker')
+    assert markers.for_model(doc)[0].start==2
+    doc.undo();assert markers.for_model(doc)[0].start==1
+    doc.undo();assert not markers.for_model(doc)
+    recovery_source=np.zeros((4000,2),np.float32)
+    recovery_source[:,0]=.2*np.sin(2*np.pi*887*np.arange(4000)/8000)
+    recovery_source[:,1]=recovery_source[:,0]*.8
+    recovered_mix=doc.dsp.process_blocks('remaster',recovery_source,8000)
+    assert recovered_mix.shape==recovery_source.shape and np.isfinite(recovered_mix).all()
+    np.testing.assert_allclose(recovered_mix[:,1],recovered_mix[:,0]*.8,atol=2e-7)
     doc.apply("dynamics", points=((-96, -96), (0, 0)))
     np.testing.assert_array_equal(doc.read(), original)
     doc.apply("envelope", points=((0, 1), (1, 1)))
@@ -85,6 +98,8 @@ def run(window):
         write_wav(path / "test.wav", doc.read(), doc.sample_rate, "float32")
         np.testing.assert_array_equal(read_wav(path / "test.wav").samples, doc.read())
         from .media import write_mp3,read_mp3
+        write_wav(path/'markers.wav',doc.read(),doc.sample_rate,'float32',metadata=info)
+        assert markers.read(read_wav(path/'markers.wav').metadata,doc.sample_rate)[0].name=='Installation marker'
         mp3_samples=np.zeros((2400,2),np.float32)
         write_mp3(path/'test.mp3',mp3_samples,48000,'mp3_192')
         mp3=read_mp3(path/'test.mp3')
@@ -214,6 +229,8 @@ def run(window):
             assert tr('Audio Hardware') in manual.browser.toPlainText()
             assert tr('Edit Sample') in manual.browser.toPlainText()
             assert tr('Draw Waveform') in manual.browser.toPlainText()
+            assert 'Remaster' in manual.browser.toPlainText()
+            assert tr('Marker List') in manual.browser.toPlainText()
             assert tr('Start Calibration') in manual.browser.toPlainText()
             assert 'LADSPA' in manual.browser.toPlainText()
             manual.contents_button.click(); manual.next_button.click()
@@ -238,7 +255,7 @@ def run(window):
     finally:
         install_language().set_language(previous_language,persist=False)
         manual.close();manual.deleteLater()
-    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, MP3, sample editing, projects, disk buffers, recovery, recording files, icons, effects, track inserts, isolated VST3 host, manual)")
+    print(f"SoundSausage {__version__}: selftest OK (DSP, audio files, MP3, sample editing, markers, Remaster, projects, disk buffers, recovery, recording files, icons, effects, track inserts, isolated VST3 host, manual)")
 
 
 def run_audio(window):

@@ -6,6 +6,9 @@
     1,
     2
   ],
+  "Channels: {0}. Applies to the selection, or the whole waveform if nothing is selected.\nOriginal and preview play up to 8 seconds from the chosen position.": [
+    0
+  ],
   "Channels: {0}. Applies to the selection, or the whole waveform if nothing is selected.\nPreview plays the first 8 seconds without changing the waveform.": [
     0
   ],

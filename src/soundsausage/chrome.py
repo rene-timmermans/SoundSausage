@@ -29,6 +29,10 @@ def show_toolbar_labels(window, enabled):
 
 
 def create_actions(window):
+    window.action('marker_add','Add Marker',window.add_marker,'M')
+    window.action('markers','Marker List…',window.open_markers,'Ctrl+Shift+M')
+    window.action('marker_previous','Previous Marker',lambda:window.step_marker(-1),'Alt+Left')
+    window.action('marker_next','Next Marker',lambda:window.step_marker(1),'Alt+Right')
     window.action("to_start", "Go to Start", window.to_start, "Home")
     window.action("to_end", "Go to End", window.to_end, "End")
     window.action("seek_back", "Back 5 Seconds", lambda: seek(window, -5))
@@ -78,8 +82,9 @@ def create_menus(window):
     add(edit, (None, "edit_sample", "draw_waveform", "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
     view = menu("view", "&View")
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
+    add(view,(None,'marker_add','markers','marker_previous','marker_next'))
     transform = menu("transform", "&Transform")
-    add(transform, ("invert", "reverse", "silence", None))
+    add(transform, ('remaster',None,"invert", "reverse", "silence", None))
     add(transform, ("track_fx", None))
     amplitude = transform.addMenu("&Amplitude")
     amplitude.setToolTipsVisible(True)
@@ -144,7 +149,7 @@ def create_toolbars(window):
 
     bar("Working Mode", (("mode_wave", "mode_multi"),))
     bar("File and Edit", (("new", "open", "save"), ("cut", "copy", "paste", "trim"), ("undo", "redo")))
-    bar("View", (("zoom_in", "zoom_out", "zoom_full", "zoom_selection"), ("draw_waveform",)))
+    bar("View", (("zoom_in", "zoom_out", "zoom_full", "zoom_selection"), ("draw_waveform",'marker_add','markers')))
     window.addToolBarBreak()
     window.effects_toolbar = bar("Transform", (("amplify", "normalize", "fade_in", "fade_out"),
                                               ("invert", "reverse", "silence", "frequency")))

@@ -1,4 +1,4 @@
-# Native projectformaat, versie 5
+# Native projectformaat, versie 6
 
 Bestanden met extensie `.celp` zijn ZIP-archieven met `project.json` en de gebruikte audio als `media/<id>.wav`. Audio is ingebed als genormaliseerde float32-WAV en behoudt ook headroom boven ±1. Oorspronkelijke WAV-paden zijn niet nodig om het project te heropenen. Ongebruikte bronnen die alleen nog voor undo worden bewaard, worden niet opgeslagen.
 
@@ -7,7 +7,7 @@ Bestanden met extensie `.celp` zijn ZIP-archieven met `project.json` en de gebru
 | Sleutel | Betekenis |
 | --- | --- |
 | `format` | Vaste interne CELP-identificatie (automatisch beheerd) |
-| `version` | Geheel getal 5 bij nieuw opslaan; versies 1–4 worden ook gelezen |
+| `version` | Geheel getal 6 bij nieuw opslaan; versies 1–5 worden ook gelezen |
 | `sample_rate` | Gemeenschappelijke samplerate |
 | `media` | Bron-ID, naam, frame-/kanaalaantal en de ingebedde bestandsnaam |
 | `tracks` | Spoor-ID, naam, gain, pan, mute/solo, een lijst clips, `effects` en `tail_seconds` |
@@ -56,3 +56,15 @@ Het externe effecttype bewaart nu ook LV2-/LADSPA-ID’s en bewaarbare status.
 Alleen het lokale register levert uitvoerbare paden. Native vensters worden
 in hetzelfde geïsoleerde proces geopend als de bijbehorende plug-in.
 De uitlezer weigert niet-ondersteunde verplichte LV2-statusgegevens.
+
+## Versie 6: globale sessiemarkeringen
+
+Het hoofdniveau bevat `metadata`: een lijst paren `[chunk-id, base64-inhoud]`,
+maximaal 16 MiB gedecodeerd. Chunk-ID’s zijn vier tekens; audio-/formaatkernchunks
+worden geweigerd. Markeringen gebruiken WAV-cue/labelchunks of bestaande ID3-CHAP.
+Ze staan op absolute sessieframes en verschuiven niet bij het verplaatsen van clips.
+Bronmetadata blijft daarnaast in elke ingebedde WAV. Eindmix neemt alleen globale
+sessiemetadata binnen de renderduur mee, zonder bronmarkeringen samen te voegen.
+Versies 1–5 laden met lege globale metadata; extra globale metadata in zo’n oudere
+manifestversie wordt geweigerd. Oudere apps weigeren versie 6 bij openen.
+Herstelversie 3 bewaart dezelfde globale metadata en leest herstelversies 1 en 2.

@@ -89,4 +89,5 @@ geteste bron `96379844741171c61ae7f4e4a21930598b6c6e1c`.
 De scheiding gebruikt het [Qt-workerpatroon](https://doc.qt.io/qt-6/qthread.html)
 en de gebufferde [QAudioSink-interface](https://doc.qt.io/qt-6/qaudiosink.html).
 De bron blijft geschikt voor Qt 6.8; de nieuwere callback-interface is niet vereist.
-De gewone hardwareproef van F11 en de vensterafmetingen blijft onderdeel van B33.
+De hoorbare hardwareproef bevestigt dat het haperen bij F11 is verdwenen.
+Het onthouden van de vensterafmetingen blijft afzonderlijk te controleren binnen B33.

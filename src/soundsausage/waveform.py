@@ -13,6 +13,7 @@ from .peaks import piece_peaks
 from .plot_layout import text_width, separated_labels
 from .i18n import tr, language
 from .drawing import DrawingStroke
+from .marker_view import MarkerOverlay
 
 
 def envelope_polygon(minimum, maximum, channel, left, width, center, scale, clamp=1.08):
@@ -65,7 +66,10 @@ def clock_text(seconds):
     return f"{int(minutes)}:{rest:06.3f}"
 
 
-class Waveform(QWidget):
+class Waveform(MarkerOverlay, QWidget):
+    marker_started = Signal()
+    marker_moved = Signal(str, object)
+    marker_edit_requested = Signal(str)
     _peaks_ready = Signal(object)
     selection_changed = Signal(object, object)
     view_changed = Signal(object, object)
@@ -77,6 +81,7 @@ class Waveform(QWidget):
     def __init__(self, document, parent=None):
         super().__init__(parent)
         self.document = document
+        self.init_markers()
         self._scene_cache = None
         self.view_start = 0
         self.view_end = max(1, document.frames)
@@ -106,6 +111,7 @@ class Waveform(QWidget):
         self.setToolTip("Drag inside L or R to select that channel; drag across both for stereo. Double-click selects visible audio. Ctrl+wheel zooms; wheel scrolls. Zoom in until sample points appear: drag a point vertically to edit it, or double-click for its exact value. Shift+drag selects audio; Escape cancels a sample drag.")
 
     def set_document(self, document, fit=True):
+        self.cancel_marker()
         self._scene_cache = None
         self._peak_error = None
         self._sample_drag = None
@@ -125,7 +131,8 @@ class Waveform(QWidget):
         metrics = self.fontMetrics()
         right = max(61, text_width(metrics, "−32768") + 6, text_width(metrics, tr("samples")) + 6)
         bottom = max(29, metrics.height() + 8)
-        return QRectF(9, 7, max(1, self.width() - 9 - right), max(1, self.height() - 7 - bottom))
+        top=7+self.marker_height()
+        return QRectF(9, top, max(1, self.width() - 9 - right), max(1, self.height() - top - bottom))
 
     def set_view(self, start, end):
         self._sample_drag = None
@@ -221,7 +228,9 @@ class Waveform(QWidget):
         super().leaveEvent(event)
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key.Key_Escape and (self._sample_drag is not None or self._drawing_stroke is not None):
+        if event.key()==Qt.Key.Key_Escape and self._marker_drag is not None:
+            self.cancel_marker();event.accept()
+        elif event.key() == Qt.Key.Key_Escape and (self._sample_drag is not None or self._drawing_stroke is not None):
             self.cancel_sample_drag()
             event.accept()
         else:
@@ -290,6 +299,7 @@ class Waveform(QWidget):
         return (self.document,self.document.revision,self.view_start,self.view_end,
                 self.width(),self.height(),self.devicePixelRatioF(),self.font().toString(),language(),
                 self.document.selection,self.document.selected_channels,self._peaks_revision,
+                id(self.document.metadata),self._marker_drag,
                 self._sample_drag,self._sample_hover,
                 tuple(value.rgba() for value in vars(colors()).values()))
 
@@ -304,6 +314,7 @@ class Waveform(QWidget):
             image=QPixmap(max(1,round(self.width()*ratio)),max(1,round(self.height()*ratio)))
             image.setDevicePixelRatio(ratio)
             background=QPainter(image)
+            background.setFont(self.font())
             self._paint_scene(background)
             background.end()
             self._scene_cache=(self._scene_key() if self._drawing_stroke is None else key,image)
@@ -437,6 +448,7 @@ class Waveform(QWidget):
         painter.drawText(QRectF(rect.right() + 4, rect.bottom() + 4, amplitude_width, line), Qt.AlignmentFlag.AlignLeft, "samples" if sample_axis else "sec")
         painter.setPen(QPen(QColor("#b5c9ca"), 1))
         painter.drawRect(rect)
+        self.draw_markers(painter)
 
     def _select(self, start, end):
         self.document.select(start, end)
@@ -444,6 +456,7 @@ class Waveform(QWidget):
         self.update()
 
     def mousePressEvent(self, event):
+        if event.button()==Qt.MouseButton.LeftButton and self.marker_press(event.position()):return
         if (self.drawing and self.sample_editable and self.document.frames and
                 event.button() == Qt.MouseButton.LeftButton and
                 not event.modifiers() & Qt.KeyboardModifier.ShiftModifier and
@@ -482,6 +495,8 @@ class Waveform(QWidget):
             self.setFocus()
 
     def mouseMoveEvent(self, event):
+        if self._marker_drag is not None and event.buttons() & Qt.MouseButton.LeftButton:
+            self.marker_move(event.position());return
         if self._drawing_stroke is not None and event.buttons() & Qt.MouseButton.LeftButton:
             self._draw_at(event.position())
             return
@@ -507,6 +522,7 @@ class Waveform(QWidget):
             self._select(self._anchor, self.frame_at(event.position().x()))
 
     def mouseReleaseEvent(self, event):
+        if event.button()==Qt.MouseButton.LeftButton and self.marker_release():return
         if self._drawing_stroke is not None and event.button() == Qt.MouseButton.LeftButton:
             self._draw_at(event.position())
             stroke = self._drawing_stroke
@@ -524,6 +540,7 @@ class Waveform(QWidget):
         self._keep_channels = False
 
     def mouseDoubleClickEvent(self, event):
+        if event.button()==Qt.MouseButton.LeftButton and self.marker_double_click(event.position()):return
         if self.drawing and not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
             self.mousePressEvent(event)
             return
