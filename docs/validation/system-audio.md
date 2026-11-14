@@ -54,5 +54,20 @@ De geïnstalleerde pakketten voeren dezelfde tooncontrole uit met
 `--system-audio-selftest`, naast de vier bestaande zelftests. De gewone zelftest
 neemt geen systeemgeluid op en speelt geen toon af.
 
-Definitieve distributie- en pakketresultaten volgen na verificatie van de release.
-Een fysieke proef op de eigen uitgang blijft onderdeel van B33.
+## Definitieve verificatie
+
+Alle 555 tests slagen zonder overslaan op Debian, Fedora en Arch, inclusief de
+opgenomen uitgangstonen op 44,1 en 48 kHz. De gewone, afspeel-, opname-, duplex-
+en systeemgeluidzelftests slagen na installatie op vijf doelen, inclusief
+Ubuntu 26.04 en Rolling. De [workflow](https://github.com/rene-timmermans/SoundSausage/actions/runs/43618735113)
+slaagt met alle zeven jobs. Lokaal slagen alle 555 tests met tien expliciete
+backend/native controles voor de runners; 80 gerichte controles en 23 aanvullende
+bron-/kanaal-/taalproeven slagen eveneens. Beide bronvensters passen geselecteerd
+in vijf talen op 14 punten. Er zijn 1474 vertaalvormen, zonder ontbrekende teksten.
+
+[Release 0.25.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.0)
+bevat de geteste Debian/Ubuntu-, Fedora- en Arch-pakketten, bron en controlelijsten.
+Tag, acht bestanden en korte releasepunten zijn geverifieerd. Broncommit:
+`6aa9d52415586a162a9fde49b4b7b7fef7506bcc`.
+Een fysieke proef op de eigen uitgang blijft onderdeel van B33. De bestaande
+twee v1-punten B36b/B33 blijven open; virtuele proeven vervangen B33 niet.

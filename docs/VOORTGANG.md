@@ -2,23 +2,17 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
-0.25.0 staat in eindcontrole: Systeemgeluid (wat je hoort) neemt de standaarduitgang
-op, met bronkeuze in beide opnamevensters en vijf bijgewerkte handleidingen.
-Gerichte proeven dekken bronkeuze, stereo, pauzeren, fouten en veilig behoud.
-De pakketroute krijgt een extra geïnstalleerde controle met afspeeltonen.
-De twee bestaande v1-punten B36b en B33 blijven open.
+SoundSausage 0.25.0 is gepubliceerd en geverifieerd. **Systeemgeluid (wat je hoort)**
+neemt de actuele standaarduitgang op, met bronkeuze in Audioapparaten en het
+opnamevenster, stereo en pauzeren/hervatten. Alle vijf handleidingen bevatten
+een geïndexeerd onderwerp met bediening en voorbeelden.
 
-SoundSausage 0.24.0 is gepubliceerd en geverifieerd. B23/B24 zijn afgerond:
-automatische uitklank, langere galm/echo en instelbare selectieovergangen bij
-EQ/filters. De natuurlijke causale fase blijft behouden. Vorige en Volgende
-bladeren door handleidingonderwerpen; werkbalk- en transportknoppen tonen
-accentkleurige iconen op een neutrale achtergrond.
-
-Alle 542 controles slagen zonder overslaan op Debian, Fedora en Arch. De vier
+Alle 555 controles slagen zonder overslaan op Debian, Fedora en Arch. Vijf
 geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
-Zie [uitklank en filterranden](validation/tails-and-boundaries.md).
+De nieuwe proef controleert twee afspeeltonen in de opgenomen uitgangsmonitor.
+Zie [systeemgeluid](validation/system-audio.md).
 
-Er blijven twee gekozen punten: **B36b en B33**. De overige 18 blijven uitgesteld.
+Er blijven twee gekozen v1-punten: **B36b en B33**. De overige 18 blijven uitgesteld.
 Daarna volgen een releasecandidate en v1.0. De [todo](TODO.md) en het
 [ontwikkelplan](ONTWIKKELPLAN.md) blijven leidend.
 
@@ -507,3 +501,29 @@ Lokaal 516 volledige tests (9 expliciete backend/native skips) en na het indexwe
 Geen nieuwe afhankelijkheden of profiel-/projectformaatwijziging.
 Zie de [onderbouwing](validation/adaptive-noise.md). B21 is uit de open todo;
 B23/B24 volgen. De 18 uitgestelde kandidaten blijven buiten de route.
+
+
+## Uitklank, filterranden en bediening — 0.24.0
+
+B23/B24 zijn afgerond met automatische uitklank, handmatig tot 600 seconden en
+galmtijd tot 60 seconden. EQ en filters hebben instelbare selectieovergangen met
+voorbereiding uit voorgaande audio; hun natuurlijke causale fase blijft behouden.
+Vorige/Volgende bladeren door handleidingonderwerpen. Pictogramknoppen hebben
+neutrale vlakken met accentkleurige iconen. Alle 542 controles en de vier
+geïnstalleerde zelftests op vijf doelen slagen. Zie
+[uitklank en filterranden](validation/tails-and-boundaries.md).
+
+## Systeemgeluid — 0.25.0
+
+De standaarduitgang van Linux is als opnamebron beschikbaar, ook zonder microfoon.
+Iedere nieuwe take bepaalt de actuele uitgang. Stereo, mono-kanaalkeuze, pauze,
+hervatten, veilige take-opslag, Undo/Redo en de gewone WAV-/MP3-werkwijze blijven
+beschikbaar. De clienthulpmiddelen worden met de installatiepakketten meegeleverd.
+Een ontbrekende uitgang of verbinding geeft een melding zonder microfoonfallback.
+
+Alle 555 tests slagen zonder overslaan op Debian, Fedora en Arch. De vijf
+geïnstalleerde zelftests slagen op de drie distributies en beide Ubuntu-doelen.
+[Release 0.25.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.0)
+bevat de geteste pakketten. De [controledekking](validation/system-audio.md)
+beschrijft de toonproef, bronkeuze en foutafhandeling. De fysieke proef van de
+eigen hoofduitgang blijft bij B33; B36b is de volgende functionele stap.

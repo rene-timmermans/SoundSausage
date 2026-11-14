@@ -26,6 +26,12 @@ als onderbouwing van de beschikbare app bewaard.
    en geteste installatiepakketten controleren; blokkerende fouten oplossen.
 7. **Eerste v1.0:** publiceren zodra de gekozen punten en releasecandidate zijn afgerond.
 
+Systeemgeluid opnemen is als aanvullende bron afgerond in
+[0.25.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.0).
+De [controles](validation/system-audio.md) dekken bronkeuze, verwerking en pakketten.
+De twee resterende v1-punten blijven gelijk; B33 omvat ook een fysieke proef van
+systeemgeluid op de eigen hoofduitgang.
+
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,
 versietags en korte toegevoegde functies/Work in progress. De datum voor v1.0
