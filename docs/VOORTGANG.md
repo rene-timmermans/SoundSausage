@@ -2,15 +2,14 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
-SoundSausage 0.22.0 is gepubliceerd en geverifieerd. B06/B07 zijn afgerond:
-knippen, trimmen, plakken, tijdrekken, uitklank, genereren en opnemen op één
-stereokanaal. Het andere kanaal behoudt exact zijn samples op dezelfde posities;
-het kortere kanaal krijgt eindstilte. Vijf handleidingen en vertalingen zijn bijgewerkt.
-De [controle](validation/channel-timing.md) beschrijft de regressieproeven.
+SoundSausage 0.23.0 is gepubliceerd en geverifieerd. B21 is afgerond: adaptieve
+ruisreductie, instelbare aanpassingstijd, detailbehoud en twee presets. De vaste
+profielstand blijft beschikbaar. Alle vijf handleidingen hebben bovendien een
+klikbare inhoudsopgave met blauwe links en een knop terug naar Inhoud.
 
-Er blijven vijf gekozen punten: **B21, B23, B24, B36b en B33**. De overige 18
-blijven uitgesteld. B21 wordt getoetst voor 0.23.0, gevolgd door B23/B24 en B36b,
-dan B33 op de afgeronde app, een releasecandidate en v1.0. De [todo](TODO.md)
+Er blijven vier gekozen punten: **B23, B24, B36b en B33**. De overige 18 blijven
+uitgesteld. B23/B24 volgen, daarna de markereditor B36b, fysieke B33 op de
+functioneel afgeronde app, een releasecandidate en v1.0. De [todo](TODO.md)
 en het [ontwikkelplan](ONTWIKKELPLAN.md) blijven leidend.
 
 De huidige ontwikkelvolgorde versterkt eerst de audiobasis en werkt daarna de
@@ -474,11 +473,27 @@ kandidaten blijven buiten de afgesproken route. B33 en de releasecandidate
 blijven nodig vóór v1.0.
 
 
-## Ruisreductie — B21 in verificatie voor 0.23.0
+## Ruisreductie en handleidingindex — B21 afgerond in 0.23.0
 
-Adaptieve ruisschatting, aanpassingstijd, detailbehoud en nieuwe presets zijn
-gebouwd. De vaste profielstand blijft beschikbaar. Vijf handleidingen en
-vertalingen zijn bijgewerkt. Alle vijf manuals hebben bovendien een klikbare
-inhoudsopgave met blauwe links en een knop terug naar Inhoud. Gerichte DSP-, kanaal-, GUI-, taal- en layoutproeven
-slagen; definitieve distributiecontrole en publicatie volgen. Zie de
-[onderbouwing](validation/adaptive-noise.md). B21 blijft voorlopig open.
+- [x] Profielgestuurde adaptieve ruisschatting en instelbare aanpassingstijd.
+- [x] Detailbehoud met expliciete afweging tussen zachte klanken en resterende ruis.
+- [x] Presets Wisselende achtergrond en Fijne details; vaste profielstand behouden.
+- [x] Meetproeven op wisselende ruis, spectrum, zachte tonen, aangehouden tonen en aanslagen.
+- [x] Kanaalbehoud, stereo, Preview, verwijderd deel, blokken, annuleren, Undo en herhalen.
+- [x] Vijf volledige handleidingen met klikbare blauwe inhoudsopgaven en Inhoud-knop.
+- [x] Alle onderwerpankers, echte muisklikken, thema-/taalwissel en pakketten getoetst.
+- [x] Distributiebouw, tag, korte releasepunten en 8 assets geverifieerd.
+
+[0.23.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.23.0)
+bevat de installers. Alle 520 tests slagen zonder overslaan op Debian/Fedora/Arch.
+Vier geïnstalleerde zelftests slagen op vijf doelen incl Ubuntu 26.04/Rolling.
+Alle 7 jobs van [de bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43610344308)
+zijn groen. Tag/bron/body en assets op naam, grootte, uploadstatus en digestmetadata
+gecontroleerd; zes definitieve logs zonder onverwachte fouten.
+
+Lokaal 516 volledige tests (9 expliciete backend/native skips) en na het indexwerk
+30 gerichte manual/i18n/layout/installatiecontroles groen. 1450 bronvormen,
+0 ontbrekend. Index: 75 onderwerpen Nederlands, 43 Engels, 44 Duits/Frans/Spaans.
+Geen nieuwe afhankelijkheden of profiel-/projectformaatwijziging.
+Zie de [onderbouwing](validation/adaptive-noise.md). B21 is uit de open todo;
+B23/B24 volgen. De 18 uitgestelde kandidaten blijven buiten de route.

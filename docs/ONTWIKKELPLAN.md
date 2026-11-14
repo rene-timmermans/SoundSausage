@@ -1,11 +1,11 @@
 # Afgesproken ontwikkelroute
 
-## Actuele route: vijf punten, daarna de eerste v1
+## Actuele route: vier punten, daarna de eerste v1
 
 De afgesproken route van 14 november 2026 is leidend voor het resterende werk.
 De gekozen uitbreidingen zijn **B06, B07, B21, B23, B24, B33 en B36b**.
-B06/B07 zijn afgerond in 0.22.0. De [todo](TODO.md) bevat de vijf resterende
-punten B21, B23, B24, B36b en B33; de overige 18 uitbreidingen
+B06/B07 zijn afgerond in 0.22.0 en B21 in 0.23.0. De [todo](TODO.md) bevat de vier
+resterende punten B23, B24, B36b en B33; de overige 18 uitbreidingen
 zijn [voorlopig uitgesteld](validation/beperkingen-keuzes.md) en komen alleen
 na een nieuwe afspraak terug. De afgeronde ontwikkelfases hieronder blijven
 als onderbouwing van de beschikbare app bewaard.
@@ -13,8 +13,8 @@ als onderbouwing van de beschikbare app bewaard.
 1. **B06/B07 — afgerond in 0.22.0:** kanaalgebonden knippen, duurwijzigingen,
    plakken en opname, met kanaaluitlijning, Undo/Redo, metadata en opslag/herstel.
    [Controles en publicatie](validation/channel-timing.md).
-2. **B21:** ruisreductie verbeteren voor wisselende ruis en zachte details.
-   Implementatie 0.23.0 wordt getoetst; [controle](validation/adaptive-noise.md).
+2. **B21 — afgerond in 0.23.0:** adaptieve ruisreductie, aanpassingstijd,
+   detailbehoud en presets; [controles en publicatie](validation/adaptive-noise.md).
 3. **B23/B24:** uitklank van galm/echo en selectieranden/fasegedrag van EQ/filters uitwerken.
 4. **B36b:** de markereditor afronden, inclusief toevoegen, verplaatsen, benoemen,
    verwijderen en behoud bij bewerken en opslaan.
@@ -326,7 +326,7 @@ open lijst verwijderen, met een korte reden in het
 B01 is uitgebreid met golfvormtekenen en afgerond in 0.20.0. B03 is beoordeeld:
 de bestaande MP3-uitvoergrenzen blijven bewust behouden. B04, de afhandeling
 van MP3-metadata, is afgerond in 0.21.0; kanaalbewerkingen B06/B07 in 0.22.0.
-B21 volgt. De actuele route bovenaan bevat de vijf resterende gekozen punten. Dithering B36a is uitgesteld;
+B21 is afgerond in 0.23.0. De actuele route bovenaan bevat de vier resterende punten. Dithering B36a is uitgesteld;
 de markereditor B36b, fysieke proeven B33 en releasecandidate behoren tot die route. Nieuwe functies krijgen passende controles,
 volledige uitleg in alle vijf handleidingen en geteste installatiepakketten.
 
@@ -394,3 +394,15 @@ gecontroleerde assets. [Definitieve bouw](https://github.com/rene-timmermans/Sou
 
 De [todo](TODO.md) gaat verder met B21; daarna B23/B24, B36b, fysieke B33 en RC.
 De 18 voorlopig uitgestelde kandidaten blijven buiten de route.
+
+
+## Ruisreductie en handleidingindex — B21 afgerond in 0.23.0
+
+- [x] Adaptieve ruisvolging en detailbehoud, met behoud van de vaste profielroute.
+- [x] Meetproeven, kanaal-/stereocontroles, Undo, Preview, blokken en annuleren.
+- [x] Vijf manuals met klikbare blauwe inhoudsopgave, losse effecten en terugkeerknop.
+- [x] Actuele indexgenerator, muisklikken, taal-/themawissel en installatiegetrouwheid.
+- [x] Definitieve [release 0.23.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.23.0) geverifieerd.
+
+De volgende stap is B23/B24; daarna B36b, fysieke B33, RC en de eerste v1.0.
+De 18 voorlopig uitgestelde uitbreidingen blijven buiten de gekozen scope.

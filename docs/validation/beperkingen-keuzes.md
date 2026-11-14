@@ -89,8 +89,8 @@ zonder vooruitblik — blijft beschreven; de uitbreiding B25 is voorlopig uitges
 ## Scope voor de eerste v1 — 14 november 2026
 
 De gekozen v1-scope bestaat uit B06, B07, B21, B23, B24, B33 en B36b.
-B06/B07 zijn inmiddels afgerond in 0.22.0; vijf punten blijven open. Daarna
-volgen B21, B23/B24 en de markereditor B36b. B33 volgt met de
+B06/B07 zijn afgerond in 0.22.0 en B21 in 0.23.0; vier punten blijven open.
+B23/B24 en de markereditor B36b volgen. B33 volgt met de
 functioneel afgeronde app, daarna een releasecandidate en de eerste v1.0.
 
 De onderstaande **18 punten zijn voorlopig uitgesteld**, niet afgerond of
@@ -134,3 +134,19 @@ B06/B07 zijn na verificatie van
 uit de open todo verwijderd. De [onderbouwing](channel-timing.md) bevat controles,
 metadata, opslag, annuleren en publicatie. Er blijven5 gekozen punten en18 uitgestelde
 kandidaten. B21 is de volgende stap; B33 en RC blijven vóór v1.0 nodig.
+
+
+## Ruisreductie — B21 afgerond in 0.23.0
+
+De vaste profielroute blijft behouden. Adaptieve ruisschatting volgt veranderingen
+in de achtergrond, met instelbare tijd en bescherming van zachte details. Hoger
+detailbehoud laat meer ruis achter. Een profiel blijft nodig en ongeschikt profiel
+of aangehouden brede klanken kunnen tot verwarring leiden. Dat zijn praktische
+grenzen van de beschikbare verwerking; stemseparatie wordt niet toegevoegd.
+
+De [controle](adaptive-noise.md) toetst ruisverandering, detail, stereo, bronbehoud,
+Preview en opslag. Alle vijf handleidingen zijn bijgewerkt en op aanvullend
+verzoek voorzien van klikbare blauwe inhoudsopgaven. B21 is na verificatie van
+[0.23.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.23.0)
+uit de open todo verwijderd. Er blijven4 gekozen punten, 18 uitgesteld en 15 afgehandeld.
+B23/B24 volgen; B33 en RC blijven vóór v1.0 nodig.

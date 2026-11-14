@@ -78,5 +78,29 @@ Hoger detailbehoud laat meer ruis achter. Beluister het verwijderde deel en
 vergelijk het resultaat. Geen claim dat muziek of spraak geheel onveranderd
 blijven. Alle extra ruisprofiel-/detailinstellingen zijn golfvormbewerkingen.
 
-Definitieve distributie- en publicatieresultaten worden na de bouw aangevuld.
-B21 blijft tot dat moment in de open todo staan.
+## Definitieve verificatie en publicatie
+
+[Workflow 43610344308](https://github.com/rene-timmermans/SoundSausage/actions/runs/43610344308)
+is volledig groen: alle 520 tests zonder overslaan op Debian, Fedora en Arch.
+Vier geïnstalleerde zelftests slagen op die drie en Ubuntu 26.04/Rolling:
+gewone app/native plug-infixture, uitvoer, invoer en duplex.
+
+Bron/tag 2c0c45432b9164c498d3c86769c064ee96aed2c8, tree 47b08e28da93f47c9dacc00b721c033c1e9dbbb0,
+parent 4b101d65fa817bb46e13d10353638e32f1a6280e. De
+[release 0.23.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.23.0)
+heeft 8 assets: bron, controlesommen, Debian/Ubuntu, Fedora en Arch plus bijbehorende
+debugpakketten. Namen, groottes, uploadstatus en digestmetadata, tag en korte
+releasepunten zijn gecontroleerd. Zes definitieve joblogs zonder onverwachte fouten.
+
+Lokaal 516 volledige tests met 9 expliciete backend/native skips, daarna 30 definitieve
+manual/i18n/layout/stagingcontroles na de extra indexopdracht. 1450 bronvormen,
+0 ontbrekend. De gewone zelftest wacht in een synthetisch tweesecondenfragment
+voldoende reactie na de ruissprong af; dezelfde eis van minstens halvering van
+ruisenergie geldt, gemeten ongeveer 0.216 van de bronenergie in het laatste kwart.
+Dit verandert geen opnamebediening of reactietijd van het effect.
+
+Bewijs lokaal: build/release-0.23.0-receipt.json, noise-source-*.json,
+noise-full-tests.log, noise-index-final-tests.log, noise-selftest.log,
+manual-contents-preview.png, adaptive-noise-preview.png en release-0.23.0-logs/*.log.
+B21 is afgerond; B23/B24 zijn de volgende stap. B33 blijft de afzonderlijke fysieke
+controle vóór v1.0.
