@@ -1,5 +1,17 @@
 # Ontwikkelroute
 
+## Actuele stand richting v1.0 — 14 november 2026
+
+SoundSausage 0.21.0 is gepubliceerd en geverifieerd. De resterende scope bestaat
+uit zeven punten: **B06, B07, B21, B23, B24, B33 en B36b**. De overige 18 eerdere
+kandidaten zijn voorlopig uitgesteld. De [todo](TODO.md) is de actuele lijst;
+het [ontwikkelplan](ONTWIKKELPLAN.md) beschrijft de route naar de eerste v1.
+
+De bouwvolgorde is B06/B07, B21, B23/B24 en B36b, gevolgd door B33 op de
+functioneel afgeronde app. Daarna volgen een releasecandidate, het oplossen van
+blokkerende fouten en v1.0 met geteste installers. Voor B06/B07 staat de keuze
+voor kanaaluitlijning nog open. Nog geen softwarewijziging voor deze punten.
+
 De huidige ontwikkelvolgorde versterkt eerst de audiobasis en werkt daarna de
 resterende effecten en tools per groep af. Iedere afgeronde versie krijgt
 releasepunten en geteste installatiepakketten.
@@ -418,3 +430,16 @@ gecontroleerd. De duplexzelftest wacht op echte invoer en heeft een regressie
 voor vertraagde aanlevering. B04 is uit de todo verwijderd; er blijven 25 punten
 open, met B06 als volgende beoordeling. B33 blijft fysiek te controleren.
 [Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43600100211).
+
+
+## Scope naar de eerste v1 vastgelegd
+
+De open lijst is beperkt tot de zeven gekozen punten. Achttien uitbreidingen
+zijn uitgesteld en met hun oorspronkelijke nummers bewaard in het besluiten-
+overzicht. Er zijn geen functies of technische ondersteuningsgrenzen gewijzigd.
+De markereditor behoort nu expliciet tot de v1-route; dithering is uitgesteld.
+De gewone B910/HDMI-proef blijft bevestigd; B33 vraagt de aanvullende fysieke
+synchronisatie-, punch- en plug-inproeven op de afgeronde app.
+
+Deze stap wijzigt uitsluitend planning en overdracht. Appversie 0.21.0 en de
+bestaande geteste pakketten blijven actueel.

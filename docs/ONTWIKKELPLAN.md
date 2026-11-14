@@ -1,5 +1,31 @@
 # Afgesproken ontwikkelroute
 
+## Actuele scope: zeven punten, daarna de eerste v1
+
+De afgesproken route van 14 november 2026 is leidend voor het resterende werk.
+Alleen **B06, B07, B21, B23, B24, B33 en B36b** worden verder uitgewerkt.
+De [todo](TODO.md) bevat de zeven actuele punten; de overige 18 uitbreidingen
+zijn [voorlopig uitgesteld](validation/beperkingen-keuzes.md) en komen alleen
+na een nieuwe afspraak terug. De afgeronde ontwikkelfases hieronder blijven
+als onderbouwing van de beschikbare app bewaard.
+
+1. **B06/B07:** kanaalgebonden knippen, duurwijzigingen en plakken samen afronden,
+   met duidelijke kanaaluitlijning, Undo/Redo, metadata en opslag/herstel.
+2. **B21:** ruisreductie verbeteren voor wisselende ruis en zachte details.
+3. **B23/B24:** uitklank van galm/echo en selectieranden/fasegedrag van EQ/filters uitwerken.
+4. **B36b:** de markereditor afronden, inclusief toevoegen, verplaatsen, benoemen,
+   verwijderen en behoud bij bewerken en opslaan.
+5. **B33:** de functioneel afgeronde app fysiek toetsen met kalibratie, langere
+   overdub, punch/heropenen en echte plug-invensters/statusopslag.
+6. **Releasecandidate:** dagelijkse workflow, vijf talen, volledige offlinehulp
+   en geteste installatiepakketten controleren; blokkerende fouten oplossen.
+7. **Eerste v1.0:** publiceren zodra de gekozen punten en releasecandidate zijn afgerond.
+
+Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
+handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,
+versietags en korte toegevoegde functies/Work in progress. De datum voor v1.0
+wordt bepaald door de resultaten van deze afgesproken route.
+
 De bouwvolgorde versterkt eerst de basis van SoundSausage. Daarna worden de
 overige effecten en tools per groep afgemaakt. Iedere afgeronde stap krijgt
 passende controles, een bijgewerkte handleiding en een release met pakketten.
@@ -250,7 +276,8 @@ De B910-proef voor gewone opname en terugluisteren blijft bevestigd. De nieuwe
 synchronisatie- en punchroute vraagt een aanvullende praktijktake; een virtuele
 loopback vervangt geen controle van fysieke apparaatklokken. MIDI, Windows/VST2,
 extra sidechains en LV2 GTK-/Qt-UI-adapters vallen buiten de huidige ondersteuning.
-Een markereditor of eigen favorieten zijn geen blokkerende eis voor v1.0.
+De markereditor B36b behoort sinds de scopekeuze van 14 november tot het werk
+voor v1.0; eigen favorieten vallen buiten die scope.
 
 De broncontrole voor 0.19.0 slaagt met alle 451 tests en native zelftest op
 Debian/Fedora/Arch, zonder overslaan. De definitieve pakketcontroles zijn eveneens geslaagd. [Broncontrole](https://github.com/rene-timmermans/SoundSausage/actions/runs/43265508881).
@@ -295,10 +322,9 @@ open lijst verwijderen, met een korte reden in het
 
 B01 is uitgebreid met golfvormtekenen en afgerond in 0.20.0. B03 is beoordeeld:
 de bestaande MP3-uitvoergrenzen blijven bewust behouden. B04, de afhandeling
-van MP3-metadata, is afgerond in 0.21.0; B06 is nu aan de beurt. Dithering en de
-markereditor krijgen aparte taken. Alle kandidaten bouwen is geen voorwaarde
-voor v1.0; de fysieke proeven onder B33 en een releasecandidate blijven wel
-onderdeel van de eerdere afspraak. Nieuwe functies krijgen passende controles,
+van MP3-metadata, is afgerond in 0.21.0; B06/B07 zijn nu aan de beurt. De actuele
+v1-scope bovenaan kiest de zeven resterende punten. Dithering B36a is uitgesteld;
+de markereditor B36b, fysieke proeven B33 en releasecandidate behoren tot die route. Nieuwe functies krijgen passende controles,
 volledige uitleg in alle vijf handleidingen en geteste installatiepakketten.
 
 
@@ -344,3 +370,11 @@ B06 is de volgende beoordeling. De fysieke v1.0-proeven blijven open onder B33.
 bevat de geteste installatiepakketten: alle 486 controles zonder overslaan op
 Debian/Fedora/Arch, vier installatiezelftests op vijf doelen en acht
 gecontroleerde assets. [Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43600100211).
+
+
+## Scope vastgelegd — 14 november 2026
+
+- [x] Zeven gekozen punten in de actuele todo behouden.
+- [x] Overige 18 punten als uitgesteld registreren en uit de open todo verwijderen.
+- [x] Route naar releasecandidate en eerste v1 vastleggen.
+- [ ] B06/B07 uitwerken; gedrag bij kanaalgebonden duurwijzigingen nog afstemmen.
