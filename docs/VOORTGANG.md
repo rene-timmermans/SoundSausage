@@ -11,7 +11,8 @@ Alle 610 tests slagen zonder overslaan op Debian, Fedora en Arch. Vijf
 geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
 De acht releasebestanden, tag en korte releasepunten zijn gecontroleerd; zie de
 [validatie](validation/markers-and-remaster.md). B33 omvat de nog open
-fysieke proeven en Remaster-luistercontrole; de F11-proef is al bevestigd.
+fysieke proeven; een eerste Remaster-luistervergelijking bevestigt verbetering,
+met korte resterende wegzakkingen voor verder onderzoek. De F11-proef is al bevestigd.
 
 ## Vorige stabiele stand — 14 november 2026
 

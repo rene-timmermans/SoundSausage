@@ -64,6 +64,8 @@ De [release 0.26.0](https://github.com/rene-timmermans/SoundSausage/releases/tag
 bevat Debian/Ubuntu-, Fedora- en Arch-pakketten, bronarchief, debugpakketten en
 SHA256SUMS: acht bestanden. Namen, groottes, uploadstatus en SHA256-digestmetadata
 zijn gecontroleerd; tag en releasepunten komen overeen met de geteste bron.
-De hoorbare Remaster-vergelijking op een fysieke uitgang blijft een praktijkproef;
-numerieke signalen alleen beoordelen geen muzikale balans of luisterkwaliteit.
+Een eerste hoorbare Remaster-vergelijking bevestigt verbetering, met korte
+resterende wegzakkingen. Hun precieze locatie en vergelijking met het origineel
+blijven open. Numerieke signalen alleen beoordelen geen muzikale balans of
+luisterkwaliteit.
 De overige B33-proeven blijven opgenomen in de [todo](../TODO.md).

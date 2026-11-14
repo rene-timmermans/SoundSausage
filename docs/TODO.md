@@ -12,8 +12,8 @@ in een eindmix blijft daaronder vallen (B31).
 
 Remaster is aanvullend uitgewerkt op het expliciete verzoek voor pompende
 muziekopnamen. De functie biedt instelbaar herstel en origineel/voorbeeld op gelijk
-luistervolume. Numerieke proeven bevestigen beperkt herstel; de muzikale uitkomst
-vraagt de onderstaande luistercontrole. De oorspronkelijke bronbestanden blijven
+luistervolume. Numerieke proeven en een eerste luistervergelijking bevestigen verbetering.
+Korte resterende wegzakkingen vragen nog nader onderzoek en vergelijking. De oorspronkelijke bronbestanden blijven
 bij de proeven ongewijzigd.
 
 ## B33 — fysieke praktijkcontrole
@@ -28,7 +28,7 @@ bij de proeven ongewijzigd.
 | Punch-in/out, opslaan en heropenen | Open. |
 | Systeemgeluid van de eigen hoofduitgang | Open. |
 | Echte VST3-/LV2-vensters, parameters en heropende plug-instatus | Open. |
-| Remaster: origineel/voorbeeld bij drums én rustig fragment | Open, op de twee aangeleverde opnamen. |
+| Remaster: origineel/voorbeeld bij drums én rustig fragment | Hoorbare verbetering bevestigd; korte resterende wegzakkingen nader lokaliseren en vergelijken. |
 | Markerbediening in de dagelijkse workflow | Open, samen met de nieuwe build. |
 
 ## Afronden naar de eerste v1
