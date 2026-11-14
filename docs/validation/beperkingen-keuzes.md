@@ -89,8 +89,8 @@ zonder vooruitblik — blijft beschreven; de uitbreiding B25 is voorlopig uitges
 ## Scope voor de eerste v1 — 14 november 2026
 
 De gekozen v1-scope bestaat uit B06, B07, B21, B23, B24, B33 en B36b.
-B06/B07 zijn afgerond in 0.22.0 en B21 in 0.23.0; vier punten blijven open.
-B23/B24 en de markereditor B36b volgen. B33 volgt met de
+B06/B07 zijn afgerond in 0.22.0, B21 in 0.23.0 en B23/B24 in 0.24.0; twee punten blijven open.
+De markereditor B36b volgt. B33 volgt met de
 functioneel afgeronde app, daarna een releasecandidate en de eerste v1.0.
 
 De onderstaande **18 punten zijn voorlopig uitgesteld**, niet afgerond of
@@ -150,3 +150,24 @@ verzoek voorzien van klikbare blauwe inhoudsopgaven. B21 is na verificatie van
 [0.23.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.23.0)
 uit de open todo verwijderd. Er blijven4 gekozen punten, 18 uitgesteld en 15 afgehandeld.
 B23/B24 volgen; B33 en RC blijven vóór v1.0 nodig.
+
+
+## Uitklank en filterranden — B23/B24 afgerond in 0.24.0
+
+Automatische uitklank volgt resterende effecttoestand en bewaart late echo’s over
+stille gaten. Handmatige uitklank loopt tot 600 seconden, galmtijd tot 60 seconden.
+Een nog hoorbare toestand aan de automatische grens geeft een melding zonder
+het document te wijzigen. Realtime spoorketens houden hun afzonderlijke grens;
+B17 blijft uitgesteld.
+
+EQ en filters houden hun natuurlijke causale fase. Voorafgaande audio bereidt
+het filter voor; een instelbare overgang van standaard 5 ms mengt binnen de
+selectie. Bron buiten de selectie en het andere kanaal blijven exact. Met 0 ms
+blijft de eerdere directe verwerking beschikbaar. Een aparte lineaire- of
+nulfasemodus is niet toegevoegd.
+
+Na verificatie van [0.24.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.24.0)
+zijn B23/B24 uit de open todo verwijderd. De [onderbouwing](tails-and-boundaries.md)
+bevat de grenzen, controles en publicatie. Er blijven 2 gekozen punten,
+18 uitgesteld en 17 afgehandeld: samen alle 37 deelpunten. B36b volgt, daarna
+B33 en de releasecandidate vóór v1.0.

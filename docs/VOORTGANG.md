@@ -2,20 +2,19 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
-0.24.0 staat in eindcontrole: automatische uitklank, langere galm/echo,
-selectieovergangen bij EQ/filters, onderwerpknoppen in de handleiding en neutrale
-pictogramknoppen. B23/B24 blijven open tot de definitieve tests en pakketten
-zijn geverifieerd. Zie [uitklank en filterranden](validation/tails-and-boundaries.md).
+SoundSausage 0.24.0 is gepubliceerd en geverifieerd. B23/B24 zijn afgerond:
+automatische uitklank, langere galm/echo en instelbare selectieovergangen bij
+EQ/filters. De natuurlijke causale fase blijft behouden. Vorige en Volgende
+bladeren door handleidingonderwerpen; werkbalk- en transportknoppen tonen
+accentkleurige iconen op een neutrale achtergrond.
 
-SoundSausage 0.23.0 is gepubliceerd en geverifieerd. B21 is afgerond: adaptieve
-ruisreductie, instelbare aanpassingstijd, detailbehoud en twee presets. De vaste
-profielstand blijft beschikbaar. Alle vijf handleidingen hebben bovendien een
-klikbare inhoudsopgave met blauwe links en een knop terug naar Inhoud.
+Alle 542 controles slagen zonder overslaan op Debian, Fedora en Arch. De vier
+geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
+Zie [uitklank en filterranden](validation/tails-and-boundaries.md).
 
-Er blijven vier gekozen punten: **B23, B24, B36b en B33**. De overige 18 blijven
-uitgesteld. B23/B24 volgen, daarna de markereditor B36b, fysieke B33 op de
-functioneel afgeronde app, een releasecandidate en v1.0. De [todo](TODO.md)
-en het [ontwikkelplan](ONTWIKKELPLAN.md) blijven leidend.
+Er blijven twee gekozen punten: **B36b en B33**. De overige 18 blijven uitgesteld.
+Daarna volgen een releasecandidate en v1.0. De [todo](TODO.md) en het
+[ontwikkelplan](ONTWIKKELPLAN.md) blijven leidend.
 
 De huidige ontwikkelvolgorde versterkt eerst de audiobasis en werkt daarna de
 resterende effecten en tools per groep af. Iedere afgeronde versie krijgt

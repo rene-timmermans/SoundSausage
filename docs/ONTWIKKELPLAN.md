@@ -1,11 +1,11 @@
 # Afgesproken ontwikkelroute
 
-## Actuele route: vier punten, daarna de eerste v1
+## Actuele route: twee punten, daarna de eerste v1
 
 De afgesproken route van 14 november 2026 is leidend voor het resterende werk.
 De gekozen uitbreidingen zijn **B06, B07, B21, B23, B24, B33 en B36b**.
-B06/B07 zijn afgerond in 0.22.0 en B21 in 0.23.0. De [todo](TODO.md) bevat de vier
-resterende punten B23, B24, B36b en B33; de overige 18 uitbreidingen
+B06/B07 zijn afgerond in 0.22.0, B21 in 0.23.0 en B23/B24 in 0.24.0.
+De [todo](TODO.md) bevat de twee resterende punten B36b en B33; de overige 18 uitbreidingen
 zijn [voorlopig uitgesteld](validation/beperkingen-keuzes.md) en komen alleen
 na een nieuwe afspraak terug. De afgeronde ontwikkelfases hieronder blijven
 als onderbouwing van de beschikbare app bewaard.
@@ -15,7 +15,7 @@ als onderbouwing van de beschikbare app bewaard.
    [Controles en publicatie](validation/channel-timing.md).
 2. **B21 — afgerond in 0.23.0:** adaptieve ruisreductie, aanpassingstijd,
    detailbehoud en presets; [controles en publicatie](validation/adaptive-noise.md).
-3. **B23/B24 — in eindcontrole voor 0.24.0:** automatische/langere uitklank en
+3. **B23/B24 — afgerond in 0.24.0:** automatische/langere uitklank en
    selectieovergangen bij EQ/filters; de natuurlijke causale fase blijft behouden.
    [Controles en publicatie](validation/tails-and-boundaries.md).
 4. **B36b:** de markereditor afronden, inclusief toevoegen, verplaatsen, benoemen,

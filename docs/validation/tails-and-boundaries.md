@@ -73,5 +73,16 @@ kanaalkeuze, Preview, de 0 ms-route en annuleren tijdens context of uitvoer.
 GUI-proeven dekken de nieuwe velden, talen, layout, onderwerpknoppen, zoekactie,
 neutrale knopvlakken en de gekleurde pictogrammen.
 
-De definitieve volledige test- en pakketresultaten worden na publicatie hieronder
-vastgelegd. B23/B24 blijven tot die verificatie in de open lijst.
+Lokaal slagen 542 tests met negen expliciete controles voor de distributierunners;
+de gewone appzelftest slaagt eveneens. De definitieve
+[workflow](https://github.com/rene-timmermans/SoundSausage/actions/runs/43615282659)
+slaagt met alle zeven jobs. Alle 542 tests draaien zonder overslaan op Debian,
+Fedora en Arch. Gewone app-, afspeel-, opname- en duplexzelftests slagen op de
+geïnstalleerde pakketten op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
+
+[Release 0.24.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.24.0)
+bevat de geteste Debian/Ubuntu-, Fedora- en Arch-pakketten, broncode en
+controlelijsten. Tag, acht bestanden en korte releasepunten zijn geverifieerd.
+De broncommit is `0bc6c662fcf6f54589222c203525aeafde8e4399`.
+B23/B24 zijn uit de open todo verwijderd; B36b en de fysieke B33 blijven open.
+Automatische virtuele proeven vervangen die fysieke controle niet.
