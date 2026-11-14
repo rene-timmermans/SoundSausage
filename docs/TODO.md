@@ -15,8 +15,8 @@ handleidingen en geteste pakketten bij een functionele release. Werk na
 handleidingwijzigingen de klikbare index bij met `python3 tools/index_manuals.py`.
 Afgeronde punten verdwijnen uit deze open lijst; hun resultaat blijft bewaard.
 
-De correctie voor haperend afspelen bij F11 en grote golfvormvensters krijgt
-voorrang in 0.25.2. De [controle](validation/fullscreen-playback.md) beschrijft
+De correctie voor haperend afspelen bij F11 en grote golfvormvensters is
+afgerond in 0.25.2. De [controle](validation/fullscreen-playback.md) beschrijft
 de afspeel- en weergaveproeven; de twee gekozen uitbreidingen blijven gelijk.
 
 ## Nu uitwerken: B36b — markereditor
@@ -24,14 +24,14 @@ de afspeel- en weergaveproeven; de twee gekozen uitbreidingen blijven gelijk.
 Markers toevoegen, verplaatsen, benoemen en verwijderen, met behoud bij bewerken,
 Undo/Redo, opslaan en heropenen. De bestaande cue- en hoofdstukgegevens vormen
 de basis; het samenvoegen van bronmarkers in een eindmix blijft het uitgestelde B31.
-De softwarewijziging voor B36b is nog niet begonnen.
+De markereditor is de volgende functionele uitbreiding.
 
 ## De twee resterende punten
 
 | Punt | Uitwerking |
 | --- | --- |
 | B36b | Markereditor: markers toevoegen, verplaatsen, benoemen en verwijderen, met behoud bij bewerken en opslaan. |
-| B33 | De afgeronde app fysiek toetsen: kalibratie, langere overdub, punch/heropenen, systeemgeluid en echte VST3-/LV2-vensters met statusopslag. |
+| B33 | De afgeronde app fysiek toetsen: kalibratie, langere overdub, punch/heropenen, systeemgeluid, echte VST3-/LV2-vensters met statusopslag, afspelen met F11 en het onthouden van de vensterafmetingen. |
 
 ## Afronden naar de eerste v1
 

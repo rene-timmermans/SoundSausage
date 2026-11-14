@@ -70,3 +70,23 @@ duplex-/systeemgeluidzelftests op vijf doelen, inclusief Ubuntu 26.04 en Rolling
 DSP-ABI 7, projectformaat 5 en herstelversie 2 blijven behouden. De twee open
 v1-punten B36b en B33 blijven behouden; fysieke controle op de eigen uitgang
 blijft onderdeel van B33.
+
+## Definitieve verificatie
+
+Alle **569 tests** slagen zonder overslaan op Debian, Fedora en Arch. De opgenomen
+stereotonen blijven bij alle zes proefstappen aanwezig: F11, terug naar venster,
+4K, zoomen, opnieuw F11 en een GUI-blokkering van 180 ms bij een buffer van 100 ms.
+Op alle drie systemen bleven ruim duizend interne 5ms-blokken op beide kanalen
+boven de stiltecontrole. Dit vervangt de hoorbare controle op eigen hardware niet.
+
+De gewone, audio-, input-, duplex- en systeemgeluidzelftests slagen na installatie
+op Debian, Fedora, Arch, Ubuntu 26.04 en Ubuntu Rolling. Alle zeven jobs van
+[workflow 43630300114](https://github.com/rene-timmermans/SoundSausage/actions/runs/43630300114)
+slagen. [Release 0.25.2](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.2)
+heeft acht geverifieerde bestanden, de korte releasepunten en een tag op de
+geteste bron `96379844741171c61ae7f4e4a21930598b6c6e1c`.
+
+De scheiding gebruikt het [Qt-workerpatroon](https://doc.qt.io/qt-6/qthread.html)
+en de gebufferde [QAudioSink-interface](https://doc.qt.io/qt-6/qaudiosink.html).
+De bron blijft geschikt voor Qt 6.8; de nieuwere callback-interface is niet vereist.
+De gewone hardwareproef van F11 en de vensterafmetingen blijft onderdeel van B33.

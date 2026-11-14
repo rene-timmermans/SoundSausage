@@ -2,16 +2,18 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
-SoundSausage 0.25.2 corrigeert haperend afspelen bij volledig scherm en grote
+SoundSausage 0.25.2 is gepubliceerd en geverifieerd. De versie corrigeert haperend afspelen bij volledig scherm en grote
 vensters. De golfvorm krijgt een herbruikbaar beeld; zoomen en formaatwisselingen
 bereiden piekgegevens tijdens afspelen op de achtergrond voor. Cursor en meters
 worden maximaal dertigmaal per seconde getekend; de audioklok blijft onafhankelijk.
 Een eigen Qt-audiothread verzorgt de geluidsuitvoer en de audioklok, onafhankelijk
 van de vensterweergave. De lege werkruimte blijft leeg.
 
-Lokale gerichte controles en de nieuwe weergaveregressies slagen. De volledige
-pakket- en audiocontroles moeten vóór publicatie nog slagen. Zie de
-[controlebeschrijving](validation/fullscreen-playback.md).
+Alle 569 controles slagen zonder overslaan op Debian, Fedora en Arch, inclusief
+F11, 4K, zoomen en een bewust geblokkeerde GUI met opgenomen uitgangstonen.
+De vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04
+en Rolling. De [release](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.2)
+bevat de geteste pakketten. Zie de [controlebeschrijving](validation/fullscreen-playback.md).
 
 Er blijven twee gekozen v1-punten: **B36b en B33**. De overige 18 blijven uitgesteld.
 Daarna volgen een releasecandidate en v1.0. De [todo](TODO.md) en het
@@ -558,5 +560,11 @@ stereotonen worden afgespeeld en op een private uitgangsmonitor worden opgenomen
 De proef controleert het opgenomen geluid op interne stiltes en blokkeert de
 GUI 180 ms bij een uitvoerbuffer van 100 ms. Een eigen Qt-audiothread houdt de
 PCM-uitvoer en de verwerkte klok buiten de GUI; eigenaar-, pauze-, herstart- en
-foutproeven controleren die threadgrens. Publicatie en
-installatiecontroles worden na de definitieve bouw vastgelegd.
+foutproeven controleren die threadgrens. Alle zeven jobs van [workflow 43630300114](https://github.com/rene-timmermans/SoundSausage/actions/runs/43630300114)
+slagen. Tag, acht releasebestanden en korte releasepunten zijn geverifieerd;
+de bron is `96379844741171c61ae7f4e4a21930598b6c6e1c`.
+
+Venstergrootte, positie en volledig-scherm-/gemaximaliseerde stand worden bij
+geaccepteerd afsluiten bewaard en bij starten hersteld. De vijf handleidingen
+beschrijven dit. De openbare technische statuspagina is verwijderd; de
+handleiding blijft de ingang voor bediening en praktische informatie.
