@@ -39,5 +39,33 @@ behoud van Redo en metadatafouten vóór commit. WAV, project en crashherstel
 bewaren de nieuwe audio en opvulling. GUI-proeven toetsen genereren, ingangen,
 opnamebestemming, opslag, Undo en geblokkeerde kanaalkeuze tijdens opnemen.
 
-Definitieve bouw- en publicatieresultaten worden na de distributiecontroles
-hier aangevuld. B33 blijft de afzonderlijke fysieke controle vóór v1.0.
+## Definitieve verificatie en publicatie
+
+[Workflow 43606249521](https://github.com/rene-timmermans/SoundSausage/actions/runs/43606249521)
+is volledig groen: alle 501 tests zonder overslaan op Debian, Fedora en Arch.
+Vier geïnstalleerde zelftests slagen op die drie distributies en Ubuntu 26.04 en
+Rolling: gewone app/native plug-infixture, uitvoer, invoer en duplex.
+
+Bron/tag 9d4aa0495bff2958175583641574b6e08a472c5a, tree
+f2e469292fb826989d8612b07882ec8220d16aa0. Parent b6fc237e16dac186bc5b316e1cb31e66c97fc15f
+bevat de eerste kanaalimplementatie; de laatste commit completeert de
+zinsvertalingen in het opnamevenster en toetst live wisselen van taal.
+De eerste bouw had drie distributies groen en is vóór publicatie door de
+laatste bouw vervangen. De release wijst naar de definitief getoetste bron.
+
+[Release 0.22.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.22.0)
+heeft 8 assets: bron, controlesommen, Debian/Ubuntu, Fedora en Arch plus
+bijbehorende debugpakketten. Namen, groottes, uploadstatus en digestmetadata,
+tag en korte releasepunten zijn gecontroleerd. Zes definitieve joblogs hebben
+geen onverwachte fouten of overgeslagen tests.
+
+Lokaal 500 tests met 9 expliciete backend/native skips; daarna 34 definitieve
+UI/i18n/layout/installatiecontroles na de laatste zinsvertaling. Vijftien
+opnamevensters voor één kanaal passen in vijf talen en drie lettergroottes;
+de tekst is ook visueel gecontroleerd. Catalogi: 1440 bronvormen, 0 ontbrekend.
+De eerste lokale run werd in de uitvoeromgeving afgebroken; de herhaling slaagt.
+
+Bewijs staat lokaal in build/release-0.22.0-receipt.json,
+channels-source-{manifest,receipt,tree}.json, channels-full-tests.log,
+channels-final-ui-tests.log, channels-recording-layout.json en
+release-0.22.0-logs/*.log. B33 blijft de afzonderlijke fysieke controle vóór v1.0.

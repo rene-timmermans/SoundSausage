@@ -88,8 +88,9 @@ zonder vooruitblik — blijft beschreven; de uitbreiding B25 is voorlopig uitges
 
 ## Scope voor de eerste v1 — 14 november 2026
 
-Alleen B06, B07, B21, B23, B24, B33 en B36b blijven actief. B06/B07 worden samen
-uitgewerkt, daarna B21, B23/B24 en de markereditor B36b. B33 volgt met de
+De gekozen v1-scope bestaat uit B06, B07, B21, B23, B24, B33 en B36b.
+B06/B07 zijn inmiddels afgerond in 0.22.0; vijf punten blijven open. Daarna
+volgen B21, B23/B24 en de markereditor B36b. B33 volgt met de
 functioneel afgeronde app, daarna een releasecandidate en de eerste v1.0.
 
 De onderstaande **18 punten zijn voorlopig uitgesteld**, niet afgerond of
@@ -117,3 +118,19 @@ De bestaande mogelijkheden en ondersteuningsgrenzen blijven beschreven.
 | B32 | Afspelen: fysieke uitvoerlatentie en naadloos lussen afzonderlijk beoordelen en meetbaar toetsen. |
 | B34 | Audio-uitvoer: behoefte aan meer dan twee kanalen en multikanaals routering bepalen. |
 | B36a | Dithering: instellingen en gedrag bij uitvoer naar een lagere PCM-bitdiepte bepalen. |
+
+
+## Kanaalbewerkingen — B06/B07 afgerond in 0.22.0
+
+Alleen het gekozen kanaal verschuift bij knippen, verwijderen, trimmen, invoegen,
+plakken, tijdrekken, uitklank, genereren en opname. Het andere houdt zijn samples
+op de oorspronkelijke posities; kortere audio krijgt gewone opgeslagen eindstilte.
+Trimmen zet het gekozen fragment op nul. Mix Paste kan voorbij het einde mengen
+zonder latere audio te verschuiven. Gezamenlijke markers/hoofdstukken blijven
+bij één kanaal staan; klembordmarkeringen worden alleen bij Beide samengevoegd.
+
+B06/B07 zijn na verificatie van
+[0.22.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.22.0)
+uit de open todo verwijderd. De [onderbouwing](channel-timing.md) bevat controles,
+metadata, opslag, annuleren en publicatie. Er blijven5 gekozen punten en18 uitgestelde
+kandidaten. B21 is de volgende stap; B33 en RC blijven vóór v1.0 nodig.

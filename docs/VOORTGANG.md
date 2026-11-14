@@ -2,14 +2,14 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
-SoundSausage 0.21.0 is gepubliceerd. 0.22.0 wordt getoetst met onafhankelijke
-kanaalduurwijzigingen voor B06/B07: knippen, trimmen, plakken, tijdrekken, uitklank,
-genereren en opname. Het andere kanaal behoudt zijn samples op dezelfde posities;
+SoundSausage 0.22.0 is gepubliceerd en geverifieerd. B06/B07 zijn afgerond:
+knippen, trimmen, plakken, tijdrekken, uitklank, genereren en opnemen op één
+stereokanaal. Het andere kanaal behoudt exact zijn samples op dezelfde posities;
 het kortere kanaal krijgt eindstilte. Vijf handleidingen en vertalingen zijn bijgewerkt.
 De [controle](validation/channel-timing.md) beschrijft de regressieproeven.
 
-De gekozen scope blijft B06, B07, B21, B23, B24, B33 en B36b; de overige18 zijn
-uitgesteld. Na verificatie/publicatie van B06/B07 volgen B21, B23/B24 en B36b,
+Er blijven vijf gekozen punten: **B21, B23, B24, B36b en B33**. De overige 18
+blijven uitgesteld. De volgende stap is B21, gevolgd door B23/B24 en B36b,
 dan B33 op de afgeronde app, een releasecandidate en v1.0. De [todo](TODO.md)
 en het [ontwikkelplan](ONTWIKKELPLAN.md) blijven leidend.
 
@@ -444,3 +444,31 @@ synchronisatie-, punch- en plug-inproeven op de afgeronde app.
 
 Deze stap wijzigt uitsluitend planning en overdracht. Appversie 0.21.0 en de
 bestaande geteste pakketten blijven actueel.
+
+
+## Kanaalduur en plakken — B06/B07 afgerond in 0.22.0
+
+- [x] Knippen, verwijderen en trimmen per kanaal; het andere behoudt zijn positie.
+- [x] Korter/langer plakken, invoegen en mengen voorbij het einde, met eindstilte.
+- [x] Tijdrekken, effect-/convolutie-uitklank, tonen/stilte en opname op één kanaal.
+- [x] Gezamenlijke markeringen behouden; metadataopschoning en Undo blijven atomair.
+- [x] Blokverwerking, annuleren, WAV/project/herstel, opname- en generatiebediening.
+- [x] Vijf handleidingen en vertalingen, inclusief live taalwissel in het opnamevenster.
+- [x] Distributiecontroles, installatiepakketten, tag en korte releasepunten geverifieerd.
+
+[0.22.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.22.0)
+bevat de installers. Alle 501 tests slagen zonder overslaan op Debian/Fedora/Arch.
+Vier geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en
+Rolling. Alle 7 jobs van [de bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43606249521)
+zijn groen; tag, bron, releasepunten en 8 assets zijn gecontroleerd.
+
+Lokaal 500 volledige controles met 9 expliciete backend/native skips; na de laatste
+taalcorrectie 34 gerichte UI/i18n/layout/installatiecontroles groen. Daarnaast 15
+opnamevensters voor één kanaal in vijf talen en drie lettergroottes gecontroleerd.
+De definitieve distributiebouw bevat ook de nieuwe taalwisselregressie en draait
+alle 501 tests. Catalogi: 1440 bronvormen, 0 ontbrekend. Zie de
+[onderbouwing](validation/channel-timing.md).
+
+B06/B07 zijn uit de open todo verwijderd. B21 volgt; de overige 18 uitgestelde
+kandidaten blijven buiten de afgesproken route. B33 en de releasecandidate
+blijven nodig vóór v1.0.
