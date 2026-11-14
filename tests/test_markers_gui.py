@@ -46,6 +46,8 @@ class MarkerGuiTests(unittest.TestCase):
 
     def test_shortcut_add_and_exact_dialog_edit_are_undoable_without_pcm_changes(self):
         window=self.window;doc=window.document;doc.select(1000,1000);doc.select_channels((1,))
+        self.assertIn(window.actions['markers'],window.menus['edit'].actions())
+        self.assertIn(window.actions['marker_next'],window.menus['view'].actions())
         QTest.keyClick(window.waveform,Qt.Key.Key_M)
         item=markers.for_model(doc)[0]
         self.assertEqual(item.start,1000)

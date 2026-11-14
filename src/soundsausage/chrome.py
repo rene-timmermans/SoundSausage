@@ -80,9 +80,10 @@ def create_menus(window):
     window.menus["channels"] = channels
     add(channels, ("channels_both", "channels_left", "channels_right"))
     add(edit, (None, "edit_sample", "draw_waveform", "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
+    add(edit,(None,'marker_add','markers'))
     view = menu("view", "&View")
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
-    add(view,(None,'marker_add','markers','marker_previous','marker_next'))
+    add(view,(None,'marker_previous','marker_next'))
     transform = menu("transform", "&Transform")
     add(transform, ('remaster',None,"invert", "reverse", "silence", None))
     add(transform, ("track_fx", None))
