@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import tempfile
 import time
+import traceback
 
 import numpy as np
 from PySide6.QtCore import Qt, QEventLoop, QTimer, QSettings
@@ -46,34 +47,42 @@ try:
     started = time.monotonic()
     stages = set()
     loop = QEventLoop()
+    def press_fullscreen():
+        # The private X server has no window manager to focus new windows.
+        # Deliver F11 to an active window, as with a physical keyboard.
+        window.activateWindow()
+        app.setActiveWindow(window)
+        window.setFocus()
+        QTest.keyClick(window, Qt.Key.Key_F11)
+
     def advance():
         try:
             elapsed = time.monotonic()-started
             if elapsed > .4 and 1 not in stages:
-                QTest.keyClick(window, Qt.Key.Key_F11)
-                assert window.isFullScreen()
+                press_fullscreen()
+                assert window.isFullScreen(), 'F11 did not enter fullscreen'
                 stages.add(1)
             if elapsed > 1.1 and 2 not in stages:
-                QTest.keyClick(window, Qt.Key.Key_F11)
-                assert not window.isFullScreen()
+                press_fullscreen()
+                assert not window.isFullScreen(), 'F11 did not leave fullscreen'
                 window.resize(3840, 2160)
                 stages.add(2)
             if elapsed > 1.9 and 3 not in stages:
                 window.waveform.zoom(2)
                 stages.add(3)
             if elapsed > 2.7 and 4 not in stages:
-                QTest.keyClick(window, Qt.Key.Key_F11)
-                assert window.isFullScreen()
+                press_fullscreen()
+                assert window.isFullScreen(), 'F11 did not re-enter fullscreen'
                 stages.add(4)
             if elapsed > 3.5 and 5 not in stages:
                 window.waveform.fit()
-                QTest.keyClick(window, Qt.Key.Key_F11)
+                press_fullscreen()
                 window.resize(1920, 1080)
                 stages.add(5)
             if not recorder.active or time.monotonic()-started > 9:
                 loop.quit()
         except Exception as error:
-            errors.append(str(error))
+            errors.append(traceback.format_exc())
             loop.quit()
     timer = QTimer()
     timer.setInterval(10)
