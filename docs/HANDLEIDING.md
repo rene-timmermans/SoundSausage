@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.20.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.21.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -114,12 +114,55 @@ opdrachten tonen voortgang en zijn te annuleren; een mislukte of afgebroken
 opslag vervangt het bestaande doelbestand niet. Er is vrije schijfruimte nodig
 voor de omzetting en de bewerkte audio.
 
-ID3-tekst en ingesloten hoesafbeeldingen blijven bij MP3-opslag behouden, ook
-na een tussenstap via WAV of een SoundSausage-project. De opgeslagen duur wordt
-bijgewerkt. MP3-hoofdstukposities, ReplayGain en andere afgeleide velden worden
-niet opnieuw berekend. WAV-cuepunten en andere gegevens die MP3 niet kan
-bewaren, worden vóór export gemeld. De totale extra bestandsinformatie blijft
-begrensd tot 16 MiB. Een eindmix neemt geen bestandsinformatie uit alle sporen samen.
+### MP3-bestandsinformatie na bewerken
+
+Titel, artiest, album, opmerkingen en ingesloten hoesafbeeldingen blijven
+behouden, ook via WAV en een SoundSausage-project. De opgeslagen duur wordt
+bijgewerkt. Gewone tags en bestaande identificaties blijven bij hun bestand.
+
+**Hoofdstukken** volgen de tijdlijn automatisch. Knippen en verwijderen
+schuiven latere hoofdstukken terug; invoegen schuift ze vooruit. Trimmen en
+selectie-export houden overlappende hoofdstukken over en maken hun tijden
+relatief aan het bewaarde fragment. Helemaal verwijderde en lege hoofdstukken
+vervallen; de inhoudsopgave verwijst daarna alleen naar bestaande onderdelen.
+Plakken neemt de hoofdstukken en hoofdstuknamen uit het fragment mee, met
+behoud van de algemene bestandsinformatie van de bestemming. Bij tijdrekken
+volgen de grenzen de nieuwe duur. Samplerateomzetting behoudt hun tijd in
+milliseconden. **Ongedaan maken** herstelt ook de oorspronkelijke tags.
+
+Hoofdstukken zijn tot milliseconden nauwkeurig. Een restant dat na afronding
+geen duur heeft vervalt. Omkeren spiegelt hoofdstukken die volledig binnen het
+omgekeerde gebied liggen. Hoofdstukken die door gedeeltelijk omkeren uit losse
+stukken zouden bestaan vervallen, zodat de opgeslagen grenzen niet misleiden.
+Hoofdstukken die het hele omgekeerde gebied omvatten blijven bestaan.
+
+**Meetgegevens** kunnen na een bewerking niet meer bij het geluid passen.
+Daarom vervallen herkende ReplayGain-, R128-, MP3Gain- en piekwaarden,
+vingerafdrukken, volumeaanpassingen en oude encodergegevens na audioverandering.
+Niet-ondersteunde getimede informatie, zoals gesynchroniseerde songteksten,
+oude zoekindexen en synchronisatieposities, vervalt eveneens. Er wordt geen
+nieuwe ReplayGain-meting uitgevoerd. Bij een tempowijziging vervalt de bestaande
+BPM-waarde; bij een toonhoogtewijziging vervalt de bestaande toonsoort. Andere
+bewerkingen behouden deze twee waarden. Gewone songteksten zonder tijdcodes en
+onbekende privévelden blijven letterlijk behouden. Bij opnieuw opslaan als
+MP3 worden oude metingen en bestandposities ook opgeschoond, omdat compressie
+het geluid en de indeling kan veranderen. De nieuwe encoderinformatie wordt
+uit het werkelijk geschreven MP3-bestand overgenomen.
+
+**WAV naar MP3:** ondersteunde INFO-tekst voor titel, artiest, album, genre,
+datum, tracknummer, auteursrecht en opmerkingen wordt meegenomen. Bestaande
+ID3-gegevens hebben voorrang. Niet-ondersteunde velden, ongeldige INFO-inhoud
+en conflicterende waarden worden vóór export gemeld. Kies **Nee** om te
+annuleren en het bestaande doelbestand te bewaren, of **Ja** om met de genoemde
+weglatingen door te gaan. Bevat een WAV meerdere ID3-tags, dan wordt ook
+het weglaten van extra tags vooraf gemeld. Oude software-informatie wordt vervangen door de
+nieuwe encoderinformatie. WAV-cuepunten en andere informatie die MP3 niet kan
+bewaren, vallen ook onder deze keuze.
+
+De totale extra bestandsinformatie blijft begrensd tot 16 MiB. Onleesbare
+ID3-informatie in een WAV blijft als ruwe informatie bewaard; MP3-export meldt
+daarvan een fout en laat een bestaand doel intact. Een eindmix neemt geen
+bestandsinformatie uit alle sporen samen.
 
 ### Projecten met meerdere sporen
 

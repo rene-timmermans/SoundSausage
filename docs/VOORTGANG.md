@@ -393,3 +393,22 @@ Er blijven 26 deelpunten open, met B04 (MP3-metadata) als volgende beoordeling.
 STATUS en de vijf handleidingen leggen de keuze uit. Appversie 0.20.0 blijft
 actueel; er is geen functionele wijziging of nieuwe pakketrelease.
 Zie [MP3-uitvoercontrole](validation/mp3-output-limits.md).
+
+
+## MP3-metadata — B04, 0.21.0 in voorbereiding
+
+Hoofdstukken volgen verwijderen, invoegen, trimmen, omkeren, tijdrekken en
+selectie-export. Plakken neemt hoofdstukken met nieuwe identificaties en hun
+inhoudsopgave mee; algemene bestandstags van de bestemming blijven behouden.
+Bekende achterhaalde volumemetingen, vingerafdrukken, encodergegevens en
+niet-ondersteunde tijdcodes vervallen bij audioverandering. MP3-export vernieuwt
+duur en encoderinformatie en maakt oude byteposities ongeldig. Er worden geen
+nieuwe ReplayGain-metingen berekend. Gewone tags en hoesafbeeldingen blijven.
+
+Ondersteunde WAV INFO-velden worden expliciet vertaald. Onbekende, misvormde
+of conflicterende velden worden vooraf vermeld; weigeren bewaart het bestaande
+doelbestand. Undo, annuleren, fouten, projectopslag en herstel horen bij de
+controles. De vijf volledige handleidingen en de installatiezelftest zijn
+bijgewerkt; de catalogi bevatten 1435 bronvormen zonder ontbrekende vertalingen.
+De definitieve volledige en distributiecontroles en publicatie volgen nog.
+B04 blijft open tot verificatie; B06 wordt de volgende beoordeling.

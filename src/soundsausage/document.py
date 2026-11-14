@@ -8,7 +8,7 @@ import numpy as np
 
 from .audio import AudioError, MAX_AUDIO_BYTES, validate_audio
 from .dsp import Dsp
-from . import storage, metadata, peaks
+from . import storage, metadata, peaks, id3_metadata
 from .operations import blocks, progress
 from .resample import resample, frame_count
 
@@ -190,13 +190,15 @@ class Document:
         return sum(buffers.values())
 
     def _commit(self, pieces, selection, label, sample_rate=None, metadata=None):
+        pieces = tuple(piece for piece in pieces if len(piece))
+        information = id3_metadata.audio_changed(self.metadata if metadata is None else metadata,
+            sum(len(piece) for piece in pieces), self.sample_rate if sample_rate is None else sample_rate)
         self.undo_stack.append(self._snapshot(label))
         self.redo_stack.clear()
-        self._pieces = tuple(piece for piece in pieces if len(piece))
+        self._pieces = pieces
         if sample_rate is not None:
             self.sample_rate = sample_rate
-        if metadata is not None:
-            self.metadata = metadata
+        self.metadata = information
         self.select(*selection)
         self._state_id = next(_state_ids)
         self.revision += 1
@@ -218,12 +220,13 @@ class Document:
             pieces += (_freeze(samples),)
         pieces += self._slices(end, self.frames)
         self._commit(pieces, (start, start + len(samples)), label,
-                     metadata=metadata.replace(self.metadata, start, end, len(samples)) if new_metadata is None else new_metadata)
+                     metadata=metadata.replace(self.metadata, start, end, len(samples), sample_rate=self.sample_rate) if new_metadata is None else new_metadata)
 
     def copy(self):
         if not self.selected:
             raise AudioError("Select the audio to copy first.")
-        return Clip(self.effect_view(*self.selection), self.sample_rate, metadata.crop(self.metadata,*self.selection))
+        return Clip(self.effect_view(*self.selection), self.sample_rate,
+                    metadata.crop(self.metadata,*self.selection,sample_rate=self.sample_rate))
 
     def set_sample(self, frame, channel, value):
         """Change one scalar only, sharing every untouched audio piece with Undo."""
@@ -315,11 +318,11 @@ class Document:
                     combined.flush(); storage.release_pages(combined)
                 progress(b, len(samples), "Mix Paste")
             combined = storage.seal(combined)
-            info=metadata.replace(self.metadata,end,end,max(0,len(samples)-(end-start)))
-            self.replace(start, end, combined, "Mix Paste",new_metadata=metadata.insert_markers(info,source_metadata,start))
+            info=metadata.replace(self.metadata,end,end,max(0,len(samples)-(end-start)),sample_rate=self.sample_rate)
+            self.replace(start, end, combined, "Mix Paste",new_metadata=metadata.insert_markers(info,source_metadata,start,sample_rate=self.sample_rate))
         else:
-            info=metadata.replace(self.metadata,start,end,len(samples))
-            self.replace(start, end, samples, "Paste",new_metadata=metadata.insert_markers(info,source_metadata,start))
+            info=metadata.replace(self.metadata,start,end,len(samples),sample_rate=self.sample_rate)
+            self.replace(start, end, samples, "Paste",new_metadata=metadata.insert_markers(info,source_metadata,start,sample_rate=self.sample_rate))
 
     def convert_sample_rate(self, target_rate):
         frame_count(self.frames, self.sample_rate, target_rate)  # Validate even for an empty waveform.
@@ -342,7 +345,7 @@ class Document:
         if start == 0 and end == self.frames:
             return
         self._commit(self._slices(start, end), (0, end - start), "Trim",
-                     metadata=metadata.crop(self.metadata, start, end))
+                     metadata=metadata.crop(self.metadata, start, end, sample_rate=self.sample_rate))
 
     def apply(self, name, **settings):
         start, end = self.effect_range
@@ -362,6 +365,7 @@ class Document:
         # Validate before committing: failed or overflowing effects leave the document intact.
         if name == "reverse" and not self.partial_channels:
             new_metadata = metadata.remap(self.metadata, lambda p: start + end - 1 - p if start <= p < end else p)
+            new_metadata = id3_metadata.timeline(new_metadata, 'reverse', start, end, 0, self.sample_rate)
         elif name == "stretch" and len(result) != end-start:
             extra = len(result)-(end-start)
             def position(p):
@@ -369,13 +373,19 @@ class Document:
                 if p >= end: return p+extra
                 return start+min(len(result)-1, ((p-start)*len(result)+(end-start)//2)//(end-start))
             new_metadata = metadata.remap(self.metadata, position)
+            new_metadata = id3_metadata.timeline(new_metadata, 'stretch', start, end, len(result), self.sample_rate)
         elif len(result) != end-start:
             # A retained effect tail inserts time after the original range:
             # preserve markers inside it, shift only those following the range.
             extra = len(result)-(end-start)
             new_metadata = metadata.remap(self.metadata, lambda p: p+extra if p >= end else p)
+            new_metadata = id3_metadata.timeline(new_metadata, 'replace', end, end, extra, self.sample_rate)
         else:
             new_metadata = self.metadata
+        tempo_changed = name == 'stretch' and settings.get('time_ratio', 1) != 1
+        pitch_changed = name in ('stretch', 'pitch_shift') and settings.get('semitones', 0) != 0
+        if tempo_changed or pitch_changed:
+            new_metadata = id3_metadata.musical_change(new_metadata, tempo=tempo_changed, pitch=pitch_changed)
         self.replace(start, end, result, label, new_metadata=new_metadata)
         # Store immutable settings, independent of a dialog's mutable controls.
         self.last_effect = (name, deepcopy(settings))

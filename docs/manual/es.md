@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.20.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.21.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 ## 1. Idioma y ayuda
 
@@ -40,7 +40,20 @@ Abre MP3 con **Archivo → Abrir**, impórtalos a multipista o arrástralos a la
 
 MP3 ofrece 128, 192, 256 y 320 kb/s. Una tasa mayor ocupa más espacio y suele conservar más detalle. MP3 tiene pérdida: recomprimir puede perder más detalle. WAV evita otra compresión MP3, pero no recupera información perdida. Usa WAV float32 para seguir editando o PCM16 para intercambiar archivos. MP3 utiliza la frecuencia más cercana entre 32.000, 44.100 y 48.000 Hz y mantiene la duración; el documento conserva su frecuencia. Estas frecuencias admiten las cuatro tasas de bits MP3 ofrecidas; a frecuencias más bajas, el codificador puede usar una tasa de bits inferior a la solicitada. El mínimo de 2 ms evita que los fragmentos muy cortos se alarguen al decodificar el MP3. Usa WAV para selecciones de menos de 2 ms.
 
-Se conservan los textos ID3 y las portadas integradas, también al pasar por WAV y proyectos integrados. Se actualiza la duración; las posiciones de capítulos, ReplayGain y otros datos derivados no se recalculan. Los marcadores/datos WAV incompatibles requieren confirmación antes de exportar a MP3. Los metadatos adicionales siguen limitados a 16 MiB; la mezcla no reúne todos los metadatos de las pistas. Las conversiones largas muestran progreso y se pueden cancelar sin reemplazar el destino existente. Reserva espacio para la conversión y la edición.
+### Metadatos MP3 después de editar
+
+Se conservan título, artista, álbum, comentarios y portadas, también mediante WAV y proyectos SoundSausage. La duración se actualiza. Las etiquetas normales y los identificadores existentes permanecen en el archivo de destino.
+
+Los **capítulos** siguen las ediciones automáticamente. Borrar adelanta los capítulos posteriores; insertar los retrasa. Recortar y exportar una selección conserva los capítulos que se solapan, con tiempos relativos al fragmento guardado. Los capítulos vacíos o eliminados por completo desaparecen y el índice conserva referencias válidas. Pegar incorpora los nombres y la jerarquía de los capítulos del fragmento y mantiene las etiquetas generales del destino. Estirar el tiempo adapta sus límites; cambiar la frecuencia de muestreo conserva los tiempos en milisegundos. Deshacer restaura también los metadatos originales.
+
+La precisión es de un milisegundo; los restos que se redondean a duración cero desaparecen. Invertir refleja los capítulos enteramente dentro del intervalo. Un capítulo parcialmente invertido que describiría partes de audio separadas se elimina; los capítulos que contienen todo el intervalo invertido permanecen.
+
+Las **mediciones** pueden quedar desactualizadas tras editar audio. Se eliminan los valores reconocidos de ReplayGain, R128, MP3Gain y picos, huellas, ajustes de volumen relativo y datos del codificador anterior. También desaparecen datos temporales incompatibles, como letras sincronizadas, índices de búsqueda antiguos y posiciones de sincronización. ReplayGain no se vuelve a calcular. Cambiar el tempo elimina el valor BPM existente; cambiar el tono elimina la tonalidad existente. Otras ediciones conservan ambos valores. Las letras normales sin tiempos y los campos privados desconocidos se conservan literalmente. Volver a codificar MP3 también elimina mediciones y posiciones antiguas, pues la compresión cambia el sonido y la estructura. Los datos del codificador proceden del nuevo archivo real.
+
+**WAV a MP3:** se transfieren los campos INFO compatibles de título, artista, álbum, género, fecha, número de pista, derechos de autor y comentarios. Las etiquetas ID3 existentes tienen prioridad. Se avisa antes de exportar de campos incompatibles, INFO mal formado y valores en conflicto. **No** cancela y conserva un destino existente; **Sí** continúa con las omisiones indicadas. Las etiquetas ID3 adicionales de un WAV también se indican antes de omitirlas. La información del software anterior se sustituye por la del nuevo codificador. Los marcadores WAV y otros datos incompatibles requieren también esta elección.
+
+Los metadatos adicionales siguen limitados a 16 MiB. Los ID3 WAV ilegibles se conservan sin interpretar; exportar MP3 informa de un error y mantiene el destino. La mezcla no reúne los metadatos de todas las pistas. Las conversiones largas muestran progreso y se pueden cancelar; reserva espacio para convertir y editar.
+
 
 ## 4. Reproducción, zoom y dispositivos
 

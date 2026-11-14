@@ -1,6 +1,6 @@
 # Open punten
 
-Stand: 12 november 2026, SoundSausage 0.20.0.
+Stand: 14 november 2026, SoundSausage 0.21.0 in voorbereiding.
 
 Deze lijst wordt punt voor punt beoordeeld, in de volgorde van het oorspronkelijke
 beperkingenoverzicht. Een vermelding is een onderzoeksvraag, geen toezegging dat
@@ -13,17 +13,18 @@ De nummers B01–B36 blijven gelijk aan de oorspronkelijke volgorde; B36 is in
 twee afzonderlijke functies gesplitst. De technische ondersteuning staat in
 [STATUS](STATUS.md), de bediening in de [handleiding](HANDLEIDING.md).
 
-## Nu beoordelen: B04 — MP3-metadata
+## Nu afronden: B04 — MP3-metadata
 
-ID3-tekst en hoesafbeeldingen blijven behouden. Na bewerkingen worden de
-opgeslagen duur en ondersteunde gewone tags meegenomen; hoofdstukposities,
-ReplayGain en andere afgeleide gegevens worden nog niet opnieuw berekend.
-Bij niet-overdraagbare WAV-informatie verschijnt een keuze vóór MP3-export.
+Hoofdstukken volgen bewerkingen, met inhoudsopgave, selectie-export, plakken,
+Undo/Redo en herstel. Herkende verouderde meetgegevens en niet-ondersteunde
+getimede velden vervallen na audioverandering; gewone tekst en hoes blijven
+behouden. De duur en encoderinformatie worden vernieuwd bij MP3-export.
+Bekende WAV INFO-velden worden overgenomen; onbekende, ongeldige en
+conflicterende informatie vereist een expliciete exportkeuze.
 
-Nog beoordelen: welke afgeleide gegevens na knippen, plakken en effecten
-opnieuw berekend, verwijderd of duidelijk gemeld moeten worden. Ook de
-bestaande keuze bij WAV-naar-MP3-export hoort bij dit punt. Er is nog geen
-wijziging voor B04 gestart.
+**Stand:** lokaal gebouwd en beschreven in alle vijf handleidingen. Volledige
+controle en publicatie van 0.21.0 nog afronden. B04 blijft tot die verificatie
+open; daarna volgt B06, kanaalgebonden bewerkingen op de gezamenlijke tijdas.
 
 ## Daarna, in volgorde
 

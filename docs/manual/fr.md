@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.20.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.21.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 ## 1. Langue et aide
 
@@ -40,7 +40,20 @@ Ouvrez les MP3 par **Fichier → Ouvrir**, importez-les en multipiste ou dépose
 
 MP3 propose 128, 192, 256 et 320 kb/s. Un débit supérieur occupe plus de place et conserve généralement plus de détails. MP3 est avec perte : recomprimer peut supprimer d’autres détails. WAV évite une compression MP3 supplémentaire sans restaurer les informations perdues. Choisissez WAV float32 pour poursuivre l’édition, PCM16 pour l’échange. L’export MP3 utilise la fréquence la plus proche parmi 32 000, 44 100 et 48 000 Hz, à durée égale ; le document garde sa fréquence. Ces fréquences conviennent aux quatre débits MP3 proposés ; à des fréquences plus basses, l’encodeur peut utiliser un débit inférieur à celui demandé. Le minimum de 2 ms évite que de très courts fragments deviennent plus longs après décodage MP3. Utilisez WAV pour les sélections de moins de 2 ms.
 
-Textes ID3 et pochettes intégrées sont conservés, y compris via WAV et les projets intégrés. La durée est actualisée ; positions des chapitres, ReplayGain et autres données dérivées ne sont pas recalculées. Les marqueurs/données WAV incompatibles nécessitent confirmation avant export MP3. Les métadonnées supplémentaires restent limitées à 16 Mio ; le mixage ne fusionne pas toutes les métadonnées des pistes. Les conversions longues affichent la progression et peuvent être annulées sans remplacer la destination existante. Prévoyez de l’espace disque pour la conversion et l’édition.
+### Métadonnées MP3 après modification
+
+Titre, artiste, album, commentaires et pochettes sont conservés, y compris via WAV et les projets SoundSausage. La durée est actualisée. Les tags ordinaires et identifiants existants restent liés au fichier de destination.
+
+Les **chapitres** suivent automatiquement les modifications. Supprimer avance les chapitres suivants ; insérer les retarde. Rogner et exporter une sélection conserve les chapitres qui la recoupent, avec des temps relatifs au fragment gardé. Les chapitres vides ou entièrement supprimés disparaissent ; la table des matières conserve des références valides. Coller reprend les noms et la hiérarchie des chapitres du fragment tout en conservant les tags généraux de destination. L’étirement temporel adapte les limites ; le changement de fréquence d’échantillonnage conserve les temps en millisecondes. Annuler restaure aussi les métadonnées d’origine.
+
+La précision des chapitres est d’une milliseconde ; un reste arrondi à une durée nulle disparaît. Inverser reflète les chapitres entièrement dans la plage. Un chapitre partiellement inversé qui décrirait des morceaux audio séparés est supprimé ; un chapitre contenant toute la plage inversée reste présent.
+
+Les **mesures** peuvent devenir obsolètes après modification audio. Les valeurs reconnues ReplayGain, R128, MP3Gain et de crête, les empreintes, ajustements de volume relatif et anciennes informations d’encodage sont supprimés. Les informations temporelles non prises en charge, notamment paroles synchronisées, anciens index de recherche et positions de synchronisation, disparaissent aussi. ReplayGain n’est pas recalculé. Un changement de tempo supprime la valeur BPM existante ; un changement de hauteur supprime la tonalité existante. Les autres modifications conservent ces deux valeurs. Les paroles ordinaires sans horodatage et les champs privés inconnus restent inchangés. Réencoder en MP3 supprime également anciennes mesures et positions de fichier, puisque la compression modifie le son et la structure. Les informations d’encodage proviennent du nouveau fichier réel.
+
+**WAV vers MP3 :** les champs INFO pris en charge pour titre, artiste, album, genre, date, numéro de piste, droits d’auteur et commentaires sont transférés. Les valeurs ID3 existantes sont prioritaires. Les champs incompatibles, données INFO mal formées et valeurs contradictoires sont signalés avant export. **Non** annule et préserve une destination existante ; **Oui** continue avec les omissions indiquées. Les tags ID3 supplémentaires d’un WAV sont également signalés avant omission. Les anciennes informations de logiciel sont remplacées par celles du nouvel encodeur. Les marqueurs WAV et autres données incompatibles nécessitent également ce choix.
+
+Les métadonnées supplémentaires restent limitées à 16 Mio. Les données ID3 WAV illisibles restent conservées telles quelles ; l’export MP3 signale une erreur et préserve la destination. Le mixage ne fusionne pas les métadonnées de toutes les pistes. Les longues conversions affichent la progression et sont annulables ; prévoyez de l’espace pour la conversion et l’édition.
+
 
 ## 4. Lecture, zoom et matériel audio
 

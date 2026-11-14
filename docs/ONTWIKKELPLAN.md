@@ -325,3 +325,17 @@ onderdeel van de fysieke afronding naar v1.0.
 Er zijn 26 open deelpunten. B04 (MP3-metadata) is de volgende beoordeling.
 Appversie 0.20.0 en de bestaande pakketten blijven actueel; deze stap wijzigt
 uitsluitend documentatie. Zie de [controle](validation/mp3-output-limits.md).
+
+
+## MP3-metadata — B04, 0.21.0 in voorbereiding
+
+- [x] Hoofdstukken en inhoudsopgave laten volgen bij tijdlijnbewerkingen en selectie-export.
+- [x] Hoofdstukken met veilige identificaties meenemen bij plakken.
+- [x] Achterhaalde metingen en niet-ondersteunde tijdcodes afhandelen; gewone tags en hoes behouden.
+- [x] WAV INFO-overdracht en expliciete keuze bij onbekende of conflicterende gegevens.
+- [x] Undo, fouten, annuleren, projectopslag en herstel controleren.
+- [x] Vijf handleidingen en installatiezelftest bijwerken.
+- [ ] Definitieve controles en installatiepakketten publiceren en verifiëren.
+
+B04 blijft open tot de publicatie is geverifieerd. De volgende beoordeling is
+B06. De fysieke v1.0-proeven blijven open onder B33.

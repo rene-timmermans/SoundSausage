@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.20.0**.
+De huidige versie is **0.21.0**.
 
 ## Wat het kan
 
@@ -52,7 +52,7 @@ De huidige versie is **0.20.0**.
 **Bestanden en herstel**
 
 - WAV en MP3 openen, bewerken en opslaan; kiezen tussen WAV en MP3 voor selectie-export en eindmix.
-- Bestandsinformatie bewaren, waaronder ondersteunde WAV-labels en cuepunten en MP3-tekst en hoesafbeeldingen.
+- Bestandsinformatie bewaren, waaronder ondersteunde WAV-labels en cuepunten en MP3-tekst en hoesafbeeldingen. Hoofdstukken volgen audiobewerkingen; verouderde MP3-meetgegevens vervallen.
 - Projecten bewaren met de gebruikte audio, clips, lijnen en effecten; na heropenen blijven de sporen afzonderlijk bewerkbaar.
 - Lange opnamen bewerken met opslag op schijf, voortgang en annuleren, en werk herstellen na onverwacht afsluiten.
 
@@ -92,6 +92,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.21.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.21.0)** MP3-hoofdstukken volgen audiobewerkingen. Achterhaalde meetgegevens worden opgeschoond; WAV-bestandsinformatie wordt bij MP3-export duidelijk afgehandeld.
 
 **[0.20.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.20.0)** Golfvormen rechtstreeks tekenen, ook bij minder vergroting. De zoom bepaalt hoeveel samples tegelijk veranderen, tot één seconde per groep. Afzonderlijke samplepunten verschijnen al bij minder ver inzoomen.
 

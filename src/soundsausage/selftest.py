@@ -74,6 +74,26 @@ def run(window):
         write_mp3(path/'test.mp3',mp3_samples,48000,'mp3_192')
         mp3=read_mp3(path/'test.mp3')
         assert mp3.sample_rate==48000 and mp3.samples.shape==mp3_samples.shape
+        from mutagen.id3 import ID3, CHAP, TIT2, TXXX
+        from . import id3_metadata
+        information=ID3()
+        information.add(TIT2(encoding=3,text=['Metadata check']))
+        information.add(CHAP(element_id='part',start_time=500,end_time=1500,start_offset=100,end_offset=200))
+        information.add(TXXX(encoding=3,desc='replaygain_track_gain',text=['-8 dB']))
+        tagged=Document(np.zeros((16000,2),np.float32),8000,dsp=doc.dsp)
+        tagged.metadata=((b'id3 ',id3_metadata.dump(information)),)
+        original_information=tagged.metadata
+        tagged.select(0,4000);tagged.delete()
+        edited_information=tagged.metadata
+        chapter=id3_metadata.load(edited_information[0][1],strict=True)['CHAP:part']
+        assert (chapter.start_time,chapter.end_time)==(0,1000)
+        tagged.undo();assert tagged.metadata==original_information
+        tagged.redo();assert tagged.metadata==edited_information
+        write_mp3(path/'metadata.mp3',tagged.view(),tagged.sample_rate,metadata=tagged.metadata)
+        exported=ID3(path/'metadata.mp3')
+        assert exported['CHAP:part'].start_offset==id3_metadata.UNKNOWN
+        assert not exported.getall('TXXX:replaygain_track_gain')
+        assert str(exported['TIT2'])=='Metadata check'
         from . import storage
         from .recovery import Recovery, restore, discard
         from .capture import Take,recover_take

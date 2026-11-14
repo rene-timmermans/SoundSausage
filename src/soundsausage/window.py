@@ -23,7 +23,7 @@ from .waveform import Waveform, clock_text
 from .sample_ui import SampleDialog
 from .multitrack import MultitrackEditor
 from .session_actions import SessionActions
-from . import chrome, metadata, storage
+from . import chrome, metadata, storage, id3_metadata
 from .errors import OperationCancelled
 from .progress_ui import long_operation
 from .transport import TransportPanel
@@ -801,8 +801,12 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
                      if not mp3 or kind.lower()==b'id3 ' or (kind==b'LIST' and raw[:4]==b'INFO')}
         omitted={name for name in self.document.extra_chunks if name not in preserved}
         if mp3:
-            omitted.update(kind.decode('ascii','replace') for kind,raw in self.document.metadata
-                           if kind.lower()!=b'id3 ' and not (kind==b'LIST' and raw[:4]==b'INFO'))
+            try:
+                _, details = id3_metadata.export_tags(self.document.metadata)
+            except AudioError as error:
+                self.error('MP3 Metadata', error)
+                return False
+            omitted.update(details)
         omitted=sorted(omitted)
         if not omitted:
             return True
@@ -847,7 +851,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             return
         try:
             write_audio(path, self.document.effect_view(*self.document.selection), self.document.sample_rate, encoding,
-                      metadata=metadata.crop(self.document.metadata,*self.document.selection))
+                      metadata=metadata.crop(self.document.metadata,*self.document.selection,sample_rate=self.document.sample_rate))
         except (ValueError, OSError) as error:
             self.error("Save Selection", error)
 

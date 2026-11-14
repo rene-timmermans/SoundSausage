@@ -251,7 +251,7 @@ class SessionActions:
             media = self.session.media[clip.media_id]
             data = media.samples[clip.source_start:clip.source_end]
             document = Document(data, self.session.sample_rate, encoding="float32", dsp=self.document.dsp)
-            document.metadata = metadata.crop(media.metadata,clip.source_start,clip.source_end)
+            document.metadata = metadata.crop(media.metadata,clip.source_start,clip.source_end,sample_rate=self.session.sample_rate)
             document.extra_chunks = tuple(kind.decode("ascii","replace") for kind,_ in document.metadata)
             document.display_name = f"{clip.name} (clip copy)"
         except (ValueError, RuntimeError) as error:

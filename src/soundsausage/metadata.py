@@ -1,5 +1,6 @@
 """WAV metadata kept with audio; cue and sampler positions follow edits."""
 import struct
+from . import id3_metadata
 
 MAX_METADATA_BYTES = 16 * 1024 * 1024
 CORE_CHUNKS = {b'fmt ', b'data', b'fact', b'ds64', b'JUNK', b'PAD '}
@@ -61,7 +62,7 @@ def remap(chunks, position, *, time_reference=None):
     return tuple(result)
 
 
-def replace(chunks, start, end, frames):
+def replace(chunks, start, end, frames, *, sample_rate=None):
     if frames == end - start:
         return chunks
     def position(p):
@@ -70,12 +71,17 @@ def replace(chunks, start, end, frames):
         if p >= end:
             return p + frames - (end - start)
         return None
-    return remap(chunks, position)
+    result = remap(chunks, position)
+    return id3_metadata.timeline(result, 'replace', start, end, frames, sample_rate) if sample_rate else result
 
 
-def crop(chunks, start, end):
-    return remap(chunks, lambda p: p - start if start <= p < end else None,
-                 time_reference=lambda ref: ref + start)
+def crop(chunks, start, end, *, sample_rate=None):
+    result = remap(chunks, lambda p: p - start if start <= p < end else None,
+                   time_reference=lambda ref: ref + start)
+    if sample_rate:
+        result = id3_metadata.timeline(result, 'crop', start, end, 0, sample_rate)
+        result = id3_metadata.audio_changed(result, end-start, sample_rate)
+    return result
 
 
 def resample(chunks, old_rate, new_rate, target_frames=None):
@@ -91,7 +97,7 @@ def resample(chunks, old_rate, new_rate, target_frames=None):
     return tuple(output)
 
 
-def insert_markers(destination, source, start):
+def insert_markers(destination, source, start, *, sample_rate=None):
     """Paste cue points/labels with fresh identifiers; retain destination file tags."""
     existing=[]
     output=[]
@@ -131,4 +137,5 @@ def insert_markers(destination, source, start):
                     chunk=bytearray(raw[offset:end]);struct.pack_into('<I',chunk,8,mapping[identifier]);chunks.append(bytes(chunk))
             offset=end
         if chunks:output.append((b'LIST',b'adtl'+b''.join(chunks)))
-    return tuple(output)
+    result = tuple(output)
+    return id3_metadata.paste_chapters(result, source, start, sample_rate) if sample_rate else result

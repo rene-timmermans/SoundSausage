@@ -10,7 +10,7 @@ import subprocess
 import tempfile
 
 from .audio import AudioError, AudioFile, read_wav, write_wav, validate_audio
-from . import storage
+from . import storage, id3_metadata
 from .metadata import MAX_METADATA_BYTES
 from .operations import _current, operation, progress
 
@@ -117,13 +117,14 @@ def write_mp3(path,samples,sample_rate,encoding='mp3_192',*,metadata=()):
     if len(samples)*1000<sample_rate*2:
         raise AudioError('MP3 export needs at least 2 ms of audio. Use WAV for shorter selections.')
     _,ID3,ID3NoHeaderError,TLEN,MutagenError=_id3_api()
+    tags, _ = id3_metadata.export_tags(metadata)
+    id3_metadata.sanitise(tags, len(samples), sample_rate)
     path=Path(path);temporary=None
     mode=stat.S_IMODE(path.stat().st_mode) if path.exists() else 0o644
     try:
         with tempfile.TemporaryDirectory(prefix='mp3-write-',dir=storage.workspace().path) as folder:
             source=Path(folder)/'source.wav';encoded=Path(folder)/'encoded.mp3'
-            chunks=tuple((kind,raw) for kind,raw in metadata if kind.lower()!=b'id3 ')
-            with _stage('MP3 voorbereiden'):write_wav(source,samples,sample_rate,'float32',metadata=chunks)
+            with _stage('MP3 voorbereiden'):write_wav(source,samples,sample_rate,'float32')
             rate=min((32000,44100,48000),key=lambda value:abs(value-sample_rate))
             _ffmpeg(['-xerror','-protocol_whitelist','file,pipe','-i',str(source),'-map','0:a:0',
                      '-vn','-sn','-dn','-map_metadata','0','-c:a','libmp3lame','-b:a',f'{MP3_ENCODINGS[encoding]}k',
@@ -131,8 +132,8 @@ def write_mp3(path,samples,sample_rate,encoding='mp3_192',*,metadata=()):
                     len(samples)/sample_rate,'MP3 opslaan')
             try:generated=ID3(encoded);offset=generated.size
             except ID3NoHeaderError:generated=ID3();offset=0
-            raw_tags=next((raw for kind,raw in metadata if kind.lower()==b'id3 '),None)
-            tags=ID3(BytesIO(raw_tags)) if raw_tags else generated
+            for frame in generated.getall('TSSE'):
+                tags.add(frame)
             tags.add(TLEN(encoding=3,text=[str(round(len(samples)*1000/sample_rate))]))
             tag_bytes=_tag_bytes(tags)
             size=encoded.stat().st_size-offset

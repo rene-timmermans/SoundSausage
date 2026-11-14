@@ -1,4 +1,4 @@
-# SoundSausage 0.20.0
+# SoundSausage 0.21.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -11,6 +11,9 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - WAV openen en opslaan: mono/stereo, PCM 8/16/24/32-bit en float32.
 - MP3 openen, bewerken en importeren in multitrack; WAV of MP3 kiezen bij opslaan, selectie-export en eindmix.
 - MP3-bitrates van 128, 192, 256 en 320 kb/s, met ID3-tekst en hoesafbeeldingen.
+- ID3-hoofdstukken volgen knippen, trimmen, plakken, omkeren en tijdrekken; inhoudsopgave, selectie-export en Undo/Redo blijven samenhangend.
+- Achterhaalde ReplayGain-, volume-, timing- en encodergegevens opschonen; actuele duur en nieuwe MP3-encoderinformatie bewaren.
+- Ondersteunde WAV INFO-tekst naar MP3 meenemen; onbekende, misvormde en conflicterende velden vóór export melden.
 - Opnamebegin eenmalig overslaan, 0–500 ms met onthouden keuze en korte fade-in; beginwaarde 50 ms.
 - Twee dunne kanaalranden tussen links en rechts, begrensd tot het tekenvlak, ook bij live opname.
 - De huidige golfvorm of sessie sluiten via Bestand → Sluiten of Ctrl+W, met een keuze voor niet-opgeslagen wijzigingen.
@@ -85,7 +88,7 @@ of voorwaarden voor v1.0.
 ## Ondersteuning en grenzen
 
 - Samplepunten verschijnen vanaf twee logische pixels per sample; het numerieke venster blijft bij ieder zoomniveau beschikbaar. Golfvorm tekenen vervangt de samples langs de getekende lijn; een groep beslaat maximaal één seconde, een hele beweging kan meerdere groepen raken.
-- MP3-hoofdstukposities, ReplayGain en andere afgeleide ID3-gegevens worden niet opnieuw berekend. Niet-ondersteunde WAV-bestandsinformatie vereist een keuze vóór MP3-export.
+- ID3-hoofdstukken gebruiken milliseconden; lege of door gedeeltelijk omkeren versnipperde hoofdstukken vervallen. Herkende verouderde metingen en niet-ondersteunde getimede ID3-velden vervallen na audioverandering. Nieuwe ReplayGain-metingen worden niet berekend; onbekende privévelden blijven letterlijk behouden.
 - Stereo heeft een gezamenlijke tijdas. Duurwijzigingen, knippen, verwijderen, trimmen en opname in de bestaande golfvorm vereisen beide kanalen.
 - Op één stereokanaal plakken kan bij gelijke vervangingsduur; Mix Paste blijft binnen de bestaande lengte.
 - VST3: één stereo-invoer/-uitvoerbus en float32. LV2/LADSPA: mono/stereo met evenveel in-/uitgangen. Geen VST2, Windows-plug-ins, MIDI-instrumenten of extra sidechains.

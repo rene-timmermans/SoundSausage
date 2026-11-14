@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.20.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.21.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 ## 1. Sprache und Hilfe
 
@@ -40,7 +40,20 @@ MP3-Dateien über **Datei → Öffnen** laden, in Mehrspur importieren oder auf 
 
 MP3 bietet 128, 192, 256 und 320 kb/s. Höhere Bitraten benötigen mehr Speicher und erhalten meist mehr Details. MP3 ist verlustbehaftet: erneute Kompression kann weitere Details verlieren. WAV vermeidet einen weiteren MP3-Kompressionsschritt, stellt aber verlorene Informationen nicht wieder her. Float32-WAV eignet sich zum Weiterbearbeiten, PCM16 zum Austausch. MP3 verwendet die nächstliegende Abtastrate von 32.000, 44.100 oder 48.000 Hz bei gleicher Dauer; das Dokument behält seine Abtastrate. Diese Abtastraten passen zu allen vier angebotenen MP3-Bitraten; bei niedrigeren Abtastraten kann der Encoder eine niedrigere Bitrate als angefordert verwenden. Die Mindestdauer von 2 ms vermeidet, dass sehr kurze Fragmente nach dem MP3-Decodieren länger werden. Auswahlen unter 2 ms als WAV speichern.
 
-ID3-Texte und eingebettete Cover bleiben erhalten, auch über WAV und eingebettete Projekte. Die Dauerangabe wird aktualisiert; Kapitelpositionen, ReplayGain und andere abgeleitete Angaben werden nicht neu berechnet. Nicht unterstützte WAV-Marker/Dateidaten benötigen vor dem MP3-Export eine Bestätigung. Zusätzliche Metadaten bleiben auf 16 MiB begrenzt; die Mischung vereinigt nicht alle Spurmetadaten. Lange Umwandlungen zeigen Fortschritt und lassen sich abbrechen, ohne eine vorhandene Zieldatei zu ersetzen. Freien Speicher für Umwandlung und Bearbeitung vorsehen.
+### MP3-Metadaten nach dem Bearbeiten
+
+Titel, Künstler, Album, Kommentare und Cover bleiben erhalten, auch über WAV und SoundSausage-Projekte. Die Dauer wird aktualisiert. Gewöhnliche Tags und vorhandene Kennungen bleiben bei der Zieldatei.
+
+**Kapitel** folgen den Bearbeitungen automatisch. Löschen verschiebt spätere Kapitel zurück, Einfügen verschiebt sie nach vorn. Trimmen und Auswahlexport behalten überlappende Kapitel relativ zum erhaltenen Ausschnitt. Leere und vollständig entfernte Kapitel entfallen; das Inhaltsverzeichnis behält gültige Verweise. Einfügen übernimmt Kapitelnamen und Hierarchie des Ausschnitts, während allgemeine Tags der Zieldatei erhalten bleiben. Zeitdehnung passt die Kapitelgrenzen an; eine Abtastratenänderung erhält ihre Millisekundenzeiten. Rückgängig stellt auch die ursprünglichen Metadaten wieder her.
+
+Kapitel sind auf eine Millisekunde genau; auf null Dauer gerundete Reste entfallen. Umkehren spiegelt Kapitel vollständig innerhalb des Bereichs. Ein teilweise umgekehrtes Kapitel, das getrennte Audioteile beschreiben würde, entfällt; Kapitel um den gesamten umgekehrten Bereich bleiben erhalten.
+
+**Messwerte** können nach einer Audiobearbeitung veraltet sein. Erkannte ReplayGain-, R128-, MP3Gain- und Spitzenwerte, Fingerabdrücke, relative Lautstärkeanpassungen und alte Encoderangaben werden entfernt. Nicht unterstützte zeitgebundene Angaben wie synchronisierte Liedtexte, alte Suchindizes und Synchronisationspositionen entfallen ebenfalls. ReplayGain wird nicht neu berechnet. Eine Tempoänderung entfernt den vorhandenen BPM-Wert; eine Tonhöhenänderung entfernt die vorhandene Tonart. Andere Bearbeitungen erhalten diese beiden Werte. Gewöhnliche Liedtexte ohne Zeitcodes und unbekannte private Felder bleiben unverändert. Erneutes MP3-Codieren entfernt ebenfalls alte Messwerte und Dateipositionen, da Kompression Audio und Dateiaufbau verändert. Encoderangaben stammen aus der tatsächlich neu geschriebenen Datei.
+
+**WAV nach MP3:** unterstützte INFO-Felder für Titel, Künstler, Album, Genre, Datum, Titelnummer, Urheberrecht und Kommentare werden übernommen. Vorhandene ID3-Werte haben Vorrang. Nicht unterstützte Felder, fehlerhafte INFO-Daten und widersprüchliche Werte werden vor dem Export gemeldet. **Nein** bricht ab und erhält eine vorhandene Zieldatei; **Ja** setzt mit den aufgeführten Auslassungen fort. Zusätzliche ID3-Tags in einer WAV-Datei werden vor dem Weglassen ebenfalls aufgeführt. Alte Softwareangaben werden durch die neuen Encoderangaben ersetzt. Nicht unterstützte WAV-Marker und andere Dateidaten erfordern diese Entscheidung ebenfalls.
+
+Zusätzliche Metadaten bleiben auf 16 MiB begrenzt. Unlesbare eingebettete WAV-ID3-Daten bleiben unverändert; MP3-Export meldet einen Fehler und erhält das Ziel. Die Mischung vereinigt nicht alle Spurmetadaten. Lange Umwandlungen zeigen Fortschritt und sind abbrechbar; freien Speicher für Umwandlung und Bearbeitung vorsehen.
+
 
 ## 4. Wiedergabe, Zoom und Audiogeräte
 

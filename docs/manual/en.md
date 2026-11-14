@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.20.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.21.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -40,7 +40,20 @@ Open MP3 files through **File → Open**, import them into multitrack or drag th
 
 MP3 offers 128, 192, 256 and 320 kb/s. Higher bitrates use more space and usually retain more detail. MP3 is lossy: recompression may lose more detail. WAV avoids another MP3 compression step, but cannot recover detail already lost. Use float32 WAV for continued editing or PCM16 for exchange. MP3 export uses the closest of 32,000, 44,100 and 48,000 Hz, preserving duration while the document retains its own rate. These rates support all four offered MP3 bitrates; at lower rates the encoder may use a lower bitrate than requested. The 2 ms minimum avoids very short fragments becoming longer after MP3 decoding. Use WAV for selections shorter than 2 ms.
 
-ID3 text and embedded cover images are retained, including through WAV and embedded projects. The duration tag is updated; chapter positions, ReplayGain and other derived tags are not recalculated. Unsupported WAV markers/file data require confirmation before MP3 export. Extra metadata remains limited to 16 MiB; mixdown does not merge all track metadata. Long conversions show progress and can be cancelled without replacing an existing destination. Reserve disk space for conversion and editing.
+### MP3 metadata after editing
+
+Title, artist, album, comments and cover images remain intact, including through WAV and SoundSausage projects. Duration is refreshed. Ordinary tags and existing identifiers stay with their destination file.
+
+**Chapters** follow edits automatically. Deleting shifts later chapters back; inserting shifts them forward. Trim and selection export keep overlapping chapters relative to the retained fragment. Empty and fully removed chapters disappear, and the table of contents keeps valid references. Paste brings chapter names and hierarchy from the fragment while preserving destination file tags. Time stretching changes chapter boundaries with the audio; sample-rate conversion keeps their millisecond times. Undo restores the original metadata too.
+
+Chapter precision is one millisecond; fragments that round to zero duration disappear. Reverse mirrors chapters fully inside its range. A partly reversed chapter that would describe disconnected audio is removed; chapters containing the whole reversed range remain.
+
+**Measurements** can become stale after an audio edit. Recognised ReplayGain, R128, MP3Gain, peak values, fingerprints, relative-volume adjustments and old encoder details are removed. Unsupported timed information, including synchronised lyrics, old seek indexes and synchronisation positions, also disappears. ReplayGain is not recalculated. A tempo change removes the existing BPM value; a pitch change removes the existing key. Other edits preserve these two values. Ordinary lyrics without time codes and unknown private fields remain literal. Re-encoding to MP3 also removes stale measurements and file positions because compression changes audio and layout; encoder information is taken from the actual new file.
+
+**WAV to MP3:** supported INFO title, artist, album, genre, date, track number, copyright and comments are transferred. Existing ID3 values take priority. Unsupported fields, malformed INFO and conflicting values are reported before export. Choose **No** to cancel and preserve an existing target, or **Yes** to continue with the listed omissions. Additional ID3 tags in a WAV are also listed before being omitted. Old software information is replaced with the new encoder details. Unsupported WAV cues and other file data also require this choice.
+
+Extra metadata remains limited to 16 MiB. Unreadable embedded WAV ID3 stays opaque; MP3 export reports an error and preserves the target. Mixdown does not combine metadata from all tracks. Long conversions show progress and can be cancelled; reserve free disk space for conversion and editing.
+
 
 ## 4. Playback, zoom and audio devices
 
