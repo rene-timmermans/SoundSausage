@@ -1,9 +1,11 @@
 """Standalone X11/F11 output continuity probe on the explicit CI audio server."""
 import json
+from pathlib import Path
+import tempfile
 import time
 
 import numpy as np
-from PySide6.QtCore import Qt, QEventLoop, QTimer
+from PySide6.QtCore import Qt, QEventLoop, QTimer, QSettings
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication
 
@@ -22,6 +24,8 @@ for a in range(0, len(samples), rate):
     samples[a:a+len(t), 0] = .3*np.sin(2*np.pi*997*t)
     samples[a:a+len(t), 1] = .25*np.sin(2*np.pi*1501*t)
 window = MainWindow(Document(samples, rate), no_audio=False)
+preferences = tempfile.TemporaryDirectory(prefix='soundsausage-fullscreen-preferences-')
+window.audio_devices.settings = QSettings(str(Path(preferences.name)/'audio.ini'), QSettings.Format.IniFormat)
 errors, takes, states = [], [], []
 window.error = lambda title, message: errors.append(str(title)+": "+str(message))
 window.player.failed.connect(errors.append)
@@ -102,3 +106,4 @@ finally:
     window.document.mark_saved()
     window.session.mark_saved()
     window.close()
+    preferences.cleanup()
