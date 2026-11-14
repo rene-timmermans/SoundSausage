@@ -7,7 +7,7 @@ Er blijven **twee gekozen punten**: B36b en B33. B23/B24 zijn
 B06/B07 in 0.22.0. De overige 18 uitbreidingen blijven voorlopig uitgesteld en
 staan in het [besluitenoverzicht](validation/beperkingen-keuzes.md). Ze komen
 alleen na een nieuwe afspraak terug. De technische ondersteuning en huidige
-grenzen blijven beschreven in [STATUS](STATUS.md).
+grenzen blijven beschreven in de [handleiding](HANDLEIDING.md).
 
 De vaste nummers blijven behouden. Werk elk gekozen punt af met passende
 controles, Undo/Redo en opslag waar van toepassing, uitleg in alle vijf

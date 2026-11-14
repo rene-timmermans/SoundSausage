@@ -368,7 +368,7 @@ een hele beweging mag meerdere groepen wijzigen. Voorbeeld, annuleren en één
 Undo-stap behouden tijdas, metadata en het andere kanaal. Losse punten verschijnen
 vanaf twee logische pixels per sample. De definitieve publicatie is afgerond in 0.20.0.
 
-STATUS onderscheidt bediening, ondersteuningsgrenzen en praktijkcontrole.
+De technische documentatie onderscheidt bediening, ondersteuningsgrenzen en praktijkcontrole.
 De vergelijking met historische effecten is verwijderd; het concrete ontbreken
 van vooruitblik bij Dynamics blijft ter beoordeling. De softwaretaken van
 0.19.0 zijn ook in de eerdere v1.0-checklist als afgerond gemarkeerd.
@@ -406,7 +406,7 @@ rate-/bitratecontroles onderbouwt het behoud van de huidige grenzen.
 
 B03 is uit de open todo verwijderd en als bewuste bestandskeuze vastgelegd.
 Er blijven 26 deelpunten open, met B04 (MP3-metadata) als volgende beoordeling.
-STATUS en de vijf handleidingen leggen de keuze uit. Appversie 0.20.0 blijft
+De vijf handleidingen leggen de keuze uit. Appversie 0.20.0 blijft
 actueel; er is geen functionele wijziging of nieuwe pakketrelease.
 Zie [MP3-uitvoercontrole](validation/mp3-output-limits.md).
 

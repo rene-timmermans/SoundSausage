@@ -62,8 +62,7 @@ De huidige versie is **0.25.2**.
 - Een volledige, doorzoekbare handleiding in vijf talen via **Help → Handleiding** en **F1**, ook zonder internet.
 - Uitleg van alle beschikbare functies en effecten, hun instellingen en praktische voorbeelden.
 
-Lees de [handleiding](docs/HANDLEIDING.md) voor de bediening en [status en beperkingen](docs/STATUS.md)
-voor de precieze ondersteuning van bestandsformaten, apparaten en plug-ins.
+Lees de [handleiding](docs/HANDLEIDING.md) voor de bediening en praktische uitleg.
 
 ## Installeren
 

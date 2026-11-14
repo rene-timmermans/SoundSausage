@@ -2,7 +2,7 @@
 
 De [open todo](../TODO.md) bevat uitsluitend nog te beoordelen of uit te voeren
 punten. Dit overzicht bewaart de redenen voor afgevoerde punten; het is geen
-tweede werklijst. Nummering volgt de 36 regels uit STATUS 0.19.1 bij aanvang van
+tweede werklijst. Nummering volgt de 36 regels uit de technische documentatie van 0.19.1 bij aanvang van
 de beoordeling op 12 november 2026. B36 is opgesplitst in dithering en een
 markereditor. Afvoeren verandert geen bestandsformaat of ondersteunde functie.
 
@@ -21,7 +21,7 @@ markereditor. Afvoeren verandert geen bestandsformaat of ondersteunde functie.
 | B35 | De bevestigde USB-opname-/afspeelproef en geautomatiseerde in-/uitvoercontroles zijn bewijs van werking, geen beperking. Nieuwe fysieke synchronisatie-/punch-/plug-inproeven blijven open als B33. |
 
 Alle negen punten zijn uit de open todo verwijderd. Hun relevante bediening,
-voorwaarden en ondersteuning blijven in STATUS en de handleiding terug te vinden.
+voorwaarden en ondersteuning blijven in de handleiding terug te vinden.
 
 ## Eerste inhoudelijke beoordeling — B01
 
@@ -57,7 +57,7 @@ wordt in de geteste route bijvoorbeeld 47 samples. De huidige uitvoergrenzen
 vermijden die gevallen. Zie [onderbouwing](mp3-output-limits.md).
 
 De software blijft 0.20.0; er is geen functionele wijziging of nieuwe release.
-De technische voorwaarden blijven in STATUS en de vijf handleidingen staan.
+De technische voorwaarden blijven in De vijf handleidingen staan.
 
 ## MP3-metadata — B04 afgerond in 0.21.0
 

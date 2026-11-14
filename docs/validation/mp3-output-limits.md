@@ -50,7 +50,7 @@ ongewijzigd. Er zijn geen nieuwe regressietests nodig voor deze documentatiestap
 De codecproeven zijn lokaal uitgevoerd; dit is geen nieuwe codeccontrole op
 alle distributies. De eerdere releasecontroles van 0.20.0 blijven geldig voor
 de ongewijzigde software. Er zijn geen persoonlijke muziekbestanden gebruikt.
-De technische voorwaarden blijven in STATUS en alle vijf handleidingen staan.
+De technische voorwaarden blijven in alle vijf handleidingen staan.
 Onderzoeksgegevens worden lokaal bewaard in `build/mp3-limits-probe/` en de
 testuitvoer in `build/mp3-limits-tests.log`.
 
