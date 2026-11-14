@@ -170,6 +170,15 @@ def run(window):
     shifted = doc.dsp.process_blocks("pitch_shift", pitch_source, 8000, semitones=12)
     assert shifted.shape == pitch_source.shape and np.isfinite(shifted).all()
     window.noise_profile = learn_profile(np.random.default_rng(5).normal(0, .01, (2000, 2)).astype(np.float32), 8000)
+    noisy = np.random.default_rng(6).normal(0, .01, (16000, 2)).astype(np.float32)
+    noisy[4000:] *= 3
+    cleaned = doc.dsp.process_blocks('noise_reduction', noisy, 8000,
+        profile=window.noise_profile, adaptive=True, detail=50)
+    removed = doc.dsp.process_blocks('noise_reduction', noisy, 8000,
+        profile=window.noise_profile, adaptive=True, detail=50, residual=True)
+    np.testing.assert_allclose(cleaned+removed, noisy, atol=1e-8, rtol=1e-6)
+    # Allow the tracker to settle after the noise step before measuring it.
+    assert np.mean(cleaned[12000:]**2) < np.mean(noisy[12000:]**2)*.5
     with tempfile.TemporaryDirectory(prefix="soundsausage-ir-check-") as response_folder:
         response_path = Path(response_folder)/"Response.wav"
         write_wav(response_path, np.array([[1], [.25]], np.float32), 8000, "float32")

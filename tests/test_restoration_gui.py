@@ -60,3 +60,31 @@ class RestorationGuiTests(unittest.TestCase):
         for key in keys: self.assertFalse(self.window.actions[key].isEnabled())
         self.window._record_context = None; self.window.refresh(); self.window.set_mode('multitrack')
         for key in keys: self.assertFalse(self.window.actions[key].isEnabled())
+
+    def test_adaptive_presets_tracking_controls_and_preview_match_committed_audio(self):
+        self.window.document.select(0, 2000); self.window.capture_noise_profile()
+        self.window.document.select(0, 0)
+        d = self.dialog(NoiseReductionDialog)
+        self.assertFalse(d.tracking.isEnabled())
+        d.preset(4)
+        self.assertTrue(d.settings()['adaptive']); self.assertTrue(d.tracking.isEnabled())
+        self.assertEqual(d.settings()['detail'], 50)
+        d.tracking.setValue(.5); self.assertEqual(d.presets.currentIndex(), 0)
+        before = self.window.document.read(); preview = d.preview_samples()
+        self.window.document.apply(d.effect_name, **d.settings())
+        np.testing.assert_array_equal(self.window.document.view(), preview)
+        self.window.document.undo(); np.testing.assert_array_equal(self.window.document.view(), before)
+        d.preset(5); self.assertFalse(d.settings()['adaptive']); self.assertFalse(d.tracking.isEnabled())
+        self.assertEqual(d.settings()['detail'], 90)
+
+    def test_new_noise_controls_translate_live_and_keep_their_values(self):
+        from soundsausage.i18n import install_language, tr
+        manager = install_language()
+        d = self.dialog(NoiseReductionDialog); d.preset(4); d.detail.setValue(73)
+        try:
+            for lang in ('nl', 'de', 'fr', 'es', 'en'):
+                manager.set_language(lang, False); self.app.processEvents()
+                self.assertEqual(d.method.currentText(), tr('Adaptive noise tracking'))
+                self.assertEqual(d.method.currentData(), True); self.assertEqual(d.detail.value(), 73)
+                self.assertEqual(d.tracking.value(), .15)
+        finally: manager.set_language('en', False)

@@ -1,12 +1,70 @@
 # SoundSausage — manual
 
-Versión 0.22.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.23.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+
+<!-- soundsausage-contents:start -->
+<a id="ss-contents"></a>
+
+## Índice
+
+Haz clic en un tema para ir a él. El botón Índice de arriba permite volver aquí.
+
+- [1. Idioma y ayuda](#ss-topic-1-idioma-y-ayuda)
+- [2. Inicio rápido y espacio de trabajo](#ss-topic-2-inicio-rapido-y-espacio-de-trabajo)
+- [3. Archivos, proyectos y recuperación](#ss-topic-3-archivos-proyectos-y-recuperacion)
+  - [MP3 y WAV](#ss-topic-mp3-y-wav)
+  - [Metadatos MP3 después de editar](#ss-topic-metadatos-mp3-despues-de-editar)
+- [4. Reproducción, zoom y dispositivos](#ss-topic-4-reproduccion-zoom-y-dispositivos)
+- [5. Grabar](#ss-topic-5-grabar)
+- [6. Selección, canales y edición](#ss-topic-6-seleccion-canales-y-edicion)
+  - [Editar muestras individuales](#ss-topic-editar-muestras-individuales)
+  - [Dibujar forma de onda](#ss-topic-dibujar-forma-de-onda)
+- [7. Aplicar efectos](#ss-topic-7-aplicar-efectos)
+  - [Amplitud](#ss-topic-amplitud)
+    - [Amplificar / fundido](#ss-topic-amplificar-fundido)
+    - [Mezclador de canales](#ss-topic-mezclador-de-canales)
+    - [Procesamiento de dinámica](#ss-topic-procesamiento-de-dinamica)
+    - [Envolvente de volumen](#ss-topic-envolvente-de-volumen)
+    - [Normalizar](#ss-topic-normalizar)
+    - [Polaridad, sentido y silencio](#ss-topic-polaridad-sentido-y-silencio)
+  - [Ecualización y filtros](#ss-topic-ecualizacion-y-filtros)
+    - [Ecualizador gráfico](#ss-topic-ecualizador-grafico)
+    - [Ecualizador paramétrico](#ss-topic-ecualizador-parametrico)
+    - [Filtros](#ss-topic-filtros)
+  - [Retardo, eco y reverberación](#ss-topic-retardo-eco-y-reverberacion)
+    - [Efectos de retardo → Retardo](#ss-topic-efectos-de-retardo-retardo)
+    - [Eco](#ss-topic-eco)
+    - [Reverberación](#ss-topic-reverberacion)
+  - [Reducción de ruido y clics](#ss-topic-reduccion-de-ruido-y-clics)
+    - [Estimación del ruido → Perfil de ruido fijo](#ss-topic-estimacion-del-ruido-perfil-de-ruido-fijo)
+    - [Eliminación de clics](#ss-topic-eliminacion-de-clics)
+  - [Tiempo y tono](#ss-topic-tiempo-y-tono)
+    - [Tiempo/tono → Estirar duración](#ss-topic-tiempo-tono-estirar-duracion)
+    - [Cambio de tono](#ss-topic-cambio-de-tono)
+  - [Efectos especiales](#ss-topic-efectos-especiales)
+    - [Especial → Distorsión](#ss-topic-especial-distorsion)
+    - [Convolución](#ss-topic-convolucion)
+- [8. Generar, analizar y convertir](#ss-topic-8-generar-analizar-y-convertir)
+- [9. Multipista y automatización](#ss-topic-9-multipista-y-automatizacion)
+- [10. Efectos de pista, plug-ins y grabación](#ss-topic-10-efectos-de-pista-plug-ins-y-grabacion)
+  - [VST3, LV2 y LADSPA](#ss-topic-vst3-lv2-y-ladspa)
+  - [Compensación del retardo de plug-ins](#ss-topic-compensacion-del-retardo-de-plug-ins)
+  - [Acompañamiento y sincronización](#ss-topic-acompanamiento-y-sincronizacion)
+  - [Punch-in/out](#ss-topic-punch-in-out)
+- [11. Grabar con acompañamiento](#ss-topic-11-grabar-con-acompanamiento)
+- [12. Atajos, favoritos y solución de problemas](#ss-topic-12-atajos-favoritos-y-solucion-de-problemas)
+
+<!-- soundsausage-contents:end -->
+
+<a id="ss-topic-1-idioma-y-ayuda"></a>
 
 ## 1. Idioma y ayuda
 
 En **Opciones → Idioma**, elige Nederlands, English, Deutsch, Français o Español. Los menús, ventanas, ayudas y el manual abierto cambian inmediatamente. La elección se conserva para el próximo inicio. Los nombres de archivos, pistas y complementos mantienen su escritura original.
 
 **Ayuda → Manual** o **F1** abre este manual sin conexión junto al editor. **Ctrl+F** activa la búsqueda; **F3** busca la siguiente coincidencia y **Mayús+F3** la anterior, continuando desde el otro extremo. Solo los enlaces web abiertos expresamente necesitan internet. **Acerca de** muestra versión, autor, licencia, sitio web y componentes.
+
+<a id="ss-topic-2-inicio-rapido-y-espacio-de-trabajo"></a>
 
 ## 2. Inicio rápido y espacio de trabajo
 
@@ -19,6 +77,8 @@ Abre un WAV o MP3 con **Archivo → Abrir**. **Espacio** reproduce o detiene. Se
 Las ventanas y las escalas de los gráficos se adaptan al tamaño de letra del escritorio y al idioma elegido. Si un formulario no cabe en la pantalla, desplázate por sus ajustes; los botones para confirmar o cancelar siguen accesibles.
 
 Dos finas líneas horizontales marcan el borde inferior del canal izquierdo y el superior del derecho. Terminan en los límites del gráfico, también durante la grabación en directo.
+
+<a id="ss-topic-3-archivos-proyectos-y-recuperacion"></a>
 
 ## 3. Archivos, proyectos y recuperación
 
@@ -34,11 +94,15 @@ Los archivos largos se procesan por bloques en disco, sin el antiguo límite de 
 
 Tras un cierre inesperado, recupera, elimina o pospón el último punto guardado. **Archivo → Recuperar trabajo** abre las copias conservadas. Los originales permanecen intactos; vuelven forma de onda, sesión, canales, clips, curvas y cadenas, pero el historial de deshacer se reinicia. Se guardan las ediciones confirmadas y, aproximadamente cada segundo, cursor y selección. Se omiten las instancias activas. Guardar o cerrar normalmente limpia la copia propia. Mantén tus copias de seguridad; un error de disco puede dejar un punto anterior.
 
+<a id="ss-topic-mp3-y-wav"></a>
+
 ### MP3 y WAV
 
 Abre MP3 con **Archivo → Abrir**, impórtalos a multipista o arrástralos a la línea de tiempo. La selección, edición y efectos trabajan con el audio decodificado. **Guardar como**, **Guardar selección** y **Mezclar** ofrecen WAV y MP3; la extensión sigue el formato elegido. Guardar un MP3 existente usa la codificación MP3 elegida; Guardar como permite crear una copia WAV.
 
 MP3 ofrece 128, 192, 256 y 320 kb/s. Una tasa mayor ocupa más espacio y suele conservar más detalle. MP3 tiene pérdida: recomprimir puede perder más detalle. WAV evita otra compresión MP3, pero no recupera información perdida. Usa WAV float32 para seguir editando o PCM16 para intercambiar archivos. MP3 utiliza la frecuencia más cercana entre 32.000, 44.100 y 48.000 Hz y mantiene la duración; el documento conserva su frecuencia. Estas frecuencias admiten las cuatro tasas de bits MP3 ofrecidas; a frecuencias más bajas, el codificador puede usar una tasa de bits inferior a la solicitada. El mínimo de 2 ms evita que los fragmentos muy cortos se alarguen al decodificar el MP3. Usa WAV para selecciones de menos de 2 ms.
+
+<a id="ss-topic-metadatos-mp3-despues-de-editar"></a>
 
 ### Metadatos MP3 después de editar
 
@@ -55,11 +119,15 @@ Las **mediciones** pueden quedar desactualizadas tras editar audio. Se eliminan 
 Los metadatos adicionales siguen limitados a 16 MiB. Los ID3 WAV ilegibles se conservan sin interpretar; exportar MP3 informa de un error y mantiene el destino. La mezcla no reúne los metadatos de todas las pistas. Las conversiones largas muestran progreso y se pueden cancelar; reserva espacio para convertir y editar.
 
 
+<a id="ss-topic-4-reproduccion-zoom-y-dispositivos"></a>
+
 ## 4. Reproducción, zoom y dispositivos
 
 **Espacio** reproduce/detiene, **P** pausa/reanuda y **Esc** detiene. Se reproduce la selección o, sin ella, desde el cursor. **Bucle** repite ese intervalo, con una posible transición breve. **Inicio/Fin** van a los extremos; los botones saltan cinco segundos. Navegar o aplicar una edición detiene la reproducción. **Acercar / Alejar**, **Ctrl+rueda**, rueda y barra horizontal recorren la vista. **Vista completa / Ctrl+0** muestra todo; **Ampliar selección / Ctrl+Mayús+A** encuadra la selección. Sus iconos son distintos. De cerca se unen las muestras; de lejos se conservan mínimos y máximos por columna.
 
 En **Opciones → Dispositivos de audio**, elige una salida o **Predeterminado del sistema**; se recuerda y sirve también para las vistas previas. El búfer predeterminado es de 100 ms: mayor tolera interrupciones y menor responde más rápido. El búfer real puede variar. Cambiarlo detiene reproducción y vistas previas. Si desaparece el dispositivo, reconecta o elige otra salida y reinicia. Comprueba volumen, ruta, silencio y solo. La conversión para la salida no cambia la grabación.
+
+<a id="ss-topic-5-grabar"></a>
 
 ## 5. Grabar
 
@@ -70,6 +138,8 @@ Conecta un micrófono/interfaz, elige la entrada en **Dispositivos de audio** y 
 La entrada no se monitoriza por los altavoces. Ajusta la ganancia en la interfaz/micrófono o Linux; bajar después no repara una entrada saturada. Perder el dispositivo detiene y conserva el audio en lugar de cambiar de micrófono. Las tomas se escriben por bloques y se guardan aproximadamente cada segundo. Recuperar abre una forma aparte. Cancelar la conversión tras detener deja la toma en **Recuperar trabajo** y conserva el documento anterior.
 
 **Omitir al inicio** elimina una vez los primeros milisegundos de cada toma para excluir un clic de arranque. El valor inicial es 50 ms, ajustable de 0 a 500 ms y recordado. Con 0 ms se conserva todo el inicio; después de una omisión se aplica una entrada gradual de 5 ms. El audio omitido no se graba. Reloj, vista, niveles y duración máxima siguen el audio conservado. Pausar/reanudar no repite la omisión. Con acompañamiento, la posición del clip tiene en cuenta el tiempo omitido para mantener la sincronización.
+
+<a id="ss-topic-6-seleccion-canales-y-edicion"></a>
 
 ## 6. Selección, canales y edición
 
@@ -85,6 +155,8 @@ Un portapapeles mono puede reemplazar intervalos más cortos o largos, o inserta
 
 Para grabar en un canal, elige Izquierda/Derecha, **R**, y **Insertar en cursor** o **Reemplazar selección**. Se captura mono al muestreo de la forma. **Primer canal de entrada** elige la entrada física independientemente del destino izquierdo/derecho. Detener aplica una edición, desplaza solo ese canal y completa si hace falta. Nueva forma de onda sigue disponible. La elección queda bloqueada al grabar; un fallo/cancelación del procesamiento final conserva la toma en Recuperar trabajo. Deshacer/Rehacer restaura audio, relleno, metadatos y canales; recuperar conserva el audio estéreo editado.
 
+<a id="ss-topic-editar-muestras-individuales"></a>
+
 ### Editar muestras individuales
 
 Amplíe con **+** o **Ctrl+rueda** hasta ver los puntos cuadrados (al menos dos píxeles lógicos entre muestras). El eje horizontal muestra índices desde 0. Arrastre un punto verticalmente para cambiar solo esa muestra de ese canal. Su posición queda fija aunque el puntero cruce otros puntos o canales. El arrastre muestra una vista previa; soltar confirma y **Escape** cancela. **Mayús+arrastrar** sigue seleccionando audio.
@@ -92,6 +164,8 @@ Amplíe con **+** o **Ctrl+rueda** hasta ver los puntos cuadrados (al menos dos 
 Un doble clic o clic derecho abre **Editar muestra**. **Editar → Editar muestra** funciona con cualquier ampliación. Empieza en el cursor y el primer canal elegido; el índice y canal se pueden cambiar. Introduzca un valor normalizado o muéstrelo como 8, 16 o 24 bits con signo. Cero es silencio; −1/+1 son el nivel máximo normal. Por ejemplo, −16384 en la vista de 16 bits equivale a −0,5 normalizado. Cambiar el rango mostrado no modifica audio ni formato. **Aceptar** aplica un valor; **Cancelar** conserva el original.
 
 Cada arrastre terminado o valor confirmado forma un paso Deshacer/Rehacer. Las demás muestras, el otro canal, la duración y los metadatos se conservan. Arrastrar está limitado a −1 … +1; los picos flotantes existentes siguen disponibles numéricamente. La reproducción se detiene al empezar una corrección; la edición queda bloqueada al grabar. Para clips multipista, edite una copia de forma de onda y aplíquela expresamente al clip. Escuche tras cada corrección; para un clic de varias muestras, acerque cada punto a la onda contigua. Un salto brusco a cero puede crear otro clic. WAV float32 conserva los valores internos exactos; guardar como MP3 recomprime todo el archivo con pérdidas.
+
+<a id="ss-topic-dibujar-forma-de-onda"></a>
 
 ### Dibujar forma de onda
 
@@ -101,57 +175,157 @@ El zoom determina el tamaño del grupo: aproximadamente dos píxeles lógicos de
 
 El canal inicial queda fijo aunque el puntero cruce el otro canal. Las demás muestras, el otro canal, la duración y los metadatos se conservan. Los grupos sombreados y la línea nueva muestran la vista previa. Al soltar se confirma todo el gesto en un solo paso de deshacer. **Escape**, perder el foco, cambiar el zoom o desactivar el dibujo cancelan la vista previa. **Mayús+arrastrar** sigue seleccionando audio; pulsa otra vez **D** para volver al funcionamiento normal. Dibujar está bloqueado durante la grabación. Acerca el zoom para reparaciones precisas: al dibujar de lejos también se sustituyen los detalles finos de cada grupo tocado. Escucha después y usa **Ctrl+Z** si hace falta. En multipista, edita una copia de la forma de onda y aplícala al clip.
 
+<a id="ss-topic-7-aplicar-efectos"></a>
+
 ## 7. Aplicar efectos
 
 Los efectos de forma de onda de **Efectos** tratan el intervalo y canales elegidos, o toda su duración sin selección temporal. El otro canal queda intacto y se oye en la vista previa estéreo. **Escuchar** reproduce hasta los ocho primeros segundos sin aplicar; vuelve a pulsar, cambia un ajuste o cierra para detener. **Aceptar** aplica un paso de deshacer; **Cancelar** conserva el original. **F2 / Repetir última orden** repite ajustes en la selección/canales actuales. Normalización, tiempo/tono y distorsión de alta calidad analizan toda la selección antes de la vista previa.
 
+<a id="ss-topic-amplitud"></a>
+
 ### Amplitud
+
+<a id="ss-topic-amplificar-fundido"></a>
+
+#### Amplificar / fundido
 
 **Amplificar / fundido** ajusta amplificación inicial/final: 100 % sin cambio, 50 % mitad, 200 % doble amplitud. Bloquear izquierda/derecha enlaza canales; igualar inicio/final da ganancia constante, desmarcar permite un fundido. El lineal llega a cero; el logarítmico requiere extremos positivos. Los preajustes incluyen ±6 dB y fundidos. **Fundido de entrada / Fundido de salida** aplican inmediatamente un fundido lineal. Ejemplo: selecciona la introducción, elige entrada gradual, escucha y confirma.
 
+<a id="ss-topic-mezclador-de-canales"></a>
+
+#### Mezclador de canales
+
 **Mezclador de canales** requiere estéreo. Cada salida combina porcentajes de L/R; los negativos invierten la polaridad de entrada y la inversión de salida invierte la suma. Los preajustes intercambian, copian un lado a ambos, promedian a mono (siguen siendo dos canales) o restan. La mezcla puede superar 0 dBFS. Seleccionar un canal cambia solo su salida, aunque utilice ambos originales.
+
+<a id="ss-topic-procesamiento-de-dinamica"></a>
+
+#### Procesamiento de dinámica
 
 **Procesamiento de dinámica** relaciona dB de entrada y salida. Bajo la diagonal atenúa y encima amplifica. Pulsa/arrastra puntos, introduce valores debajo; clic derecho, quitar punto o Supr elimina puntos interiores. Los extremos permanecen fijos. Ataque controla respuesta a picos, liberación la recuperación y ganancia de salida el resultado. Enlazar estéreo mantiene una regulación común. Para voz empieza con 3:1 sobre −18 dB. Compresor reduce partes fuertes, puerta/expansor las débiles y limitador los picos. No hay anticipación: un ataque lento deja pasar transitorios.
 
+<a id="ss-topic-envolvente-de-volumen"></a>
+
+#### Envolvente de volumen
+
 **Envolvente de volumen** dibuja ganancia sobre el 0–100 % del fragmento, con amplitud del 0–200 % (100 % neutro). Arrastra o introduce posiciones/ganancias; elimina puntos interiores. Hay fundidos, fundido en ambos extremos y reducción central. La interpolación logarítmica necesita ganancias positivas. Para bajar una palabra, rodéala de puntos y dibuja una reducción. Esto escribe audio; las curvas de clips siguen editables aparte.
 
-**Normalizar** lleva el pico máximo al objetivo (98 % por defecto) con un factor único. No iguala palabras. Normalizar izquierda/derecha juntas conserva el balance; separarlas da un objetivo por canal. Quitar componente continua centra primero la señal; el silencio sigue igual. Úsalo tras mezclar para dejar margen PCM. **Invertir polaridad** invierte polaridad, **Invertir sentido** el tiempo y **Silencio** pone a cero sin quitar duración. Se aplican inmediatamente.
+<a id="ss-topic-normalizar"></a>
+
+#### Normalizar
+
+**Normalizar** lleva el pico máximo al objetivo (98 % por defecto) con un factor único. No iguala palabras. Normalizar izquierda/derecha juntas conserva el balance; separarlas da un objetivo por canal. Quitar componente continua centra primero la señal; el silencio sigue igual. Úsalo tras mezclar para dejar margen PCM.
+
+<a id="ss-topic-polaridad-sentido-y-silencio"></a>
+
+#### Polaridad, sentido y silencio
+
+**Invertir polaridad** invierte polaridad, **Invertir sentido** el tiempo y **Silencio** pone a cero sin quitar duración. Se aplican inmediatamente.
+
+<a id="ss-topic-ecualizacion-y-filtros"></a>
 
 ### Ecualización y filtros
 
+<a id="ss-topic-ecualizador-grafico"></a>
+
+#### Ecualizador gráfico
+
 En **Filtros**, **Ecualizador gráfico** tiene diez bandas de octava, 31,5 Hz–16 kHz, cada una −24…+24 dB. Se desactivan bandas inutilizables con muestreo bajo. Plano restablece; refuerzo de graves, presencia vocal y sonrisa suave ofrecen puntos de partida. El gráfico combina bandas y ganancia de salida (vista −36…+36 dB). Realzar puede superar 0 dBFS: baja la salida antes de exportar PCM.
+
+<a id="ss-topic-ecualizador-parametrico"></a>
+
+#### Ecualizador paramétrico
 
 **Ecualizador paramétrico** ofrece cinco campanas y estantes grave/agudo activables por separado. Frecuencia elige centro/transición, ganancia −24…+24 dB y Q alto estrecha la campana. Los estantes tienen transiciones suaves fijas sin Q. Para resonancias usa una campana estrecha negativa; para tono general una ancha/estante con poca ganancia. Plano/restablecer pone ganancias a cero; claridad vocal/calidez son puntos de partida.
 
+<a id="ss-topic-filtros"></a>
+
+#### Filtros
+
 **Filtros** ofrece paso alto (retumbo, inicio 80 Hz), paso bajo (suavizar agudos, 8 kHz), paso banda y rechazo. Paso alto/bajo usan Butterworth de 12/24/36/48 dB/oct, unos −3 dB en el corte; más pendiente puede resonar más. Banda/rechazo usan Q. Teléfono es una banda ancha; los rechazos de 50/60 Hz quitan solo la fundamental del zumbido. Restablecer carga retumbo. El estado continúa entre bloques pero empieza vacío en la selección; conserva duración y cambia fase. Una selección corta abrupta puede chasquear; amplíala.
+
+<a id="ss-topic-retardo-eco-y-reverberacion"></a>
 
 ### Retardo, eco y reverberación
 
-**Efectos de retardo → Retardo** añade una copia tras 1–2000 ms. Izquierda/mono controla el primer retardo; desenlaza para ajustar el derecho. Preajustes: simple 250 ms, slapback 80 ms, duplicación 25 ms y amplitud estéreo. **Eco** repite mediante realimentación (0–95 %); más valor alarga el decaimiento. La amortiguación de agudos oscurece repeticiones realimentadas, no la primera copia. Ping-pong alterna en estéreo. Eco cálido/repeticiones largas son inicios útiles; mucha realimentación puede acumular nivel.
+<a id="ss-topic-efectos-de-retardo-retardo"></a>
+
+#### Efectos de retardo → Retardo
+
+**Efectos de retardo → Retardo** añade una copia tras 1–2000 ms. Izquierda/mono controla el primer retardo; desenlaza para ajustar el derecho. Preajustes: simple 250 ms, slapback 80 ms, duplicación 25 ms y amplitud estéreo.
+
+<a id="ss-topic-eco"></a>
+
+#### Eco
+
+**Eco** repite mediante realimentación (0–95 %); más valor alarga el decaimiento. La amortiguación de agudos oscurece repeticiones realimentadas, no la primera copia. Ping-pong alterna en estéreo. Eco cálido/repeticiones largas son inicios útiles; mucha realimentación puede acumular nivel.
+
+<a id="ss-topic-reverberacion"></a>
+
+#### Reverberación
 
 **Reverberación** ajusta tamaño de sala (separación de reflexiones), decaimiento RT60 aproximado (0,1–10 s), retardo previo (0–250 ms) antes del efecto, amortiguación de agudos y anchura estéreo (0 efecto igual a ambos lados, 100 anchura completa; desactivada en mono). Sala pequeña, estudio, sala grande y ambiente largo varían espacio/decaimiento. Para voz empieza con poco efecto, decaimiento corto y algo de retardo previo. Es reverberación algorítmica, no un modelo exacto de sala.
 
 Señal seca y efecto son porcentajes independientes sumados; ganancia de salida (−24…+24 dB) escala la suma sin limitar automáticamente. Por defecto se conserva duración y se cortan repeticiones tardías. Añadir cola inserta 0,01–60 s, desplazando audio posterior y marcadores. Los últimos 10 ms se desvanecen. Los preajustes desmarcan la cola: ajústala después. Un eco extremo puede superar 60 s; reduce realimentación/retardo. Ejemplo: voz de 2 s + cola de 3 s = 5 s. Una cola en un canal desplaza solo ese canal; los marcadores comunes permanecen.
 
+<a id="ss-topic-reduccion-de-ruido-y-clics"></a>
+
 ### Reducción de ruido y clics
 
 Selecciona solo ruido de fondo (normalmente de medio segundo a varios), elige **Capturar perfil de ruido**, selecciona el audio que quieres limpiar y vuelve a abrir **Reducción de ruido**. Capturar desde la ventana también funciona sin cambiar audio. El perfil promedia como máximo los primeros 30 s. La duración mínima depende del muestreo; muestreo/canales deben coincidir. Para un canal estéreo se usa el correspondiente del perfil. Guardar/cargar usa `.ssnoise`, un espectro sin grabación de audio. Reutilízalo solo en una configuración coincidente.
 
-Reducción máxima 0–36 dB; empieza con 6–12 dB. Sensibilidad trata más fondo como ruido; suavizado calma cambios pero puede dejar ruido tras sonidos. Enlazar estéreo mantiene el balance. «Conservar solo ruido eliminado» permite oír lo quitado: desactívalo antes de limpiar. Suave/Equilibrado son inicios útiles. Mejor para siseo/ventilación constantes; no separa voces ni recupera detalles. Demasiada reducción o un perfil musical puede dañar el sonido. Duración/marcadores fijos; procesamiento sin tiempo real.
+<a id="ss-topic-estimacion-del-ruido-perfil-de-ruido-fijo"></a>
+
+#### Estimación del ruido → Perfil de ruido fijo
+
+**Estimación del ruido → Perfil de ruido fijo** sirve para siseo o ventilación constantes. **Seguimiento adaptativo del ruido** parte del mismo perfil solo de ruido y sigue los cambios de nivel y espectro. Ambos modos necesitan un perfil compatible; uno silencioso no tiene efecto. El procesamiento no cambia el perfil guardado.
+
+**Tiempo de seguimiento**, 0,05–5 segundos, solo se activa en adaptativo. Un tiempo corto reacciona antes, pero puede aprender sonidos sostenidos como ruido; uno largo es más prudente. Empieza en 0,15 s. **Protección de detalles**, 0–100 %, conserva más sonido suave y deja más fondo; valor inicial 50 %. Fijo con 0 % conserva la atenuación anterior. No recupera detalles ausentes de la fuente. Reducción máxima 0–36 dB (empieza con 6–12 dB; 0 conserva exactamente el original), sensibilidad controla qué se considera ruido y suavizado ralentiza una supresión mayor tras sonidos. Enlazar estéreo mantiene el balance; sin enlace los canales se procesan por separado.
+
+Preajustes: **Suave** 6 dB/65 % de protección, **Equilibrado** 12 dB/50 %, **Intenso** 24 dB/15 %, **Fondo cambiante** adaptativo 12 dB/50 % a 0,15 s y **Detalles delicados** fijo 6 dB/90 %. Los tres primeros también son fijos. Para una voz con ventilador creciente, captura solo el ventilador, selecciona la voz y prueba Fondo cambiante. Sube la protección si desaparecen palabras suaves o colas. Aumenta el tiempo o usa Fijo para sonidos sostenidos. **Conservar solo ruido eliminado** permite oír lo quitado: desactívalo antes de confirmar audio limpio.
+
+El seguimiento puede confundir sonido deseado con ruido, especialmente sonidos amplios sostenidos, niveles muy bajos o perfiles con voz/música. No separa voces ni recrea información perdida. Vista previa y procesamiento completo tienen el mismo principio. Duración, marcadores y canal estéreo no elegido permanecen. Deshacer restaura el original; F2 repite modo, tiempo, protección y perfil. Los archivos largos usan memoria de trabajo acotada; cancelar no aplica resultados parciales.
+
+<a id="ss-topic-eliminacion-de-clics"></a>
+
+#### Eliminación de clics
 
 **Eliminación de clics** une muestras intactas alrededor de impulsos breves aislados. Un multiplicador de umbral alto es prudente; menor salto mínimo en dBFS detecta clics suaves. Anchura máxima 0,02–2 ms. Conservador, clics pequeños y anchos son inicios. Escucha con cuidado la percusión: sus ataques pueden parecer daños. Crujidos largos, saturación y muestras dañadas en extremos requieren otro tratamiento.
 
+<a id="ss-topic-tiempo-y-tono"></a>
+
 ### Tiempo y tono
 
-**Tiempo/tono → Estirar duración** cambia duración (25–400 %) conservando tono: 200 % duplica, 50 % reduce a la mitad. Los campos de tempo calculan BPM antiguo/nuevo (120→100 da 120 %), sin detección automática. Con Ambos, los marcadores siguen la escala y los posteriores se desplazan. Con Izquierda/Derecha solo se desplaza ese canal; los marcadores comunes permanecen. **Cambio de tono** varía −24…+24 semitonos sin cambiar duración/marcadores; ±12 es una octava y 0,01 semitono un cent. Preservar formantes ayuda a conservar la voz; compara ambos ajustes en instrumentos.
+<a id="ss-topic-tiempo-tono-estirar-duracion"></a>
+
+#### Tiempo/tono → Estirar duración
+
+**Tiempo/tono → Estirar duración** cambia duración (25–400 %) conservando tono: 200 % duplica, 50 % reduce a la mitad. Los campos de tempo calculan BPM antiguo/nuevo (120→100 da 120 %), sin detección automática. Con Ambos, los marcadores siguen la escala y los posteriores se desplazan. Con Izquierda/Derecha solo se desplaza ese canal; los marcadores comunes permanecen.
+
+<a id="ss-topic-cambio-de-tono"></a>
+
+#### Cambio de tono
+
+**Cambio de tono** varía −24…+24 semitonos sin cambiar duración/marcadores; ±12 es una octava y 0,01 semitono un cent. Preservar formantes ayuda a conservar la voz; compara ambos ajustes en instrumentos.
 
 Fino (predeterminado) y Rápido usan Rubber Band sin tiempo real. El estéreo se procesa conjuntamente; los extremos pueden sonar artificiales. Para un cambio real usa al menos 50 ms y 64 muestras. El ajuste neutro devuelve exactamente el original; la salida se redondea a muestras. La vista previa analiza toda la selección antes de reproducir hasta ocho segundos; archivos largos requieren tiempo y memoria de análisis. Se puede cancelar. Para un clip, edita una copia y aplícala; las curvas escalan, los clips posteriores no se desplazan automáticamente.
 
+<a id="ss-topic-efectos-especiales"></a>
+
 ### Efectos especiales
+
+<a id="ss-topic-especial-distorsion"></a>
+
+#### Especial → Distorsión
 
 **Especial → Distorsión** ofrece recorte suave (saturación redondeada), duro (corte brusco), plegado de onda y reducción de bits (2–16). Ganancia de entrada 0–36 dB, techo 10–100 %, mezcla original/procesada, salida −24…+24 dB. El techo solo moldea la parte procesada, no la seca ni la salida total. Calidez suave, crunch, plegado y bits son inicios. Alta calidad sobremuestrea para reducir aliasing (normalmente 4×, adaptado con muestreo alto) y procesa toda la selección incluso para vista previa; estándar es más rápido/áspero. Duración/marcadores fijos y silencio conservado.
 
+<a id="ss-topic-convolucion"></a>
+
+#### Convolución
+
 **Convolución** aplica una respuesta al impulso WAV de filtro, pantalla o espacio acústico. Elígela, ajusta seca/efecto y escucha. Mono funciona por canal; una respuesta estéreo exige entrada estéreo y usa el canal seleccionado correspondiente. Otro muestreo se convierte; respuesta limitada tras conversión a 10 segundos y 524 288 muestras, con archivo de hasta 32 MiB. Se rechazan respuestas vacías o silenciosas. La cola no añade otro fundido. Normalizar energía escala ambos canales juntos; desactívalo para respuestas calibradas. Seca 0 %, efecto 100 % da un filtro puro. Conservar cola completa añade duración de respuesta menos una muestra y desplaza lo posterior. Sin ello mantiene duración. Conserva el archivo intacto para F2; si cambia/falta, elígelo otra vez.
+
+<a id="ss-topic-8-generar-analizar-y-convertir"></a>
 
 ## 8. Generar, analizar y convertir
 
@@ -160,6 +334,8 @@ Fino (predeterminado) y Rápido usan Rubber Band sin tiempo real. El estéreo se
 **Analizar → Análisis de frecuencias / Alt+Z** muestra frecuencia frente a dBFS de canales/intervalo elegidos (o grabación entera). En intervalos largos usa una parte central limitada, ventana de Hann y potencia media de canales. Muestra frecuencia/nivel del pico debajo. Selecciona un sonido corto para estudiarlo; no es un espectrómetro continuo. Cerrar no cambia audio.
 
 **Editar → Convertir frecuencia de muestreo** convierte toda la forma de onda a los Hz elegidos, conservando tono/duración con redondeo a tramas (al menos una). Cursor/selección siguen los mismos tiempos. Deshacer restaura audio y muestreo. Esto cambia el documento; la conversión automática de reproducción solo cambia la salida.
+
+<a id="ss-topic-9-multipista-y-automatizacion"></a>
 
 ## 9. Multipista y automatización
 
@@ -171,11 +347,15 @@ En **Mover clips**, arrastra el centro para mover y los bordes para recortar; se
 
 Doble clic o **Editar copia en forma de onda** abre una copia para efectos sin tiempo real. **Ventana → Aplicar forma de onda al clip** devuelve expresamente el resultado; cambiar de vista no lo aplica. Deshacer en sesión restaura audio/curvas. Se reconvierte muestreo, las curvas siguen la duración y los clips posteriores quedan fijos: comprueba solapamientos. **Mezclar sesión / Mezclar** exporta toda la sesión sin depender de la selección, con silencio/solo, ganancias/pan, curvas, efectos y colas. Guardar sesión conserva el proyecto editable. Estos ajustes cambian durante reproducción; deshacer/cambiar vista la detiene.
 
+<a id="ss-topic-10-efectos-de-pista-plug-ins-y-grabacion"></a>
+
 ## 10. Efectos de pista, plug-ins y grabación
 
 Abra **FX** junto a la pista o **Efectos → Efectos de pista**. Añada un efecto, elija ajustes/preajuste y confirme con Aceptar; Aplicar cambia sin cerrar. Editar/doble clic reabre los ajustes. Subir/bajar cambia orden, la marca omite y Quitar elimina. Los cambios tienen Deshacer/Rehacer. Hasta dieciséis efectos actúan tras ganancia/curvas/fundidos del clip y antes de volumen/pan de pista. Mono pasa a estéreo. La cola tras el último clip añade 0–60 segundos. Reproducción y mezcla usan la misma cadena sin cambiar las fuentes.
 
 Se ofrecen amplificación fija, mezclador, dinámica, EQ gráfico/paramétrico, filtros, retardo, eco, reverberación, inversión y plug-ins externos. Aplicar actualiza mientras escucha; el audio ya almacenado conserva los ajustes previos. Reiniciar, buscar y cambiar omisión vacían la memoria del efecto. Normalización, restauración, tiempo/tono, distorsión y convolución siguen siendo ediciones mediante Editar copia en forma de onda. Use la curva de volumen para variar la ganancia del clip.
+
+<a id="ss-topic-vst3-lv2-y-ladspa"></a>
 
 ### VST3, LV2 y LADSPA
 
@@ -187,9 +367,13 @@ VST3 admite un bus estéreo de entrada/salida con float32. LV2/LADSPA admiten ef
 
 Cada plug-in se ejecuta en un proceso aislado. Fallo, tiempo agotado o audio no válido detienen la reproducción conservando lo grabado. Los proyectos guardan parámetros y hasta 1 MiB de estado por efecto. Instale aparte el plug-in y sus bibliotecas/muestras externas. En otro equipo añada la misma versión. Las versiones ausentes/cambiadas se indican; reproducir/exportar requiere el efecto correspondiente o una omisión deliberada.
 
+<a id="ss-topic-compensacion-del-retardo-de-plug-ins"></a>
+
 ### Compensación del retardo de plug-ins
 
 El retardo algorítmico declarado se compensa por pista al reproducir y mezclar. Los retardos de la cadena se suman; cambios de ajustes/omisión actualizan el procesamiento. Posiciones y duración de mezcla no cambian. Eco musical, retardo previo y reverberación siguen audibles. La compensación depende de datos correctos del plug-in y admite hasta diez segundos por pista. Un retardo no válido o continuamente cambiante genera un mensaje.
+
+<a id="ss-topic-acompanamiento-y-sincronizacion"></a>
 
 ### Acompañamiento y sincronización
 
@@ -201,6 +385,8 @@ Para medirla, use **Opciones → Calibrar grabación** o el botón del diálogo 
 
 La sincronización automática aplica el perfil correspondiente. Sin perfil funciona la sincronización de reloj, pero puede quedar retardo físico. Como alternativa desactive el automatismo y use **Desplazamiento de posición de grabación**: negativo antes, positivo después; −15 ms corrige una toma que llega 15 ms tarde. La corrección manual y automática se excluyen.
 
+<a id="ss-topic-punch-in-out"></a>
+
 ### Punch-in/out
 
 Elija pista destino y un intervalo en la regla multipista o con **Editar → Establecer selección**. Use **Opciones → Punch-in/out** o **Mayús+R**. Configure entrada, sincronización, **Pregrabación** (2 s) y **Fundido cruzado** (5 ms). La selección fija los límites de grabación; el acompañamiento queda activado.
@@ -211,11 +397,15 @@ Los fundidos mezclan antiguo/nuevo dentro de los límites, hasta 100 ms. El audi
 
 **Guardar sesión / Guardar sesión como** conserva audio, clips, curvas, cadenas, estado de plug-ins y regiones punch. Abrir sesión los restaura; la mezcla exporta WAV/MP3 con los mismos efectos. Conserve el proyecto para editar pistas separadas. Los proyectos nuevos guardados requieren SoundSausage **0.19.0 o posterior**; los anteriores siguen legibles. Los plug-ins ausentes no impiden abrir/recuperar las fuentes.
 
+<a id="ss-topic-11-grabar-con-acompanamiento"></a>
+
 ## 11. Grabar con acompañamiento
 
 Coloca acompañamiento en pistas, elige otra pista de destino y sitúa el cursor. Pulsa **R**, elige entrada/nuevo clip y activa «Reproducir pistas existentes al grabar». Pistas y efectos parten del cursor; la entrada no va a altavoces. **P** pausa/reanuda ambos; **Detener/Esc/Espacio/R** detiene y conserva la toma como un paso de deshacer. Puede seguir grabando tras terminar el acompañamiento; una duración máxima detiene ambos. Descartar quita solo la nueva toma. Un fallo conserva muestras capturadas. Las ediciones quedan bloqueadas.
 
 El desplazamiento de posición mueve el clip insertado: negativo antes, positivo después. Si llega 15 ms tarde, prueba −15 ms. Graba un clic conocido por tu ruta real de entrada/salida, compara posiciones, introduce la diferencia y comprueba con otra toma. Recalibra tras cambiar dispositivo/búfer. El audio anterior a cero se recorta al insertar. Se recuerda el desplazamiento; calibración física automática, corrección de deriva, compensación de complementos y punch-in/out siguen en desarrollo. Prueba una toma corta antes de una sesión larga.
+
+<a id="ss-topic-12-atajos-favoritos-y-solucion-de-problemas"></a>
 
 ## 12. Atajos, favoritos y solución de problemas
 

@@ -100,13 +100,45 @@ def _copy(source, wanted, residual=False):
     return storage.seal(result, checked=True)
 
 
+class _NoiseTracker:
+    """Profile-seeded soft-presence PSD tracker; Gerkmann/Hendriks (2012), §IV.
+
+    https://doi.org/10.1109/TASL.2011.2180896
+    Fixed 15 dB signal prior, equal presence/absence priors and a stagnation cap.
+    State is per spectral bin, independent of file length and output blocks.
+    """
+    def __init__(self, noise, hop_seconds, tracking):
+        self.noise = noise.copy()
+        self.presence = np.zeros_like(noise)
+        self.alpha = np.exp(-hop_seconds/tracking)
+        self.presence_alpha = np.exp(-hop_seconds/.1)
+
+    def update(self, power):
+        ratio = power/np.maximum(self.noise, 1e-30)
+        prior = 10**1.5
+        probability = 1/(1+(1+prior)*np.exp(-ratio*prior/(1+prior)))
+        self.presence = self.presence_alpha*self.presence + (1-self.presence_alpha)*probability
+        # A held musical partial must not become noise merely because it lasts
+        # longer than the presence memory. Only unfreeze broadband stagnation.
+        neighbours = np.lib.stride_tricks.sliding_window_view(
+            np.pad(power, ((8, 8), (0, 0)), mode='edge'), 17, axis=0)
+        tonal = power > 8*np.maximum(np.median(neighbours, axis=-1), 1e-30)
+        stagnant = (self.presence > .99) & ~tonal
+        probability = np.where(stagnant, np.minimum(probability, .99), probability)
+        self.noise += (1-self.alpha)*(1-probability)*(power-self.noise)
+        return self.noise
+
+
 def noise_reduction(source, rate, *, profile, reduction_db=12, sensitivity=2,
-                    smoothing=60, linked=True, residual=False, limit=None, block_frames=262144):
+                    smoothing=60, linked=True, residual=False, adaptive=False,
+                    tracking=.15, detail=0, limit=None, block_frames=262144):
     noise = validate_profile(profile, rate, source.shape[1])
     reduction_db = number(reduction_db, 0, 36, "Noise reduction (dB)")
     sensitivity = number(sensitivity, .5, 4, "Sensitivity")
     smoothing = number(smoothing, 0, 100, "Smoothing")/100*.95
-    if not isinstance(linked, bool) or not isinstance(residual, bool):
+    tracking = number(tracking, .05, 5, "Noise tracking time (s)")
+    detail = number(detail, 0, 100, "Detail protection")/100
+    if not all(isinstance(switch, bool) for switch in (linked, residual, adaptive)):
         raise ValueError("Invalid noise reduction switch.")
     wanted = len(source) if limit is None else min(len(source), max(0, int(limit)))
     progress(0, wanted, "Ruis verminderen")
@@ -118,6 +150,7 @@ def noise_reduction(source, rate, *, profile, reduction_db=12, sensitivity=2,
     overlap = np.zeros((size, channels), np.float64)
     weights = np.zeros((size, 1), np.float64)
     previous = np.ones_like(noise)
+    tracker = _NoiseTracker(noise, hop/rate, tracking) if adaptive else None
     floor = 10**(-reduction_db/20)
     result = storage.allocate((wanted, channels))
     pending = np.empty((max(8192, hop), channels), np.float32)
@@ -129,7 +162,16 @@ def noise_reduction(source, rate, *, profile, reduction_db=12, sensitivity=2,
             frame[a-start:b-start] = source[a:b]
         spectrum = np.fft.rfft(frame*window, axis=0)
         power = abs(spectrum)**2
+        # Do not train on zero-padding at either edge: short previews and full
+        # processing must use the same state for every real analysis frame.
+        if tracker is not None and start >= 0 and start+size <= len(source):
+            noise = tracker.update(power)
         gain = np.maximum(floor, 1-sensitivity*noise/np.maximum(power, 1e-30))
+        if detail:
+            # A softer power mask retains more near-noise content. This trades
+            # some suppression for detail; spectral gain stays at or below one.
+            soft = np.sqrt(np.maximum(0, 1-np.sqrt(sensitivity)*noise/np.maximum(power, 1e-30)))
+            gain += detail*np.maximum(0, soft-gain)
         # Average three neighbouring bins; smooth closing while opening promptly.
         padded = np.pad(gain, ((1, 1), (0, 0)), mode='edge')
         gain = (padded[:-2]+padded[1:-1]+padded[2:])/3

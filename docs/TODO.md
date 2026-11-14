@@ -20,7 +20,10 @@ Ruisreductie uitbreiden voor wisselende achtergrondruis en beter behoud van
 zachte details. De bestaande profielbewerking en luistervoorbeelden blijven
 beschikbaar. Gewenste instellingen toetsen op ruis, zachte signalen, transiënten,
 stereo, kanaalkeuze, annuleren en Undo; daarna de vijf handleidingen en pakketten
-bijwerken. De softwarewijziging voor B21 is nog niet begonnen.
+bijwerken. De implementatie voor 0.23.0 is gereed voor verificatie: adaptieve ruisschatting,
+aanpassingstijd, detailbehoud en twee nieuwe presets. Zie de
+[controle](validation/adaptive-noise.md). B21 blijft open tot distributiecontroles
+en publicatie afgerond zijn.
 
 ## De vijf resterende punten
 

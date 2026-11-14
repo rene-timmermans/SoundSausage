@@ -32,7 +32,9 @@ def extract():
         item=records.setdefault(text,dict(source=text,locations=[],nested=nested or []))
         item['locations'].append(f'{path}:{line}')
     for p in sorted((ROOT/'src/soundsausage').glob('*.py')):
-        if p.stem in ('selftest','__main__','icons','i18n','i18n_widgets'):continue
+        # Manual contents are authored in five complete Markdown resources;
+        # their index/anchor metadata is not a runtime UI translation source.
+        if p.stem in ('selftest','__main__','icons','i18n','i18n_widgets','manual_index'):continue
         tree=ast.parse(p.read_text());parents={child:node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
         for node in ast.walk(tree):
             if isinstance(node,ast.JoinedStr):

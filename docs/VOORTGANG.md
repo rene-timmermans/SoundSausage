@@ -9,7 +9,7 @@ het kortere kanaal krijgt eindstilte. Vijf handleidingen en vertalingen zijn bij
 De [controle](validation/channel-timing.md) beschrijft de regressieproeven.
 
 Er blijven vijf gekozen punten: **B21, B23, B24, B36b en B33**. De overige 18
-blijven uitgesteld. De volgende stap is B21, gevolgd door B23/B24 en B36b,
+blijven uitgesteld. B21 wordt getoetst voor 0.23.0, gevolgd door B23/B24 en B36b,
 dan B33 op de afgeronde app, een releasecandidate en v1.0. De [todo](TODO.md)
 en het [ontwikkelplan](ONTWIKKELPLAN.md) blijven leidend.
 
@@ -472,3 +472,13 @@ alle 501 tests. Catalogi: 1440 bronvormen, 0 ontbrekend. Zie de
 B06/B07 zijn uit de open todo verwijderd. B21 volgt; de overige 18 uitgestelde
 kandidaten blijven buiten de afgesproken route. B33 en de releasecandidate
 blijven nodig vóór v1.0.
+
+
+## Ruisreductie — B21 in verificatie voor 0.23.0
+
+Adaptieve ruisschatting, aanpassingstijd, detailbehoud en nieuwe presets zijn
+gebouwd. De vaste profielstand blijft beschikbaar. Vijf handleidingen en
+vertalingen zijn bijgewerkt. Alle vijf manuals hebben bovendien een klikbare
+inhoudsopgave met blauwe links en een knop terug naar Inhoud. Gerichte DSP-, kanaal-, GUI-, taal- en layoutproeven
+slagen; definitieve distributiecontrole en publicatie volgen. Zie de
+[onderbouwing](validation/adaptive-noise.md). B21 blijft voorlopig open.

@@ -2,11 +2,98 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.22.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.23.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
 treffer en **Shift+F3** naar de vorige.
+
+<!-- soundsausage-contents:start -->
+<a id="ss-contents"></a>
+
+## Inhoudsopgave
+
+Klik op een onderwerp om er direct naartoe te gaan. De knop Inhoud bovenaan brengt je terug.
+
+- [Taal kiezen](#ss-topic-taal-kiezen)
+- [Snel beginnen](#ss-topic-snel-beginnen)
+- [1. De werkruimte](#ss-topic-1-de-werkruimte)
+- [2. Bestanden openen, bewaren en sluiten](#ss-topic-2-bestanden-openen-bewaren-en-sluiten)
+  - [Losse opnamen](#ss-topic-losse-opnamen)
+  - [MP3 openen en bewaren](#ss-topic-mp3-openen-en-bewaren)
+  - [MP3-bestandsinformatie na bewerken](#ss-topic-mp3-bestandsinformatie-na-bewerken)
+  - [Projecten met meerdere sporen](#ss-topic-projecten-met-meerdere-sporen)
+  - [Sluiten](#ss-topic-sluiten)
+  - [Lange opnamen en annuleren](#ss-topic-lange-opnamen-en-annuleren)
+  - [Werk herstellen](#ss-topic-werk-herstellen)
+- [3. Luisteren en navigeren](#ss-topic-3-luisteren-en-navigeren)
+  - [Het uitvoerapparaat kiezen](#ss-topic-het-uitvoerapparaat-kiezen)
+- [3a. Opnemen](#ss-topic-3a-opnemen)
+  - [Een opname maken](#ss-topic-een-opname-maken)
+  - [Het opnamebegin overslaan](#ss-topic-het-opnamebegin-overslaan)
+  - [Ingang en herstel](#ss-topic-ingang-en-herstel)
+  - [Een dagelijkse werkwijze](#ss-topic-een-dagelijkse-werkwijze)
+- [4. Selecteren en de golfvorm bewerken](#ss-topic-4-selecteren-en-de-golfvorm-bewerken)
+- [4a. Links, rechts en stereo kiezen](#ss-topic-4a-links-rechts-en-stereo-kiezen)
+  - [Een effect op één kanaal](#ss-topic-een-effect-op-een-kanaal)
+  - [Duur veranderen op één kanaal](#ss-topic-duur-veranderen-op-een-kanaal)
+  - [Kopiëren, plakken en bewaren](#ss-topic-kopieren-plakken-en-bewaren)
+  - [Opnemen in één kanaal](#ss-topic-opnemen-in-een-kanaal)
+  - [Zoomen en functie-iconen](#ss-topic-zoomen-en-functie-iconen)
+  - [Afzonderlijke samples bewerken](#ss-topic-afzonderlijke-samples-bewerken)
+  - [Golfvorm tekenen](#ss-topic-golfvorm-tekenen)
+- [5. Effecten toepassen](#ss-topic-5-effecten-toepassen)
+  - [Versterken / vervagen](#ss-topic-versterken-vervagen)
+  - [Kanalenmixer](#ss-topic-kanalenmixer)
+  - [Dynamiekbewerking](#ss-topic-dynamiekbewerking)
+  - [Volumeverloop](#ss-topic-volumeverloop)
+  - [Normaliseren](#ss-topic-normaliseren)
+  - [Ompolen, Achterstevoren en Stilte](#ss-topic-ompolen-achterstevoren-en-stilte)
+- [5a. EQ en filters](#ss-topic-5a-eq-en-filters)
+  - [Grafische equalizer](#ss-topic-grafische-equalizer)
+  - [Parametrische equalizer](#ss-topic-parametrische-equalizer)
+  - [Filters](#ss-topic-filters)
+  - [Niveau, grafiek en selecties](#ss-topic-niveau-grafiek-en-selecties)
+- [5b. Vertraging, echo en galm](#ss-topic-5b-vertraging-echo-en-galm)
+  - [Vertraging — één vertraagde kopie](#ss-topic-vertraging-een-vertraagde-kopie)
+  - [Echo — herhalingen met feedback](#ss-topic-echo-herhalingen-met-feedback)
+  - [Galm — galm](#ss-topic-galm-galm)
+  - [Droog, Effect en uitgangsniveau](#ss-topic-droog-effect-en-uitgangsniveau)
+  - [Een uitklank behouden](#ss-topic-een-uitklank-behouden)
+- [5c. Ruisreductie en klikverwijdering](#ss-topic-5c-ruisreductie-en-klikverwijdering)
+  - [Een ruisprofiel opnemen](#ss-topic-een-ruisprofiel-opnemen)
+  - [Ruisreductie](#ss-topic-ruisreductie)
+  - [Klikverwijdering](#ss-topic-klikverwijdering)
+- [5d. Tijd en toonhoogte](#ss-topic-5d-tijd-en-toonhoogte)
+  - [Tijdsduur aanpassen](#ss-topic-tijdsduur-aanpassen)
+  - [Toonhoogte verschuiven](#ss-topic-toonhoogte-verschuiven)
+  - [Kwaliteit en praktisch gebruik](#ss-topic-kwaliteit-en-praktisch-gebruik)
+- [5e. Vervorming en convolutie](#ss-topic-5e-vervorming-en-convolutie)
+  - [Vervorming](#ss-topic-vervorming)
+  - [Convolutie](#ss-topic-convolutie)
+- [6. Tonen en stilte maken](#ss-topic-6-tonen-en-stilte-maken)
+- [7. Frequenties analyseren](#ss-topic-7-frequenties-analyseren)
+- [8. Meerdere sporen combineren](#ss-topic-8-meerdere-sporen-combineren)
+  - [Een sessie opbouwen](#ss-topic-een-sessie-opbouwen)
+  - [Clips en sporen aanpassen](#ss-topic-clips-en-sporen-aanpassen)
+  - [Volumelijn en Panlijn](#ss-topic-volumelijn-en-panlijn)
+  - [Een effect op een clip toepassen](#ss-topic-een-effect-op-een-clip-toepassen)
+  - [Opslaan en mixdown](#ss-topic-opslaan-en-mixdown)
+- [8a. Spooreffecten, plug-ins en opname met begeleiding](#ss-topic-8a-spooreffecten-plug-ins-en-opname-met-begeleiding)
+  - [Spooreffecten](#ss-topic-spooreffecten)
+  - [VST3, LV2 en LADSPA toevoegen](#ss-topic-vst3-lv2-en-ladspa-toevoegen)
+  - [Automatische plug-invertraging](#ss-topic-automatische-plug-invertraging)
+  - [Opnemen met begeleiding en synchronisatie](#ss-topic-opnemen-met-begeleiding-en-synchronisatie)
+  - [Punch-in/out: alleen een passage opnieuw opnemen](#ss-topic-punch-in-out-alleen-een-passage-opnieuw-opnemen)
+  - [Sessies bewaren en heropenen](#ss-topic-sessies-bewaren-en-heropenen)
+- [9. Een andere samplerate kiezen](#ss-topic-9-een-andere-samplerate-kiezen)
+- [10. Favorieten, vensters en hulp](#ss-topic-10-favorieten-vensters-en-hulp)
+- [11. Sneltoetsen](#ss-topic-11-sneltoetsen)
+- [12. Problemen en work in progress](#ss-topic-12-problemen-en-work-in-progress)
+
+<!-- soundsausage-contents:end -->
+
+<a id="ss-topic-taal-kiezen"></a>
 
 ## Taal kiezen
 
@@ -15,6 +102,8 @@ Kies **Opties → Taal** en vervolgens **Nederlands**, **English**, **Deutsch**,
 handleiding wisselen meteen mee. De keuze blijft bij de volgende start bewaard.
 Bestandsnamen, zelfgekozen spoornamen en namen van externe plug-ins blijven
 behouden. Alle vijf handleidingen zijn ook zonder internet beschikbaar.
+
+<a id="ss-topic-snel-beginnen"></a>
 
 ## Snel beginnen
 
@@ -28,6 +117,8 @@ behouden. Alle vijf handleidingen zijn ook zonder internet beschikbaar.
 
 Voor meerdere opnamen tegelijk kies je **Bestand → Nieuwe multitracksessie**.
 Importeer de WAV- of MP3-bestanden, verschuif de clips en maak een eindmix met **Eindmix maken**.
+
+<a id="ss-topic-1-de-werkruimte"></a>
 
 ## 1. De werkruimte
 
@@ -60,7 +151,11 @@ Een sterretje voor de bestandsnaam betekent dat er wijzigingen zijn die nog
 niet zijn opgeslagen. Een uitgeschakelde menuoptie kan bij de andere weergave
 horen, een selectie vereisen of nog in ontwikkeling zijn.
 
+<a id="ss-topic-2-bestanden-openen-bewaren-en-sluiten"></a>
+
 ## 2. Bestanden openen, bewaren en sluiten
+
+<a id="ss-topic-losse-opnamen"></a>
 
 ### Losse opnamen
 
@@ -89,6 +184,8 @@ Ontbrekende informatie wordt vóór export gemeld, met een keuze om te stoppen. 
 na een effect niet opnieuw berekend. Een eindmix voegt geen markers uit alle
 sporen samen. Grote WAV-export gebruikt waar nodig RF64.
 
+<a id="ss-topic-mp3-openen-en-bewaren"></a>
+
 ### MP3 openen en bewaren
 
 MP3-bestanden zijn net als WAV te selecteren, knippen, mengen en met effecten te
@@ -113,6 +210,8 @@ Selecties korter dan 2 ms kunnen als WAV worden bewaard. Langere
 opdrachten tonen voortgang en zijn te annuleren; een mislukte of afgebroken
 opslag vervangt het bestaande doelbestand niet. Er is vrije schijfruimte nodig
 voor de omzetting en de bewerkte audio.
+
+<a id="ss-topic-mp3-bestandsinformatie-na-bewerken"></a>
 
 ### MP3-bestandsinformatie na bewerken
 
@@ -164,6 +263,8 @@ ID3-informatie in een WAV blijft als ruwe informatie bewaard; MP3-export meldt
 daarvan een fout en laat een bestaand doel intact. Een eindmix neemt geen
 bestandsinformatie uit alle sporen samen.
 
+<a id="ss-topic-projecten-met-meerdere-sporen"></a>
+
 ### Projecten met meerdere sporen
 
 **Nieuwe multitracksessie** maakt een sessie met een gekozen samplerate en aantal
@@ -181,6 +282,8 @@ met clipposities, spoorinstellingen en getekende lijnen.
 Een WAV- of MP3-eindmix bevat geen afzonderlijk bewerkbare sporen. Bewaar daarom ook het
 project wanneer je later verder wilt mixen.
 
+<a id="ss-topic-sluiten"></a>
+
 ### Sluiten
 
 **Bestand → Sluiten** of **Ctrl+W** sluit de huidige golfvorm. In multitrack heet deze
@@ -188,6 +291,8 @@ optie **Sessie sluiten**. Het programma blijft open. Bij wijzigingen kun je
 opslaan, verwerpen of annuleren. De andere weergave en het klembord blijven
 beschikbaar. **Bestand → Afsluiten** of **Ctrl+Q** sluit de toepassing en vraagt ook naar
 niet-opgeslagen wijzigingen.
+
+<a id="ss-topic-lange-opnamen-en-annuleren"></a>
 
 ### Lange opnamen en annuleren
 
@@ -200,6 +305,8 @@ Bij langere opdrachten verschijnt voortgang met **Annuleren**. Annuleren houdt
 audio, selectie en Ongedaan maken/Redo intact; bij opslaan blijft het vorige doelbestand
 intact. Eén voltooid effect blijft één Ongedaan maken-stap. Bij Voorbeeld wordt hoogstens acht
 seconden resultaat voorbereid; Normaliseren analyseert wel de hele selectie.
+
+<a id="ss-topic-werk-herstellen"></a>
 
 ### Werk herstellen
 
@@ -215,6 +322,8 @@ niet is bijgewerkt. Bewaar belangrijke opnamen zelf: herstel vervangt geen backu
 Na gewoon opslaan of bevestigd sluiten wordt de eigen kopie opgeruimd. Zie
 [lange bestanden en herstel](https://github.com/rene-timmermans/SoundSausage/blob/main/docs/LANGE_BESTANDEN.md)
 voor werkruimte en grenzen.
+
+<a id="ss-topic-3-luisteren-en-navigeren"></a>
 
 ## 3. Luisteren en navigeren
 
@@ -233,6 +342,8 @@ Gebruik **Inzoomen**, **Uitzoomen**, **Volledig overzicht** en **Inzoomen op sel
 selectie. **Ctrl+muiswiel** zoomt rond de muispositie. De horizontale schuifbalk
 verplaatst het zichtbare tijdvak.
 
+<a id="ss-topic-het-uitvoerapparaat-kiezen"></a>
+
 ### Het uitvoerapparaat kiezen
 
 Openen **Opties → Audioapparaten**. Kies **Systeemstandaard** om de systeemuitgang
@@ -247,7 +358,11 @@ Als een gekozen apparaat verdwijnt, kies je opnieuw een beschikbare uitgang en
 start je het afspelen. Controleer bij ontbrekend geluid ook het systeemvolume,
 de systeemuitgang en eventuele Dempen- of Solo-knoppen in multitrack.
 
+<a id="ss-topic-3a-opnemen"></a>
+
 ## 3a. Opnemen
+
+<a id="ss-topic-een-opname-maken"></a>
 
 ### Een opname maken
 
@@ -278,6 +393,8 @@ bevestiging. Tijdens opname staan andere bewerkingen uit. Sluiten vraagt of de
 opname moet worden gestopt en behouden, verworpen of doorgezet. Daarna gelden
 de gewone vragen voor niet-opgeslagen werk.
 
+<a id="ss-topic-het-opnamebegin-overslaan"></a>
+
 ### Het opnamebegin overslaan
 
 **Begin overslaan** in het opnamevenster verwijdert eenmalig de eerste
@@ -290,6 +407,8 @@ Het overgeslagen geluid komt niet in de opname. De klok, golfvorm, meters en
 **Maximale duur** volgen de bewaarde audio. Pauzeren en hervatten herhalen de
 uitsnede niet. Bij opname met begeleiding wordt de uitgesneden tijd in de
 clippositie meegenomen, zodat het overgebleven geluid op zijn plaats blijft.
+
+<a id="ss-topic-ingang-en-herstel"></a>
 
 ### Ingang en herstel
 
@@ -315,6 +434,8 @@ het laatste herstelpunt iets ouder zijn dan de klok aangaf.
 Annuleer je de verwerking ná Stoppen, bijvoorbeeld een langere omzetting, dan blijft
 de take voor herstel bewaard. Het eerdere document is dan niet aangepast.
 
+<a id="ss-topic-een-dagelijkse-werkwijze"></a>
+
 ### Een dagelijkse werkwijze
 
 Een bruikbare volgorde is: opnemen of WAV openen → een fragment selecteren →
@@ -323,6 +444,8 @@ in multitrack invoegen → verdere takes op een spoor opnemen → clips verschui
 of hun volume/pan aanpassen → het project bewaren → een WAV-eindmix maken.
 Bewaar het project ook als je later nog afzonderlijke sporen wilt veranderen.
 Heropen het project om verder te werken; een eindmix bevat alleen de gecombineerde audio.
+
+<a id="ss-topic-4-selecteren-en-de-golfvorm-bewerken"></a>
 
 ## 4. Selecteren en de golfvorm bewerken
 
@@ -352,6 +475,8 @@ moet het aantal kanalen overeenkomen. Bij Links of Rechts kan mono-audio het
 geselecteerde tijdvak van dat kanaal vervangen. Meer hierover staat hieronder.
 Gemengd plakken kan luider uitvallen doordat twee signalen worden opgeteld.
 
+<a id="ss-topic-4a-links-rechts-en-stereo-kiezen"></a>
+
 ## 4a. Links, rechts en stereo kiezen
 
 Een stereogolfvorm heeft een linker kanaal **L** boven en een rechter kanaal
@@ -371,6 +496,8 @@ van een selectie de kanaalkeuze vast. Dubbelklikken kiest het zichtbare tijdvak
 in het aangeklikte kanaal. **Ctrl+A** selecteert de hele duur in de huidige
 kanaalkeuze. Bij mono is er één kanaal en staat de extra keuze niet in beeld.
 
+<a id="ss-topic-een-effect-op-een-kanaal"></a>
+
 ### Een effect op één kanaal
 
 Kies bijvoorbeeld Rechts, selecteer een fragment en open Versterken / vervagen of
@@ -384,6 +511,8 @@ Normaliseren en Dynamiek analyseren daarbij alleen dat kanaal. Kanalenmixer kan
 beide kanalen als invoer gebruiken, maar wijzigt alleen de gekozen uitgang.
 Bij een stereo-ruisprofiel of stereo-impulsrespons wordt het bijbehorende kanaal
 gebruikt. Frequentieanalyse volgt eveneens de gekozen kanalen.
+
+<a id="ss-topic-duur-veranderen-op-een-kanaal"></a>
 
 ### Duur veranderen op één kanaal
 
@@ -407,6 +536,8 @@ gekozen. Gezamenlijke cuepunten en MP3-hoofdstukken blijven bij bewerken van
 één kanaal op hun tijdstippen staan. Controleer hun betekenis na een verschuiving.
 Undo/Redo herstelt de audio, opvulling, metadata en kanaalkeuze.
 
+<a id="ss-topic-kopieren-plakken-en-bewaren"></a>
+
 ### Kopiëren, plakken en bewaren
 
 Kopiëren en Selectie opslaan leveren bij Links of Rechts mono-audio. Opslaan en
@@ -420,6 +551,8 @@ Beide samengevoegd; bij één kanaal blijven de bestaande gezamenlijke markering
 latere audio te verschuiven. Het kan voorbij het einde doorlopen; het andere
 kanaal wordt dan achteraan met stilte aangevuld. De optelling kan luider uitvallen.
 
+<a id="ss-topic-opnemen-in-een-kanaal"></a>
+
 ### Opnemen in één kanaal
 
 Kies Links of Rechts en druk **R**. Kies **Invoegen bij cursor** of **Selectie vervangen**.
@@ -429,6 +562,8 @@ verschuift alleen het gekozen kanaal en wordt zo nodig achteraan stilte toegevoe
 Een nieuwe golfvorm blijft als aparte bestemming beschikbaar. Tijdens opnemen
 is de kanaalkeuze vergrendeld. Een nog niet toegepaste take blijft bij een fout of
 annulering beschikbaar onder Werk herstellen. Afspelen blijft in stereocontext.
+
+<a id="ss-topic-zoomen-en-functie-iconen"></a>
 
 ### Zoomen en functie-iconen
 
@@ -442,6 +577,8 @@ afzonderlijke samples met elkaar verbonden. Verder uitgezoomd toont de app de
 minimale en maximale uitslagen per schermkolom, met behoud van pieken. Dit werkt
 ook op multitrackclips en verandert de geluidsdata niet. Functies in de menu's
 hebben eigen iconen die het Linux-palet en de accentkleur volgen.
+
+<a id="ss-topic-afzonderlijke-samples-bewerken"></a>
 
 ### Afzonderlijke samples bewerken
 
@@ -476,6 +613,8 @@ omliggende golf brengen. Een grote sprong naar nul kan zelf een tik veroorzaken.
 Bewaar bij voorkeur als WAV float32 om de interne correctie exact te behouden;
 MP3 opnieuw opslaan comprimeert het gehele bestand opnieuw met kwaliteitsverlies.
 
+<a id="ss-topic-golfvorm-tekenen"></a>
+
 ### Golfvorm tekenen
 
 Schakel **Bewerken → Golfvorm tekenen** in, druk op **D** of gebruik de
@@ -505,6 +644,8 @@ ook de kleine details binnen het geraakte groepje. Beluister het resultaat en
 gebruik zo nodig **Ctrl+Z**. Voor een multitrackclip bewerk je de golfvormkopie
 en pas je die daarna toe op de clip.
 
+<a id="ss-topic-5-effecten-toepassen"></a>
+
 ## 5. Effecten toepassen
 
 Een golfvormeffect werkt op het gekozen tijdvak en de gekozen kanalen. Zonder
@@ -522,6 +663,8 @@ Een instelling wijzigen of het venster sluiten stopt het ook. **OK** past toe;
 dezelfde instellingen op de nieuwe selectie en de huidige kanaalkeuze. Controleer
 het tijdvak en de kanalen voordat je herhaalt.
 
+<a id="ss-topic-versterken-vervagen"></a>
+
 ### Versterken / vervagen
 
 Openen **Effecten → Amplitude → Versterken / vervagen**. **Beginversterking** is de
@@ -535,6 +678,8 @@ positieve begin- en eindwaarden. Presets bieden ongeveer +6 of −6 dB en fades.
 Voorbeeld: selecteer het begin van een opname, kies **Invloeien** als preset en
 luister met Voorbeeld. Pas met OK toe. **Invloeien** en **Uitvloeien** staan ook als
 directe opdrachten onder Amplitude; deze passen onmiddellijk een lineaire fade toe.
+
+<a id="ss-topic-kanalenmixer"></a>
 
 ### Kanalenmixer
 
@@ -550,6 +695,8 @@ mono-mix blijft een stereobestand met twee gelijke kanalen.
 Voorbeeld: kies **Links en rechts wisselen** om omgekeerd aangesloten kanalen te wisselen.
 Kies **Mono (gemiddelde L + R)** om een gelijke mix op beide kanten te horen. Door
 mengen kan het niveau stijgen; verlaag zo nodig de percentages.
+
+<a id="ss-topic-dynamiekbewerking"></a>
 
 ### Dynamiekbewerking
 
@@ -578,6 +725,8 @@ klinken. Gebruik Uitgangsversterking om het resultaat daarna op een passend nive
 brengen. De piekbegrenzerpreset gebruikt een attack van nul; met een langzamere
 attack kunnen korte pieken erdoorheen komen. Er is nog geen vooruitblik.
 
+<a id="ss-topic-volumeverloop"></a>
+
 ### Volumeverloop
 
 **Effecten → Amplitude → Volumeverloop** tekent een volumeverloop over het fragment.
@@ -594,6 +743,8 @@ woord en maak een dip. Voorbeeld helpt de overgang te beoordelen. Dit effect
 wordt in de opname geschreven; de cliplijnen in multitrack blijven afzonderlijk
 bewerkbaar.
 
+<a id="ss-topic-normaliseren"></a>
+
 ### Normaliseren
 
 **Effecten → Amplitude → Normaliseren** brengt de hoogste piek naar het gekozen
@@ -607,6 +758,8 @@ haalt eerst een vaste verschuiving rond de middenlijn weg. Stilte blijft stilte.
 Gebruik normaliseren bijvoorbeeld na het mengen of versterken om pieken weer
 binnen een passend bereik te krijgen voordat je als PCM exporteert.
 
+<a id="ss-topic-ompolen-achterstevoren-en-stilte"></a>
+
 ### Ompolen, Achterstevoren en Stilte
 
 Deze opdrachten staan direct onder **Effecten** en werken meteen:
@@ -618,6 +771,8 @@ Deze opdrachten staan direct onder **Effecten** en werken meteen:
 Gebruik Ctrl+Z om het resultaat terug te draaien. Gebruik Verwijderen wanneer je een
 fragment helemaal uit de tijdlijn van een golfvorm wilt verwijderen.
 
+<a id="ss-topic-5a-eq-en-filters"></a>
+
 ## 5a. EQ en filters
 
 **Effecten → Filters** biedt drie manieren om de klank van een golfvorm aan te
@@ -625,6 +780,8 @@ passen. Een selectie beperkt de bewerking tot dat fragment. Zonder selectie
 wordt de hele opname bewerkt. **Voorbeeld** laat de eerste acht seconden van die
 keuze horen. **OK** past toe, **Annuleren** sluit zonder wijziging en **Ctrl+Z**
 maakt de bewerking ongedaan. **F2** herhaalt de laatste instellingen.
+
+<a id="ss-topic-grafische-equalizer"></a>
 
 ### Grafische equalizer
 
@@ -637,6 +794,8 @@ benadrukt spraak en **Lichte glimlachcurve** versterkt laag en hoog licht. **Her
 herstelt Vlak en zet Uitgangsversterking op nul. De banden overlappen: de grafiek toont
 de gezamenlijke werking, niet alleen de losse schuifstanden. Banden buiten het
 bruikbare frequentiebereik van de opname staan uit en worden overgeslagen.
+
+<a id="ss-topic-parametrische-equalizer"></a>
 
 ### Parametrische equalizer
 
@@ -655,6 +814,8 @@ voor een algemene klankaanpassing een bredere bell of shelf en kleine stappen.
 zet alle versterkingen op nul. Bij een lage samplerate staan de hogere banden
 aanvankelijk uit; ze kunnen binnen het beschikbare bereik worden ingesteld.
 
+<a id="ss-topic-filters"></a>
+
 ### Filters
 
 - **Hoogdoorlaat:** laat hoog door en verzwakt laag. Laag gerommel verwijderen begint op 80 Hz.
@@ -671,6 +832,8 @@ Laagdoorlaat en Hoogdoorlaat hebben een Butterworth-helling van **12, 24, 36 of
 Een steilere helling snijdt sterker af en kan meer uitslingering geven.
 Banddoorlaat en Sperfilter gebruiken **Q** in plaats van de hellingkeuze.
 **Herstellen** herstelt Laag gerommel verwijderen en Uitgangsversterking van nul.
+
+<a id="ss-topic-niveau-grafiek-en-selecties"></a>
 
 ### Niveau, grafiek en selecties
 
@@ -694,6 +857,8 @@ je eerst een bewerkkopie, pas je het effect toe en kies je Golfvorm op clip toep
 Dezelfde EQ- en filterinstellingen zijn ook beschikbaar via **Spooreffecten**;
 zie hoofdstuk 8a.
 
+<a id="ss-topic-5b-vertraging-echo-en-galm"></a>
+
 ## 5b. Vertraging, echo en galm
 
 De drie effecten staan onder **Effecten → Vertragingseffecten**. Selecteer een
@@ -702,6 +867,8 @@ speelt maximaal de eerste acht seconden van het resultaat, inclusief een
 eventuele uitklank. Een instelling wijzigen stopt het voorbeeld. **OK** past
 toe als één Ongedaan maken-stap; **Annuleren** laat de opname intact. **Ctrl+Z** draait terug,
 **Ctrl+Shift+Z** doet opnieuw en **F2** herhaalt de laatste instellingen.
+
+<a id="ss-topic-vertraging-een-vertraagde-kopie"></a>
 
 ### Vertraging — één vertraagde kopie
 
@@ -715,6 +882,8 @@ om **Vertraging rechts** afzonderlijk te kiezen. Mono gebruikt alleen de eerste 
 - **Stereoverbreding:** verschillende tijden links en rechts; beschikbaar bij stereo.
 
 Vertraging bevat één herhaling. Kies Echo voor een reeks afnemende herhalingen.
+
+<a id="ss-topic-echo-herhalingen-met-feedback"></a>
 
 ### Echo — herhalingen met feedback
 
@@ -732,6 +901,8 @@ Met verschillende vertragingstijden duurt iedere kant zijn eigen tijd.
 geven begininstellingen. De pingpongpreset is alleen beschikbaar bij stereo.
 **Herstellen** herstelt Herhalende echo. Bij veel feedback kunnen herhalingen zich
 opstapelen; zet Effect of Uitgangsversterking lager wanneer het niveau te hoog wordt.
+
+<a id="ss-topic-galm-galm"></a>
 
 ### Galm — galm
 
@@ -753,6 +924,8 @@ een korte Decay en wat Voorvertraging. Voor een ruimer muzikaal effect kun je De
 en Effect verhogen. Het is een zelfstandige algoritmische galm, geen exacte
 nabootsing van een bepaalde zaal of een ander programma.
 
+<a id="ss-topic-droog-effect-en-uitgangsniveau"></a>
+
 ### Droog, Effect en uitgangsniveau
 
 **Droog (origineel)** bepaalt het oorspronkelijke geluid. **Nat (effect)** bepaalt
@@ -764,6 +937,8 @@ blijft alleen het oorspronkelijke geluid over.
 +24 dB. De effecten begrenzen pieken niet automatisch. Verlaag dit niveau als
 de meters rood worden of bij luisteren vervorming optreedt. Het interne signaal
 kan boven 0 dBFS komen; verlaag het vóór PCM-export.
+
+<a id="ss-topic-een-uitklank-behouden"></a>
 
 ### Een uitklank behouden
 
@@ -798,12 +973,16 @@ met volgende clips; die schuiven niet automatisch mee. Bestaande volume- en
 panlijnen worden bij het terugplaatsen naar de nieuwe cliplengte geschaald.
 Vertraging, Echo en Galm zijn ook beschikbaar via **Spooreffecten**; zie hoofdstuk 8a.
 
+<a id="ss-topic-5c-ruisreductie-en-klikverwijdering"></a>
+
 ## 5c. Ruisreductie en klikverwijdering
 
 Deze effecten staan onder **Effecten → Ruisreductie** en werken op een
 selectie of, zonder selectie, de hele golfvorm. **Voorbeeld** laat maximaal acht
 seconden horen. **OK** past toe, **Annuleren** sluit zonder wijziging en **Ctrl+Z**
 draait terug. **F2** herhaalt de instellingen, inclusief het gebruikte ruisprofiel.
+
+<a id="ss-topic-een-ruisprofiel-opnemen"></a>
 
 ### Een ruisprofiel opnemen
 
@@ -826,26 +1005,62 @@ het bijbehorende kanaal leveren; een monoprofilering kan op één kanaal werken.
 Daarmee kun je een profiel later opnieuw gebruiken. Het bevat een ruisspectrum,
 geen geluidsopname. Een profiel van een andere opstelling kan minder goed werken.
 
+<a id="ss-topic-ruisreductie"></a>
+
 ### Ruisreductie
 
-- **Maximale ruisreductie:** de maximale verzwakking in ruisgebieden, 0–36 dB.
-  Begin met 6–12 dB; een hogere waarde kan ook zachte details aantasten.
-- **Gevoeligheid:** hoeveel van het profiel als ruis wordt beschouwd. Meer
-  gevoeligheid behandelt meer achtergrond, maar kan meer bijgeluiden geven.
-- **Egalisatie:** maakt de overgang van sterker naar zwakker onderdrukken rustiger.
-  Een hoge waarde laat na een duidelijk geluid tijdelijk meer achtergrond door.
+Beide standen beginnen met een passend profiel van een stukje waarin alleen
+achtergrondruis hoorbaar is. Selecteer daarna het geluid dat je wilt schoonmaken.
+Een leeg of stil profiel voegt geen ruisonderdrukking toe. Het opgeslagen profiel
+blijft ongewijzigd tijdens het bewerken; de aanpassing geldt alleen voor deze bewerking.
+
+- **Ruis bepalen → Vast ruisprofiel:** voor een gelijkmatige sis of ventilatie.
+  Het opgenomen frequentiebeeld blijft tijdens het fragment gelijk.
+- **Ruis bepalen → Adaptieve ruisdetectie:** voor achtergronden die in niveau of
+  frequentiebeeld veranderen. De schatting volgt de opname vanaf het profiel.
+- **Tijd voor ruisaanpassing:** 0,05–5 seconden, alleen beschikbaar bij adaptief.
+  Korter reageert sneller op wisselingen; langer volgt voorzichtiger. Begin bij
+  0,15 s. Bij lang aangehouden geluiden helpt een langere tijd of Vast ruisprofiel.
+- **Maximale ruisreductie:** 0–36 dB. Begin met 6–12 dB; hogere waarden kunnen
+  zachte details aantasten. Bij 0 dB blijft de opname exact gelijk.
+- **Gevoeligheid:** meer gevoeligheid behandelt meer achtergrond als ruis.
+- **Egalisatie:** maakt de overgang naar sterker onderdrukken rustiger. Een hoge
+  waarde laat na een duidelijk geluid tijdelijk meer achtergrond door.
+- **Detailbehoud:** 0–100%. Hoger ontziet meer zacht geluid, met meer resterende
+  achtergrond. De beginwaarde is 50%. Vast ruisprofiel met 0% gebruikt de eerdere
+  verzwakking; een hoge waarde herstelt geen details die al in de bron ontbreken.
 - **Stereokanalen koppelen:** gebruikt dezelfde verzwakking links en rechts om
   de balans te behouden. Zonder koppeling wordt ieder kanaal apart behandeld.
-- **Keep removed noise only:** levert het verwijderde deel op in plaats van het
-  schoongemaakte geluid. Luister hiermee of waardevolle spraak of muziek verdwijnt.
-  Schakel dit weer uit vóór OK wanneer je de schoongemaakte opname wilt behouden.
+- **Alleen verwijderde ruis behouden:** levert het verwijderde deel op in plaats
+  van het schoongemaakte geluid. Luister of waardevolle spraak of muziek verdwijnt;
+  schakel dit weer uit vóór OK om het schone resultaat te bewaren.
 
-Dit werkt vooral bij vrij constante ruis, zoals ventilatie of een gelijkmatige
-sis. Het verwijdert geen afzonderlijke stemmen uit een mix en herstelt geen
-ontbrekende details. Veranderende achtergrond, te sterke reductie of een profiel
-met spraak/muziek kan hoorbare vervorming of een korrelige klank geven. De lengte
-en cueposities blijven gelijk. De eerste acht seconden in Voorbeeld zijn hetzelfde
-als de eerste acht seconden van de volledige bewerking.
+| Preset | Reductie | Detailbehoud | Stand / aanpassingstijd |
+| --- | --- | --- | --- |
+| Zacht | 6 dB | 65% | Vast |
+| Gebalanceerd | 12 dB | 50% | Vast |
+| Sterk | 24 dB | 15% | Vast |
+| Wisselende achtergrond | 12 dB | 50% | Adaptief, 0,15 s |
+| Fijne details | 6 dB | 90% | Vast |
+
+**Voorbeeld:** leg een halve tot enkele seconden ventilatieruis vast. Selecteer
+vervolgens een stemopname waarin de ventilatie harder wordt. Kies **Wisselende
+achtergrond**, luister met Voorbeeld en beluister ook het verwijderde deel.
+Verhoog Detailbehoud als zachte woorden of uitklanken verdwijnen. Verleng de
+aanpassingstijd of kies Vast wanneer lang aangehouden klanken achteruitgaan.
+Schakel Alleen verwijderde ruis behouden uit en bevestig met OK.
+
+Automatische herkenning kan ruis en gewenst geluid verwarren, vooral bij lange
+brede klanken, een profiel met spraak/muziek of zeer lage signaalniveaus. Dit
+scheidt geen afzonderlijke stemmen uit een mix en herstelt geen ontbrekende
+informatie. Begin met bescheiden instellingen en luister na. De lengte,
+kanaalposities en cuepunten blijven gelijk. Voorbeeld is hetzelfde begin als
+bij volledige verwerking. Ctrl+Z herstelt de opname; F2 herhaalt ook de gekozen
+stand, aanpassingstijd, detailinstelling en het profiel. Op één kanaal blijft de
+andere golf exact behouden. Lange bestanden worden met begrensd werkgeheugen
+verwerkt; annuleren past geen gedeeltelijk resultaat toe.
+
+<a id="ss-topic-klikverwijdering"></a>
 
 ### Klikverwijdering
 
@@ -869,6 +1084,8 @@ laat audio, selectie en Ongedaan maken/Redo intact. Voor een multitrackclip open
 een bewerkkopie en kies je na de bewerking Golfvorm op clip toepassen. Realtime
 ruisonderdrukking tijdens opnemen of afspelen is hiermee niet beschikbaar.
 
+<a id="ss-topic-5d-tijd-en-toonhoogte"></a>
+
 ## 5d. Tijd en toonhoogte
 
 **Effecten → Tijd/toonhoogte** bevat Tijdsduur aanpassen en Toonhoogte verschuiven. Ze bewerken de selectie
@@ -876,6 +1093,8 @@ of, zonder selectie, de hele golfvorm. Voorbeeld analyseert eerst het volledige
 bereik en speelt daarna maximaal acht seconden af. Het voorbeeld is hetzelfde
 prefix als bij toepassen. Lange opnamen hebben daardoor ook voor Voorbeeld
 analysetijd nodig. De voortgang is annuleerbaar; annuleren behoudt de opname.
+
+<a id="ss-topic-tijdsduur-aanpassen"></a>
 
 ### Tijdsduur aanpassen
 
@@ -894,6 +1113,8 @@ latere audio en cuepunten schuiven mee met het verschil in lengte. Bij Links
 of Rechts verschuift alleen de gekozen audio en blijven gezamenlijke cuepunten staan. De samplerate
 van het bestand verandert niet. De selectie omvat na toepassen het resultaat.
 
+<a id="ss-topic-toonhoogte-verschuiven"></a>
+
 ### Toonhoogte verschuiven
 
 **Pitch change** kiest −24 tot +24 halve tonen. +12 is een octaaf omhoog;
@@ -903,6 +1124,8 @@ van het bestand verandert niet. De selectie omvat na toepassen het resultaat.
 **Formanten behouden** helpt het karakter van zang of spraak te behouden bij een
 toonhoogteverschuiving. Vergelijk beide standen bij instrumenten en grote
 verschuivingen; het resultaat verschilt per opname.
+
+<a id="ss-topic-kwaliteit-en-praktisch-gebruik"></a>
 
 ### Kwaliteit en praktisch gebruik
 
@@ -929,12 +1152,16 @@ Golfvorm to Clip. De cliplengte en bestaande volume-/panlijnen volgen het
 nieuwe resultaat; volgende clips schuiven niet automatisch mee. Controleer de
 overlap. Dit zijn nog geen realtime tempo- of toonhoogte-effecten op sporen.
 
+<a id="ss-topic-5e-vervorming-en-convolutie"></a>
+
 ## 5e. Vervorming en convolutie
 
 **Effecten → Speciaal** bevat Vervorming en Convolutie. Beide bewerken een
 selectie of, zonder selectie, de hele golfvorm. Voorbeeld laat de eerste acht
 seconden horen. OK bevestigt één Ongedaan maken-stap; Annuleren laat de golfvorm intact.
 Ctrl+Z draait terug, Ctrl+Shift+Z doet opnieuw en F2 herhaalt de instellingen.
+
+<a id="ss-topic-vervorming"></a>
 
 ### Vervorming
 
@@ -960,6 +1187,8 @@ samplerates is dit viermaal; bij hogere rates wordt de factor aangepast. Dit
 verwerkt ook voor Voorbeeld de hele selectie en kan langer duren. Zonder deze
 optie is de verwerking sneller en kan een ruwere digitale klank ontstaan.
 Bitdiepte verlagen gebruikt in zijn preset standaard geen oversampling.
+
+<a id="ss-topic-convolutie"></a>
 
 ### Convolutie
 
@@ -1014,6 +1243,8 @@ bij een langere clip; volume-/panlijnen volgen bij terugplaatsen de cliplengte.
 Via **Spooreffecten** zijn andere realtime spooreffecten en VST3 beschikbaar;
 Vervorming en Convolutie blijven golfvormbewerkingen.
 
+<a id="ss-topic-6-tonen-en-stilte-maken"></a>
+
 ## 6. Tonen en stilte maken
 
 **Genereren → Tonen** maakt een sinustoon. Stel **Duur** in seconden,
@@ -1028,6 +1259,8 @@ bewerking te proberen. Begin bij luisteren met een laag afspeelvolume.
 selectie door die hoeveelheid stilte. Dit verschilt van Effecten → Stilte,
 dat de bestaande fragmentlengte altijd behoudt.
 
+<a id="ss-topic-7-frequenties-analyseren"></a>
+
 ## 7. Frequenties analyseren
 
 Selecteer een fragment en kies **Analyseren → Frequentieanalyse** of **Alt+Z**.
@@ -1040,7 +1273,11 @@ het gekozen bereik. Ze is een hulpmiddel voor tonen en spectrale verhoudingen,
 geen doorlopende spectrummeter. Selecteer een korter fragment om een bepaalde
 klank of toon te onderzoeken. Sluiten verandert de audio niet.
 
+<a id="ss-topic-8-meerdere-sporen-combineren"></a>
+
 ## 8. Meerdere sporen combineren
+
+<a id="ss-topic-een-sessie-opbouwen"></a>
 
 ### Een sessie opbouwen
 
@@ -1057,6 +1294,8 @@ Met **Venster → Huidige golfvorm in multitrack invoegen** voeg je de open golf
 toe. Meerdere tegelijk geïmporteerde bestanden worden op opeenvolgende sporen
 geplaatst. **+ Spoor** en **− Spoor** voegen een spoor toe of verwijderen het
 geselecteerde spoor. Een verwijderd spoor met clips kun je met Ongedaan maken herstellen.
+
+<a id="ss-topic-clips-en-sporen-aanpassen"></a>
 
 ### Clips en sporen aanpassen
 
@@ -1080,6 +1319,8 @@ gekozen solosporen horen. Dempen blijft doorslaggevend. Pan −100 is links, 0 i
 midden en +100 is rechts. Bij een stereobron verzwakt pan één kant; het kopieert
 het andere kanaal niet naar die kant.
 
+<a id="ss-topic-volumelijn-en-panlijn"></a>
+
 ### Volumelijn en Panlijn
 
 Kies boven de tijdlijn **Volumelijn** of **Panlijn** en klik in een clip om
@@ -1098,6 +1339,8 @@ een volledige beweging van links naar rechts. Punten bewegen met de bronaudio
 mee bij verplaatsen en blijven bij trimmen bewaard. De lijnen worden met het
 project opgeslagen en werken door in afspelen en mixdown.
 
+<a id="ss-topic-een-effect-op-een-clip-toepassen"></a>
+
 ### Een effect op een clip toepassen
 
 Dubbelklik een clip of kies **Kopie in golfvorm bewerken** via de rechtermuisknop.
@@ -1108,6 +1351,8 @@ Gewoon terugschakelen naar multitrack past de kopie niet toe. Sluiten en
 verwerpen laat de oorspronkelijke clip intact. Na toepassen kunnen de oude
 audio en de lijnen met Ongedaan maken in de sessie worden hersteld. Een veranderde
 samplerate wordt bij terugplaatsen naar de sessierate omgezet.
+
+<a id="ss-topic-opslaan-en-mixdown"></a>
 
 ### Opslaan en mixdown
 
@@ -1120,7 +1365,11 @@ Volume, pan, mute, solo en spoorketens kunnen tijdens het luisteren veranderen.
 Dezelfde spoorketen wordt bij mixdown gebruikt. Ongedaan maken/Redo en wisselen van weergave
 stoppen het afspelen. De bronopnamen blijven behouden.
 
+<a id="ss-topic-8a-spooreffecten-plug-ins-en-opname-met-begeleiding"></a>
+
 ## 8a. Spooreffecten, plug-ins en opname met begeleiding
+
+<a id="ss-topic-spooreffecten"></a>
 
 ### Spooreffecten
 
@@ -1129,6 +1378,8 @@ Klik op **FX** naast een spoor of kies **Effecten → Spooreffecten**. Kies een 
 Een keten bevat maximaal zestien effecten: vaste versterking, kanaalmixer, dynamiek, grafische/parametrische EQ, filters, vertraging, echo, galm, ompolen en externe plug-ins. Clipvolume, lijnen en fades werken vóór de keten; spoorvolume en spoorpan erna. Mono wordt eerst stereo. Met **Uitklank na laatste clip** voeg je maximaal zestig seconden toe. Afspelen en eindmix gebruiken dezelfde keten. De bronnen blijven behouden.
 
 **Toepassen** werkt tijdens luisteren; al naar het apparaat gestuurde audio behoudt de vorige instelling. Starten, zoeken en bypasswissels beginnen met nieuw effectgeheugen. Voor normaliseren, restauratie, tijd/toonhoogte, vervorming en convolutie gebruik je **Kopie in golfvorm bewerken**. Een volumeverloop teken je met **Volumelijn** op de clip.
+
+<a id="ss-topic-vst3-lv2-en-ladspa-toevoegen"></a>
 
 ### VST3, LV2 en LADSPA toevoegen
 
@@ -1144,9 +1395,13 @@ VST3 ondersteunt één stereo-invoerbus en één stereo-uitvoerbus met float32-v
 
 Plug-ins draaien in een apart hulpproces. Een crash, vastloper of ongeldige audio stopt het afspelen met een melding; de vastgelegde opname blijft bewaard. Projecten bewaren parameters en maximaal 1 MiB status per effect. De plug-in en eigen bibliotheken, samples of responsbestanden blijven apart geïnstalleerd. Voeg op een andere computer dezelfde versie toe. Ontbrekende of gewijzigde plug-ins worden gemeld; afspelen/export vraagt om het passende effect of bewust uitschakelen.
 
+<a id="ss-topic-automatische-plug-invertraging"></a>
+
 ### Automatische plug-invertraging
 
 Gerapporteerde **verwerkingsvertraging** van plug-ins wordt automatisch per spoor gecompenseerd, tijdens afspelen en eindmix. Vertragingen in een keten worden opgeteld; bypass en gewijzigde instellingen worden opnieuw verwerkt. De tijdlijn en mixduur blijven gelijk. Een muzikale echo, voorvertraging of galm blijft hoorbaar: deze hoort bij het effect. Compensatie vereist een juiste melding door de plug-in en is begrensd tot tien seconden per spoor. Een ongeldige of voortdurend veranderende vertraging geeft een melding.
+
+<a id="ss-topic-opnemen-met-begeleiding-en-synchronisatie"></a>
 
 ### Opnemen met begeleiding en synchronisatie
 
@@ -1164,6 +1419,8 @@ Voor die route kies je **Opties → Opname kalibreren**, of de kalibratieknop in
 
 Het profiel hoort bij de gekozen apparaatcombinatie en instellingen. Automatische synchronisatie past de opgeslagen routecorrectie toe. Zonder profiel blijft kloksynchronisatie beschikbaar, maar kan fysieke vertraging overblijven. Als alternatief schakel je automatisch uit en gebruik je **Opnamepositie verschuiven**: negatief is eerder, positief later. Een take die 15 ms te laat staat vraagt bijvoorbeeld −15 ms. Handmatige en automatische correctie worden niet bij elkaar opgeteld.
 
+<a id="ss-topic-punch-in-out-alleen-een-passage-opnieuw-opnemen"></a>
+
 ### Punch-in/out: alleen een passage opnieuw opnemen
 
 1. Open Multitrack, kies het doelspoor en selecteer het gewenste tijdvak op de tijdlijn of met **Bewerken → Selectie instellen**.
@@ -1176,9 +1433,13 @@ Een korte overgang mengt oud en nieuw binnen de selectiegrenzen, maximaal 100 ms
 
 Vroeg stoppen bewaart alleen het werkelijk opgenomen deel binnen het interval. Stoppen vóór het interval verandert de sessie niet; de ruwe take blijft beschikbaar via **Bestand → Werk herstellen**. Herstel van een nog niet bevestigde opname biedt de ruwe take aan, inclusief eventuele voor-/naloop, zodat je die zelf kunt plaatsen. Een voltooide punch wordt met zijn afdekking in project en crashherstel bewaard.
 
+<a id="ss-topic-sessies-bewaren-en-heropenen"></a>
+
 ### Sessies bewaren en heropenen
 
 **Sessie opslaan / Sessie opslaan als** bewaart gebruikte audio, clips, lijnen, spoorketens, plug-ininstellingen en punchgebieden. **Sessie openen** herstelt deze bewerkbare sessie. **Eindmix maken** maakt een WAV of MP3 met dezelfde effecten. Bewaar het project om afzonderlijke sporen te kunnen blijven veranderen. Nieuwe projecten vereisen SoundSausage **0.19.0 of nieuwer**; eerdere projectversies blijven leesbaar. Een ontbrekende plug-in verhindert het openen en herstellen van de bronnen niet.
+
+<a id="ss-topic-9-een-andere-samplerate-kiezen"></a>
 
 ## 9. Een andere samplerate kiezen
 
@@ -1191,6 +1452,8 @@ vorige rate.
 Deze opdracht verandert de opname. Automatische omzetting voor een uitvoerapparaat
 verandert alleen het afgespeelde signaal en laat de golfvorm zelf intact.
 
+<a id="ss-topic-10-favorieten-vensters-en-hulp"></a>
+
 ## 10. Favorieten, vensters en hulp
 
 **Favorieten** geeft snel toegang tot herhalen, normaliseren en fades. Eigen
@@ -1201,6 +1464,8 @@ naar een clip terug te plaatsen.
 **Help → Over** toont de versie, maker, licentie en website. De handleiding
 blijft als afzonderlijk venster beschikbaar, zodat je de stappen in de editor
 kunt volgen.
+
+<a id="ss-topic-11-sneltoetsen"></a>
 
 ## 11. Sneltoetsen
 
@@ -1227,6 +1492,8 @@ kunt volgen.
 
 Bij tekstinvoer horen gewone typetoetsen bij het actieve veld. Klik weer in de
 golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
+
+<a id="ss-topic-12-problemen-en-work-in-progress"></a>
 
 ## 12. Problemen en work in progress
 

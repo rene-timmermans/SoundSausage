@@ -21,27 +21,40 @@ class NoiseReductionDialog(EffectDialog):
             button = QPushButton(title); button.clicked.connect(action); buttons.addWidget(button)
             if title.startswith('Save'): self.save_button = button
         layout.addLayout(buttons)
-        self.presets = QComboBox(); self.presets.addItems(['Custom', 'Gentle', 'Balanced', 'Strong'])
+        self.presets = QComboBox(); self.presets.addItems(['Custom', 'Gentle', 'Balanced', 'Strong', 'Changing background', 'Delicate detail'])
         self.presets.currentIndexChanged.connect(self.preset); layout.addWidget(self.presets)
         form = QFormLayout()
+        self.method = QComboBox()
+        self.method.addItem('Fixed noise profile', False)
+        self.method.addItem('Adaptive noise tracking', True)
         self.reduction = spin(12, 0, 36, ' dB')
         self.sensitivity = spin(2, .5, 4, '', 2)
         self.smoothing = spin(60, 0, 100, ' %')
+        self.tracking = spin(.15, .05, 5, ' s', 2); self.tracking.setEnabled(False)
+        self.detail = spin(50, 0, 100, ' %')
+        form.addRow('Noise estimation', self.method)
         form.addRow('Maximum noise reduction', self.reduction)
         form.addRow('Sensitivity', self.sensitivity)
         form.addRow('Smoothing', self.smoothing)
+        form.addRow('Noise tracking time', self.tracking)
+        form.addRow('Detail protection', self.detail)
         layout.addLayout(form)
         self.linked = QCheckBox('Link stereo channels (preserve balance)'); self.linked.setChecked(True)
         self.linked.setVisible(document.effect_channel_count == 2); layout.addWidget(self.linked)
         self.residual = QCheckBox('Keep removed noise only (instead of cleaned audio)'); layout.addWidget(self.residual)
-        note = QLabel('First capture a selection containing only background noise. Then close this window,\n'
-                      'select the audio to clean and open Noise Reduction again.\n'
-                      'Use modest reduction for changing noise or delicate musical detail.')
+        note = QLabel('Capture a noise-only profile first; adaptive tracking follows changes in that background.\n'
+                      'Short tracking times react faster but can also learn sustained sounds as noise.\n'
+                      'Detail protection keeps more quiet sound and also more background; check the removed-noise preview.')
         note.setWordWrap(True); layout.addWidget(note)
         self.add_footer(layout)
         self.update_profile()
-        for field in (self.reduction, self.sensitivity, self.smoothing):
+        for field in (self.reduction, self.sensitivity, self.smoothing, self.tracking, self.detail):
             field.valueChanged.connect(lambda *_: self.presets.setCurrentIndex(0))
+        self.method.currentIndexChanged.connect(self.method_changed)
+
+    def method_changed(self, *_):
+        self.tracking.setEnabled(self.method.currentData())
+        self.presets.setCurrentIndex(0)
 
     def update_profile(self):
         try:
@@ -92,14 +105,19 @@ class NoiseReductionDialog(EffectDialog):
 
     def preset(self, index):
         if index <= 0: return
-        reduction, sensitivity, smoothing = ((6, 1.5, 75), (12, 2, 60), (24, 3, 75))[index-1]
+        reduction, sensitivity, smoothing, detail, adaptive, tracking = (
+            (6, 1.5, 75, 65, False, .5), (12, 2, 60, 50, False, .15),
+            (24, 3, 75, 15, False, .15), (12, 2, 60, 50, True, .15),
+            (6, 1.2, 80, 90, False, .5))[index-1]
         self.reduction.setValue(reduction); self.sensitivity.setValue(sensitivity); self.smoothing.setValue(smoothing)
+        self.detail.setValue(detail); self.method.setCurrentIndex(int(adaptive)); self.tracking.setValue(tracking)
         self.presets.blockSignals(True); self.presets.setCurrentIndex(index); self.presets.blockSignals(False)
 
     def settings(self):
         validate_profile(self.profile, self.document.sample_rate, self.document.effect_channel_count)
         return dict(profile=self.profile, reduction_db=self.reduction.value(), sensitivity=self.sensitivity.value(),
-                    smoothing=self.smoothing.value(), linked=self.linked.isChecked(), residual=self.residual.isChecked())
+                    smoothing=self.smoothing.value(), linked=self.linked.isChecked(), residual=self.residual.isChecked(),
+                    adaptive=self.method.currentData(), tracking=self.tracking.value(), detail=self.detail.value())
 
 
 class ClickRemovalDialog(EffectDialog):

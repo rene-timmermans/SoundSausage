@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.22.0**.
+De huidige versie is **0.23.0**.
 
 ## Wat het kan
 
@@ -35,7 +35,7 @@ De huidige versie is **0.22.0**.
 - Versterken, fades, normaliseren en ompolen; kanaalmixer, dynamiekbewerking en een bewerkbaar volumeverloop.
 - Grafische en parametrische EQ, hoog- en laagdoorlaat, banddoorlaat en notchfilters, met frequentiegrafieken.
 - Delay, echo en galm, met presets, luistervoorbeelden en optionele uitklank.
-- Ruisprofielen leren en bewaren, achtergrondruis verminderen en korte tikken herstellen.
+- Ruisprofielen leren en bewaren, vaste of wisselende achtergrondruis verminderen met instelbaar detailbehoud, en korte tikken herstellen.
 - Speelduur en toonhoogte onafhankelijk aanpassen, met formantbehoud voor zang.
 - Soft clip, hard clip, wavefold en bit crush; convolutie met een impulsrespons.
 - Effectinstellingen beluisteren voordat je ze toepast en bewerkingen ongedaan maken.
@@ -92,6 +92,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.23.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.23.0)** Adaptieve ruisreductie volgt wisselende achtergrondruis. Detailbehoud en nieuwe presets geven meer controle over zachte geluiden. Alle vijf handleidingen hebben een klikbare inhoudsopgave.
 
 **[0.22.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.22.0)** Links en rechts afzonderlijk knippen, plakken, tijdrekken en opnemen. Het andere kanaal blijft op zijn plaats; gemengd plakken kan voorbij het einde.
 

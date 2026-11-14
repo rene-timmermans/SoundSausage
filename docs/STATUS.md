@@ -1,4 +1,4 @@
-# SoundSausage 0.22.0
+# SoundSausage 0.23.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -33,6 +33,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Algoritmische galm met ruimtegrootte, nagalmtijd, voorvertraging en breedte.
 - Uitklank van maximaal 60 seconden toevoegen, met behoud en verschuiven van cuepunten.
 - Ruisprofielen opnemen/laden/bewaren, ruisreductie en korte tikken interpoleren.
+- Adaptieve ruisschatting met instelbare aanpassingstijd, detailbehoud en presets voor wisselende achtergrond en fijne details.
 - Lengte veranderen met behoud van toonhoogte, toonhoogte verschuiven met behoud van duur.
 - Tempoverhouding, Fine/Fast-kwaliteit en formantbehoud; cuepunten volgen gewijzigde timing.
 - Soft/hard clip, wavefold en bit crush, met menging en optionele oversampling.
@@ -102,7 +103,8 @@ of voorwaarden voor v1.0.
 - Convolutie vereist een ongewijzigd responsbestand voor herhalen; stereo is kanaalgewijs.
 - Impulsresponsen zijn begrensd tot 10 s / 524.288 uitvoersamples en 32 MiB per bestand.
 - Tijd-/toonhoogtebewerking vraagt minimaal 50 ms (ten minste 64 samples) en analyseert de volledige selectie.
-- Ruisreductie richt zich op constante achtergrond; sterke instellingen kunnen zachte details aantasten.
+- Alle vijf offlinehandleidingen hebben een inhoudsopgave met blauwe onderwerpverwijzingen en een knop om naar de inhoud terug te springen.
+- Vaste en adaptieve ruisreductie beginnen met een passend ruisprofiel. Adaptief volgt wijzigingen in de achtergrond; snelle instellingen kunnen aangehouden geluiden als ruis leren. Detailbehoud laat ook meer achtergrond door; stemseparatie en herstel van ontbrekende details ontbreken.
 - Click Removal behandelt korte geïsoleerde tikken, geen langdurige kraken of clipping.
 - Galm en echo hebben begrensde, optionele uitklank; extreme feedback kan langer dan 60 seconden doorlopen.
 - EQ en filters veranderen fase; korte selecties kunnen aan de randen een overgang geven.

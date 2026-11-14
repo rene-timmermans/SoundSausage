@@ -14,6 +14,7 @@ als onderbouwing van de beschikbare app bewaard.
    plakken en opname, met kanaaluitlijning, Undo/Redo, metadata en opslag/herstel.
    [Controles en publicatie](validation/channel-timing.md).
 2. **B21:** ruisreductie verbeteren voor wisselende ruis en zachte details.
+   Implementatie 0.23.0 wordt getoetst; [controle](validation/adaptive-noise.md).
 3. **B23/B24:** uitklank van galm/echo en selectieranden/fasegedrag van EQ/filters uitwerken.
 4. **B36b:** de markereditor afronden, inclusief toevoegen, verplaatsen, benoemen,
    verwijderen en behoud bij bewerken en opslaan.
