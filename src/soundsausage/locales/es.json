@@ -1,6 +1,7 @@
 {
   "\nInput at {0} Hz; the take is converted after Stop.": "\nEntrada a {0} Hz; la toma se convierte después de Detener.",
   "\nMono input is recorded on both stereo channels.": "\nLa entrada mono se graba en ambos canales estéreo.",
+  "\nOnly the chosen channel shifts. The other stays in place; shorter audio is padded with silence.": "\nSolo se desplaza el canal elegido. El otro permanece en su sitio; el audio más corto se completa con silencio.",
   "\nOnly the selected interval is replaced. Playback starts with pre-roll; recording stops automatically after the selection.": "\nSolo se reemplaza el intervalo seleccionado. La reproducción comienza con pregrabación; la grabación se detiene automáticamente tras la selección.",
   " (import)": " (importado)",
   " BPM": " BPM",
@@ -709,6 +710,7 @@
   "Normalized value": "Valor normalizado",
   "Notch": "Filtro de muesca",
   "Nuldoorgangen zoeken": "Buscando cruces por cero",
+  "Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence.": "Solo se desplaza el canal elegido. El otro permanece en su sitio; el audio más corto se completa con silencio.",
   "Only the selected interval is replaced.": "Solo se reemplaza el intervalo seleccionado.",
   "Only this sample in the chosen channel changes. Other samples, duration and metadata stay intact. Changing the displayed range does not convert the file.": "Solo cambia esta muestra del canal elegido. Las demás muestras, la duración y los metadatos se conservan. Cambiar el rango mostrado no convierte el archivo.",
   "Open": "Abrir",
@@ -806,6 +808,7 @@
   "Recording device": "Dispositivo de grabación",
   "Recording input": "Entrada de grabación",
   "Recording into a waveform requires its sample rate and channel count.": "Grabar en una forma de onda requiere su frecuencia y número de canales.",
+  "Recording into a waveform requires its sample rate and selected channel count.": "Grabar en una forma de onda requiere su frecuencia de muestreo y el número de canales seleccionados.",
   "Recording kept for recovery. Use File → Recover Work.": "Grabación conservada para recuperación. Usa Archivo → Recuperar trabajo.",
   "Recording position offset": "Desplazamiento de posición de grabación",
   "Recording synchronized.": "Grabación sincronizada.",

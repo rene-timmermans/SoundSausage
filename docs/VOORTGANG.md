@@ -2,15 +2,16 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
-SoundSausage 0.21.0 is gepubliceerd en geverifieerd. De resterende scope bestaat
-uit zeven punten: **B06, B07, B21, B23, B24, B33 en B36b**. De overige 18 eerdere
-kandidaten zijn voorlopig uitgesteld. De [todo](TODO.md) is de actuele lijst;
-het [ontwikkelplan](ONTWIKKELPLAN.md) beschrijft de route naar de eerste v1.
+SoundSausage 0.21.0 is gepubliceerd. 0.22.0 wordt getoetst met onafhankelijke
+kanaalduurwijzigingen voor B06/B07: knippen, trimmen, plakken, tijdrekken, uitklank,
+genereren en opname. Het andere kanaal behoudt zijn samples op dezelfde posities;
+het kortere kanaal krijgt eindstilte. Vijf handleidingen en vertalingen zijn bijgewerkt.
+De [controle](validation/channel-timing.md) beschrijft de regressieproeven.
 
-De bouwvolgorde is B06/B07, B21, B23/B24 en B36b, gevolgd door B33 op de
-functioneel afgeronde app. Daarna volgen een releasecandidate, het oplossen van
-blokkerende fouten en v1.0 met geteste installers. Voor B06/B07 staat de keuze
-voor kanaaluitlijning nog open. Nog geen softwarewijziging voor deze punten.
+De gekozen scope blijft B06, B07, B21, B23, B24, B33 en B36b; de overige18 zijn
+uitgesteld. Na verificatie/publicatie van B06/B07 volgen B21, B23/B24 en B36b,
+dan B33 op de afgeronde app, een releasecandidate en v1.0. De [todo](TODO.md)
+en het [ontwikkelplan](ONTWIKKELPLAN.md) blijven leidend.
 
 De huidige ontwikkelvolgorde versterkt eerst de audiobasis en werkt daarna de
 resterende effecten en tools per groep af. Iedere afgeronde versie krijgt

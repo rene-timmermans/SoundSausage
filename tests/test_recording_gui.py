@@ -90,6 +90,45 @@ class RecordingGuiTests(unittest.TestCase):
         np.testing.assert_array_equal(self.window.document.view(),.25)
         self.assertEqual(self.window.document.frames,80);available[0].close()
 
+    def test_record_mono_into_either_stereo_lane_insert_replace_and_reopen(self):
+        original = np.column_stack((np.linspace(-.25, .25, 100), np.linspace(.5, -.5, 100))).astype(np.float32)
+        recorded = np.column_stack((np.linspace(.1, .3, 45), np.full(45, -.75))).astype(np.float32)
+        for channel in (0, 1):
+            for target in ('insert', 'replace'):
+                with self.subTest(channel=channel, target=target):
+                    doc = Document(original, 48000); doc.select_channels((channel,)); doc.select(20, 50)
+                    self.window.document = doc; self.window.refresh(fit=True)
+                    dialog = RecordDialog(self.window)
+                    self.assertEqual(dialog.channels.currentIndex(), 0)
+                    self.assertEqual(dialog.target.findData('replace'), 1)
+                    dialog.deleteLater()
+                    # Mono capture uses the first chosen hardware input, even for the right destination.
+                    self.capture(recorded, target=target, channels=1)
+                    end = 20 if target == 'insert' else 50
+                    chosen = np.concatenate((original[:20, channel], recorded[:, 0], original[end:, channel]))
+                    expected = np.zeros((len(chosen), 2), np.float32)
+                    expected[:100, 1-channel] = original[:, 1-channel]; expected[:, channel] = chosen
+                    np.testing.assert_array_equal(doc.view().view(np.uint32), expected.view(np.uint32))
+                    self.assertEqual(len(doc.undo_stack), 1); self.assertEqual(doc.selected_channels, (channel,))
+                    path = self.path/f'{channel}-{target}.wav'
+                    with patch.object(self.window, '_save_path', return_value=(path, 'float32')):
+                        self.assertTrue(self.window.save_waveform())
+                    np.testing.assert_array_equal(read_wav(path).samples, expected)
+                    doc.undo(); np.testing.assert_array_equal(doc.view(), original)
+                    doc.redo(); np.testing.assert_array_equal(doc.view(), expected)
+
+    def test_recording_target_channel_change_preserves_document_and_recoverable_take(self):
+        doc = Document(np.full((100, 2), .1, np.float32), 48000)
+        doc.select_channels((1,)); doc.select(20, 50)
+        self.window.document = doc; self.window.refresh()
+        self.assertTrue(self.window.start_recording(target='replace', rate=48000, channels=1))
+        self.window.recorder.source.push(np.full((40, 2), .25, np.float32).tobytes())
+        doc.select_channels((0,)); self.window.stop_recording()
+        np.testing.assert_array_equal(doc.view(), np.full((100, 2), .1, np.float32))
+        self.assertFalse(doc.undo_stack); self.error.assert_called_once()
+        entries = candidates(); self.assertEqual(len(entries), 1)
+        discard(entries[0]); entries[0].close()
+
     def test_discard_and_cancel_close_preserve_existing_document(self):
         self.window.start_recording(rate=48000,channels=2)
         self.window.recorder.source.push(np.ones((100,2),np.float32).tobytes())

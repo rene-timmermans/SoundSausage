@@ -1,6 +1,7 @@
 {
   "\nInput at {0} Hz; the take is converted after Stop.": "\nEntrée à {0} Hz ; la prise est convertie après Arrêter.",
   "\nMono input is recorded on both stereo channels.": "\nL'entrée mono est enregistrée sur les deux canaux stéréo.",
+  "\nOnly the chosen channel shifts. The other stays in place; shorter audio is padded with silence.": "\nSeul le canal choisi se décale. L’autre reste en place ; l’audio plus court est complété par du silence.",
   "\nOnly the selected interval is replaced. Playback starts with pre-roll; recording stops automatically after the selection.": "\nSeul l’intervalle sélectionné est remplacé. La lecture commence par une prélecture ; l’enregistrement s’arrête automatiquement après la sélection.",
   " (import)": " (importé)",
   " BPM": " BPM",
@@ -709,6 +710,7 @@
   "Normalized value": "Valeur normalisée",
   "Notch": "Coupe-bande",
   "Nuldoorgangen zoeken": "Recherche des passages par zéro",
+  "Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence.": "Seul le canal choisi se décale. L’autre reste en place ; l’audio plus court est complété par du silence.",
   "Only the selected interval is replaced.": "Seul l’intervalle sélectionné est remplacé.",
   "Only this sample in the chosen channel changes. Other samples, duration and metadata stay intact. Changing the displayed range does not convert the file.": "Seul cet échantillon du canal choisi est modifié. Les autres échantillons, la durée et les métadonnées restent inchangés. Changer la plage d’affichage ne convertit pas le fichier.",
   "Open": "Ouvrir",
@@ -806,6 +808,7 @@
   "Recording device": "Périphérique d’enregistrement",
   "Recording input": "Entrée d’enregistrement",
   "Recording into a waveform requires its sample rate and channel count.": "L’enregistrement dans une forme d’onde exige sa fréquence et son nombre de canaux.",
+  "Recording into a waveform requires its sample rate and selected channel count.": "L’enregistrement dans une forme d’onde exige sa fréquence d’échantillonnage et le nombre de canaux sélectionnés.",
   "Recording kept for recovery. Use File → Recover Work.": "Enregistrement conservé pour récupération. Utilisez Fichier → Récupérer le travail.",
   "Recording position offset": "Décalage de position d’enregistrement",
   "Recording synchronized.": "Enregistrement synchronisé.",

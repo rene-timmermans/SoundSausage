@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.21.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.22.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 ## 1. Sprache und Hilfe
 
@@ -77,7 +77,13 @@ Klicken setzt den Cursor, Ziehen einen Zeitbereich. In Stereo innerhalb L oder R
 
 **Ausschneiden / Strg+X** entfernt und kopiert, **Kopieren / Strg+C** kopiert, **Einfügen / Strg+V** ersetzt die Auswahl oder fügt am Cursor ein. **Einmischen / Strg+M** addiert Zwischenablageaudio dort und kann Spitzen erhöhen. **Entf** entfernt den Bereich; **Zuschneiden / Strg+T** behält nur ihn. **Strg+Z / Strg+Umschalt+Z** zurück/wiederholen. Einfügen wandelt die Rate, ohne die Zwischenablage zu ändern. Bei beiden Kanälen muss die Anzahl passen. Links/rechts kopieren oder Auswahlspeichern erzeugt Mono; normales Speichern erhält immer die ganze Stereowellenform.
 
-Stereo hat eine gemeinsame Zeitachse. Längenänderungen (Schneiden/Löschen/Zuschneiden, Dehnen, Einfügen, Nachklang) benötigen beide Kanäle. Mono in einen Stereokanal einfügen muss den Bereich exakt ersetzen; gemischtes Einfügen muss in der bestehenden Dauer bleiben. **Stille** leert einen Kanal ohne den anderen zu verschieben. Tonhöhenverschiebung, Delay, Echo, Hall und Faltung können einen Kanal bei gleicher Dauer bearbeiten. Aufnahme in bestehendes Stereo benötigt beide Kanäle. Rückgängig/Wiederherstellung behalten die Kanalwahl.
+Stereo behält eine gemeinsame Zeitachse. Mit **Links** oder **Rechts** verschieben Ausschneiden/Löschen, Einfügen, unterschiedlich langes Ersetzen, Zeitdehnung, erzeugte Töne/Stille und Nachklang nur den gewählten Kanal. Der andere behält seine Samples an den ursprünglichen Zeitpunkten. Der kürzere Kanal wird am Ende mit Stille aufgefüllt. **Beide** verschiebt beide Kanäle und gemeinsame Markierungen; **Effekte → Stille** leert Audio ohne Verschiebung.
+
+Beispiel: Sekunden 2–3 links löschen. Späteres linkes Audio rückt eine Sekunde vor, am Ende folgt eine Sekunde Stille; rechts bleibt alles stehen. **Zuschneiden** setzt nur den gewählten Abschnitt des gewählten Kanals an den Anfang und füllt den Rest mit Stille. Die Auffüllung ist gewöhnliches Audio, bleibt beim Speichern/Öffnen erhalten und wird bei späteren Einfügungen mitverschoben. Unerwünschte Endstille mit Beide entfernen. Gemeinsame Cuepunkte und MP3-Kapitel behalten bei Einzelkanalbearbeitung ihre Zeitpunkte; ihre Bedeutung danach prüfen.
+
+Eine Mono-Zwischenablage kann kürzere oder längere Bereiche ersetzen oder am Cursor eingefügt werden. Stereo liefert den entsprechenden linken/rechten Kanal. Die Abtastrate wird bei Bedarf gewandelt. Markierungen/Kapitel aus der Zwischenablage werden nur bei Beide zusammengeführt; beim Einzelkanal bleiben die gemeinsamen Zielmarkierungen. **Einmischen** addiert ab Auswahlbeginn/Cursor ohne späteres Audio zu verschieben und darf über das Ende hinausgehen; der andere Kanal erhält Endstille.
+
+Für eine Einzelkanalaufnahme Links/Rechts wählen, **R** drücken und **Am Cursor einfügen** oder **Auswahl ersetzen** wählen. Die Aufnahme verwendet Mono und die Wellenformrate. **Erster Eingangskanal** wählt den Hardwareeingang unabhängig vom linken/rechten Ziel. Stopp übernimmt einen Bearbeitungsschritt, verschiebt nur diesen Kanal und füllt bei Bedarf auf. Neue Wellenform bleibt verfügbar. Die Kanalwahl ist während der Aufnahme gesperrt; bei fehlgeschlagener/abgebrochener Endverarbeitung bleibt die Aufnahme unter Arbeit wiederherstellen. Rückgängig/Wiederholen stellt Audio, Auffüllung, Metadaten und Kanalwahl wieder her; Wiederherstellung bewahrt das bearbeitete Stereoaudio.
 
 ### Einzelne Samples bearbeiten
 
@@ -125,7 +131,7 @@ Unter **Filter** hat **Grafischer Equalizer** zehn Oktavbänder, 31,5 Hz–16 kH
 
 **Hall** nutzt Raumgröße für Reflexionsabstände, Abklingzeit für ungefähr RT60 (0,1–10 s), Vorverzögerung (0–250 ms) vor dem Effekt, Höhendämpfung und Stereobreite (0 gleicher Hall beidseitig, 100 volle Breite; bei Mono aus). Kleiner Raum, Studio, große Halle, lange Atmosphäre variieren Raum/Abklingen. Für Sprache wenig Effekt, kurze Zeit und etwas Vorverzögerung. Algorithmischer Hall, kein exaktes Saalmodell.
 
-Original und Effekt sind unabhängige addierte Prozente; Ausgangsverstärkung (−24…+24 dB) skaliert ohne automatische Begrenzung. Standardlänge bleibt, spätere Wiederholungen enden abrupt. Nachklang fügt 0,01–60 s ein, verschiebt folgendes Wellenformaudio und spätere Cuepunkte. Letzte 10 ms blenden aus. Presets schalten Nachklang aus; danach einstellen. Extremes Echo kann mehr als 60 s brauchen; Rückkopplung/Zeit senken. Beispiel: 2 s Stimme + 3 s Nachklang ergibt 5 s. Ein einzelner Stereokanal kann keine Zeit hinzufügen.
+Original und Effekt sind unabhängige addierte Prozente; Ausgangsverstärkung (−24…+24 dB) skaliert ohne automatische Begrenzung. Standardlänge bleibt, spätere Wiederholungen enden abrupt. Nachklang fügt 0,01–60 s ein, verschiebt folgendes Wellenformaudio und spätere Cuepunkte. Letzte 10 ms blenden aus. Presets schalten Nachklang aus; danach einstellen. Extremes Echo kann mehr als 60 s brauchen; Rückkopplung/Zeit senken. Beispiel: 2 s Stimme + 3 s Nachklang ergibt 5 s. Einzelkanal-Nachklang verschiebt nur diesen Kanal; gemeinsame Cuepunkte bleiben stehen.
 
 ### Rauschminderung und Klickreparatur
 
@@ -137,7 +143,7 @@ Maximale Reduktion ist 0–36 dB, mit 6–12 dB beginnen. Empfindlichkeit behand
 
 ### Zeit und Tonhöhe
 
-**Zeit/Tonhöhe → Zeitdehnung** ändert Dauer (25–400%) bei gleicher Tonhöhe: 200% verdoppelt, 50% halbiert. Tempofelder berechnen alte/neue BPM (120→100 ergibt 120%); keine Tempoerkennung. Innere Cuepunkte folgen der Skala, späteres Audio/Cuepunkte verschieben sich. Stereo braucht beide Kanäle. **Tonhöhenverschiebung** ändert −24…+24 Halbtöne bei gleicher Dauer/Cuepunkten; ±12 ist eine Oktave, 0,01 Halbton ein Cent. Formanterhalt kann Stimmen bewahren; bei Instrumenten vergleichen.
+**Zeit/Tonhöhe → Zeitdehnung** ändert Dauer (25–400%) bei gleicher Tonhöhe: 200% verdoppelt, 50% halbiert. Tempofelder berechnen alte/neue BPM (120→100 ergibt 120%); keine Tempoerkennung. Bei Beide folgen Cuepunkte der Skala und spätere Audio-/Cuepositionen verschieben sich. Links/Rechts verschiebt nur diesen Kanal; gemeinsame Cuepunkte bleiben stehen. **Tonhöhenverschiebung** ändert −24…+24 Halbtöne bei gleicher Dauer/Cuepunkten; ±12 ist eine Oktave, 0,01 Halbton ein Cent. Formanterhalt kann Stimmen bewahren; bei Instrumenten vergleichen.
 
 Fein (Standard) und Schnell nutzen Rubber Band offline. Stereo wird gemeinsam verarbeitet; extreme Änderungen können künstlich klingen. Für echte Änderungen mindestens 50 ms und 64 Samples nutzen. Neutral liefert exakt das Original, Ausgabe rundet auf Samples. Vorschau analysiert die ganze Auswahl vor höchstens acht Sekunden Wiedergabe; lange Dateien benötigen Zeit und Analysearbeitsspeicher. Fortschritt ist abbrechbar. Bei Mehrspur eine Wellenformkopie bearbeiten und zurückübernehmen; Linien skalieren, spätere Clips verschieben sich nicht automatisch.
 
@@ -232,6 +238,6 @@ Begleitclips auf Spuren setzen, andere Zielspur und Cursorposition wählen. **R*
 | Strg+D / Tab / F11 | Clip duplizieren / Ansicht / Vollbild |
 | F1 / F2 / Alt+Z | Handbuch / Effekt wiederholen / Frequenzanalyse 
 
-Kein Eingang: Gerät/Kanal und Linux-Mikrofonpegel prüfen, neu verbinden und neue Aufnahme starten. Kein Ausgang: Route, Pegel, Stumm/Solo, Audiogeräte prüfen. Verzerrung/rote Peaks: Gesamtpegel senken, vor PCM normalisieren; gemischtes Einfügen/überlappende Clips addieren. Einfügen abgewiesen: Kanalanzahl oder genaue Mono-Ersatzlänge prüfen. Effekt aus: Wellenform/Kopie öffnen; Kanalmischer braucht Stereo, Zeitänderungen beide Kanäle. Punkte statt Clips: Clips verschieben wählen. Platte voll: Platz schaffen, keine aktiven Arbeitsdateien löschen. Defekte Wiederherstellung: Originale bleiben; Kopie nur bei Verzicht entfernen.
+Kein Eingang: Gerät/Kanal und Linux-Mikrofonpegel prüfen, neu verbinden und neue Aufnahme starten. Kein Ausgang: Route, Pegel, Stumm/Solo, Audiogeräte prüfen. Verzerrung/rote Peaks: Gesamtpegel senken, vor PCM normalisieren; gemischtes Einfügen/überlappende Clips addieren. Einfügen abgewiesen: Kanalanzahl der Zwischenablage prüfen. Effekt aus: Wellenform/Kopie öffnen; Kanalmischer braucht Stereo; zu bearbeitende Kanäle wählen. Punkte statt Clips: Clips verschieben wählen. Platte voll: Platz schaffen, keine aktiven Arbeitsdateien löschen. Defekte Wiederherstellung: Originale bleiben; Kopie nur bei Verzicht entfernen.
 
 In Arbeit: eigene Favoriten und Markereditor. Echtzeitketten, Linux-VST3 und Aufnahme mit Begleitung sind wie beschrieben verfügbar. Vor Beenden Projekt speichern. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

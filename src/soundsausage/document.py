@@ -113,10 +113,6 @@ class Document:
                 return dict(profile, power=power[:, self.selected_channels[0]:self.selected_channels[0]+1].tolist())
         return profile
 
-    def _require_linked_timing(self):
-        if self.partial_channels:
-            raise AudioError("Select Both channels to change stereo duration. Use Silence to clear only the selected channel.")
-
     def mark_saved(self):
         self._saved_state_id = self._state_id
 
@@ -228,6 +224,49 @@ class Document:
         return Clip(self.effect_view(*self.selection), self.sample_rate,
                     metadata.crop(self.metadata,*self.selection,sample_rate=self.sample_rate))
 
+    def replace_selected(self, start, end, samples, label="Paste", *, new_metadata=None):
+        """Ripple chosen channels only; keep the shared timeline padded to stereo."""
+        if not self.partial_channels:
+            return self.replace(start, end, samples, label, new_metadata=new_metadata)
+        validate_audio(samples, self.sample_rate)
+        if samples.shape[1] != 1 or not 0 <= start <= end <= self.frames:
+            raise AudioError("The replacement does not match the document.")
+        if start == end and not len(samples):
+            return
+        information = self.metadata if new_metadata is None else new_metadata
+        if len(samples) == end-start:
+            merged = self._merge_channel(start, samples)
+            return self.replace(start, end, merged, label, new_metadata=information)
+        frames = max(self.frames, self.frames-(end-start)+len(samples))
+        if frames*self.channels*4 > MAX_AUDIO_BYTES:
+            raise AudioError("The edit exceeds the supported address space.")
+        channel = self.selected_channels[0]
+        total = self.frames-start + len(samples) + self.frames-end
+        done = 0
+        progress(0, total, label)
+        result = storage.allocate((frames-start, self.channels), zero=True)
+
+        def copy_parts(parts, source_channel, target_channel, offset):
+            nonlocal done
+            for piece in parts:
+                for a, b in blocks(len(piece)):
+                    result[offset+a:offset+b, target_channel] = piece[a:b, source_channel]
+                    storage.release_pages(piece)
+                    if isinstance(result, np.memmap):
+                        result.flush(); storage.release_pages(result)
+                    done += b-a
+                    progress(done, total, label)
+                offset += len(piece)
+
+        # The other lane keeps its absolute positions. New/padded frames are zero.
+        copy_parts(self._slices(start, self.frames), 1-channel, 1-channel, 0)
+        copy_parts((samples,), 0, channel, 0)
+        copy_parts(self._slices(end, self.frames), channel, channel, len(samples))
+        result = storage.seal(result, checked=True)
+        peaks.prepare(result)
+        self._commit(self._slices(0, start)+(result,), (start, start+len(samples)), label,
+                     metadata=information)
+
     def set_sample(self, frame, channel, value):
         """Change one scalar only, sharing every untouched audio piece with Undo."""
         if type(frame) is not int or not 0 <= frame < self.frames or type(channel) is not int or not 0 <= channel < self.channels:
@@ -282,15 +321,13 @@ class Document:
     def delete(self):
         if not self.selected:
             return
-        self._require_linked_timing()
         a, b = self.selection
-        self.replace(a, b, np.empty((0, self.channels), dtype=np.float32), "Delete")
+        self.replace_selected(a, b, np.empty((0, self.effect_channel_count), dtype=np.float32), "Delete")
 
     def cut(self):
-        self._require_linked_timing()
         clip = self.copy()
         a, b = self.selection
-        self.replace(a, b, np.empty((0, self.channels), dtype=np.float32), "Cut")
+        self.replace_selected(a, b, np.empty((0, self.effect_channel_count), dtype=np.float32), "Cut")
         return clip
 
     def paste(self, clip, mix=False):
@@ -338,12 +375,13 @@ class Document:
         self.cursor = cursor
 
     def trim(self):
-        self._require_linked_timing()
         if not self.selected:
             raise AudioError("Select the audio to keep first.")
         start, end = self.selection
         if start == 0 and end == self.frames:
             return
+        if self.partial_channels:
+            return self.replace_selected(0, self.frames, self.effect_view(start, end), "Trim")
         self._commit(self._slices(start, end), (0, end - start), "Trim",
                      metadata=metadata.crop(self.metadata, start, end, sample_rate=self.sample_rate))
 
@@ -357,13 +395,15 @@ class Document:
             if not settings.get("ir_path"): raise AudioError("Choose an impulse response first.")
             settings["ir_path"] = str(Path(settings["ir_path"]).resolve())
             if settings.get("ir_sha256") is None: settings["ir_sha256"] = file_digest(settings["ir_path"])
-        result = self.preview_effect(name, **settings)
+        result = self._process_effect(name, **settings) if self.partial_channels else self.preview_effect(name, **settings)
         label = {"gain": "Amplify / Fade", "channel_mix": "Channel Mixer",
                  "dynamics": "Dynamics Processing", "graphic_eq": "Graphic Equalizer",
                  "stretch": "Stretch", "pitch_shift": "Pitch Shift", "noise_reduction": "Noise Reduction", "click_removal": "Click Removal",
                  "parametric_eq": "Parametric Equalizer", "filter": "Filters"}.get(name, name.capitalize())
         # Validate before committing: failed or overflowing effects leave the document intact.
-        if name == "reverse" and not self.partial_channels:
+        if self.partial_channels:
+            new_metadata = self.metadata
+        elif name == "reverse":
             new_metadata = metadata.remap(self.metadata, lambda p: start + end - 1 - p if start <= p < end else p)
             new_metadata = id3_metadata.timeline(new_metadata, 'reverse', start, end, 0, self.sample_rate)
         elif name == "stretch" and len(result) != end-start:
@@ -386,31 +426,32 @@ class Document:
         pitch_changed = name in ('stretch', 'pitch_shift') and settings.get('semitones', 0) != 0
         if tempo_changed or pitch_changed:
             new_metadata = id3_metadata.musical_change(new_metadata, tempo=tempo_changed, pitch=pitch_changed)
-        self.replace(start, end, result, label, new_metadata=new_metadata)
+        self.replace_selected(start, end, result, label, new_metadata=new_metadata)
         # Store immutable settings, independent of a dialog's mutable controls.
         self.last_effect = (name, deepcopy(settings))
 
-    def _merge_channel(self, start, end, processed, channel=0):
-        if len(processed) != end-start:
-            raise AudioError("Select Both channels for an effect that changes stereo duration, or turn off the added tail.")
-        source = self.view(start, end)
-        result = storage.allocate(source.shape)
-        progress(0, len(source), "Gekozen kanaal toepassen")
-        for a, b in blocks(len(source)):
-            result[a:b] = source[a:b]
-            result[a:b, self.selected_channels[0]] = processed[a:b, channel]
+    def _merge_channel(self, start, processed):
+        """Audition a processed mono lane against the other lane at the same times."""
+        source = self.view(start, min(self.frames, start+len(processed)))
+        result = storage.allocate((len(processed), self.channels), zero=True)
+        progress(0, len(processed), "Gekozen kanaal toepassen")
+        for a, b in blocks(len(processed)):
+            if a < len(source):
+                stop = min(b, len(source))
+                result[a:stop] = source[a:stop]
+            result[a:b, self.selected_channels[0]] = processed[a:b, 0]
             storage.release_pages(source); storage.release_pages(processed)
             if isinstance(result, np.memmap): result.flush(); storage.release_pages(result)
-            progress(b, len(source), "Gekozen kanaal toepassen")
+            progress(b, len(processed), "Gekozen kanaal toepassen")
         return storage.seal(result)
 
     def preview_effect(self, name, *, limit=None, **settings):
+        processed = self._process_effect(name, limit=limit, **settings)
+        return self._merge_channel(self.effect_range[0], processed) if self.partial_channels else processed
+
+    def _process_effect(self, name, *, limit=None, **settings):
         start, end = self.effect_range
         if self.partial_channels:
-            if (name == "stretch" and settings.get("time_ratio", 1) != 1 or
-                name in ("delay", "echo", "reverb") and settings.get("tail_seconds", 0) or
-                name == "convolution" and settings.get("keep_tail", False)):
-                self._require_linked_timing()
             settings = dict(settings)
             if name == "gain":
                 # F2 can repeat settings recorded with both stereo inputs visible.
@@ -426,9 +467,9 @@ class Document:
             if name == "convolution": settings["ir_channel"] = self.selected_channels[0]
         source = self.view(start, end) if name == "channel_mix" else self.effect_view(start, end)
         processed = self.dsp.process_blocks(name, source, self.sample_rate, limit=limit, **settings)
-        if self.partial_channels:
-            count = end-start if limit is None else min(end-start, max(0, int(limit)))
-            return self._merge_channel(start, start+count, processed, self.selected_channels[0] if name == "channel_mix" else 0)
+        if self.partial_channels and name == "channel_mix":
+            channel = self.selected_channels[0]
+            return processed[:, channel:channel+1]
         return processed
 
     def _paste_channel(self, clip, mix):
@@ -440,18 +481,19 @@ class Document:
         samples = resample(samples, clip.sample_rate, self.sample_rate) if clip.sample_rate != self.sample_rate else samples
         start, end = self.selection if self.selected else (self.cursor, self.cursor)
         if mix:
-            end = start+len(samples)
-            if end > self.frames: self._require_linked_timing()
+            end = min(self.frames, start+len(samples))
             original = self.effect_view(start, end)
             combined = storage.allocate(samples.shape)
             for a, b in blocks(len(samples)):
-                combined[a:b] = original[a:b]+samples[a:b]
+                combined[a:b] = samples[a:b]
+                if a < len(original):
+                    stop = min(b, len(original))
+                    combined[a:stop] += original[a:stop]
                 storage.release_pages(original); storage.release_pages(samples)
                 if isinstance(combined, np.memmap): combined.flush(); storage.release_pages(combined)
                 progress(b, len(samples), "Mix Paste")
             samples = storage.seal(combined)
-        result = self._merge_channel(start, end, samples)
-        self.replace(start, end, result, "Mix Paste" if mix else "Paste", new_metadata=self.metadata)
+        self.replace_selected(start, end, samples, "Mix Paste" if mix else "Paste")
 
     def repeat(self):
         if self.last_effect:

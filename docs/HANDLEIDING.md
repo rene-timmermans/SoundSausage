@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.21.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.22.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -385,27 +385,50 @@ beide kanalen als invoer gebruiken, maar wijzigt alleen de gekozen uitgang.
 Bij een stereo-ruisprofiel of stereo-impulsrespons wordt het bijbehorende kanaal
 gebruikt. Frequentieanalyse volgt eveneens de gekozen kanalen.
 
-Een stereobestand heeft een gedeelde tijdas. Kies **Beide** voor bewerkingen die
-de duur veranderen, zoals Tijdsduur aanpassen, knippen, verwijderen, trimmen of het toevoegen
-van een uitklank. De uitklankopties zijn bij een enkel gekozen stereokanaal uit.
-Vertraging, echo, galm en convolutie kunnen wel op één kanaal werken met behoud van
-de bestaande lengte. Toonhoogte verschuiven kan één kanaal wijzigen zonder duurverandering.
-Met Stilte kun je een fragment in één kanaal leegmaken terwijl de andere golf
-precies blijft staan. Gezamenlijke cuepunten verschuiven niet door een bewerking
-die slechts één kanaal omkeert.
+### Duur veranderen op één kanaal
 
-### Kopiëren en bewaren
+Bij **Links** of **Rechts** verschuift alleen het gekozen kanaal door knippen,
+verwijderen, plakken, tijdrekken, tonen/stilte invoegen of een uitklank toevoegen.
+Het andere kanaal behoudt exact zijn samples op de oorspronkelijke tijdstippen.
+Het kortere kanaal krijgt achteraan stilte zodat beide even lang blijven.
+Bij **Beide** verschuiven de twee kanalen en gezamenlijke markeringen samen.
+Met **Stilte** onder Effecten blijft ook het gekozen kanaal op zijn plaats.
 
-Kopiëren en Selectie opslaan leveren bij Links of Rechts mono-audio uit dat kanaal.
-Opslaan en Opslaan als blijven de volledige stereogolfvorm bewaren. Je kunt mono-audio
-in één stereokanaal plakken wanneer die precies de geselecteerde duur vervangt.
-Gemengd plakken kan binnen de bestaande opnameduur op één kanaal mengen. Invoegen of
-anders verlengen vereist Beide. De niet-gekozen samples blijven exact behouden.
+Voorbeeld: verwijder seconde 2–3 uit Links. De latere linker audio schuift één
+seconde naar voren en Links krijgt achteraan één seconde stilte. Rechts blijft
+staan. Voeg op dezelfde positie twee seconden toe en alleen de latere linker
+audio schuift twee seconden op; Rechts krijgt zo nodig achteraan stilte.
+**Trimmen** zet alleen het gekozen fragment van het gekozen kanaal op tijdstip
+nul en vult de rest met stilte. De andere golf blijft op haar plaats.
 
-Opnemen in een bestaande stereogolfvorm vereist Beide. Bij een enkel gekozen
-kanaal kan Opnemen een nieuwe golfvorm maken. De kanaalkeuze is tijdens opnemen
-vergrendeld. Ongedaan maken/Redo en herstel bewaren de keuze; oudere herstelkopieën openen
-met beide kanalen gekozen. Afspelen blijft in de bestaande stereocontext.
+De opvulling is gewone audio en blijft bij opslaan en heropenen bewaard. Een latere
+invoeging verschuift ook die stilte; verwijder ongewenste eindstilte met Beide
+gekozen. Gezamenlijke cuepunten en MP3-hoofdstukken blijven bij bewerken van
+één kanaal op hun tijdstippen staan. Controleer hun betekenis na een verschuiving.
+Undo/Redo herstelt de audio, opvulling, metadata en kanaalkeuze.
+
+### Kopiëren, plakken en bewaren
+
+Kopiëren en Selectie opslaan leveren bij Links of Rechts mono-audio. Opslaan en
+Opslaan als bewaren de volledige stereogolfvorm. Mono-audio kan in één kanaal
+worden ingevoegd of een korter of langer tijdvak vervangen. Bij een stereoklembord
+wordt het overeenkomstige linker- of rechterkanaal gebruikt. De samplerate wordt
+zo nodig omgezet. Markeringen en hoofdstukken uit het klembord worden alleen bij
+Beide samengevoegd; bij één kanaal blijven de bestaande gezamenlijke markeringen staan.
+
+**Gemengd plakken** telt op vanaf het begin van de selectie of de cursor, zonder
+latere audio te verschuiven. Het kan voorbij het einde doorlopen; het andere
+kanaal wordt dan achteraan met stilte aangevuld. De optelling kan luider uitvallen.
+
+### Opnemen in één kanaal
+
+Kies Links of Rechts en druk **R**. Kies **Invoegen bij cursor** of **Selectie vervangen**.
+De opname gebruikt mono en de bestaande samplerate. **Eerste ingangskanaal** kiest de
+hardware-ingang; die staat los van de linker- of rechterbestemming. Na Stoppen
+verschuift alleen het gekozen kanaal en wordt zo nodig achteraan stilte toegevoegd.
+Een nieuwe golfvorm blijft als aparte bestemming beschikbaar. Tijdens opnemen
+is de kanaalkeuze vergrendeld. Een nog niet toegepaste take blijft bij een fout of
+annulering beschikbaar onder Werk herstellen. Afspelen blijft in stereocontext.
 
 ### Zoomen en functie-iconen
 
@@ -751,10 +774,11 @@ selection** aan om extra tijd toe te voegen en stel de duur in, van 0,01 tot
 duur zo nodig na het kiezen van een preset. De presets schakelen de extra tijd
 steeds uit, zodat een preset niet ongemerkt de opname verlengt.
 
-Bij toevoegen van een uitklank schuift audio ná de selectie vooruit met die
+Bij toevoegen van een uitklank schuift de gekozen audio ná de selectie vooruit met die
 duur. Het effect begint met leeg geheugen aan het begin van de selectie en
 loopt niet door in de volgende oorspronkelijke audio. Cuepunten binnen de
-selectie blijven staan; latere cuepunten schuiven met de volgende audio mee.
+selectie blijven staan; bij Beide schuiven latere cuepunten met de volgende audio mee.
+Bij Links of Rechts blijven de gezamenlijke cuepunten op hun tijdstip.
 De selectie omvat na toepassen het volledige resultaat, inclusief de uitklank.
 De laatste 10 ms van de toegevoegde tijd lopen af naar stilte. Een te korte
 duur kan nog hoorbare herhalingen afkappen; gebruik meer tijd of minder
@@ -865,8 +889,9 @@ van een bekend begintempo en gewenst eindtempo. Dit is geen automatische
 tempodetectie. Van 120 naar 100 BPM wordt de lengte 120%. Een verhouding buiten
 het beschikbare bereik wordt gemeld en verandert de instelling niet.
 
-Cuepunten binnen het bewerkte bereik volgen de nieuwe tijdschaal. Audio en
-cuepunten na de selectie schuiven mee met het verschil in lengte. De samplerate
+Bij Beide volgen cuepunten binnen het bewerkte bereik de nieuwe tijdschaal;
+latere audio en cuepunten schuiven mee met het verschil in lengte. Bij Links
+of Rechts verschuift alleen de gekozen audio en blijven gezamenlijke cuepunten staan. De samplerate
 van het bestand verandert niet. De selectie omvat na toepassen het resultaat.
 
 ### Toonhoogte verschuiven
@@ -961,12 +986,13 @@ werkt per kanaal op een stereogolfvorm; hij maakt van een monogolfvorm geen ster
 en bevat geen complete matrixroutering tussen kanalen. Een afwijkende samplerate
 van de respons wordt automatisch omgezet. Bij Links of Rechts wordt het
 bijbehorende kanaal van een stereorespons gebruikt. Een uitklank toevoegen
-vraagt bij stereo Beide.
+verschuift alleen de gekozen kanalen; het andere kanaal blijft op zijn plaats.
 
 Zonder **Volledige uitklank behouden** blijft de oorspronkelijke lengte gelijk.
 Met de optie wordt de volledige uitklank van de respons toegevoegd, precies de
-responslengte min één sample. Audio en cuepunten ná de selectie schuiven daardoor
-vooruit; cuepunten binnen de oorspronkelijke selectie blijven staan. De uitklank
+responslengte min één sample. De gekozen audio ná de selectie schuift daardoor
+vooruit. Bij Beide volgen latere cuepunten; bij Links of Rechts blijven ze staan.
+Cuepunten binnen de oorspronkelijke selectie blijven staan. De uitklank
 krijgt geen extra automatische fade, zodat ook exacte filterresponsen behouden
 blijven. Controleer het einde wanneer de respons zelf abrupt stopt.
 
@@ -1210,9 +1236,10 @@ golfvorm of tijdlijn wanneer je daar een sneltoets wilt gebruiken.
   Kies bij een verdwenen apparaat een beschikbare uitgang en start opnieuw.
 - **Vervorming of rode pieken:** verlaag volume of versterking; opgetelde clips
   en Gemengd plakken kunnen samen boven het uitvoerniveau komen.
-- **Plakken lukt niet:** controleer of bron en doel beide mono of beide stereo zijn.
+- **Plakken lukt niet:** bij Beide moet het kanaalaantal passen. Kies Links of Rechts
+  om mono-audio in één stereokanaal te plakken.
 - **Een effect is grijs:** open een golfvorm of een bewerkkopie; Kanalenmixer
-  vereist stereo. Tijdsduur aanpassen en bewerkingen die de duur veranderen vragen Beide.
+  vereist stereo. Tijdsbewerkingen volgen de gekozen kanalen; kies Beide om stereo samen te verschuiven.
   De overige effecten vereisen een geopende golfvorm of bewerkkopie.
 - **Lijnpunten in plaats van clips verplaatsen:** kies Clips verplaatsen.
 - **Onvoldoende werkruimte:** maak schijfruimte vrij voor bronkopieën, resultaten

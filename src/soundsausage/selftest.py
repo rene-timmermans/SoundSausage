@@ -7,7 +7,7 @@ import numpy as np
 
 from . import __version__
 from .audio import read_wav, write_wav
-from .document import Document
+from .document import Document, Clip
 from .session import Session
 from .project import save_project, load_project
 from .amplitude_ui import ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog
@@ -47,6 +47,14 @@ def run(window):
     np.testing.assert_array_equal(doc.read()[:, 1], -original[:, 1])
     doc.undo()
     assert doc.selected_channels == (1,)
+    doc.select(1, 2); doc.delete()
+    np.testing.assert_array_equal(doc.view()[:, 0], original[:, 0])
+    np.testing.assert_array_equal(doc.view()[:, 1], [original[0, 1], original[2, 1], 0])
+    doc.undo(); doc.select(2, 2)
+    doc.paste(Clip(np.full((3, 1), .25, np.float32), 8000), mix=True)
+    np.testing.assert_array_equal(doc.view()[:, 0], [original[0, 0], original[1, 0], original[2, 0], 0, 0])
+    np.testing.assert_array_equal(doc.view()[:, 1], [original[0, 1], original[1, 1], original[2, 1]+.25, .25, .25])
+    doc.undo(); doc.select(0, 0)
     doc.select_channels()
     doc.apply("dynamics", points=((-96, -96), (0, 0)))
     np.testing.assert_array_equal(doc.read(), original)

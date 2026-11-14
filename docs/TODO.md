@@ -15,15 +15,14 @@ Afgeronde punten verdwijnen uit deze open lijst; hun resultaat blijft bewaard.
 
 ## Nu uitwerken: B06 en B07 — kanaalbewerkingen
 
-Stereo heeft momenteel een gezamenlijke tijdas. Effecten en samplebewerking
-kunnen links of rechts afzonderlijk veranderen; duurwijzigingen vereisen beide
-kanalen. B06 en B07 worden samen uitgewerkt omdat knippen en plakken dezelfde
-regels voor kanaaluitlijning nodig hebben.
+De implementatie voor 0.22.0 is gereed voor verificatie. Alleen het gekozen
+kanaal verschuift; het andere behoudt zijn samples en posities. Het kortere
+kanaal krijgt achteraan stilte. Dezelfde regels gelden voor knippen, trimmen,
+invoegen, plakken, tijdrekken, uitklank, genereren en opnemen. Zie de
+[uitwerking en controles](validation/channel-timing.md).
 
-Nog afstemmen: bij knippen of plakken op één kanaal alleen dat kanaal verschuiven
-en het kortere kanaal aan het einde met stilte aanvullen, of de tijdas behouden
-en verwijderde audio door stilte vervangen. De huidige stiltebewerking behoudt
-al de duur. Er is nog geen softwarewijziging voor deze twee punten gestart.
+B06/B07 blijven open tot de distributiecontroles en publicatie afgerond zijn.
+Daarna volgt B21; de overige gekozen punten blijven hieronder staan.
 
 ## De zeven gekozen punten
 

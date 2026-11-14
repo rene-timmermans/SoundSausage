@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.21.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.22.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 ## 1. Idioma y ayuda
 
@@ -77,7 +77,13 @@ Pulsa para situar el cursor y arrastra para seleccionar. En estéreo, arrastra d
 
 **Cortar / Ctrl+X** elimina y copia; **Copiar / Ctrl+C** copia; **Pegar / Ctrl+V** reemplaza la selección o inserta en el cursor. **Pegar mezclando / Ctrl+M** suma el audio del portapapeles y puede elevar los picos. **Supr** elimina el intervalo; **Recortar / Ctrl+T** conserva solo ese intervalo. **Ctrl+Z / Ctrl+Mayús+Z** deshace/rehace. Pegar convierte el muestreo sin cambiar el portapapeles. Con ambos canales debe coincidir su número. Copiar/exportar izquierda o derecha produce mono; guardar normalmente conserva toda la forma estéreo.
 
-El estéreo comparte una línea temporal: cortar/eliminar/recortar, estirar, insertar o añadir colas requiere ambos canales. Pegar mono en un canal estéreo debe reemplazar exactamente ese intervalo; la mezcla pegada debe quedar dentro de la duración existente. **Silencio** vacía un canal sin desplazar el otro. Cambio de tono, retardo, eco, reverberación y convolución pueden tratar un canal conservando duración. Grabar en una forma estéreo existente también requiere ambos. Deshacer y recuperar conservan la elección de canales.
+El estéreo conserva una línea temporal común. Con **Izquierda** o **Derecha**, cortar/eliminar, insertar, pegar con distinta duración, estirar, generar tonos/silencio y añadir colas desplaza solo el canal elegido. El otro conserva sus muestras en sus posiciones originales. El canal más corto se completa con silencio al final. **Ambos** desplaza los dos canales y sus marcadores comunes; **Efectos → Silencio** vacía sin desplazar.
+
+Ejemplo: eliminar los segundos 2–3 de Izquierda adelanta un segundo el audio izquierdo posterior y añade un segundo de silencio final; Derecha permanece. **Recortar** coloca solo el fragmento seleccionado del canal elegido en el instante cero y completa el resto con silencio. El relleno es audio normal: se conserva al guardar/reabrir y se desplaza con inserciones posteriores. Elimina el silencio final sobrante con Ambos. Los marcadores y capítulos MP3 comunes mantienen sus tiempos al editar un canal; comprueba su significado después de desplazar audio.
+
+Un portapapeles mono puede reemplazar intervalos más cortos o largos, o insertarse en el cursor. Uno estéreo aporta el canal izquierdo/derecho correspondiente. Se convierte el muestreo si hace falta. Los marcadores/capítulos del portapapeles solo se fusionan con Ambos; pegar en un canal conserva los marcadores comunes del destino. **Pegado mezclado** suma desde el inicio de selección/cursor sin desplazar audio posterior y puede superar el final; el otro canal recibe silencio final.
+
+Para grabar en un canal, elige Izquierda/Derecha, **R**, y **Insertar en cursor** o **Reemplazar selección**. Se captura mono al muestreo de la forma. **Primer canal de entrada** elige la entrada física independientemente del destino izquierdo/derecho. Detener aplica una edición, desplaza solo ese canal y completa si hace falta. Nueva forma de onda sigue disponible. La elección queda bloqueada al grabar; un fallo/cancelación del procesamiento final conserva la toma en Recuperar trabajo. Deshacer/Rehacer restaura audio, relleno, metadatos y canales; recuperar conserva el audio estéreo editado.
 
 ### Editar muestras individuales
 
@@ -125,7 +131,7 @@ En **Filtros**, **Ecualizador gráfico** tiene diez bandas de octava, 31,5 Hz–
 
 **Reverberación** ajusta tamaño de sala (separación de reflexiones), decaimiento RT60 aproximado (0,1–10 s), retardo previo (0–250 ms) antes del efecto, amortiguación de agudos y anchura estéreo (0 efecto igual a ambos lados, 100 anchura completa; desactivada en mono). Sala pequeña, estudio, sala grande y ambiente largo varían espacio/decaimiento. Para voz empieza con poco efecto, decaimiento corto y algo de retardo previo. Es reverberación algorítmica, no un modelo exacto de sala.
 
-Señal seca y efecto son porcentajes independientes sumados; ganancia de salida (−24…+24 dB) escala la suma sin limitar automáticamente. Por defecto se conserva duración y se cortan repeticiones tardías. Añadir cola inserta 0,01–60 s, desplazando audio posterior y marcadores. Los últimos 10 ms se desvanecen. Los preajustes desmarcan la cola: ajústala después. Un eco extremo puede superar 60 s; reduce realimentación/retardo. Ejemplo: voz de 2 s + cola de 3 s = 5 s. Un canal estéreo solo no puede añadir tiempo.
+Señal seca y efecto son porcentajes independientes sumados; ganancia de salida (−24…+24 dB) escala la suma sin limitar automáticamente. Por defecto se conserva duración y se cortan repeticiones tardías. Añadir cola inserta 0,01–60 s, desplazando audio posterior y marcadores. Los últimos 10 ms se desvanecen. Los preajustes desmarcan la cola: ajústala después. Un eco extremo puede superar 60 s; reduce realimentación/retardo. Ejemplo: voz de 2 s + cola de 3 s = 5 s. Una cola en un canal desplaza solo ese canal; los marcadores comunes permanecen.
 
 ### Reducción de ruido y clics
 
@@ -137,7 +143,7 @@ Reducción máxima 0–36 dB; empieza con 6–12 dB. Sensibilidad trata más fon
 
 ### Tiempo y tono
 
-**Tiempo/tono → Estirar duración** cambia duración (25–400 %) conservando tono: 200 % duplica, 50 % reduce a la mitad. Los campos de tempo calculan BPM antiguo/nuevo (120→100 da 120 %), sin detección automática. Los marcadores internos siguen la escala; audio/marcadores posteriores se desplazan. El estéreo necesita ambos canales. **Cambio de tono** varía −24…+24 semitonos sin cambiar duración/marcadores; ±12 es una octava y 0,01 semitono un cent. Preservar formantes ayuda a conservar la voz; compara ambos ajustes en instrumentos.
+**Tiempo/tono → Estirar duración** cambia duración (25–400 %) conservando tono: 200 % duplica, 50 % reduce a la mitad. Los campos de tempo calculan BPM antiguo/nuevo (120→100 da 120 %), sin detección automática. Con Ambos, los marcadores siguen la escala y los posteriores se desplazan. Con Izquierda/Derecha solo se desplaza ese canal; los marcadores comunes permanecen. **Cambio de tono** varía −24…+24 semitonos sin cambiar duración/marcadores; ±12 es una octava y 0,01 semitono un cent. Preservar formantes ayuda a conservar la voz; compara ambos ajustes en instrumentos.
 
 Fino (predeterminado) y Rápido usan Rubber Band sin tiempo real. El estéreo se procesa conjuntamente; los extremos pueden sonar artificiales. Para un cambio real usa al menos 50 ms y 64 muestras. El ajuste neutro devuelve exactamente el original; la salida se redondea a muestras. La vista previa analiza toda la selección antes de reproducir hasta ocho segundos; archivos largos requieren tiempo y memoria de análisis. Se puede cancelar. Para un clip, edita una copia y aplícala; las curvas escalan, los clips posteriores no se desplazan automáticamente.
 
@@ -232,6 +238,6 @@ El desplazamiento de posición mueve el clip insertado: negativo antes, positivo
 | Ctrl+D / Tab / F11 | Duplicar clip / vista / pantalla completa |
 | F1 / F2 / Alt+Z | Manual / repetir efecto / análisis de frecuencias |
 
-Sin entrada: revisa dispositivo/canal y nivel de micrófono Linux, reconecta y empieza otra toma. Sin salida: comprueba ruta, volumen, silencio/solo y dispositivos. Distorsión/picos rojos: baja ganancia sumada y normaliza antes de PCM; pegar mezclando y clips solapados suman. Pegado rechazado: revisa canales o duración exacta del reemplazo mono. Efecto desactivado: abre forma/copia; mezclador necesita estéreo y cambios temporales ambos canales. Puntos en lugar de clips: elige mover clips. Disco lleno: libera espacio sin borrar archivos de trabajo activos. Recuperación dañada: quedan originales; elimina copia solo si ya no hace falta.
+Sin entrada: revisa dispositivo/canal y nivel de micrófono Linux, reconecta y empieza otra toma. Sin salida: comprueba ruta, volumen, silencio/solo y dispositivos. Distorsión/picos rojos: baja ganancia sumada y normaliza antes de PCM; pegar mezclando y clips solapados suman. Pegado rechazado: revisa el número de canales del portapapeles. Efecto desactivado: abre forma/copia; el mezclador necesita estéreo; elige los canales que quieras editar. Puntos en lugar de clips: elige mover clips. Disco lleno: libera espacio sin borrar archivos de trabajo activos. Recuperación dañada: quedan originales; elimina copia solo si ya no hace falta.
 
 En desarrollo: favoritos personalizados y editor de marcadores. Cadenas en tiempo real, Linux VST3 y acompañamiento están disponibles como se describe. Guarda antes de salir. Novedades: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

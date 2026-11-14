@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.21.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.22.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 ## 1. Language and help
 
@@ -77,7 +77,13 @@ Click for a cursor; drag for a time range. In stereo, drag inside L or R to sele
 
 **Cut / Ctrl+X** removes and copies; **Copy / Ctrl+C** copies; **Paste / Ctrl+V** replaces the selection or inserts at the cursor. **Mix Paste / Ctrl+M** adds clipboard audio from that position and may raise peaks. **Delete** removes the range; **Trim / Ctrl+T** keeps only it. **Ctrl+Z / Ctrl+Shift+Z** undo/redo. Pasting converts sample rate, leaving the clipboard intact. With both channels, channel counts must match. Left/right Copy or Save Selection produces mono, while Save/Save As always retains the full stereo waveform.
 
-A stereo waveform shares one timeline: duration-changing edits (cut/delete/trim, Stretch, insertion and added tails) require both channels. A mono paste into one stereo channel must exactly replace that range; Mix Paste must stay inside the existing duration. **Silence** clears one selected channel without moving the other. Pitch Shift, delay, echo, reverb and convolution can change one channel while preserving length. Recording into an existing stereo waveform also requires both channels. Undo/recovery retain channel choice.
+Stereo keeps a shared timeline. With **Left** or **Right**, cut/delete, insertion, unequal-length paste, Stretch, generated tones/silence and added tails shift only the chosen channel. The other channel keeps its original samples at their original times. The shorter channel is padded with silence at the end. **Both** shifts both channels and shared markers together; **Transform → Silence** clears audio without shifting it.
+
+Example: delete seconds 2–3 on Left. Later left audio moves one second earlier, with a second of silence at the end; Right stays in place. **Trim** moves only the selected fragment of the chosen channel to time zero and pads the remainder with silence. Padding is ordinary audio, retained when saving/reopening and shifted by later insertions. Remove unwanted trailing silence with Both selected. Shared cues and MP3 chapters stay at their times when editing one channel; check their meaning after a shift.
+
+A mono clipboard can replace a shorter or longer range, or insert at the cursor. A stereo clipboard supplies the corresponding left/right channel. Sample rates are converted as needed. Clipboard markers/chapters are merged only with Both selected; a one-channel paste retains the destination’s shared markers. **Mix Paste** adds from the selection start/cursor without shifting later audio and can extend past the end; the other channel receives trailing silence.
+
+To record into one channel, choose Left/Right, press **R**, then **Insert at cursor** or **Replace selection**. Capture uses mono and the waveform’s rate. **First input channel** selects the hardware input independently of the left/right destination. Stop applies one edit, shifting only that channel and padding as needed. New waveform remains available. Channel choice is locked during recording; failed/cancelled final processing retains the take under Recover Work. Undo/Redo restores audio, padding, metadata and channel choice; recovery retains the edited stereo audio.
 
 ### Editing individual samples
 
@@ -125,7 +131,7 @@ Under **Filters**, **Graphic Equalizer** has ten octave bands, 31.5 Hz–16 kHz,
 
 **Reverb** uses Room size for reflection spacing, Decay for approximate RT60 (0.1–10 s), Predelay (0–250 ms) before the wet signal, high-frequency damping and stereo width (0 same wet signal both sides, 100 full spread; disabled for mono). Small room, studio, large hall and long ambient presets vary space/decay. For speech start with low Wet, short decay and some predelay. This is algorithmic reverb, not an exact hall model.
 
-Dry and Wet are independent percentages added together; Output gain (−24…+24 dB) scales the sum without automatic limiting. Default length is unchanged: later repeats are cut. Add effect tail inserts 0.01–60 s, shifting following waveform audio and later cues. The last 10 ms fades to silence. Presets untick the tail; set it after choosing one. Suggested tail can exceed the limit with extreme echo; lower feedback/delay. Example: 2 s voice + 3 s tail becomes 5 s. A single stereo channel cannot add time.
+Dry and Wet are independent percentages added together; Output gain (−24…+24 dB) scales the sum without automatic limiting. Default length is unchanged: later repeats are cut. Add effect tail inserts 0.01–60 s, shifting following waveform audio and later cues. The last 10 ms fades to silence. Presets untick the tail; set it after choosing one. Suggested tail can exceed the limit with extreme echo; lower feedback/delay. Example: 2 s voice + 3 s tail becomes 5 s. A tail on one channel shifts only that channel; shared cues stay in place.
 
 ### Noise reduction and click repair
 
@@ -137,7 +143,7 @@ Maximum reduction is 0–36 dB; begin at 6–12 dB. Sensitivity treats more back
 
 ### Time and pitch
 
-**Time/Pitch → Stretch** changes duration (25–400%) while keeping pitch: 200% doubles length, 50% halves it. Tempo fields calculate old/new BPM (120→100 gives 120%); they do not detect tempo. Cues inside follow the scale; later audio/cues shift by the difference. Stereo requires both channels. **Pitch Shift** changes −24…+24 semitones without changing duration/cues; ±12 is an octave, 0.01 semitone one cent. Formant preservation can keep vocal character; compare both settings for instruments.
+**Time/Pitch → Stretch** changes duration (25–400%) while keeping pitch: 200% doubles length, 50% halves it. Tempo fields calculate old/new BPM (120→100 gives 120%); they do not detect tempo. With Both, cues follow the scale and later audio/cues shift by the difference. With Left/Right, only that channel shifts; shared cues stay in place. **Pitch Shift** changes −24…+24 semitones without changing duration/cues; ±12 is an octave, 0.01 semitone one cent. Formant preservation can keep vocal character; compare both settings for instruments.
 
 Fine (default) and Fast use Rubber Band offline. Stereo is processed jointly; extreme changes can sound artificial. For a real change use at least 50 ms and 64 samples. Neutral settings return original audio exactly; output rounds to whole samples. Preview analyses the whole selection before playing at most eight seconds; long files need analysis time and some analysis memory. Progress is cancellable. For a multitrack clip, edit a waveform copy then apply it back; line positions scale to the new length, following clips do not shift automatically.
 
@@ -232,6 +238,6 @@ Place backing clips on tracks, select a different target track and position the 
 | Ctrl+D / Tab / F11 | Duplicate clip / change view / full screen |
 | F1 / F2 / Alt+Z | Manual / repeat effect / frequency analysis 
 
-No input: check chosen device/channel and Linux microphone level, reconnect then start a new take. No output: check routing, volume, mute/solo and Audio Hardware. Distortion/red peaks: lower summed gain and normalize before PCM; Mix Paste and overlapping clips add. Paste rejected: check channel count or exact mono replacement length. Effect disabled: open a waveform/copy; Channel Mixer needs stereo, time-changing edits need both channels. Moving points instead of clips: choose Move Clips. Disk full: free space for copies/results/Undo without deleting active work files. Damaged recovery: original files remain; remove a copy only if no longer needed.
+No input: check chosen device/channel and Linux microphone level, reconnect then start a new take. No output: check routing, volume, mute/solo and Audio Hardware. Distortion/red peaks: lower summed gain and normalize before PCM; Mix Paste and overlapping clips add. Paste rejected: check the clipboard channel count. Effect disabled: open a waveform/copy; Channel Mixer needs stereo; choose the channels to edit. Moving points instead of clips: choose Move Clips. Disk full: free space for copies/results/Undo without deleting active work files. Damaged recovery: original files remain; remove a copy only if no longer needed.
 
 Work in progress includes custom favourites and a marker editor. Realtime chains, Linux VST3 and recording with backing are available as described above. Save your project before leaving. Updates: [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

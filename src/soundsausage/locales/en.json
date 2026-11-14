@@ -1,6 +1,7 @@
 {
   "\nInput at {0} Hz; the take is converted after Stop.": "\nInput at {0} Hz; the take is converted after Stop.",
   "\nMono input is recorded on both stereo channels.": "\nMono input is recorded on both stereo channels.",
+  "\nOnly the chosen channel shifts. The other stays in place; shorter audio is padded with silence.": "\nOnly the chosen channel shifts. The other stays in place; shorter audio is padded with silence.",
   "\nOnly the selected interval is replaced. Playback starts with pre-roll; recording stops automatically after the selection.": "\nOnly the selected interval is replaced. Playback starts with pre-roll; recording stops automatically after the selection.",
   " (import)": " (import)",
   " BPM": " BPM",
@@ -709,6 +710,7 @@
   "Normalized value": "Normalized value",
   "Notch": "Notch",
   "Nuldoorgangen zoeken": "Finding zero crossings",
+  "Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence.": "Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence.",
   "Only the selected interval is replaced.": "Only the selected interval is replaced.",
   "Only this sample in the chosen channel changes. Other samples, duration and metadata stay intact. Changing the displayed range does not convert the file.": "Only this sample in the chosen channel changes. Other samples, duration and metadata stay intact. Changing the displayed range does not convert the file.",
   "Open": "Open",
@@ -806,6 +808,7 @@
   "Recording device": "Recording device",
   "Recording input": "Recording input",
   "Recording into a waveform requires its sample rate and channel count.": "Recording into a waveform requires its sample rate and channel count.",
+  "Recording into a waveform requires its sample rate and selected channel count.": "Recording into a waveform requires its sample rate and selected channel count.",
   "Recording kept for recovery. Use File → Recover Work.": "Recording kept for recovery. Use File → Recover Work.",
   "Recording position offset": "Recording position offset",
   "Recording synchronized.": "Recording synchronized.",

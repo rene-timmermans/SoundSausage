@@ -69,8 +69,7 @@ class ConvolutionDialog(EffectDialog):
         form.addRow('Dry (original)', self.dry); form.addRow('Wet (convolved)', self.wet); form.addRow('Output gain', self.output)
         layout.addLayout(form)
         self.tail = QCheckBox('Keep full response tail (inserts time after selection)'); layout.addWidget(self.tail)
-        self.tail.setEnabled(not document.partial_channels)
-        self.tail.setToolTip("Choose Both channels to add time to a stereo waveform.")
+        self.tail.setToolTip("Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence.")
         note = QLabel('A mono response works on either channel. A stereo response requires a stereo waveform.\n'
                       'Keep the response file unchanged to use Repeat later. Dry and Wet add together;\n'
                       'lower Output gain if needed. Tail insertion moves the following audio forward.')

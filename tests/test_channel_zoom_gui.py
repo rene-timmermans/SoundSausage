@@ -8,7 +8,7 @@ import numpy as np
 from PySide6.QtCore import Qt, QPoint
 from PySide6.QtGui import QPalette
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QDialogButtonBox
+from PySide6.QtWidgets import QApplication, QDialogButtonBox, QDialog
 
 from soundsausage.audio import read_wav
 from soundsausage.document import Document
@@ -81,16 +81,17 @@ class ChannelZoomGuiTests(unittest.TestCase):
         mixer = ChannelMixerDialog(self.window.document, self.window, no_audio=True); self.dialogs.append(mixer)
         self.assertFalse(mixer.weights[0][0].isEnabled()); self.assertTrue(mixer.weights[1][0].isEnabled())
         echo = EchoDialog(self.window.document, self.window, no_audio=True); self.dialogs.append(echo)
-        self.assertFalse(echo.keep_tail.isEnabled())
+        self.assertTrue(echo.keep_tail.isEnabled())
+        echo.keep_tail.setChecked(True); self.assertTrue(echo.tail.isEnabled())
 
-    def test_length_actions_lock_only_until_both_channels_are_chosen(self):
+    def test_length_actions_follow_selection_and_remain_available_for_one_channel(self):
         self.drag(0, 0)
         for key in ('cut', 'delete', 'trim', 'stretch', 'tone', 'generate_silence'):
-            self.assertFalse(self.window.actions[key].isEnabled(), key)
+            self.assertTrue(self.window.actions[key].isEnabled(), key)
         for key in ('copy', 'save_selection', 'amplify', 'pitch_shift'):
             self.assertTrue(self.window.actions[key].isEnabled(), key)
         self.window.refresh()
-        self.assertFalse(self.window.actions['stretch'].isEnabled())
+        self.assertTrue(self.window.actions['stretch'].isEnabled())
         self.window.choose_channels(None)
         for key in ('cut', 'delete', 'trim', 'stretch'): self.assertTrue(self.window.actions[key].isEnabled(), key)
 
@@ -102,11 +103,29 @@ class ChannelZoomGuiTests(unittest.TestCase):
                 self.window.save_selection()
             np.testing.assert_array_equal(read_wav(path).samples, self.data[100:500, 1:2])
 
-    def test_recording_locks_header_and_partial_channel_setup_offers_new_waveform(self):
+    def test_generation_uses_chosen_channel_for_tones_and_longer_silence(self):
+        doc = self.window.document; self.window.choose_channels((1,)); doc.select(100, 200)
+        with patch('soundsausage.window.QDialog.exec', return_value=QDialog.DialogCode.Accepted):
+            self.window.generate_tone()
+        np.testing.assert_array_equal(doc.view()[:len(self.data), 0], self.data[:, 0])
+        np.testing.assert_array_equal(doc.view()[len(self.data):, 0], 0)
+        self.assertFalse(np.array_equal(doc.view()[100:200, 1], self.data[100:200, 1]))
+        doc.undo(); doc.select(100, 200)
+        with patch('soundsausage.window.QInputDialog.getDouble', return_value=(.02, True)):
+            self.window.generate_silence()
+        self.assertEqual(doc.frames, len(self.data)+60)
+        np.testing.assert_array_equal(doc.view()[:len(self.data), 0], self.data[:, 0])
+        np.testing.assert_array_equal(doc.view()[100:260, 1], 0)
+        np.testing.assert_array_equal(doc.view()[260:, 1], self.data[200:, 1])
+        doc.undo(); np.testing.assert_array_equal(doc.view(), self.data)
+
+    def test_recording_locks_header_and_partial_channel_setup_offers_mono_insertion(self):
         self.window.choose_channels((0,))
         with patch.object(self.window.audio_devices, 'inputs', return_value=[]):
             dialog = RecordDialog(self.window); self.dialogs.append(dialog)
-        self.assertEqual([dialog.target.itemData(i) for i in range(dialog.target.count())], ['new'])
+        self.assertEqual([dialog.target.itemData(i) for i in range(dialog.target.count())], ['insert', 'new'])
+        self.assertEqual(dialog.channels.currentIndex(), 0)
+        self.assertFalse(dialog.channels.isEnabled())
         self.window._record_context = {}; self.window.update_recording_actions()
         self.assertFalse(self.window.channel_choice.isEnabled())
         for key in ('channels_both', 'channels_left', 'channels_right'): self.assertFalse(self.window.actions[key].isEnabled())

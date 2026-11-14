@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.21.0**.
+De huidige versie is **0.22.0**.
 
 ## Wat het kan
 
@@ -26,7 +26,7 @@ De huidige versie is **0.21.0**.
 - Opnemen naar een nieuwe golfvorm, invoegen bij de cursor, een selectie vervangen of een nieuwe clip op een spoor maken.
 - Pauzeren, hervatten en een take in één stap ongedaan maken; een kort opnamebegin overslaan om inschakeltikjes te vermijden.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
-- Links en rechts afzonderlijk selecteren en bewerken, met behoud van het andere kanaal.
+- Links en rechts afzonderlijk knippen, plakken, tijdrekken en opnemen; het andere kanaal blijft op zijn plaats.
 - Samplepunten verslepen of hun waarde exact invoeren om kleine tikjes plaatselijk te corrigeren.
 - Met de potloodknop rechtstreeks op de golfvorm tekenen, ook bij minder vergroting, met één stap ongedaan maken.
 
@@ -92,6 +92,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.22.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.22.0)** Links en rechts afzonderlijk knippen, plakken, tijdrekken en opnemen. Het andere kanaal blijft op zijn plaats; gemengd plakken kan voorbij het einde.
 
 **[0.21.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.21.0)** MP3-hoofdstukken volgen audiobewerkingen. Achterhaalde meetgegevens worden opgeschoond; WAV-bestandsinformatie wordt bij MP3-export duidelijk afgehandeld.
 

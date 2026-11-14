@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.21.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.22.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 ## 1. Langue et aide
 
@@ -77,7 +77,13 @@ Cliquez pour placer le curseur, glissez pour sélectionner. En stéréo, glissez
 
 **Couper / Ctrl+X** retire et copie ; **Copier / Ctrl+C** copie ; **Coller / Ctrl+V** remplace la sélection ou insère au curseur. **Collage mixé / Ctrl+M** additionne l'audio du presse-papiers et peut augmenter les crêtes. **Suppr** retire l'intervalle ; **Rogner / Ctrl+T** garde uniquement celui-ci. **Ctrl+Z / Ctrl+Maj+Z** annule/rétablit. Le collage convertit la fréquence sans changer le presse-papiers. Pour les deux canaux, le nombre doit correspondre. Copier/exporter gauche ou droite donne du mono ; l'enregistrement normal garde toute la stéréo.
 
-La stéréo partage une ligne temporelle : couper/supprimer/rogner, étirer, insérer ou ajouter une queue exige les deux canaux. Coller du mono dans un canal stéréo doit remplacer exactement l'intervalle ; le collage mixé doit rester dans la durée existante. **Silence** vide un canal sans déplacer l'autre. Transposition, délai, écho, réverbération et convolution peuvent traiter un canal à durée fixe. Enregistrer dans une stéréo existante exige aussi les deux. Annulation/récupération gardent le choix de canaux.
+La stéréo garde une ligne temporelle commune. Avec **Gauche** ou **Droite**, couper/supprimer, insérer, coller une durée différente, étirer, générer des sons/silences et ajouter une queue décale uniquement le canal choisi. L’autre garde ses échantillons à leurs positions d’origine. Le canal plus court est complété par du silence à la fin. **Les deux** décale les deux canaux et leurs repères communs ; **Effets → Silence** efface sans décaler.
+
+Exemple : supprimer les secondes 2–3 à gauche avance la suite gauche d’une seconde et ajoute une seconde de silence final ; droite reste en place. **Rogner** place uniquement le fragment choisi du canal choisi à l’instant zéro et complète le reste par du silence. Ce silence fait partie de l’audio, reste après enregistrement/réouverture et suit les insertions ultérieures. Supprimez le silence final indésirable avec Les deux. Les repères et chapitres MP3 communs gardent leurs positions lors d’une modification d’un seul canal ; vérifiez leur signification après un décalage.
+
+Le presse-papiers mono peut remplacer un intervalle plus court ou plus long, ou s’insérer au curseur. Un presse-papiers stéréo fournit le canal gauche/droit correspondant. La fréquence est convertie si nécessaire. Les repères/chapitres du presse-papiers ne sont fusionnés qu’avec Les deux ; le collage sur un canal garde les repères communs de destination. **Collage mixé** additionne depuis le début de sélection/curseur sans décaler la suite et peut dépasser la fin ; l’autre canal reçoit du silence final.
+
+Pour enregistrer dans un canal, choisissez Gauche/Droite, **R**, puis **Insérer au curseur** ou **Remplacer la sélection**. La capture est mono, à la fréquence de la forme d’onde. **Premier canal d’entrée** choisit l’entrée matérielle indépendamment de la destination gauche/droite. Arrêter applique une modification, décale ce seul canal et complète si nécessaire. Nouvelle forme d’onde reste disponible. Le choix de canal est verrouillé pendant la capture ; un échec/annulation du traitement final conserve la prise sous Récupérer le travail. Annuler/Rétablir restaure audio, remplissage, métadonnées et canaux ; la récupération conserve l’audio stéréo modifié.
 
 ### Modifier des échantillons individuels
 
@@ -125,7 +131,7 @@ Sous **Filtres**, **Égaliseur graphique** comporte dix bandes d'octave, 31,5 Hz
 
 **Réverbération** règle taille de pièce (espacement des réflexions), déclin RT60 approximatif (0,1–10 s), prédélai (0–250 ms) avant l'effet, amortissement aigu et largeur stéréo (0 même effet des deux côtés, 100 pleine largeur ; désactivée en mono). Petite pièce, studio, grande salle et ambiance longue varient espace/déclin. Pour la parole, commencez avec peu d'effet, déclin court et un peu de prédélai. Réverbération algorithmique, sans modèle exact de salle.
 
-Son direct et effet sont des pourcentages indépendants additionnés ; le gain de sortie (−24…+24 dB) règle la somme sans limitation automatique. La durée reste fixe par défaut, coupant les répétitions tardives. Ajouter une queue insère 0,01–60 s et décale l'audio suivant et ses repères. Les 10 dernières ms s'estompent. Les préréglages décochent la queue ; réglez-la ensuite. Un écho extrême peut dépasser 60 s : réduisez réinjection/délai. Exemple : voix 2 s + queue 3 s = 5 s. Un seul canal stéréo ne peut ajouter du temps.
+Son direct et effet sont des pourcentages indépendants additionnés ; le gain de sortie (−24…+24 dB) règle la somme sans limitation automatique. La durée reste fixe par défaut, coupant les répétitions tardives. Ajouter une queue insère 0,01–60 s et décale l'audio suivant et ses repères. Les 10 dernières ms s'estompent. Les préréglages décochent la queue ; réglez-la ensuite. Un écho extrême peut dépasser 60 s : réduisez réinjection/délai. Exemple : voix 2 s + queue 3 s = 5 s. Une queue sur un canal ne décale que ce canal ; les repères communs restent en place.
 
 ### Réduction du bruit et déclics
 
@@ -137,7 +143,7 @@ Réduction maximale 0–36 dB ; commencez à 6–12 dB. La sensibilité traite p
 
 ### Temps et hauteur
 
-**Durée/hauteur → Étirement temporel** change la durée (25–400 %) sans changer la hauteur : 200 % double, 50 % divise par deux. Les champs de tempo calculent ancien/nouveau BPM (120→100 donne 120 %), sans détection automatique. Les repères internes suivent l'échelle ; audio/repères suivants se décalent. La stéréo exige les deux canaux. **Transposition** varie −24…+24 demi-tons sans changer durée/repères ; ±12 vaut une octave, 0,01 demi-ton un cent. Préserver les formants aide la voix ; comparez sur les instruments.
+**Durée/hauteur → Étirement temporel** change la durée (25–400 %) sans changer la hauteur : 200 % double, 50 % divise par deux. Les champs de tempo calculent ancien/nouveau BPM (120→100 donne 120 %), sans détection automatique. Avec Les deux, les repères suivent l’échelle et la suite se décale. Avec Gauche/Droite, seul ce canal se décale ; les repères communs restent en place. **Transposition** varie −24…+24 demi-tons sans changer durée/repères ; ±12 vaut une octave, 0,01 demi-ton un cent. Préserver les formants aide la voix ; comparez sur les instruments.
 
 Fin (défaut) et Rapide utilisent Rubber Band hors ligne. La stéréo est traitée ensemble ; les extrêmes peuvent sembler artificiels. Pour une vraie modification, utilisez au moins 50 ms et 64 échantillons. Le neutre rend exactement l'original, la sortie s'arrondit aux échantillons. L'aperçu analyse toute la sélection avant huit secondes maximum ; les fichiers longs demandent temps et mémoire d'analyse. La progression est annulable. Pour un clip, modifiez une copie puis réappliquez ; les courbes se redimensionnent, les clips suivants ne bougent pas automatiquement.
 
@@ -232,6 +238,6 @@ Le décalage de position déplace le clip inséré : négatif plus tôt, positif
 | Ctrl+D / Tab / F11 | Dupliquer clip / vue / plein écran |
 | F1 / F2 / Alt+Z | Manuel / répéter effet / analyse fréquentielle 
 
-Pas d'entrée : vérifiez périphérique/canal et niveau micro Linux, reconnectez puis recommencez. Pas de sortie : routage, volume, muet/solo et matériel audio. Distorsion/crêtes rouges : baissez le gain cumulé, normalisez avant PCM ; collage mixé et clips superposés s'additionnent. Collage refusé : vérifiez canaux ou durée exacte de remplacement mono. Effet désactivé : ouvrez une forme/copie ; mélangeur exige stéréo, changements de durée les deux canaux. Points au lieu des clips : choisissez déplacer les clips. Disque plein : libérez de la place sans effacer de fichiers de travail actifs. Récupération endommagée : les originaux restent ; supprimez la copie seulement si inutile.
+Pas d'entrée : vérifiez périphérique/canal et niveau micro Linux, reconnectez puis recommencez. Pas de sortie : routage, volume, muet/solo et matériel audio. Distorsion/crêtes rouges : baissez le gain cumulé, normalisez avant PCM ; collage mixé et clips superposés s'additionnent. Collage refusé : vérifiez le nombre de canaux du presse-papiers. Effet désactivé : ouvrez une forme/copie ; le mélangeur exige la stéréo ; choisissez les canaux à modifier. Points au lieu des clips : choisissez déplacer les clips. Disque plein : libérez de la place sans effacer de fichiers de travail actifs. Récupération endommagée : les originaux restent ; supprimez la copie seulement si inutile.
 
 En développement : favoris personnalisés et éditeur de marqueurs. Chaînes temps réel, Linux VST3 et accompagnement sont disponibles comme décrit. Enregistrez avant de quitter. Actualités : [SoundSausage](https://github.com/rene-timmermans/SoundSausage).

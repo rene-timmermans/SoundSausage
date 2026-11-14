@@ -498,11 +498,9 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             self.actions[key].setEnabled(self.mode == "waveform" and stereo and not self.recording_busy)
         if self.mode != "waveform": return
         for key in ("cut", "delete", "trim", "stretch", "tone", "generate_silence"):
-            self.actions[key].setToolTip("Choose Both channels for an operation that changes stereo duration." if doc.partial_channels else "")
-            if doc.partial_channels: self.actions[key].setEnabled(False)
-        if not doc.partial_channels:
-            self.actions["stretch"].setEnabled(doc.frames > 0)
-            self.actions["tone"].setEnabled(True); self.actions["generate_silence"].setEnabled(True)
+            self.actions[key].setToolTip("Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence." if doc.partial_channels else "")
+        self.actions["stretch"].setEnabled(doc.frames > 0)
+        self.actions["tone"].setEnabled(True); self.actions["generate_silence"].setEnabled(True)
 
     def view_changed(self, start, end):
         self.scroll.blockSignals(True)
@@ -869,9 +867,9 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         form.addRow(buttons(dialog))
         if dialog.exec() == QDialog.DialogCode.Accepted:
             def perform():
-                data = tone(duration.value(), doc.sample_rate, doc.channels, frequency.value(), level.value() / 100)
+                data = tone(duration.value(), doc.sample_rate, doc.effect_channel_count, frequency.value(), level.value() / 100)
                 a, b = doc.selection if doc.selected else (doc.cursor, doc.cursor)
-                doc.replace(a, b, data, "Generate Tones")
+                doc.replace_selected(a, b, data, "Generate Tones")
             self.edit(perform)
 
     def generate_silence(self):
@@ -884,7 +882,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
                 if frames * doc.channels * 4 > MAX_AUDIO_BYTES:
                     raise AudioError("The generated silence would exceed the document limit.")
                 a, b = doc.selection if doc.selected else (doc.cursor, doc.cursor)
-                doc.replace(a, b, storage.seal(storage.allocate((frames, doc.channels), zero=True), checked=True), "Generate Silence")
+                doc.replace_selected(a, b, storage.seal(storage.allocate((frames, doc.effect_channel_count), zero=True), checked=True), "Generate Silence")
             self.edit(perform)
 
     def frequency_analysis(self):

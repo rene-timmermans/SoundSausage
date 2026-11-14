@@ -37,7 +37,7 @@ class RecordDialog(QDialog):
             name=window.session.tracks[window.session.track_index(window.session.selected_track)].name
             self.target.addItem(f'New clip on {name}','multitrack')
             if window.session.selected:self.target.addItem('Punch In/Out in Selection','punch')
-        elif window.document.frames and not window.document.partial_channels:
+        elif window.document.frames:
             self.target.addItem('Insert at cursor','insert')
             if window.document.selected:self.target.addItem('Replace selection','replace')
         self.target.addItem('New waveform','new')
@@ -120,7 +120,7 @@ class RecordDialog(QDialog):
         self.channels.setEnabled(not existing)
         if existing:
             self.rate.setValue(self.window.document.sample_rate)
-            self.channels.setCurrentIndex(self.window.document.channels-1)
+            self.channels.setCurrentIndex(self.window.document.effect_channel_count-1)
         elif multi:self.rate.setValue(self.window.session.sample_rate)
         if self.window.no_audio:
             self.note.setText('Audio is disabled.');self.calibrate.setEnabled(False)
@@ -132,6 +132,8 @@ class RecordDialog(QDialog):
             self.first.setMaximum(max(1,maximum-(self.channels.currentIndex()+1)+1))
             fmt=input_format(device,self.rate.value(),self.channels.currentIndex()+1,self.first.value()-1)
             text=f'Device: {device.description()}'
+            if existing and self.window.document.partial_channels:
+                text+='\nOnly the chosen channel shifts. The other stays in place; shorter audio is padded with silence.'
             if fmt.channelCount()==1 and self.channels.currentIndex()==1:
                 text+='\nMono input is recorded on both stereo channels.'
             if fmt.sampleRate()!=self.rate.value():text+=f'\nInput at {fmt.sampleRate():,} Hz; the take is converted after Stop.'
@@ -262,11 +264,9 @@ class RecordingActions:
             accompaniment=True
         if not np.isfinite(pre_roll_seconds) or not 0<=pre_roll_seconds<=30 or not np.isfinite(punch_fade_ms) or not 0<=punch_fade_ms<=100:
             raise AudioError('Invalid punch pre-roll or crossfade.')
-        if target in ('insert','replace') and self.document.partial_channels:
-            raise AudioError('Choose Both channels to record into an existing stereo waveform.')
         if target=='new' and not self._confirm_discard():return False
-        if target in ('insert','replace') and (rate!=self.document.sample_rate or channels!=self.document.channels):
-            raise AudioError('Recording into a waveform requires its sample rate and channel count.')
+        if target in ('insert','replace') and (rate!=self.document.sample_rate or channels!=self.document.effect_channel_count):
+            raise AudioError('Recording into a waveform requires its sample rate and selected channel count.')
         if target=='replace' and not self.document.selected:raise AudioError('Select audio to replace first.')
         if target in ('multitrack','punch') and rate!=self.session.sample_rate:raise AudioError('Use the session sample rate for recording.')
         if accompaniment and target not in ('multitrack','punch'): raise AudioError('Playback accompaniment requires a multitrack recording.')
@@ -291,6 +291,7 @@ class RecordingActions:
                                   automatic_sync=bool(automatic_sync),calibration=profile,clock=None,
                                   playback_loop=self.player.loop,
                                   document=self.document,session=self.session,revision=self.active_model().revision,
+                                  selected_channels=self.document.selected_channels,
                                   track=self.session.selected_track,
                                   actions={key:action.isEnabled() for key,action in self.actions.items()})
         if target=='punch':
@@ -477,7 +478,9 @@ class RecordingActions:
         else:
             if self.document is not context['document'] or self.document.revision!=context['revision']:
                 raise AudioError('The destination changed; the take is available under Recover Work.')
-            self.document.replace(context['start'],context['end'],data,'Record')
+            if self.document.selected_channels!=context.get('selected_channels',self.document.selected_channels):
+                raise AudioError('The destination changed; the take is available under Recover Work.')
+            self.document.replace_selected(context['start'],context['end'],data,'Record')
         return True
 
     def recording_finished(self,take):

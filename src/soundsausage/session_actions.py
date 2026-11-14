@@ -89,8 +89,6 @@ class SessionActions:
             self.actions["generate_silence"].setEnabled(True)
         for key in ("clip_properties", "duplicate_clip", "remove_clip"):
             self.actions[key].setEnabled(multi and self.session.selected_clip is not None)
-        if not multi and self.document.partial_channels:
-            for key in ("tone", "generate_silence", "stretch"): self.actions[key].setEnabled(False)
         self.actions["insert_wave"].setEnabled(self.document.frames > 0)
         self.actions["mixdown"].setEnabled(self.session.frames > 0)
         self.actions["save_session"].setEnabled(self.session.dirty or self.session.path is None)

@@ -1,4 +1,4 @@
-# SoundSausage 0.21.0
+# SoundSausage 0.22.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -22,6 +22,7 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Golfvormbewerking met selecties, knippen, plakken, Mix Paste, trimmen en undo/redo.
 - Links/rechts apart kiezen door slepen, een zichtbare kanaalkeuze of sneltoetsen.
 - Effecten, Preview, kopiëren en selectie-export op gekozen kanalen; het andere kanaal blijft behouden.
+- Knippen, trimmen, invoegen, ongelijk plakken, uitklank, tijdrekken en opnemen op één kanaal, met blokverwerking en één Undo-stap.
 - Doorlopende golfvorm bij zoomen en afzonderlijke functie-iconen in menu's en werkbalken.
 - Versterking, fades, normaliseren, omkeren, polariteit omkeren, tonen en stilte.
 - Channel Mixer, Dynamics Processing en Envelope, met presets, bewerkbare curves en luistervoorbeelden.
@@ -89,8 +90,8 @@ of voorwaarden voor v1.0.
 
 - Samplepunten verschijnen vanaf twee logische pixels per sample; het numerieke venster blijft bij ieder zoomniveau beschikbaar. Golfvorm tekenen vervangt de samples langs de getekende lijn; een groep beslaat maximaal één seconde, een hele beweging kan meerdere groepen raken.
 - ID3-hoofdstukken gebruiken milliseconden; lege of door gedeeltelijk omkeren versnipperde hoofdstukken vervallen. Herkende verouderde metingen en niet-ondersteunde getimede ID3-velden vervallen na audioverandering. Nieuwe ReplayGain-metingen worden niet berekend; onbekende privévelden blijven letterlijk behouden.
-- Stereo heeft een gezamenlijke tijdas. Duurwijzigingen, knippen, verwijderen, trimmen en opname in de bestaande golfvorm vereisen beide kanalen.
-- Op één stereokanaal plakken kan bij gelijke vervangingsduur; Mix Paste blijft binnen de bestaande lengte.
+- Stereo houdt een gezamenlijke tijdas. Bij knippen, verwijderen, invoegen, plakken, tijdrekken, uitklank en opname op één kanaal verschuift alleen dat kanaal; het andere blijft exact op zijn positie. Het kortere kanaal krijgt achteraan stilte, die bij opslaan onderdeel van de audio blijft.
+- Trimmen op één kanaal zet alleen het gekozen fragment op tijdstip nul en vult de rest met stilte. Mix Paste kan op één kanaal voorbij het einde mengen. Gezamenlijke markers en hoofdstukken blijven bij zulke kanaalbewerkingen op hun tijdstip; bronmarkeringen worden bij plakken op één kanaal niet samengevoegd.
 - VST3: één stereo-invoer/-uitvoerbus en float32. LV2/LADSPA: mono/stereo met evenveel in-/uitgangen. Geen VST2, Windows-plug-ins, MIDI-instrumenten of extra sidechains.
 - Eigen vensters vereisen X11/XWayland; LV2 GTK-/Qt-adapters en MIDI/Atom-poorten ontbreken. Niet-ondersteunde vereiste functies worden gemeld.
 - Compensatie vereist correct gerapporteerde algoritmische vertraging, maximaal tien seconden per spoor. Muzikale delay blijft intact.

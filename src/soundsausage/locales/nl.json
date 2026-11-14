@@ -1,6 +1,7 @@
 {
   "\nInput at {0} Hz; the take is converted after Stop.": "\nIngang op {0} Hz; de take wordt na Stop omgezet.",
   "\nMono input is recorded on both stereo channels.": "\nEen mono-ingang wordt op beide stereokanalen opgenomen.",
+  "\nOnly the chosen channel shifts. The other stays in place; shorter audio is padded with silence.": "\nAlleen het gekozen kanaal verschuift. Het andere blijft staan; kortere audio wordt met stilte aangevuld.",
   "\nOnly the selected interval is replaced. Playback starts with pre-roll; recording stops automatically after the selection.": "\nAlleen het gekozen interval wordt vervangen. Afspelen begint met voorloop; de opname stopt automatisch na de selectie.",
   " (import)": " (import)",
   " BPM": " BPM",
@@ -709,6 +710,7 @@
   "Normalized value": "Genormaliseerde waarde",
   "Notch": "Sperfilter",
   "Nuldoorgangen zoeken": "Nuldoorgangen zoeken",
+  "Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence.": "Alleen het gekozen kanaal verschuift. Het andere blijft staan; kortere audio wordt met stilte aangevuld.",
   "Only the selected interval is replaced.": "Alleen het gekozen interval wordt vervangen.",
   "Only this sample in the chosen channel changes. Other samples, duration and metadata stay intact. Changing the displayed range does not convert the file.": "Alleen deze sample in het gekozen kanaal wijzigt. Andere samples, duur en metadata blijven behouden. Een ander weergavebereik verandert het bestandsformaat niet.",
   "Open": "Openen",
@@ -806,6 +808,7 @@
   "Recording device": "Opnameapparaat",
   "Recording input": "Opname-ingang",
   "Recording into a waveform requires its sample rate and channel count.": "Opnemen in een golfvorm vereist dezelfde samplerate en hetzelfde aantal kanalen.",
+  "Recording into a waveform requires its sample rate and selected channel count.": "Opnemen in een golfvorm vereist de samplerate en het gekozen aantal kanalen van die golfvorm.",
   "Recording kept for recovery. Use File → Recover Work.": "Opname bewaard voor herstel. Gebruik Bestand → Werk herstellen.",
   "Recording position offset": "Verschuiving van opnamepositie",
   "Recording synchronized.": "Opname gesynchroniseerd.",

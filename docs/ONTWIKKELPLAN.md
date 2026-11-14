@@ -11,6 +11,7 @@ als onderbouwing van de beschikbare app bewaard.
 
 1. **B06/B07:** kanaalgebonden knippen, duurwijzigingen en plakken samen afronden,
    met duidelijke kanaaluitlijning, Undo/Redo, metadata en opslag/herstel.
+   Implementatie 0.22.0 wordt getoetst; [controle](validation/channel-timing.md).
 2. **B21:** ruisreductie verbeteren voor wisselende ruis en zachte details.
 3. **B23/B24:** uitklank van galm/echo en selectieranden/fasegedrag van EQ/filters uitwerken.
 4. **B36b:** de markereditor afronden, inclusief toevoegen, verplaatsen, benoemen,

@@ -77,14 +77,14 @@ class ChannelSelectionTests(unittest.TestCase):
             np.testing.assert_allclose(doc.view()[:, 1], self.data[:, 1]*.25, atol=1e-7)
             np.testing.assert_array_equal(doc.view()[:, 0], self.data[:, 0])
 
-    def test_length_changes_require_both_and_fail_without_mutation(self):
+    def test_stretch_extends_only_chosen_channel_and_keeps_other_at_original_times(self):
         doc = Document(self.data, 8000); doc.select_channels((0,)); doc.select(100, 1000)
-        for name, settings in [('stretch', dict(time_ratio=2)), ('echo', dict(tail_seconds=.1)), ('reverb', dict(tail_seconds=.2))]:
-            with self.assertRaisesRegex(ValueError, 'Both'): doc.apply(name, **settings)
-        for method in (doc.cut, doc.delete, doc.trim):
-            with self.assertRaisesRegex(ValueError, 'Both'): method()
-        self.assertFalse(doc.undo_stack); np.testing.assert_array_equal(doc.view(), self.data)
-        doc.select_channels(); doc.apply('stretch', time_ratio=2); self.assertEqual(doc.frames, len(self.data)+900)
+        doc.apply('stretch', time_ratio=2)
+        self.assertEqual(doc.frames, len(self.data)+900)
+        np.testing.assert_array_equal(doc.view()[:len(self.data), 1], self.data[:, 1])
+        np.testing.assert_array_equal(doc.view()[len(self.data):, 1], 0)
+        np.testing.assert_array_equal(doc.view()[1900:, 0], self.data[1000:, 0])
+        doc.undo(); np.testing.assert_array_equal(doc.view(), self.data)
 
     def test_copy_and_paste_one_channel_keep_stereo_timing_and_other_samples(self):
         doc = Document(self.data, 8000); doc.select_channels((0,)); doc.select(100, 300)
@@ -96,7 +96,10 @@ class ChannelSelectionTests(unittest.TestCase):
         expected = self.data.copy(); expected[500:700, 1] += self.data[100:300, 0]
         np.testing.assert_array_equal(doc.view(), expected)
         doc.select(500, 500)
-        with self.assertRaisesRegex(ValueError, 'Both'): doc.paste(clip)
+        before = doc.read(); doc.paste(clip)
+        self.assertEqual(doc.frames, len(before)+len(clip.samples))
+        np.testing.assert_array_equal(doc.view()[:len(before), 0], before[:, 0])
+        np.testing.assert_array_equal(doc.view()[700:, 1], before[500:, 1])
 
     def test_single_channel_reverse_preserves_shared_markers(self):
         doc = Document(self.data, 8000)
