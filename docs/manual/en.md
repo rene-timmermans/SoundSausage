@@ -23,6 +23,11 @@ Click a topic to jump directly to it. Contents brings you back; Previous and Nex
 - [6a. Markers](#ss-topic-6a-markers)
 - [7. Applying effects](#ss-topic-7-applying-effects)
   - [Remaster](#ss-topic-remaster)
+    - [Choosing a Remaster preset](#ss-topic-choosing-a-remaster-preset)
+    - [What Remaster changes in the sound](#ss-topic-what-remaster-changes-in-the-sound)
+    - [What the Remaster controls do](#ss-topic-what-the-remaster-controls-do)
+    - [Comparing and applying Remaster](#ss-topic-comparing-and-applying-remaster)
+    - [What to expect from Remaster](#ss-topic-what-to-expect-from-remaster)
   - [Amplitude](#ss-topic-amplitude)
     - [Amplify / Fade](#ss-topic-amplify-fade)
     - [Channel Mixer](#ss-topic-channel-mixer)
@@ -225,29 +230,79 @@ Waveform effects under **Transform** affect the selected range/channels, or thei
 
 ### Remaster
 
-Choose **Transform → Remaster…** when voices or instruments briefly sink behind strong drums in a finished mix. Use the whole waveform or select a problem range. Place the cursor near a clearly audible example before opening the dialog.
+Open **Transform → Remaster…** when voices or instruments briefly sink behind drums, or a mix has audible short volume cuts. Remaster detects suitable dips and locally lifts detail still present. It processes the selection, or the whole waveform when there is no selection.
 
-Start with **Balanced recovery**; **Gentle recovery** changes less, **Strong recovery** intervenes further.
+<a id="ss-topic-choosing-a-remaster-preset"></a>
 
-| Setting | Use |
+#### Choosing a Remaster preset
+
+| Preset | Pumping reduction / Maximum recovery | Drum threshold / Recovery time | Short-drop repair |
+| --- | --- | --- | --- |
+| Gentle recovery | 35% / 2 dB | 4 dB / 160 ms | 0 dB: off |
+| Balanced recovery | 60% / 4 dB | 3 dB / 180 ms | 0 dB: off |
+| Strong recovery | 90% / 6 dB | 2 dB / 240 ms | 0 dB: off |
+| Short volume drops | 90% / 6 dB | 2 dB / 240 ms | 12 dB |
+
+Start with **Balanced recovery** for mild pumping. **Gentle recovery** changes less. **Strong recovery** permits more lift and responds to weaker drum onsets. **Short volume drops** uses the same ordinary settings as Strong recovery and also enables the faster repair for deep, brief gaps. Increasing strength alone does not enable that extra repair.
+
+A preset changes only the five settings in the table. Output ceiling, listening position and volume matching retain their current values. Output ceiling starts at −1 dBFS. **Custom** keeps the current settings. Manually changing a recovery setting or the output ceiling selects it; listening position and volume matching do not.
+
+<a id="ss-topic-what-remaster-changes-in-the-sound"></a>
+
+#### What Remaster changes in the sound
+
+Ordinary recovery estimates sustained mid/high content such as voices, guitar or synthesizer. It compares its level with surrounding audio and looks for brief deficits near detected bass or percussion onsets. Only the detected deficit receives bounded lift; it does not produce separate vocal or instrument tracks.
+
+Short-drop repair measures mid/high energy over about **4 ms**, updating roughly every **1 ms**. It compares the **20–80 ms before and after** a possible dip; both sides must support the missing level. It seeks approximately **6–120 ms** dips of at least **4 dB**, linked to drum detection. This helps skip long pauses, very quiet material and gradual fades.
+
+At an eligible gap, the faster route locally replaces ordinary recovery. Their gains are not added. A short smooth transition and rapid return limit overshoot when the source level recovers. This route has its own fast response times; the dialog’s **Recovery time** controls how long drum detection remains relevant.
+
+Bass below about **180 Hz** receives no recovery lift; the crossover reaches about **600 Hz**. **Both** uses linked control for left/right. **Left/Right** processes only that channel. Duration, sample rate and marker positions remain unchanged.
+
+<a id="ss-topic-what-the-remaster-controls-do"></a>
+
+#### What the Remaster controls do
+
+| Control | Action and expected effect |
 | --- | --- |
-| Pumping reduction | Recovery strength, 0–100%; start around 60%. |
-| Maximum recovery | Limit on the local lift, 0–9 dB; default 4 dB. |
-| Short-drop repair | Separate recovery of short mid/high gaps, 0–18 dB. 0 disables it; start at 12 dB for deep cuts. |
-| Drum threshold | 0–12 dB. Lower reacts to more onsets; higher confines recovery to stronger drum events. |
-| Recovery time | 50–500 ms. Longer retains drum detection for longer. |
-| Output ceiling | −12 to 0 dBFS; default −1 dBFS. One constant attenuation keeps sample peaks below this ceiling; it is not another compressor or a true-peak limiter. |
-| Preview from | Start time in seconds within the processed range. |
+| Pumping reduction | 0–100%; scales both recovery routes. The percentage is not a promise to reconstruct that proportion of the original mix. At 0%, both recovery routes are off; the output ceiling still works. |
+| Maximum recovery | 0–9 dB; bounds ordinary recovery before strength scaling and smoothing. 0 dB disables only ordinary recovery. |
+| Short-drop repair | 0–18 dB; a separate bound for brief gaps, before strength scaling. 0 dB disables the extra route. Start with 12 dB for deep cuts and adjust in small steps. |
+| Drum threshold | 0–12 dB; lower accepts more onsets, higher confines detection to stronger ones. This also affects when short-drop repair can act. |
+| Recovery time | 50–500 ms; longer keeps drum detection active for longer after an onset. It does not change the extra route’s fixed fast measurement windows. |
+| Output ceiling | −12 to 0 dBFS; default −1 dBFS. When needed, one constant attenuation lowers the complete processed range to keep sample peaks below the ceiling. It does not automatically raise quiet material to the ceiling. It is not a true-peak limiter. |
+| Preview from | Listening position in seconds within the processed range; moving it changes only the audition segment. |
 
-The **Short volume drops** preset combines Strong recovery with 12 dB of recovery allowance for brief gaps. Use it when Strong recovery still leaves fast dips. Always start from the original recording; avoid applying Remaster repeatedly over an earlier result when comparing modes.
+**12 dB of recovery allowance is not a fixed 12 dB increase.** At the preset’s 90% strength, the nominal fast-recovery bound is 10.8 dB. Detection, the measured deficit, frequency range and smooth transitions can reduce the actual correction. Constant final attenuation also affects the saved level.
 
-This extra control finds approximately 6–120 ms dips near drums and compares sound before and after each gap. It follows mid/high energy more closely in time, replacing ordinary recovery locally rather than adding two gains. Bass receives no extra recovery lift. A real silence or gradual fade-out is not filled with invented music. Final constant attenuation can make the whole recording quieter to retain peak headroom; matched listening volume helps comparison. Strong correction can change timbre and cannot recover a completely missing instrument.
+<a id="ss-topic-comparing-and-applying-remaster"></a>
 
-**Original** and **Preview** play up to eight seconds from the chosen position. The first audition analyses and processes the complete range, with cancellable progress. That calculation is reused when only the listening position or volume matching changes. **Match listening volume for original and preview** compares equal average levels; this affects listening only, not the saved result.
+#### Comparing and applying Remaster
 
-Recovery lifts sustained mid/high sound near detected drum onsets, using one linked stereo control. Bass below about 180 Hz receives no recovery lift, with a crossover extending to about 600 Hz. Final constant output attenuation still affects the complete processed range. **Left/Right** confines processing to that channel. Duration and markers stay fixed. **OK** applies, **Ctrl+Z** restores the original and **F2** repeats settings. Use **Save As** for a separate WAV if desired.
+1. Open the original recording. Prefer the whole waveform for one shared output level. For a selection, retain about one second of context on either side and check its transitions after applying.
+2. Place the cursor near a problem passage, open Remaster and choose a preset. Use **Short volume drops** if Strong recovery leaves brief cuts.
+3. Compare **Original** and **Preview** with **Match listening volume for original and preview** enabled. Both play up to eight seconds from the chosen position. Matching uses the excerpt’s average level (RMS) and does not change saved processing.
+4. Also listen to a quieter passage and the ending. Reduce strength or allowance if instruments become too bright, noise becomes prominent or natural accents disappear.
+5. **OK** applies; **Cancel** leaves the waveform intact. **Ctrl+Z** restores the original. Compare presets from that original: applying again or using **F2** processes the current sound again. Use **Save As** for a separate WAV if desired.
 
-Also compare a quieter section. Strong settings may change balance or timbre. A finished mix has no separate vocal/drum tracks to reconstruct exactly; missing or clipped detail cannot be recovered exactly. Remaster is an offline waveform edit, not a realtime track insert.
+The first audition analyses the complete range with progress and cancellation. Changing only listening position or matching reuses that calculation. The whole recording can end up quieter because of peak headroom while brief dips become less audible.
+
+<a id="ss-topic-what-to-expect-from-remaster"></a>
+
+#### What to expect from Remaster
+
+Suitable material can sound more consistent as existing voices and instruments sink less behind drums. A clean mix may change little. Not every dip meets detection conditions; strong or longer drops may remain. Intentional musical cuts may be softened unnecessarily.
+
+Strong settings can change timbre, balance and natural dynamics, or expose existing noise/distortion. Remaster cannot reconstruct a completely missing instrument, remove clipping or recover lost MP3 detail. It does not fill silence or a fade with new music. Compare at matched average level and judge musical quality as well.
+
+| Processing | Purpose and difference |
+| --- | --- |
+| Amplify / Fade | Applies chosen gain or a fade; does not detect local volume gaps. |
+| Normalize | Scales the complete range by one factor to a chosen peak; brief relative level differences remain. |
+| Dynamics Processing | Changes level according to its curve and detector timing; does not use audio before and after a short gap as a repair reference. |
+| Remaster | Detects suitable temporary mid/high deficits and attempts local recovery. |
+
+Remaster is an offline waveform edit, not a realtime track insert.
 
 <a id="ss-topic-amplitude"></a>
 

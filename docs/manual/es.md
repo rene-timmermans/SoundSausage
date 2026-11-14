@@ -23,6 +23,11 @@ Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente ca
 - [6a. Marcadores](#ss-topic-6a-marcadores)
 - [7. Aplicar efectos](#ss-topic-7-aplicar-efectos)
   - [Remaster](#ss-topic-remaster)
+    - [Elegir un ajuste de Remaster](#ss-topic-elegir-un-ajuste-de-remaster)
+    - [Qué cambia Remaster en el sonido](#ss-topic-que-cambia-remaster-en-el-sonido)
+    - [Qué hacen los controles de Remaster](#ss-topic-que-hacen-los-controles-de-remaster)
+    - [Comparar y aplicar Remaster](#ss-topic-comparar-y-aplicar-remaster)
+    - [Qué esperar de Remaster](#ss-topic-que-esperar-de-remaster)
   - [Amplitud](#ss-topic-amplitud)
     - [Amplificar / fundido](#ss-topic-amplificar-fundido)
     - [Mezclador de canales](#ss-topic-mezclador-de-canales)
@@ -227,29 +232,79 @@ Los efectos de forma de onda de **Efectos** tratan el intervalo y canales elegid
 
 ### Remaster
 
-Use **Efectos → Remaster…** cuando voces o instrumentos bajen brevemente tras golpes fuertes de batería en una mezcla terminada. Use toda la forma de onda o seleccione un pasaje problemático. Coloque primero el cursor cerca de un ejemplo claramente audible.
+Abra **Efectos → Remaster…** cuando voces o instrumentos bajen brevemente tras la batería, o una mezcla tenga cortes cortos de volumen. Remaster detecta caídas adecuadas y aumenta localmente los detalles que aún existen. Procesa la selección, o toda la forma de onda si no hay selección.
 
-Empiece con **Recuperación equilibrada**; **Recuperación suave** cambia menos y **Recuperación intensa** interviene más.
+<a id="ss-topic-elegir-un-ajuste-de-remaster"></a>
 
-| Ajuste | Uso |
+#### Elegir un ajuste de Remaster
+
+| Ajuste | Reducción del bombeo / Recuperación máxima | Umbral de percusión / Tiempo de recuperación | Reparar caídas breves |
+| --- | --- | --- | --- |
+| Recuperación suave | 35% / 2 dB | 4 dB / 160 ms | 0 dB: desactivado |
+| Recuperación equilibrada | 60% / 4 dB | 3 dB / 180 ms | 0 dB: desactivado |
+| Recuperación intensa | 90% / 6 dB | 2 dB / 240 ms | 0 dB: desactivado |
+| Caídas breves de volumen | 90% / 6 dB | 2 dB / 240 ms | 12 dB |
+
+Empiece con **Recuperación equilibrada** para un bombeo leve. **Recuperación suave** cambia menos. **Recuperación intensa** permite más aumento y responde a ataques más débiles. **Caídas breves de volumen** usa los mismos ajustes ordinarios que la intensa y activa además la reparación rápida de huecos profundos y cortos. Subir solo la intensidad no activa esa reparación adicional.
+
+Un ajuste cambia solo los cinco valores de la tabla. Techo de salida, posición de escucha e igualación de volumen conservan sus valores actuales. El techo empieza en −1 dBFS. **Personalizado** conserva los valores actuales. Cambiar un control de recuperación o el techo selecciona este estado; la posición de escucha y la igualación no lo hacen.
+
+<a id="ss-topic-que-cambia-remaster-en-el-sonido"></a>
+
+#### Qué cambia Remaster en el sonido
+
+La recuperación ordinaria estima medios/agudos sostenidos, como voz, guitarra o sintetizador. Compara su nivel con el entorno y busca déficits breves cerca de ataques detectados de graves o percusión. Solo el déficit recibe un aumento limitado; no se crean pistas separadas de voz o instrumentos.
+
+La reparación breve mide medios/agudos durante unos **4 ms**, actualizando aproximadamente cada **1 ms**. Compara los **20–80 ms anteriores y posteriores** a una caída posible; ambos lados deben apoyar el nivel que falta. Busca caídas de unos **6–120 ms** y al menos **4 dB**, vinculadas a la detección de percusión. Así se evitan en lo posible pausas largas, material muy débil y fundidos graduales.
+
+En un hueco adecuado, la ruta rápida sustituye localmente la recuperación ordinaria. Las ganancias no se suman. Una transición suave y un retorno rápido limitan los excesos cuando vuelve el nivel de origen. Esta ruta tiene sus propios tiempos rápidos; el **Tiempo de recuperación** del diálogo controla cuánto sigue contando la detección de percusión.
+
+No se aumentan los graves por debajo de unos **180 Hz**; la transición llega hasta unos **600 Hz**. **Ambos** enlaza la regulación izquierda/derecha; **Izquierda/Derecha** procesa solo ese canal. Se conservan duración, frecuencia de muestreo y posiciones de marcadores.
+
+<a id="ss-topic-que-hacen-los-controles-de-remaster"></a>
+
+#### Qué hacen los controles de Remaster
+
+| Control | Acción y resultado esperado |
 | --- | --- |
-| Reducción del bombeo | Intensidad 0–100%; empezar cerca del 60%. |
-| Recuperación máxima | Límite del aumento local, 0–9 dB; predeterminado 4 dB. |
-| Reparar caídas breves | Corrección separada de huecos breves en medios/agudos, 0–18 dB. 0 desactiva; empiece con 12 dB para caídas profundas. |
-| Umbral de percusión | 0–12 dB. Más bajo responde a más ataques; más alto limita la recuperación a golpes fuertes. |
-| Tiempo de recuperación | 50–500 ms. Más largo mantiene la detección de batería durante más tiempo. |
-| Techo de salida | −12 a 0 dBFS; predeterminado −1 dBFS. Una atenuación constante limita picos de muestra; no es otro compresor ni un limitador true peak. |
-| Escuchar desde | Inicio en segundos dentro del intervalo procesado. |
+| Reducción del bombeo | 0–100%; escala ambas rutas. El porcentaje no promete reconstruir esa proporción de la mezcla original. A 0% ambas recuperaciones están desactivadas; el techo de salida sigue activo. |
+| Recuperación máxima | 0–9 dB; limita la ruta ordinaria antes de intensidad y suavizado. 0 dB desactiva solo esa ruta. |
+| Reparar caídas breves | 0–18 dB; límite separado para huecos breves antes de intensidad. 0 dB desactiva la ruta adicional. Empiece con 12 dB para cortes profundos y ajuste en pasos pequeños. |
+| Umbral de percusión | 0–12 dB; más bajo acepta más ataques, más alto solo los fuertes. También condiciona cuándo actúa la reparación breve. |
+| Tiempo de recuperación | 50–500 ms; más largo mantiene la detección tras el ataque. No cambia las ventanas rápidas fijas de la ruta adicional. |
+| Techo de salida | −12 a 0 dBFS; predeterminado −1 dBFS. Si hace falta, una atenuación constante baja todo el intervalo para respetar picos de muestra. No sube automáticamente material débil al techo. No es un limitador true peak. |
+| Escuchar desde | Posición en segundos dentro del intervalo procesado; moverla cambia solo el fragmento escuchado. |
 
-El ajuste **Caídas breves de volumen** combina Recuperación intensa con un margen de corrección de 12 dB para huecos cortos. Úselo si la recuperación intensa aún deja bajadas rápidas. Parta siempre de la grabación original; al comparar modos, evite aplicar Remaster repetidamente sobre un resultado anterior.
+**Un margen de recuperación de 12 dB no es un aumento fijo de 12 dB.** Con la intensidad del 90% del ajuste, el límite nominal rápido es 10,8 dB. Detección, déficit medido, frecuencias y transiciones suaves pueden reducir la corrección real. La atenuación final constante también afecta al nivel guardado.
 
-Este control detecta caídas de unos 6–120 ms cerca de la batería y compara el sonido anterior y posterior. Sigue medios y agudos con mayor precisión temporal y sustituye localmente la corrección normal, sin sumar dos ganancias. No aumenta más los graves. Un silencio real o un fundido final gradual no se rellena con música inventada. La atenuación constante final puede bajar toda la grabación para mantener margen de pico; igualar el volumen de escucha facilita comparar. Una corrección fuerte puede cambiar el timbre y no recupera un instrumento totalmente ausente.
+<a id="ss-topic-comparar-y-aplicar-remaster"></a>
 
-**Original** y **Vista previa** reproducen hasta ocho segundos desde la posición elegida. La primera escucha analiza y procesa todo el intervalo con progreso cancelable. Cambiar solo la posición o igualar volumen reutiliza el cálculo. **Igualar el volumen de escucha del original y la vista previa** compara niveles medios iguales solo al escuchar, sin cambiar el resultado guardado.
+#### Comparar y aplicar Remaster
 
-La recuperación aumenta medios/agudos sostenidos cerca de ataques detectados, con control estéreo enlazado. Los graves por debajo de unos 180 Hz no reciben aumento; la transición llega hasta unos 600 Hz. La atenuación constante final sí afecta a todo el intervalo procesado. **Izquierda/Derecha** limita el proceso a ese canal. Duración y marcadores se mantienen. **OK** aplica, **Ctrl+Z** restaura y **F2** repite. Use **Guardar como** para un WAV separado.
+1. Abra la grabación original. Prefiera toda la forma de onda para un nivel final común. En una selección, deje alrededor de un segundo de contexto a cada lado y compruebe las transiciones tras aplicar.
+2. Coloque el cursor cerca de un problema, abra Remaster y elija un ajuste. Use **Caídas breves de volumen** si la recuperación intensa deja cortes rápidos.
+3. Compare **Original** y **Vista previa** con **Igualar el volumen de escucha del original y la vista previa** activado. Ambos reproducen hasta ocho segundos desde la posición elegida. La igualación usa el nivel medio (RMS) del fragmento y no cambia el proceso guardado.
+4. Escuche también un pasaje tranquilo y el final. Reduzca intensidad o margen si los instrumentos resultan demasiado brillantes, destaca ruido o desaparecen acentos naturales.
+5. **OK** aplica; **Cancelar** conserva la forma. **Ctrl+Z** restaura el original. Compare ajustes desde ese original: aplicar otra vez o **F2** vuelve a procesar el sonido actual. Use **Guardar como** para un WAV separado.
 
-Compare también un pasaje tranquilo. Los ajustes fuertes pueden cambiar equilibrio o timbre. Una mezcla terminada no contiene pistas separadas de voz/batería para una reconstrucción exacta; no se pueden reconstruir exactamente detalles perdidos o recortados. Remaster edita la forma de onda sin conexión y no es un efecto de pista en tiempo real.
+La primera escucha analiza todo el intervalo con progreso y cancelación. Cambiar solo posición o igualación reutiliza el cálculo. La grabación completa puede quedar más baja por el margen de pico, aunque los cortes breves se oigan menos.
+
+<a id="ss-topic-que-esperar-de-remaster"></a>
+
+#### Qué esperar de Remaster
+
+El material adecuado puede sonar más uniforme al hundirse menos voces e instrumentos tras la batería. Una mezcla limpia puede cambiar poco. No toda caída cumple las condiciones; pueden quedar bajadas fuertes o largas. Los cortes musicales intencionales pueden suavizarse sin necesidad.
+
+Los ajustes fuertes pueden cambiar timbre, equilibrio y dinámica natural, o revelar ruido/distorsión existente. Remaster no reconstruye un instrumento totalmente ausente, no elimina clipping ni recupera detalles MP3 perdidos. No llena silencios ni fundidos con música nueva. Compare a nivel medio igual y valore también el resultado musical.
+
+| Proceso | Propósito y diferencia |
+| --- | --- |
+| Amplificar / Fundido | Aplica ganancia o fundido elegidos; no detecta huecos locales de volumen. |
+| Normalizar | Escala todo el intervalo con un factor hasta un pico elegido; quedan los desniveles breves relativos. |
+| Procesamiento de dinámica | Cambia el nivel según su curva y tiempos de detección; no usa el sonido anterior/posterior a un hueco breve como referencia de reparación. |
+| Remaster | Detecta déficits temporales adecuados de medios/agudos e intenta recuperarlos localmente. |
+
+Remaster edita la forma de onda sin conexión y no pertenece a la cadena de efectos de pista en tiempo real.
 
 <a id="ss-topic-amplitud"></a>
 

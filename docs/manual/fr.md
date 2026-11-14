@@ -23,6 +23,11 @@ Cliquez sur un sujet pour y accéder. Sommaire revient ici ; Précédent et Suiv
 - [6a. Repères](#ss-topic-6a-reperes)
 - [7. Appliquer des effets](#ss-topic-7-appliquer-des-effets)
   - [Remaster](#ss-topic-remaster)
+    - [Choisir un préréglage Remaster](#ss-topic-choisir-un-prereglage-remaster)
+    - [Ce que Remaster change dans le son](#ss-topic-ce-que-remaster-change-dans-le-son)
+    - [Effet des réglages Remaster](#ss-topic-effet-des-reglages-remaster)
+    - [Comparer et appliquer Remaster](#ss-topic-comparer-et-appliquer-remaster)
+    - [Résultats attendus de Remaster](#ss-topic-resultats-attendus-de-remaster)
   - [Amplitude](#ss-topic-amplitude)
     - [Amplifier / fondre](#ss-topic-amplifier-fondre)
     - [Mélangeur de canaux](#ss-topic-melangeur-de-canaux)
@@ -227,29 +232,79 @@ Les effets de forme d'onde sous **Effets** traitent l'intervalle/canaux choisis,
 
 ### Remaster
 
-Choisissez **Effets → Remaster…** lorsque des voix ou instruments s’effacent brièvement derrière de fortes frappes de batterie dans un mixage terminé. Traitez toute la forme d’onde ou sélectionnez un passage problématique. Placez d’abord le curseur près d’un exemple clairement audible.
+Ouvrez **Effets → Remaster…** lorsque des voix ou instruments s’effacent brièvement derrière la batterie, ou qu’un mixage comporte de courtes coupures de volume. Remaster détecte les creux appropriés et relève localement les détails encore présents. Il traite la sélection, ou toute la forme d’onde sans sélection.
 
-Commencez par **Récupération équilibrée** ; **Récupération douce** change moins, **Récupération forte** intervient davantage.
+<a id="ss-topic-choisir-un-prereglage-remaster"></a>
 
-| Réglage | Utilisation |
+#### Choisir un préréglage Remaster
+
+| Préréglage | Réduction du pompage / Récupération maximale | Seuil de percussion / Temps de récupération | Correction des baisses brèves |
+| --- | --- | --- | --- |
+| Récupération douce | 35% / 2 dB | 4 dB / 160 ms | 0 dB : désactivée |
+| Récupération équilibrée | 60% / 4 dB | 3 dB / 180 ms | 0 dB : désactivée |
+| Récupération forte | 90% / 6 dB | 2 dB / 240 ms | 0 dB : désactivée |
+| Baisses de volume brèves | 90% / 6 dB | 2 dB / 240 ms | 12 dB |
+
+Commencez par **Récupération équilibrée** pour un pompage léger. **Récupération douce** modifie moins. **Récupération forte** autorise davantage de hausse et réagit à des attaques plus faibles. **Baisses de volume brèves** reprend les réglages ordinaires du mode fort et active en plus la correction rapide des creux courts et profonds. Augmenter seulement l’intensité n’active pas cette correction supplémentaire.
+
+Un préréglage ne change que les cinq valeurs du tableau. Plafond de sortie, position d’écoute et égalisation du volume gardent leurs valeurs. Le plafond commence à −1 dBFS. **Personnalisé** conserve les valeurs courantes. Modifier un réglage de récupération ou le plafond sélectionne cet état ; la position d’écoute et l’égalisation de volume ne le font pas.
+
+<a id="ss-topic-ce-que-remaster-change-dans-le-son"></a>
+
+#### Ce que Remaster change dans le son
+
+La récupération ordinaire estime les sons soutenus médiums/aigus, par exemple voix, guitare ou synthétiseur. Elle compare leur niveau à l’environnement et recherche de brefs déficits près des attaques de graves/percussions détectées. Seul le déficit reçoit une hausse limitée ; aucune piste voix ou instrument séparée n’est créée.
+
+La correction des baisses brèves mesure les médiums/aigus sur environ **4 ms**, avec une mise à jour toutes les **1 ms** environ. Elle compare les **20–80 ms avant et après** un creux possible ; les deux côtés doivent soutenir le niveau manquant. Elle recherche des baisses d’environ **6–120 ms** et d’au moins **4 dB**, liées à la détection de percussion. Les longues pauses, passages très faibles et fondus progressifs sont ainsi évités autant que possible.
+
+Sur un creux adapté, la correction rapide remplace localement la récupération ordinaire. Les deux gains ne sont pas additionnés. Une transition douce et un retour rapide limitent les dépassements lorsque le niveau d’origine revient. Cette voie possède ses propres temps rapides ; le **Temps de récupération** du dialogue règle la durée de maintien de la détection de percussion.
+
+Les graves sous environ **180 Hz** ne sont pas relevés ; la transition va jusqu’à environ **600 Hz**. **Les deux** lie les canaux gauche/droit ; **Gauche/Droite** ne traite que le canal choisi. Durée, fréquence d’échantillonnage et positions des repères restent fixes.
+
+<a id="ss-topic-effet-des-reglages-remaster"></a>
+
+#### Effet des réglages Remaster
+
+| Réglage | Action et résultat attendu |
 | --- | --- |
-| Réduction du pompage | Intensité 0–100%, commencer vers 60%. |
-| Récupération maximale | Plafond de hausse locale, 0–9 dB ; défaut 4 dB. |
-| Correction des baisses brèves | Correction séparée des creux médiums/aigus, 0–18 dB. 0 désactive ; commencez à 12 dB pour les creux profonds. |
-| Seuil de percussion | 0–12 dB. Plus bas détecte davantage d’attaques ; plus haut réserve le traitement aux frappes fortes. |
-| Temps de récupération | 50–500 ms. Plus long prolonge la détection de percussion. |
-| Plafond de sortie | −12 à 0 dBFS ; défaut −1 dBFS. Une atténuation constante limite les crêtes d’échantillons ; ce n’est ni un autre compresseur ni un limiteur true peak. |
-| Écouter à partir de | Début en secondes dans la plage traitée. |
+| Réduction du pompage | 0–100% ; règle l’intensité des deux voies. Ce pourcentage ne promet pas de reconstruire cette proportion du mixage original. À 0%, les deux récupérations sont désactivées ; le plafond de sortie reste actif. |
+| Récupération maximale | 0–9 dB ; limite la voie ordinaire avant intensité et lissage. 0 dB ne désactive que cette voie. |
+| Correction des baisses brèves | 0–18 dB ; limite séparée des creux brefs avant intensité. 0 dB désactive la voie supplémentaire. Commencez à 12 dB pour les creux profonds et ajustez par petits pas. |
+| Seuil de percussion | 0–12 dB ; plus bas accepte davantage d’attaques, plus haut seulement les plus fortes. Cela conditionne aussi l’intervention de la correction brève. |
+| Temps de récupération | 50–500 ms ; plus long maintient la détection après une attaque. Les fenêtres rapides fixes de la voie supplémentaire ne changent pas. |
+| Plafond de sortie | −12 à 0 dBFS ; défaut −1 dBFS. Si nécessaire, une atténuation constante réduit toute la plage pour respecter les crêtes d’échantillons. Les passages faibles ne sont pas automatiquement remontés au plafond. Ce n’est pas un limiteur true peak. |
+| Écouter à partir de | Position en secondes dans la plage traitée ; la déplacer ne change que l’extrait écouté. |
 
-Le préréglage **Baisses de volume brèves** associe Récupération forte à une réserve de correction de 12 dB pour les trous brefs. Utilisez-le si le réglage fort laisse encore des baisses rapides. Repartez de l’original ; pour comparer les modes, évitez d’appliquer Remaster plusieurs fois sur un résultat déjà traité.
+**Une réserve de récupération de 12 dB n’est pas une hausse fixe de 12 dB.** À l’intensité de 90% du préréglage, la limite nominale rapide vaut 10,8 dB. Détection, déficit mesuré, fréquences et transitions douces peuvent réduire la correction réelle. L’atténuation finale constante affecte aussi le niveau enregistré.
 
-Cette commande repère des baisses d’environ 6–120 ms près des percussions et compare le son avant et après le creux. Elle suit plus finement les médiums/aigus dans le temps, remplaçant localement la correction normale au lieu d’additionner deux gains. Les graves ne sont pas relevés davantage. Un vrai silence ou fondu final progressif n’est pas rempli de musique inventée. L’atténuation constante finale peut réduire toute la plage pour garder de la réserve de crête ; égaliser le volume d’écoute facilite la comparaison. Une correction forte peut changer le timbre et ne peut pas restituer un instrument totalement absent.
+<a id="ss-topic-comparer-et-appliquer-remaster"></a>
 
-**Original** et **Aperçu** jouent jusqu’à huit secondes depuis la position choisie. La première écoute analyse et traite toute la plage, avec une progression annulable. Seuls le déplacement d’écoute ou l’égalisation de volume réutilisent le calcul. **Égaliser le volume d’écoute de l’original et de l’aperçu** compare à niveau moyen égal uniquement à l’écoute, sans modifier le résultat enregistré.
+#### Comparer et appliquer Remaster
 
-Les sons soutenus médiums/aigus proches des attaques détectées sont relevés avec une commande stéréo liée. Les graves sous environ 180 Hz ne sont pas relevés ; la transition va jusqu’à environ 600 Hz. L’atténuation constante finale affecte néanmoins toute la plage traitée. **Gauche/Droite** limite le traitement à ce canal. Durée et repères restent fixes. **OK** applique, **Ctrl+Z** restaure l’original et **F2** répète. Utilisez **Enregistrer sous** pour créer un WAV séparé.
+1. Ouvrez l’original. Préférez toute la forme d’onde pour garder un niveau de sortie commun. Pour une sélection, gardez environ une seconde de contexte de chaque côté et vérifiez les transitions après application.
+2. Placez le curseur près d’un défaut, ouvrez Remaster et choisissez un préréglage. Utilisez **Baisses de volume brèves** si le mode fort laisse des coupures rapides.
+3. Comparez **Original** et **Aperçu** avec **Égaliser le volume d’écoute de l’original et de l’aperçu** activé. Ils jouent jusqu’à huit secondes depuis la position choisie. L’égalisation utilise le niveau moyen (RMS) de l’extrait sans modifier le traitement enregistré.
+4. Écoutez aussi un passage calme et la fin. Réduisez intensité ou réserve si les instruments deviennent trop brillants, si le bruit ressort ou si les accents naturels disparaissent.
+5. **OK** applique ; **Annuler** laisse la forme intacte. **Ctrl+Z** restaure l’original. Comparez les modes depuis cet original : appliquer de nouveau ou **F2** retraite le son courant. Utilisez **Enregistrer sous** pour un WAV séparé.
 
-Comparez aussi un passage calme. Un traitement fort peut modifier l’équilibre ou le timbre. Un mixage fini n’offre pas de pistes voix/batterie séparées pour une reconstruction exacte ; les détails absents ou écrêtés ne peuvent pas être reconstruits exactement. Remaster est une modification hors ligne de la forme d’onde, pas un effet de piste en temps réel.
+La première écoute analyse toute la plage avec progression et annulation. Changer seulement la position ou l’égalisation de volume réutilise le calcul. L’enregistrement peut devenir globalement plus faible pour garder une réserve de crête, tandis que les baisses brèves s’entendent moins.
+
+<a id="ss-topic-resultats-attendus-de-remaster"></a>
+
+#### Résultats attendus de Remaster
+
+Un passage adapté peut sembler plus régulier, avec moins d’effacement des voix et instruments derrière la batterie. Un mixage propre peut changer peu. Tous les creux ne répondent pas aux critères ; des baisses fortes ou longues peuvent rester. Des coupures musicales intentionnelles peuvent être adoucies inutilement.
+
+Un réglage fort peut changer timbre, équilibre et dynamique naturelle, ou révéler du bruit/de la distorsion existants. Remaster ne reconstruit pas un instrument totalement absent, ne supprime pas l’écrêtage et ne restaure pas les détails MP3 perdus. Il ne remplit ni silence ni fondu avec de la musique nouvelle. Comparez à niveau moyen égal et jugez aussi le résultat musical.
+
+| Traitement | But et différence |
+| --- | --- |
+| Amplifier / fondre | Applique un gain ou fondu choisi ; ne recherche pas de creux locaux. |
+| Normaliser | Ajuste toute la plage par un facteur jusqu’à une crête choisie ; les écarts brefs relatifs restent présents. |
+| Traitement de la dynamique | Règle le niveau selon sa courbe et ses temps de détection ; n’utilise pas les environs d’un creux bref comme référence de réparation. |
+| Remaster | Repère des déficits temporaires médiums/aigus appropriés et tente une récupération locale. |
+
+Remaster modifie la forme d’onde hors ligne et ne figure pas dans la chaîne de piste en temps réel.
 
 <a id="ss-topic-amplitude"></a>
 

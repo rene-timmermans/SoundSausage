@@ -10,8 +10,10 @@ Alle 619 tests slagen zonder overslaan op Debian, Fedora en Arch. De vijf
 geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
 De acht releasebestanden, tag en korte releasepunten zijn gecontroleerd. Zie de
 [validatie](validation/remaster-short-drops.md). Alle vijf handleidingen zijn bijgewerkt.
-De oorspronkelijke Remaster-verbetering is hoorbaar bevestigd; de nieuwe stand
-vraagt een afzonderlijke luistervergelijking.
+Een eerste praktijkproef bevestigt ook een duidelijke hoorbare verbetering met
+Korte volumedalingen. Vergelijking op ander materiaal blijft onderdeel van B33.
+De vijf handleidingen bevatten nu exacte presetwaarden, de werking van beide
+herstelregelingen en hun grenzen, en het verschil met andere volumebewerkingen.
 
 ## Vorige uitbreiding — 0.26.0 gepubliceerd
 

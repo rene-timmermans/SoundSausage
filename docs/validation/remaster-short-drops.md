@@ -42,7 +42,9 @@ In een volledig verwerkt lokaal muziekbestand daalt een korte middengebieddip
 van circa 12 naar 4 dB; meerdere diepe dips krijgen ongeveer 6–8 dB meer
 ondersteuning. Dit zijn metingen van een specifieke passage, geen garantie
 voor andere muziek. De originele opname is via SHA256 ongewijzigd bevestigd.
-De luistervergelijking moet nog bevestigen hoe natuurlijk de nieuwe stand klinkt.
+Een eerste praktijkbeoordeling bevestigt een duidelijk positief hoorbaar effect
+van de nieuwe stand. Dat bevestigt één opname; overige probleemfragmenten en
+rustige passages blijven onderdeel van de luistercontrole.
 
 Alle vijf offlinehandleidingen beschrijven de instelling, preset, vergelijken
 vanaf het origineel en praktische grenzen. Catalogi: 1537 bronvormen zonder
@@ -62,4 +64,4 @@ bevat Debian/Ubuntu-, Fedora- en Arch-pakketten, bronarchief, debugpakketten en
 SHA256SUMS: acht bestanden. Namen, groottes, uploadstatus en SHA256-digestmetadata
 zijn gecontroleerd; tag en korte releasepunten komen overeen met de geteste bron.
 De fysieke [v1-proeven](../TODO.md) blijven open voor de onderdelen die nog niet
-in de praktijk zijn bevestigd, waaronder het beluisteren van de nieuwe herstelstand.
+in de praktijk zijn bevestigd, waaronder het verder beluisteren van de nieuwe herstelstand op ander materiaal.

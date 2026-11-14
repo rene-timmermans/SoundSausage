@@ -49,6 +49,11 @@ Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vori
 - [4b. Markeringen](#ss-topic-4b-markeringen)
 - [5. Effecten toepassen](#ss-topic-5-effecten-toepassen)
   - [Remaster](#ss-topic-remaster)
+    - [Welke Remaster-stand kiezen?](#ss-topic-welke-remaster-stand-kiezen)
+    - [Wat gebeurt er met het geluid?](#ss-topic-wat-gebeurt-er-met-het-geluid)
+    - [Wat veranderen de Remaster-instellingen?](#ss-topic-wat-veranderen-de-remaster-instellingen)
+    - [Remaster vergelijken en toepassen](#ss-topic-remaster-vergelijken-en-toepassen)
+    - [Wat kun je van Remaster verwachten?](#ss-topic-wat-kun-je-van-remaster-verwachten)
   - [Versterken / vervagen](#ss-topic-versterken-vervagen)
   - [Kanalenmixer](#ss-topic-kanalenmixer)
   - [Dynamiekbewerking](#ss-topic-dynamiekbewerking)
@@ -722,29 +727,79 @@ het tijdvak en de kanalen voordat je herhaalt.
 
 ### Remaster
 
-Gebruik **Effecten → Remaster…** als stemmen of instrumenten kort wegzakken bij harde drums in een reeds gemixte opname. Kies een hele opname of selecteer een probleemfragment. Zet de cursor bij een duidelijk hoorbaar voorbeeld voordat je het venster opent.
+Open **Effecten → Remaster…** wanneer stemmen of instrumenten bij drumslagen kort wegzakken, of een mix hoorbare korte volume-cuts bevat. Remaster zoekt zulke dalingen en versterkt de nog aanwezige details plaatselijk. Het werkt op de selectie of, zonder selectie, op de hele golfvorm.
 
-Begin met **Evenwichtig herstel**; **Voorzichtig herstel** verandert minder, **Sterk herstel** grijpt verder in. De instellingen zijn:
+<a id="ss-topic-welke-remaster-stand-kiezen"></a>
 
-| Instelling | Gebruik |
+#### Welke Remaster-stand kiezen?
+
+| Stand | Pompeffect verminderen / Maximaal herstel | Drumdrempel / Hersteltijd | Herstel korte volumedalingen |
+| --- | --- | --- | --- |
+| Voorzichtig herstel | 35% / 2 dB | 4 dB / 160 ms | 0 dB: uit |
+| Evenwichtig herstel | 60% / 4 dB | 3 dB / 180 ms | 0 dB: uit |
+| Sterk herstel | 90% / 6 dB | 2 dB / 240 ms | 0 dB: uit |
+| Korte volumedalingen | 90% / 6 dB | 2 dB / 240 ms | 12 dB |
+
+Begin met **Evenwichtig herstel** bij licht pompen. **Voorzichtig herstel** verandert minder. **Sterk herstel** laat meer herstel toe en reageert op zwakkere drumaanzetten. **Korte volumedalingen** heeft dezelfde gewone instellingen als Sterk herstel en schakelt daarnaast de snellere regeling voor diepe, korte gaten in. Een hogere sterkte alleen schakelt die extra regeling niet in.
+
+Een preset verandert alleen de vijf instellingen in de tabel. Uitvoerplafond, luisterpositie en de keuze voor gelijk luistervolume blijven op hun huidige waarde staan. Het uitvoerplafond begint bij −1 dBFS. **Aangepast** behoudt de huidige waarden. Handmatig wijzigen van een herstelinstelling of het uitvoerplafond kiest deze stand; de luisterpositie en volumevergelijking doen dat niet.
+
+<a id="ss-topic-wat-gebeurt-er-met-het-geluid"></a>
+
+#### Wat gebeurt er met het geluid?
+
+Het gewone herstel schat welke delen van het midden en hoog aanhoudend klinken, bijvoorbeeld zang, gitaar of een synthesizer. Het vergelijkt hun niveau met de omgeving en zoekt korte tekorten rond gedetecteerde bas- of percussieaanzetten. Alleen het gevonden tekort krijgt begrensde versterking; het vormt geen afzonderlijke zang- of instrumentensporen.
+
+De extra regeling voor korte volumedalingen meet het midden en hoog over ongeveer **4 ms**, met een nieuwe meting per circa **1 ms**. Ze vergelijkt de **20–80 ms vóór en na** een mogelijke dip. Beide kanten moeten voldoende geluid bevatten. De regeling zoekt dalingen van ongeveer **6–120 ms** en ten minste **4 dB**, gekoppeld aan drumdetectie. Zo worden lange pauzes, zeer stille passages en geleidelijke fades zo veel mogelijk overgeslagen.
+
+Bij een geschikt gat vervangt de snellere regeling plaatselijk het gewone herstel. De twee versterkingen worden niet opgeteld. Een korte, vloeiende overgang en snelle terugregeling beperken uitschieters zodra het geluid terugkomt. De extra regeling heeft eigen snelle reactietijden; **Hersteltijd** in het venster bepaalt hoe lang de drumdetectie blijft meetellen.
+
+Bas onder circa **180 Hz** krijgt geen herstelversterking; de overgang naar midden/hoog loopt tot ongeveer **600 Hz**. Met **Beide** delen links en rechts dezelfde regeling. Met **Links/Rechts** wordt alleen dat kanaal bewerkt. Speelduur, samplerate en markerposities blijven gelijk.
+
+<a id="ss-topic-wat-veranderen-de-remaster-instellingen"></a>
+
+#### Wat veranderen de Remaster-instellingen?
+
+| Instelling | Werking en verwachting |
 | --- | --- |
-| Pompeffect verminderen | Sterkte van het herstel, 0–100%. Begin rond 60%. |
-| Maximaal herstel | Bovengrens van de plaatselijke verhoging, 0–9 dB; standaard 4 dB. |
-| Herstel korte volumedalingen | Apart herstel van korte gaten in midden/hoog, 0–18 dB. 0 schakelt dit uit; begin met 12 dB bij diepe cuts. |
-| Drumdrempel | 0–12 dB. Lager reageert op meer aanzetten; hoger beperkt het herstel tot sterkere drums. |
-| Hersteltijd | 50–500 ms. Langer laat de drumdetectie langer doorwerken. |
-| Uitvoerplafond | −12 tot 0 dBFS; standaard −1 dBFS. Eén constante verzwakking houdt de samplepieken onder dit plafond; dit is geen extra compressor of true-peaklimiter. |
-| Voorbeeld vanaf | Startpositie in seconden binnen het bewerkingsbereik. |
+| Pompeffect verminderen | 0–100%; schaalt de sterkte van beide herstelregelingen. Een percentage is geen garantie dat zoveel van de oorspronkelijke mix wordt hersteld. Bij 0% zijn beide herstelregelingen uit; het uitvoerplafond blijft werken. |
+| Maximaal herstel | 0–9 dB; begrenst het gewone herstel vóór de sterkteschaal en vloeiende regeling. 0 dB zet alleen het gewone herstel uit. |
+| Herstel korte volumedalingen | 0–18 dB; aparte grens voor snelle gaten, vóór de sterkteschaal. 0 dB zet deze extra regeling uit. Begin bij diepe cuts met 12 dB en wijzig in kleine stappen. |
+| Drumdrempel | 0–12 dB; lager laat meer aanzetten meetellen, hoger beperkt het herstel tot sterkere aanzetten. Dit beïnvloedt ook wanneer de extra korte-dipregeling mag ingrijpen. |
+| Hersteltijd | 50–500 ms; langer laat de drumdetectie langer doorwerken na een aanzet. Dit verandert niet de vaste snelle meetvensters van het extra herstel. |
+| Uitvoerplafond | −12 tot 0 dBFS; standaard −1 dBFS. Als nodig verlaagt één constante factor het hele bewerkte bereik om samplepieken onder dit plafond te houden. Rustige passages worden daarbij niet automatisch naar het plafond opgetrokken. Het is geen true-peaklimiter. |
+| Voorbeeld vanaf | Luisterpositie in seconden binnen het bewerkingsbereik. Verplaatsen verandert alleen het luisterfragment. |
 
-De preset **Korte volumedalingen** combineert Sterk herstel met 12 dB extra herstelruimte voor korte gaten. Gebruik deze stand wanneer er ook met Sterk herstel nog snelle terugvallen hoorbaar zijn. Begin steeds vanaf de oorspronkelijke opname; pas Remaster niet herhaald over een eerdere bewerking toe om verschillende standen te vergelijken.
+**12 dB herstelruimte betekent geen vaste verhoging van 12 dB.** Bij de presetsterkte van 90% is de nominale bovengrens voor de snelle herstelregeling 10,8 dB. Detectie, gevonden tekort, frequentiebereik en vloeiende overgangen kunnen de werkelijke correctie kleiner maken. Ook de constante eindverzwakking beïnvloedt het uiteindelijke niveau.
 
-Deze extra regeling zoekt korte dalingen van ongeveer 6–120 ms bij drums en vergelijkt het geluid vóór én na het gat. Ze volgt het midden en hoog fijner in de tijd en vervangt daar plaatselijk het gewone herstel, zodat beide versterkingen niet worden opgeteld. Bas krijgt geen extra herstelversterking. Een echte stilte of geleidelijke uitfade wordt niet als ontbrekende muziek ingevuld. De eindverzwakking kan wel de hele opname zachter maken om piekruimte te bewaren; gelijk luistervolume helpt vergelijken. Sterke correctie kan de klank veranderen en haalt geen volledig verdwenen instrument terug.
+<a id="ss-topic-remaster-vergelijken-en-toepassen"></a>
 
-**Origineel** en **Voorbeeld** spelen maximaal acht seconden vanaf de gekozen positie. Het eerste luistervoorbeeld analyseert en verwerkt het hele bereik; een voortgangsvenster biedt annuleren. De berekening wordt hergebruikt als alleen de luisterpositie of volumevergelijking wijzigt. **Luistervolume van origineel en voorbeeld gelijkmaken** vergelijkt op gelijk gemiddeld niveau; dit verandert alleen het luisteren, niet het opgeslagen resultaat.
+#### Remaster vergelijken en toepassen
 
-Het herstel verhoogt aanhoudend midden/hoog rond gedetecteerde drumaanzetten en gebruikt voor stereo dezelfde regeling. De bas onder circa 180 Hz krijgt geen herstelversterking; de overgang loopt door tot circa 600 Hz. De uiteindelijke constante uitvoerverzwakking geldt wel voor het hele bewerkte bereik. **Links/Rechts** beperkt de bewerking tot dat kanaal. Duur en markerposities blijven gelijk. **OK** past de bewerking toe, **Ctrl+Z** herstelt het origineel en **F2** herhaalt de instellingen. Bewaar desgewenst met **Opslaan als** een nieuwe WAV.
+1. Open de oorspronkelijke opname. Gebruik bij voorkeur de hele golfvorm voor één gezamenlijk eindniveau. Bij een selectie laat je ongeveer een seconde context aan beide kanten staan en controleer je de overgangen na toepassen.
+2. Zet de cursor bij een probleemfragment en open Remaster. Kies een preset; gebruik **Korte volumedalingen** als Sterk herstel nog korte cuts overlaat.
+3. Vergelijk **Origineel** en **Voorbeeld** met **Luistervolume van origineel en voorbeeld gelijkmaken** aan. Beide spelen maximaal acht seconden vanaf de gekozen positie. De gelijkmaking gebruikt het gemiddelde niveau (RMS) van het luisterfragment en verandert het opgeslagen resultaat niet.
+4. Luister ook naar een rustige passage en het einde. Verlaag sterkte of herstelruimte als instrumenten te fel worden, ruis opvalt of natuurlijke accenten verdwijnen.
+5. **OK** past toe; **Annuleren** laat de golfvorm intact. **Ctrl+Z** herstelt het origineel. Vergelijk presets steeds vanaf dat origineel; opnieuw toepassen en **F2** verwerken het huidige geluid nogmaals. Bewaar met **Opslaan als** eventueel een nieuwe WAV.
 
-Vergelijk altijd ook een rustig gedeelte. Sterke instellingen kunnen de balans of klankkleur veranderen; een voltooide mix bevat geen afzonderlijke zang- of drumsporen om exact terug te halen. Ontbrekende of afgekapte details zijn niet exact te reconstrueren. Remaster is een golfvormbewerking en staat niet in de realtime spoorketen.
+Het eerste luistervoorbeeld analyseert het hele bereik, met voortgang en annuleren. Alleen de luisterpositie of volumevergelijking wijzigen hergebruikt de berekening. Na afloop kan de opname als geheel zachter zijn door de gereserveerde piekruimte, terwijl de korte terugvallen minder hoorbaar zijn.
+
+<a id="ss-topic-wat-kun-je-van-remaster-verwachten"></a>
+
+#### Wat kun je van Remaster verwachten?
+
+Een passende opname kan gelijkmatiger klinken doordat nog aanwezige stemmen en instrumenten bij drums minder wegzakken. Een schone mix kan weinig veranderen. Niet elke dip voldoet aan de detectievoorwaarden; sterke of langere terugvallen kunnen blijven bestaan. Bewuste muzikale cuts kunnen juist onterecht worden verzacht.
+
+Sterke instellingen kunnen klankkleur, balans en natuurlijke dynamiek veranderen of bestaande ruis/vervorming hoorbaarder maken. Remaster reconstrueert geen volledig ontbrekend instrument, verwijdert geen clipping en herstelt geen verloren MP3-detail. Stilte of een uitfade wordt niet met nieuwe muziek ingevuld. Beluister de vergelijking op gelijk gemiddeld niveau en beoordeel ook het muzikale resultaat.
+
+| Bewerking | Doel en verschil |
+| --- | --- |
+| Versterken / vervagen | Past een gekozen versterking of fade toe; zoekt geen plaatselijke volumegaten. |
+| Normaliseren | Past het hele bereik met één factor aan op de gekozen piek; korte niveauverschillen binnen dat bereik blijven bestaan. |
+| Dynamiekbewerking | Verandert het niveau volgens de ingestelde dynamiekcurve en detectietijden; zoekt geen korte gaten met geluid vóór en na de dip als referentie. |
+| Remaster | Zoekt geschikte, tijdelijk wegzakkende delen van midden/hoog en probeert die plaatselijk te herstellen. |
+
+Remaster is een golfvormbewerking. Het staat niet in de realtime spoorketen.
 
 <a id="ss-topic-versterken-vervagen"></a>
 

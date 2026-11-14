@@ -23,6 +23,11 @@ Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige un
 - [6a. Markierungen](#ss-topic-6a-markierungen)
 - [7. Effekte anwenden](#ss-topic-7-effekte-anwenden)
   - [Remaster](#ss-topic-remaster)
+    - [Eine Remaster-Vorgabe wählen](#ss-topic-eine-remaster-vorgabe-wahlen)
+    - [Was Remaster am Klang verändert](#ss-topic-was-remaster-am-klang-verandert)
+    - [Wirkung der Remaster-Regler](#ss-topic-wirkung-der-remaster-regler)
+    - [Remaster vergleichen und anwenden](#ss-topic-remaster-vergleichen-und-anwenden)
+    - [Was von Remaster zu erwarten ist](#ss-topic-was-von-remaster-zu-erwarten-ist)
   - [Amplitude](#ss-topic-amplitude)
     - [Verstärken / Blenden](#ss-topic-verstarken-blenden)
     - [Kanalmischer](#ss-topic-kanalmischer)
@@ -227,29 +232,79 @@ Wellenformeffekte unter **Effekte** bearbeiten die Auswahl/Kanäle oder ohne Zei
 
 ### Remaster
 
-**Effekte → Remaster…** verringert das kurze Absinken von Stimmen oder Instrumenten bei kräftigem Schlagzeug in einer fertigen Mischung. Die ganze Wellenform oder einen Problembereich wählen und den Cursor vor dem Öffnen an eine deutlich hörbare Stelle setzen.
+**Effekte → Remaster…** hilft, wenn Stimmen oder Instrumente kurz hinter Schlagzeug absinken oder eine Mischung kurze Pegelsprünge nach unten enthält. Geeignete Einbrüche werden erkannt und noch vorhandene Details örtlich angehoben. Bearbeitet wird die Auswahl, ohne Auswahl die ganze Wellenform.
 
-Mit **Ausgewogene Wiederherstellung** beginnen; **Sanfte Wiederherstellung** verändert weniger, **Starke Wiederherstellung** greift stärker ein.
+<a id="ss-topic-eine-remaster-vorgabe-wahlen"></a>
 
-| Einstellung | Verwendung |
+#### Eine Remaster-Vorgabe wählen
+
+| Vorgabe | Pumpen verringern / Maximale Wiederherstellung | Schlagzeugschwelle / Erholungszeit | Kurze Pegeleinbrüche beheben |
+| --- | --- | --- | --- |
+| Sanfte Wiederherstellung | 35% / 2 dB | 4 dB / 160 ms | 0 dB: aus |
+| Ausgewogene Wiederherstellung | 60% / 4 dB | 3 dB / 180 ms | 0 dB: aus |
+| Starke Wiederherstellung | 90% / 6 dB | 2 dB / 240 ms | 0 dB: aus |
+| Kurze Pegeleinbrüche | 90% / 6 dB | 2 dB / 240 ms | 12 dB |
+
+Bei leichtem Pumpen mit **Ausgewogene Wiederherstellung** beginnen. **Sanfte Wiederherstellung** verändert weniger. **Starke Wiederherstellung** erlaubt mehr Anhebung und erkennt schwächere Schlagzeugeinsätze. **Kurze Pegeleinbrüche** verwendet dieselben normalen Einstellungen wie Starke Wiederherstellung und schaltet zusätzlich die schnellere Korrektur tiefer, kurzer Lücken ein. Eine höhere Stärke allein aktiviert diese Zusatzkorrektur nicht.
+
+Eine Vorgabe ändert nur die fünf Einstellungen der Tabelle. Ausgangsgrenze, Abhörposition und Lautstärkeabgleich behalten ihre Werte. Die Ausgangsgrenze beginnt bei −1 dBFS. **Benutzerdefiniert** behält die aktuellen Werte. Manuelles Ändern einer Korrektureinstellung oder der Ausgangsgrenze wählt diesen Zustand; Hörposition und Lautstärkeabgleich tun das nicht.
+
+<a id="ss-topic-was-remaster-am-klang-verandert"></a>
+
+#### Was Remaster am Klang verändert
+
+Die normale Korrektur schätzt anhaltende Mitten/Höhen, etwa Gesang, Gitarre oder Synthesizer. Ihr Pegel wird mit der Umgebung verglichen; kurze Defizite bei erkannten Bass-/Schlagzeugeinsätzen erhalten eine begrenzte Anhebung. Es entstehen keine getrennten Gesangs- oder Instrumentenspuren.
+
+Die Zusatzkorrektur misst Mitten/Höhen über etwa **4 ms**, mit einer Aktualisierung etwa alle **1 ms**. Sie vergleicht **20–80 ms vor und nach** einem möglichen Einbruch. Beide Seiten müssen den fehlenden Pegel stützen. Gesucht werden etwa **6–120 ms** kurze Einbrüche von mindestens **4 dB**, gekoppelt an die Schlagzeugerkennung. Lange Pausen, sehr leise Stellen und allmähliche Blenden werden so möglichst übersprungen.
+
+Bei einer geeigneten Lücke ersetzt die schnellere Korrektur örtlich die normale. Die Verstärkungen werden nicht addiert. Ein kurzer weicher Übergang und schnelles Zurückregeln begrenzen Überschwinger, wenn der Originalpegel wiederkehrt. Diese Route hat eigene schnelle Reaktionszeiten; **Erholungszeit** im Fenster bestimmt, wie lange die Schlagzeugerkennung weiterwirkt.
+
+Bass unter etwa **180 Hz** wird nicht angehoben; der Übergang reicht bis etwa **600 Hz**. **Beide** regelt links/rechts gekoppelt; **Links/Rechts** bearbeitet nur diesen Kanal. Dauer, Abtastrate und Markierungspositionen bleiben gleich.
+
+<a id="ss-topic-wirkung-der-remaster-regler"></a>
+
+#### Wirkung der Remaster-Regler
+
+| Regler | Wirkung und Erwartung |
 | --- | --- |
-| Pumpen verringern | Stärke 0–100%; zunächst etwa 60%. |
-| Maximale Wiederherstellung | Höchstwert der örtlichen Anhebung, 0–9 dB; Vorgabe 4 dB. |
-| Kurze Pegeleinbrüche beheben | Separate Korrektur kurzer Mitten-/Höheneinbrüche, 0–18 dB. 0 schaltet aus; bei tiefen Einbrüchen mit 12 dB beginnen. |
-| Schlagzeugschwelle | 0–12 dB. Niedriger reagiert auf mehr Einsätze, höher nur auf stärkere. |
-| Erholungszeit | 50–500 ms. Länger hält die Schlagzeugerkennung länger aufrecht. |
-| Ausgangsgrenze | −12 bis 0 dBFS; Vorgabe −1 dBFS. Eine konstante Absenkung begrenzt Sample-Spitzen; kein weiterer Kompressor oder True-Peak-Limiter. |
-| Vorhören ab | Start in Sekunden innerhalb des bearbeiteten Bereichs. |
+| Pumpen verringern | 0–100%; skaliert beide Korrekturen. Der Prozentwert verspricht keine entsprechende Rekonstruktion der ursprünglichen Mischung. Bei 0% sind beide Korrekturen aus; die Ausgangsgrenze bleibt wirksam. |
+| Maximale Wiederherstellung | 0–9 dB; Grenze der normalen Korrektur vor Stärkeskalierung und Glättung. 0 dB schaltet nur diese normale Korrektur aus. |
+| Kurze Pegeleinbrüche beheben | 0–18 dB; eigene Grenze für kurze Lücken vor Stärkeskalierung. 0 dB schaltet die Zusatzroute aus. Bei tiefen Cuts mit 12 dB beginnen und in kleinen Schritten ändern. |
+| Schlagzeugschwelle | 0–12 dB; niedriger erkennt mehr Einsätze, höher nur stärkere. Gilt auch für die Freigabe der Zusatzkorrektur. |
+| Erholungszeit | 50–500 ms; länger hält die Erkennung nach einem Einsatz länger aktiv. Die festen schnellen Messfenster der Zusatzroute bleiben gleich. |
+| Ausgangsgrenze | −12 bis 0 dBFS; Vorgabe −1 dBFS. Falls nötig senkt ein konstanter Faktor den gesamten Bereich für die Sample-Spitzengrenze ab. Leise Stellen werden nicht automatisch auf die Grenze angehoben. Kein True-Peak-Limiter. |
+| Vorhören ab | Hörposition in Sekunden im bearbeiteten Bereich; Verschieben ändert nur den Hörausschnitt. |
 
-Die Vorgabe **Kurze Pegeleinbrüche** verbindet Starke Wiederherstellung mit 12 dB Korrekturspielraum für kurze Lücken. Sie eignet sich, wenn auch die starke Vorgabe noch schnelle Einbrüche lässt. Immer von der Originalaufnahme ausgehen; beim Vergleichen Remaster nicht wiederholt auf ein früheres Ergebnis anwenden.
+**12 dB Korrekturspielraum bedeutet keine feste Anhebung um 12 dB.** Bei 90% Vorgabestärke liegt die nominelle Grenze der schnellen Korrektur bei 10,8 dB. Erkennung, gemessenes Defizit, Frequenzbereich und weiche Übergänge können sie weiter reduzieren. Die konstante Endabsenkung beeinflusst den gespeicherten Pegel ebenfalls.
 
-Die zusätzliche Regelung sucht etwa 6–120 ms kurze Einbrüche bei Schlagzeug und vergleicht das Signal davor und danach. Sie folgt Mitten und Höhen zeitlich genauer und ersetzt die normale Korrektur örtlich, statt zwei Verstärkungen zu addieren. Der Bass wird nicht zusätzlich angehoben. Echte Stille oder eine allmähliche Ausblende wird nicht mit erfundener Musik gefüllt. Die konstante Endabsenkung kann die gesamte Aufnahme für Spitzenreserve leiser machen; abgeglichene Abhörlautstärke hilft beim Vergleich. Starke Korrektur kann die Klangfarbe ändern und kein vollständig fehlendes Instrument zurückholen.
+<a id="ss-topic-remaster-vergleichen-und-anwenden"></a>
 
-**Original** und **Vorschau** spielen bis zu acht Sekunden ab der gewählten Position. Das erste Vorhören analysiert und verarbeitet den gesamten Bereich mit abbrechbarem Fortschritt. Nur Position oder Lautstärkeabgleich ändern nutzt die Berechnung erneut. **Abhörlautstärke von Original und Vorschau angleichen** gleicht mittlere Pegel nur beim Hören an, nicht im gespeicherten Ergebnis.
+#### Remaster vergleichen und anwenden
 
-Anhaltende Mitten/Höhen nahe erkannter Schläge werden angehoben, mit gekoppelter Stereoregelung. Unter etwa 180 Hz erfolgt keine Wiederherstellungsanhebung; der Übergang reicht bis etwa 600 Hz. Die abschließende konstante Absenkung betrifft den gesamten bearbeiteten Bereich. **Links/Rechts** beschränkt die Bearbeitung auf einen Kanal. Dauer und Markierungen bleiben gleich. **OK** wendet an, **Strg+Z** stellt das Original wieder her, **F2** wiederholt. Mit **Speichern unter** bei Bedarf eine neue WAV speichern.
+1. Die Originalaufnahme öffnen. Möglichst die ganze Wellenform für einen gemeinsamen Ausgangspegel verwenden. Bei einer Auswahl etwa eine Sekunde Kontext auf beiden Seiten behalten und nach Anwenden die Übergänge prüfen.
+2. Cursor an eine Problemstelle setzen, Remaster öffnen und Vorgabe wählen. **Kurze Pegeleinbrüche** verwenden, wenn Starke Wiederherstellung kurze Cuts übrig lässt.
+3. **Original** und **Vorschau** mit **Abhörlautstärke von Original und Vorschau angleichen** vergleichen. Beide spielen bis zu acht Sekunden ab der gewählten Position. Der Abgleich nutzt den mittleren Pegel (RMS) des Ausschnitts und ändert das gespeicherte Ergebnis nicht.
+4. Auch eine leise Stelle und das Ende anhören. Stärke oder Spielraum senken, wenn Instrumente zu hell, Rauschen deutlicher oder natürliche Akzente schwächer werden.
+5. **OK** wendet an; **Abbrechen** lässt die Wellenform unverändert. **Strg+Z** stellt das Original wieder her. Vorgaben von diesem Original vergleichen: erneutes Anwenden oder **F2** bearbeitet den aktuellen Klang nochmals. Bei Bedarf **Speichern unter** für eine getrennte WAV verwenden.
 
-Auch leise Stellen vergleichen. Starke Werte können Balance oder Klangfarbe ändern. Eine fertige Mischung enthält keine getrennten Gesangs-/Schlagzeugspuren zur exakten Rekonstruktion; fehlende oder abgeschnittene Details lassen sich nicht exakt wiederherstellen. Remaster ist eine Offline-Wellenformbearbeitung, kein Echtzeit-Spureffekt.
+Das erste Vorhören analysiert den gesamten Bereich mit Fortschritt und Abbruch. Nur Hörposition oder Abgleich ändern nutzt dieselbe Berechnung. Die ganze Aufnahme kann wegen der Spitzenreserve leiser werden, während kurze Einbrüche weniger auffallen.
+
+<a id="ss-topic-was-von-remaster-zu-erwarten-ist"></a>
+
+#### Was von Remaster zu erwarten ist
+
+Geeignetes Material kann gleichmäßiger klingen, weil vorhandene Stimmen und Instrumente hinter Schlagzeug weniger absinken. Eine saubere Mischung kann sich wenig ändern. Nicht jeder Einbruch erfüllt die Erkennung; tiefe oder längere Einbrüche können bleiben. Absichtlich gesetzte musikalische Cuts können unnötig abgeschwächt werden.
+
+Hohe Werte können Klangfarbe, Balance und natürliche Dynamik verändern oder vorhandenes Rauschen/Verzerrungen betonen. Remaster rekonstruiert kein vollständig fehlendes Instrument, entfernt kein Clipping und stellt keine verlorenen MP3-Details wieder her. Stille oder Blenden werden nicht mit neuer Musik gefüllt. Bei abgeglichenem mittlerem Pegel auch die musikalische Qualität beurteilen.
+
+| Bearbeitung | Zweck und Unterschied |
+| --- | --- |
+| Verstärken / Blenden | Wendet gewählte Verstärkung oder Blende an; erkennt keine örtlichen Pegellücken. |
+| Normalisieren | Skaliert den gesamten Bereich mit einem Faktor auf eine gewählte Spitze; kurze relative Pegelunterschiede bleiben. |
+| Dynamikbearbeitung | Regelt nach Kurve und Erkennungszeiten; nutzt die Umgebung vor/nach einer kurzen Lücke nicht als Reparaturreferenz. |
+| Remaster | Erkennt geeignete vorübergehende Mitten-/Höhendefizite und versucht örtliche Korrektur. |
+
+Remaster bearbeitet die Wellenform offline und ist kein Echtzeit-Spureffekt.
 
 <a id="ss-topic-amplitude"></a>
 

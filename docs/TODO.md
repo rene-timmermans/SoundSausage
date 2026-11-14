@@ -14,7 +14,8 @@ Remaster is aanvullend uitgewerkt op het expliciete verzoek voor pompende
 muziekopnamen. De functie biedt instelbaar herstel en origineel/voorbeeld op gelijk
 luistervolume. Numerieke proeven en een eerste luistervergelijking bevestigen verbetering.
 De extra regeling voor korte volumedalingen is gepubliceerd in 0.27.0;
-de nieuwe stand vraagt nog een luistervergelijking. Zie de
+de eerste luisterproef met de nieuwe stand is positief. Andere probleemfragmenten
+en rustige passages vragen nog vergelijking. Zie de
 [controles](validation/remaster-short-drops.md). De oorspronkelijke bronbestanden blijven
 bij de proeven ongewijzigd.
 
@@ -30,7 +31,7 @@ bij de proeven ongewijzigd.
 | Punch-in/out, opslaan en heropenen | Open. |
 | Systeemgeluid van de eigen hoofduitgang | Open. |
 | Echte VST3-/LV2-vensters, parameters en heropende plug-instatus | Open. |
-| Remaster: origineel/voorbeeld bij drums én rustig fragment | Eerdere verbetering bevestigd; nieuwe stand voor korte volumedalingen nog beluisteren. |
+| Remaster: origineel/voorbeeld bij drums én rustig fragment | Verbetering met Korte volumedalingen bevestigd op één praktijkopname; overige passages en rustige fragmenten nog controleren. |
 | Markerbediening in de dagelijkse workflow | Open, samen met de nieuwe build. |
 
 ## Afronden naar de eerste v1
