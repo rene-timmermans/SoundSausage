@@ -70,8 +70,23 @@ De gewone installatiezelftest controleert bewerken, Undo/Redo en echte
 MP3-hoofdstukken met opgeschoonde metingen. Vijf volledige handleidingen en
 1435 bronvormen zijn bijgewerkt, zonder ontbrekende vertalingen.
 
-Definitieve volledige suite, distributiecontroles en publicatie worden na
-afronding van de releasebouw vastgelegd. B04 blijft tot die verificatie open.
+## Definitieve distributie en publicatie
+
+De volledige lokale suite slaagt met 485 controles en negen expliciete
+backend-/vensterskips; de definitieve 58 gerichte controles slagen eveneens.
+Na de duplexaanpassing slagen de twaalf realtimecontroles, inclusief vertraagde
+invoer en direct klaarstaande data. De definitieve bron telt 486 tests.
+
+Alle 486 tests slagen zonder overslaan op Debian, Fedora en Arch. De vier
+installatiezelftests — gewoon, uitvoer, invoer en duplex — slagen op die drie
+doelen en op Ubuntu 26.04/Rolling. Tag en geteste bron komen overeen; korte
+releasepunten en acht assets zijn gecontroleerd op naam, grootte, uploadstatus
+en digestmetadata. Zes definitieve logs bevatten geen onverwachte fouten.
+
+[Bouw 0.21.0](https://github.com/rene-timmermans/SoundSausage/actions/runs/43600100211)
+en [installatiepakketten](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.21.0).
+B04 is uit de open todo verwijderd; fysieke synchronisatie-/punch-/plug-inproeven
+vóór v1.0 blijven afzonderlijk open als B33.
 
 
 ## Betrouwbare duplexzelftest

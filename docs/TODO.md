@@ -1,6 +1,6 @@
 # Open punten
 
-Stand: 14 november 2026, SoundSausage 0.21.0 in voorbereiding.
+Stand: 14 november 2026, SoundSausage 0.21.0.
 
 Deze lijst wordt punt voor punt beoordeeld, in de volgorde van het oorspronkelijke
 beperkingenoverzicht. Een vermelding is een onderzoeksvraag, geen toezegging dat
@@ -13,18 +13,15 @@ De nummers B01–B36 blijven gelijk aan de oorspronkelijke volgorde; B36 is in
 twee afzonderlijke functies gesplitst. De technische ondersteuning staat in
 [STATUS](STATUS.md), de bediening in de [handleiding](HANDLEIDING.md).
 
-## Nu afronden: B04 — MP3-metadata
+## Nu beoordelen: B06 — kanaalgebonden bewerkingen
 
-Hoofdstukken volgen bewerkingen, met inhoudsopgave, selectie-export, plakken,
-Undo/Redo en herstel. Herkende verouderde meetgegevens en niet-ondersteunde
-getimede velden vervallen na audioverandering; gewone tekst en hoes blijven
-behouden. De duur en encoderinformatie worden vernieuwd bij MP3-export.
-Bekende WAV INFO-velden worden overgenomen; onbekende, ongeldige en
-conflicterende informatie vereist een expliciete exportkeuze.
+Stereo heeft een gezamenlijke tijdas. Effecten en samplebewerking kunnen links
+of rechts afzonderlijk veranderen. Duurwijzigingen, knippen, verwijderen,
+trimmen en opname in de bestaande golfvorm vereisen momenteel beide kanalen.
 
-**Stand:** lokaal gebouwd en beschreven in alle vijf handleidingen. Volledige
-controle en publicatie van 0.21.0 nog afronden. B04 blijft tot die verificatie
-open; daarna volgt B06, kanaalgebonden bewerkingen op de gezamenlijke tijdas.
+Nog beoordelen: welk gedrag bij een duurverandering op één kanaal gewenst is,
+en hoe beide kanalen daarna in de tijd moeten aansluiten. De bestaande
+stiltebewerking verandert de duur niet. Er is nog geen wijziging voor B06 gestart.
 
 ## Daarna, in volgorde
 
@@ -33,7 +30,6 @@ gewenst gedrag en omvang bepaald voordat de uitvoering begint.
 
 | Punt | Onderwerp en te beoordelen vervolgstap |
 | --- | --- |
-| B06 | Kanaalgebonden knippen, verwijderen, trimmen, duurwijzigingen en opname: eerst bepalen hoe links en rechts op dezelfde tijdas moeten blijven aansluiten. |
 | B07 | Plakken op één kanaal met een andere duur en Mix Paste voorbij de bestaande lengte: gewenste opvulling en kanaaluitlijning bepalen. |
 | B08 | Plug-inbereik: bepalen welke extra busindelingen, sampleformaten, sidechains of plug-informaten nodig zijn. VST2, Windows-plug-ins en MIDI zijn afzonderlijke keuzes. |
 | B09 | Eigen plug-invensters: nut van LV2 GTK-/Qt-adapters en ondersteuning buiten X11/XWayland bepalen. MIDI-/Atom-poorten afzonderlijk beoordelen. |
@@ -51,7 +47,7 @@ gewenst gedrag en omvang bepaald voordat de uitvoering begint.
 | B24 | EQ en filters: hoorbare selectieranden onderzoeken; behoefte aan andere fase-eigenschappen bepalen. |
 | B25 | Dynamics: behoefte aan vooruitblik en andere detectiemethoden bepalen. |
 | B29 | Multitrack: behoefte boven 24 uur, 32 sporen of 128 bronbestanden bepalen. |
-| B30 | Bijzondere metadata: vaststellen welke afgeleide metingen opnieuw berekend of duidelijk afgehandeld moeten worden. |
+| B30 | Bijzondere WAV- en recordergegevens: vaststellen welke afgeleide metingen opnieuw berekend of duidelijk afgehandeld moeten worden. |
 | B31 | Eindmix: regels bepalen voor het meenemen en samenvoegen van markers en tags uit meerdere bronnen. |
 | B32 | Afspelen: fysieke uitvoerlatentie en naadloos lussen afzonderlijk beoordelen en meetbaar toetsen. |
 | B33 | Praktijkcontrole vóór v1.0: fysieke kalibratie, langere overdub, punch en heropenen; echte VST3-/LV2-vensters en statusopslag bevestigen. Bestaande virtuele controles blijven aanvullend bewijs. |

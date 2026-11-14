@@ -295,7 +295,7 @@ open lijst verwijderen, met een korte reden in het
 
 B01 is uitgebreid met golfvormtekenen en afgerond in 0.20.0. B03 is beoordeeld:
 de bestaande MP3-uitvoergrenzen blijven bewust behouden. B04, de afhandeling
-van MP3-metadata, is nu aan de beurt. Dithering en de
+van MP3-metadata, is afgerond in 0.21.0; B06 is nu aan de beurt. Dithering en de
 markereditor krijgen aparte taken. Alle kandidaten bouwen is geen voorwaarde
 voor v1.0; de fysieke proeven onder B33 en een releasecandidate blijven wel
 onderdeel van de eerdere afspraak. Nieuwe functies krijgen passende controles,
@@ -327,7 +327,7 @@ Appversie 0.20.0 en de bestaande pakketten blijven actueel; deze stap wijzigt
 uitsluitend documentatie. Zie de [controle](validation/mp3-output-limits.md).
 
 
-## MP3-metadata — B04, 0.21.0 in voorbereiding
+## MP3-metadata — B04 afgerond in 0.21.0
 
 - [x] Hoofdstukken en inhoudsopgave laten volgen bij tijdlijnbewerkingen en selectie-export.
 - [x] Hoofdstukken met veilige identificaties meenemen bij plakken.
@@ -335,7 +335,12 @@ uitsluitend documentatie. Zie de [controle](validation/mp3-output-limits.md).
 - [x] WAV INFO-overdracht en expliciete keuze bij onbekende of conflicterende gegevens.
 - [x] Undo, fouten, annuleren, projectopslag en herstel controleren.
 - [x] Vijf handleidingen en installatiezelftest bijwerken.
-- [ ] Definitieve controles en installatiepakketten publiceren en verifiëren.
+- [x] Definitieve controles en installatiepakketten publiceren en verifiëren.
 
-B04 blijft open tot de publicatie is geverifieerd. De volgende beoordeling is
-B06. De fysieke v1.0-proeven blijven open onder B33.
+B04 is na verificatie uit de todo verwijderd. Er blijven 25 deelpunten open;
+B06 is de volgende beoordeling. De fysieke v1.0-proeven blijven open onder B33.
+
+[Release 0.21.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.21.0)
+bevat de geteste installatiepakketten: alle 486 controles zonder overslaan op
+Debian/Fedora/Arch, vier installatiezelftests op vijf doelen en acht
+gecontroleerde assets. [Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43600100211).

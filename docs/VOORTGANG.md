@@ -395,7 +395,7 @@ actueel; er is geen functionele wijziging of nieuwe pakketrelease.
 Zie [MP3-uitvoercontrole](validation/mp3-output-limits.md).
 
 
-## MP3-metadata — B04, 0.21.0 in voorbereiding
+## MP3-metadata — B04 afgerond in 0.21.0
 
 Hoofdstukken volgen verwijderen, invoegen, trimmen, omkeren, tijdrekken en
 selectie-export. Plakken neemt hoofdstukken met nieuwe identificaties en hun
@@ -410,5 +410,11 @@ of conflicterende velden worden vooraf vermeld; weigeren bewaart het bestaande
 doelbestand. Undo, annuleren, fouten, projectopslag en herstel horen bij de
 controles. De vijf volledige handleidingen en de installatiezelftest zijn
 bijgewerkt; de catalogi bevatten 1435 bronvormen zonder ontbrekende vertalingen.
-De definitieve volledige en distributiecontroles en publicatie volgen nog.
-B04 blijft open tot verificatie; B06 wordt de volgende beoordeling.
+[Release 0.21.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.21.0)
+is gepubliceerd en geverifieerd. Alle 486 controles slagen zonder overslaan
+op Debian, Fedora en Arch. Vier installatiezelftests slagen op die drie doelen
+en Ubuntu 26.04/Rolling; tag, bron, korte releasepunten en acht assets zijn
+gecontroleerd. De duplexzelftest wacht op echte invoer en heeft een regressie
+voor vertraagde aanlevering. B04 is uit de todo verwijderd; er blijven 25 punten
+open, met B06 als volgende beoordeling. B33 blijft fysiek te controleren.
+[Definitieve bouw](https://github.com/rene-timmermans/SoundSausage/actions/runs/43600100211).

@@ -59,6 +59,26 @@ vermijden die gevallen. Zie [onderbouwing](mp3-output-limits.md).
 De software blijft 0.20.0; er is geen functionele wijziging of nieuwe release.
 De technische voorwaarden blijven in STATUS en de vijf handleidingen staan.
 
+## MP3-metadata — B04 afgerond in 0.21.0
+
+Hoofdstukken volgen tijdlijnbewerkingen, selectie-export en plakken; inhoudsopgave,
+Undo/Redo, projectopslag en herstel behouden de samenhang. Herkende achterhaalde
+metingen en niet-ondersteunde tijdcodes vervallen. Tempo en toonsoort worden
+alleen bij de relevante effecten ongeldig gemaakt. Gewone tags en hoes blijven
+behouden; nieuwe duur en encoderinformatie worden uit de uitvoer bepaald.
+ReplayGain opnieuw meten is niet toegevoegd; oude onbetrouwbare waarden worden
+verwijderd. Onbekende privévelden blijven letterlijk behouden.
+
+Ondersteunde WAV INFO-velden worden vertaald. Onbekende, ongeldige, conflicterende
+velden en extra ID3-tags worden vóór export gemeld; weigeren behoudt het doel.
+De vijf volledige handleidingen leggen de bediening en praktische grenzen uit.
+
+B04 is na verificatie van [0.21.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.21.0)
+uit de open todo verwijderd. Alle 486 controles slagen zonder overslaan op
+Debian/Fedora/Arch en vier installatiezelftests op vijf doelen. Er blijven
+25 deelpunten open, met B06 als volgende beoordeling. Zie de
+[controledekking](id3-metadata.md).
+
 ## Redactionele correctie — B25
 
 De vergelijking met niet nader gespecificeerde historische effecten vervalt.
