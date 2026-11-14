@@ -1,6 +1,6 @@
 # Open punten richting v1.0
 
-Stand: 14 november 2026, SoundSausage 0.25.0.
+Stand: 14 november 2026, SoundSausage 0.25.1 in eindcontrole.
 
 Er blijven **twee gekozen punten**: B36b en B33. B23/B24 zijn
 [afgerond in 0.24.0](validation/tails-and-boundaries.md), B21 in 0.23.0 en

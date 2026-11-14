@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.25.0**.
+De huidige versie is **0.25.1**.
 
 ## Wat het kan
 
@@ -93,6 +93,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.25.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.1)** Een lege werkruimte blijft leeg; de overbodige startmelding verschijnt niet meer over de golfvorm.
 
 **[0.25.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.0)** Systeemgeluid opnemen van de standaarduitgang, met bronkeuze in Audioapparaten en het opnamevenster, stereo en pauzeren/hervatten.
 

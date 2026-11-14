@@ -311,9 +311,6 @@ class Waveform(QWidget):
                 painter.drawLine(QPointF(x1, self.sample_y(stroke.channel, first)),
                                  QPointF(x2, self.sample_y(stroke.channel, last)))
             painter.restore()
-        else:
-            painter.setPen(c.plot_text)
-            painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, "Open an audio file or generate a tone")
         if channels==2:
             separator=QPen(blend(c.plot,c.plot_text,.55),1);separator.setCosmetic(True)
             painter.setPen(separator)

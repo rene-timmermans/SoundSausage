@@ -17,7 +17,6 @@ MP3 · 128 kb/s (*.mp3)|||MP3 · 128 kb/s (*.mp3)|||MP3 · 128 kb/s (*.mp3)|||MP
 MP3 · 192 kb/s (*.mp3)|||MP3 · 192 kb/s (*.mp3)|||MP3 · 192 kb/s (*.mp3)|||MP3 · 192 kb/s (*.mp3)|||MP3 · 192 kb/s (*.mp3)
 MP3 · 256 kb/s (*.mp3)|||MP3 · 256 kb/s (*.mp3)|||MP3 · 256 kb/s (*.mp3)|||MP3 · 256 kb/s (*.mp3)|||MP3 · 256 kb/s (*.mp3)
 MP3 · 320 kb/s (*.mp3)|||MP3 · 320 kb/s (*.mp3)|||MP3 · 320 kb/s (*.mp3)|||MP3 · 320 kb/s (*.mp3)|||MP3 · 320 kb/s (*.mp3)
-Open an audio file or generate a tone|||Open een audiobestand of maak een toon|||Eine Audiodatei öffnen oder einen Ton erzeugen|||Ouvrez un fichier audio ou générez une tonalité|||Abre un archivo de audio o genera un tono
 Replace File|||Bestand vervangen|||Datei ersetzen|||Remplacer le fichier|||Reemplazar archivo
 SoundSausage supports mono and stereo MP3 audio.|||SoundSausage ondersteunt mono- en stereo-MP3-audio.|||SoundSausage unterstützt Mono- und Stereo-MP3-Audio.|||SoundSausage prend en charge l’audio MP3 mono et stéréo.|||SoundSausage admite audio MP3 mono y estéreo.
 The file already exists:\n{0}\n\nReplace it?|||Het bestand bestaat al:\n{0}\n\nVervangen?|||Die Datei existiert bereits:\n{0}\n\nErsetzen?|||Le fichier existe déjà :\n{0}\n\nLe remplacer ?|||El archivo ya existe:\n{0}\n\n¿Reemplazarlo?

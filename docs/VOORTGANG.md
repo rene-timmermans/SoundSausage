@@ -2,6 +2,10 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
+0.25.1 staat in eindcontrole: de overbodige startmelding is verwijderd uit het
+golfvormvenster. De lege werkruimte blijft leeg; audio en kanaalscheidingen
+blijven vrij van deze tekst. B36b en B33 blijven open.
+
 SoundSausage 0.25.0 is gepubliceerd en geverifieerd. **Systeemgeluid (wat je hoort)**
 neemt de actuele standaarduitgang op, met bronkeuze in Audioapparaten en het
 opnamevenster, stereo en pauzeren/hervatten. Alle vijf handleidingen bevatten
