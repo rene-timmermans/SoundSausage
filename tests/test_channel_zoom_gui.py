@@ -131,6 +131,21 @@ class ChannelZoomGuiTests(unittest.TestCase):
         for key in ('channels_both', 'channels_left', 'channels_right'): self.assertFalse(self.window.actions[key].isEnabled())
         self.window._record_context = None; self.window.refresh(); self.assertTrue(self.window.channel_choice.isEnabled())
 
+    def test_partial_channel_recording_note_translates_and_switches_live(self):
+        from test_playback import Device
+        from soundsausage.i18n import install_language, tr
+        self.window.choose_channels((1,)); self.window.no_audio = False
+        manager = install_language()
+        try:
+            with patch.object(self.window.audio_devices, 'inputs', return_value=[Device('USB input', b'input')]):
+                dialog = RecordDialog(self.window); self.dialogs.append(dialog); dialog.show()
+                for lang in ('nl', 'de', 'fr', 'es', 'en'):
+                    manager.set_language(lang, False); self.app.processEvents()
+                    self.assertIn(tr('Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence.'), dialog.note.text())
+                    self.assertEqual(dialog.channels.currentIndex(), 0)
+        finally:
+            manager.set_language('en', False); self.window.no_audio = True
+
     def test_waveform_is_continuous_at_raw_envelope_transition_and_during_zoom(self):
         wave = self.window.waveform; rect = wave.plot_rect(); color = colors().waveform.rgb()
         for samples_per_pixel in (.5, 1, 2, 4, 4.1, 8, 16):
