@@ -50,6 +50,16 @@ ontbrekende vertaling; de onderwerpindexen blijven actueel.
 
 ## Distributiebouw
 
-De volledige distributietests en geïnstalleerde pakketten worden na de bouw
-hier vastgelegd. De fysieke [v1-proeven](../TODO.md) blijven open voor de
-onderdelen die nog niet in de praktijk zijn bevestigd.
+Alle **619 tests** slagen zonder overslaan op Debian, Fedora en Arch. De vijf
+geïnstalleerde zelftests (gewoon, uitvoer, invoer, duplex, systeemgeluid) slagen
+op vijf doelen: Debian, Fedora, Arch, Ubuntu 26.04 en Ubuntu Rolling.
+De bestaande volledig-scherm-/4K-/GUI-blokkeerproef en plug-incontroles blijven groen.
+
+[Workflow 43643203413](https://github.com/rene-timmermans/SoundSausage/actions/runs/43643203413)
+is in de eerste poging volledig groen. Bron/tag: `7226f9ced19bb887f0c778b55dc1525f357c3237`.
+De [release 0.27.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.0)
+bevat Debian/Ubuntu-, Fedora- en Arch-pakketten, bronarchief, debugpakketten en
+SHA256SUMS: acht bestanden. Namen, groottes, uploadstatus en SHA256-digestmetadata
+zijn gecontroleerd; tag en korte releasepunten komen overeen met de geteste bron.
+De fysieke [v1-proeven](../TODO.md) blijven open voor de onderdelen die nog niet
+in de praktijk zijn bevestigd, waaronder het beluisteren van de nieuwe herstelstand.

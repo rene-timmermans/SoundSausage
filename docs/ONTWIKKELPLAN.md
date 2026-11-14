@@ -42,7 +42,7 @@ midden/hoog bij drums, met origineel/voorbeeld op gelijk luistervolume. De
 [controles](validation/markers-and-remaster.md) onderscheiden numerieke proeven
 en de nog open hoorbare vergelijking. Deze luisterproef valt onder B33.
 
-Remaster krijgt in 0.27.0 een aparte regeling voor diepe, korte volumedalingen,
+Remaster heeft sinds 0.27.0 een aparte regeling voor diepe, korte volumedalingen,
 met behoud van de eerdere presets. [Controles](validation/remaster-short-drops.md)
 toetsen ook stilte, uitfade en veilig annuleren; de hoorbare vergelijking blijft B33.
 
