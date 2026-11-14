@@ -118,6 +118,12 @@ class Playback(QObject):
         self._timer.setInterval(10)
         self._timer.timeout.connect(self._tick)
 
+    def _create_sink(self, device):
+        if self._sink_factory is QAudioSink:
+            from .audio_output import ThreadedOutput
+            return ThreadedOutput(device, self.format, self, lambda: self._payload)
+        return self._sink_factory(device, self.format, self)
+
     def _set_state(self, state):
         if self.state != state:
             self.state = state
@@ -138,7 +144,7 @@ class Playback(QObject):
             self._rate, self._start_frame, self._last_frame = rate, start_frame, start_frame
             self._output_id = bytes(device.id()).hex()
             self.output_description = device.description()
-            self.sink = self._sink_factory(device, self.format, self)
+            self.sink = self._create_sink(device)
             sink = self.sink
             sink.setBufferSize(max(self.format.bytesPerFrame(), min(len(self._payload),
                                    self.format.bytesForDuration(self.devices.buffer_ms * 1000))))
@@ -185,7 +191,7 @@ class Playback(QObject):
             self._payload.wait_ready()
             self._output_id = bytes(device.id()).hex()
             self.output_description = device.description()
-            self.sink = self._sink_factory(device, self.format, self)
+            self.sink = self._create_sink(device)
             self.sink.setBufferSize(max(self.format.bytesPerFrame(), min(len(self._payload), self.format.bytesForDuration(self.devices.buffer_ms*1000))))
             self.sink.stateChanged.connect(self._sink_changed)
             self._set_state('Starting')
@@ -197,6 +203,12 @@ class Playback(QObject):
 
     def _feed(self):
         if self.sink is None or self._io is None or self._feeding or self.state == "Paused":
+            return
+        from .audio_output import ThreadedOutput
+        if isinstance(self.sink, ThreadedOutput):
+            self._sent = self.sink.sent
+            if self.sink.clock.failure:
+                self._fail(self.sink.clock.failure)
             return
         self._feeding = True
         try:
@@ -255,7 +267,8 @@ class Playback(QObject):
         # avoids enum-name conversion failures in newer PySide bindings.
         sink=self.sender()
         if sink is not None and sink is self.sink:
-            self._sink_state(sink,sink.state())
+            self._feed()
+            if sink is self.sink:self._sink_state(sink,sink.state())
 
     def _sink_state(self, sink, state):
         if sink is not self.sink or self._starting:

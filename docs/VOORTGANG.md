@@ -6,7 +6,8 @@ SoundSausage 0.25.2 corrigeert haperend afspelen bij volledig scherm en grote
 vensters. De golfvorm krijgt een herbruikbaar beeld; zoomen en formaatwisselingen
 bereiden piekgegevens tijdens afspelen op de achtergrond voor. Cursor en meters
 worden maximaal dertigmaal per seconde getekend; de audioklok blijft onafhankelijk.
-De lege werkruimte blijft leeg.
+Een eigen Qt-audiothread verzorgt de geluidsuitvoer en de audioklok, onafhankelijk
+van de vensterweergave. De lege werkruimte blijft leeg.
 
 Lokale gerichte controles en de nieuwe weergaveregressies slagen. De volledige
 pakket- en audiocontroles moeten vóór publicatie nog slagen. Zie de
@@ -554,5 +555,8 @@ audioveranderingen, thema, lettergrootte en formaat vernieuwen het beeld.
 
 Een afzonderlijke audioproef schakelt met F11, vergroot naar 4K en zoomt terwijl
 stereotonen worden afgespeeld en op een private uitgangsmonitor worden opgenomen.
-De proef controleert het opgenomen geluid op interne stiltes. Publicatie en
+De proef controleert het opgenomen geluid op interne stiltes en blokkeert de
+GUI 180 ms bij een uitvoerbuffer van 100 ms. Een eigen Qt-audiothread houdt de
+PCM-uitvoer en de verwerkte klok buiten de GUI; eigenaar-, pauze-, herstart- en
+foutproeven controleren die threadgrens. Publicatie en
 installatiecontroles worden na de definitieve bouw vastgelegd.

@@ -17,8 +17,11 @@ De eerste formaatweergave wordt getekend vóór die taak begint; de taak staat
 regelmatig Python-tijd af aan de GUI. Een achterhaald resultaat wordt niet
 gebruikt en veroorzaakt voorbereiding van de nieuwste weergave. Het vorige
 piekoverzicht kan tijdens het voorbereiden kort zichtbaar blijven. Er is geen
-extra kopie van het volledige geluidsbestand. De audiobuffer wordt vóór de
-positie-uitzending aangevuld; de weergave wordt begrensd op dertig beelden per
+extra kopie van het volledige geluidsbestand. Een eigen Qt-audiothread bezit de uitgang, vult begrensde PCM-blokken aan en
+leest de verwerkte audioklok. Alleen deze thread roept de Qt-audio-objecten aan.
+De GUI leest de gerapporteerde klok en verzonden bytes; zij hoeft de buffer niet
+te voeden. Start, pauze, hervatten, stoppen en lussen gebruiken dezelfde threadgrens.
+De klok wordt vóór de positie-uitzending bijgewerkt; de weergave wordt begrensd op dertig beelden per
 seconde. Het model blijft iedere audiopositie ontvangen, inclusief de exacte
 pauze- en stoppositie. De ingestelde audiobuffer wordt niet vergroot.
 
@@ -41,6 +44,9 @@ De zelfstandige backendproef draait via X11 en een expliciete private audiobron.
 Zij speelt een vijf minuten lange synthetische stereogolfvorm met twee tonen af,
 schakelt F11, vergroot het venster tot 4K en verandert de vergroting. De opgenomen
 uitgangsmonitor moet op beide kanalen iedere interne 5ms-groep geluid bevatten.
+De proef blokkeert de GUI ook opzettelijk 180 ms, langer dan de ingestelde
+100ms-uitvoerbuffer. Aanvullende threadproeven toetsen doorlopende exacte PCM,
+eigendom van alle sink-aanroepen, pauze/hervatten, stop/herstart en schrijffouten.
 De oorspronkelijke audiofile wordt hiervoor niet gepubliceerd of aangepast.
 
 ## Vensterafmetingen

@@ -79,6 +79,9 @@ try:
                 press_fullscreen()
                 window.resize(1920, 1080)
                 stages.add(5)
+            if elapsed > 4.2 and 6 not in stages:
+                time.sleep(.18)  # Deliberately stop GUI callbacks beyond the 100ms buffer.
+                stages.add(6)
             if not recorder.active or time.monotonic()-started > 9:
                 loop.quit()
         except Exception as error:
@@ -93,7 +96,7 @@ try:
     timer.stop()
     assert not errors, errors
     assert len(takes) == 1 and not recorder.active, (len(takes), recorder.active)
-    assert stages == {1, 2, 3, 4, 5}, stages
+    assert stages == {1, 2, 3, 4, 5, 6}, stages
     assert window.player.state == 'Playing', states
     data = takes[0].samples
     # Ignore startup/terminal silence. Every interior 5ms block must contain tone
