@@ -2,19 +2,15 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
-0.25.1 staat in eindcontrole: de overbodige startmelding is verwijderd uit het
-golfvormvenster. De lege werkruimte blijft leeg; audio en kanaalscheidingen
-blijven vrij van deze tekst. B36b en B33 blijven open.
+SoundSausage 0.25.1 is gepubliceerd en geverifieerd. De startmelding is volledig
+verwijderd uit het golfvormvenster. Een lege werkruimte blijft leeg, zoals bij
+het starten; bij geladen of opgenomen audio blijven golfvorm en kanaalscheidingen
+vrij van deze tekst.
 
-SoundSausage 0.25.0 is gepubliceerd en geverifieerd. **Systeemgeluid (wat je hoort)**
-neemt de actuele standaarduitgang op, met bronkeuze in Audioapparaten en het
-opnamevenster, stereo en pauzeren/hervatten. Alle vijf handleidingen bevatten
-een geïndexeerd onderwerp met bediening en voorbeelden.
-
-Alle 555 controles slagen zonder overslaan op Debian, Fedora en Arch. Vijf
+Alle 555 controles slagen zonder overslaan op Debian, Fedora en Arch. De vijf
 geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
-De nieuwe proef controleert twee afspeeltonen in de opgenomen uitgangsmonitor.
-Zie [systeemgeluid](validation/system-audio.md).
+De [release](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.1)
+bevat de geteste pakketten. De werking van Systeemgeluid uit 0.25.0 blijft behouden.
 
 Er blijven twee gekozen v1-punten: **B36b en B33**. De overige 18 blijven uitgesteld.
 Daarna volgen een releasecandidate en v1.0. De [todo](TODO.md) en het
@@ -531,3 +527,18 @@ geïnstalleerde zelftests slagen op de drie distributies en beide Ubuntu-doelen.
 bevat de geteste pakketten. De [controledekking](validation/system-audio.md)
 beschrijft de toonproef, bronkeuze en foutafhandeling. De fysieke proef van de
 eigen hoofduitgang blijft bij B33; B36b is de volgende functionele stap.
+
+
+## Lege werkruimte en golfvorm — 0.25.1
+
+De overbodige startmelding verschijnt niet meer over de golfvorm, ook bij
+selectiezoom en tekenen. De lege werkruimte blijft volledig leeg. De 49 gerichte
+layout-, kanaal-, teken-, opname-, taal- en installatiecontroles slagen. De
+visuele controle dekt vijf talen met een lege werkruimte en met geselecteerde
+stereo-audio, zowel met als zonder tekenmodus.
+
+De [workflow](https://github.com/rene-timmermans/SoundSausage/actions/runs/43620756892)
+slaagt met alle zeven jobs, alle 555 tests zonder overslaan op Debian/Fedora/Arch
+en vijf geïnstalleerde zelftests op vijf doelen. Bron en tag:
+`61faeaba00734e05b353347d9369c566d65f69bc`. De acht releasebestanden en korte
+releasepunten zijn geverifieerd. De v1-route blijft ongewijzigd.
