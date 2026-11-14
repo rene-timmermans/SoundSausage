@@ -72,3 +72,15 @@ MP3-hoofdstukken met opgeschoonde metingen. Vijf volledige handleidingen en
 
 Definitieve volledige suite, distributiecontroles en publicatie worden na
 afronding van de releasebouw vastgelegd. B04 blijft tot die verificatie open.
+
+
+## Betrouwbare duplexzelftest
+
+De eerste Fedora-bouw meldde bij 44,1 kHz te weinig opgenomen audio. De
+zelftest stopte op een vaste 450 ms wandkloktijd, terwijl het starten van de
+invoer op een drukke runner varieert. De proef wacht nu op 300 ms werkelijk
+ontvangen audio, met behoud van de zeven-secondenlimiet, gekoppelde pauze/
+hervatten en de bestaande eis voor de uiteindelijke opnamelengte. Een nieuwe
+regressie levert invoer pas na 650 ms aan. De proef met direct klaarstaande
+invoer blijft eveneens bestaan. Dit verandert uitsluitend de expliciete
+zelftest, niet de opnamebediening van de app.

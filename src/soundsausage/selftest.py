@@ -282,9 +282,15 @@ def run_duplex(window,rate=48000):
         if window.recorder.state=='Recording':window.toggle_pause();observe()
     def resume():
         if window.recorder.state=='Paused':window.toggle_pause();observe()
+    def stop_when_captured():
+        take=window.recorder.take
+        if (window.recorder.state=='Recording' and take is not None and
+                take.frames>=round(window.recorder.format.sampleRate()*.3)):
+            window.stop_recording()
     def finished(state):
         if state=='Stopped' and window.recorder.take is None:loop.quit()
     window.recorder.state_changed.connect(finished)
+    captured=QTimer();captured.setInterval(20);captured.timeout.connect(stop_when_captured)
     try:
         window.session=Session(rate,2,dsp=window.document.dsp)
         window.session.import_audio([(np.zeros((rate*2,2),np.float32),rate,'Silent backing')])
@@ -295,7 +301,8 @@ def run_duplex(window,rate=48000):
         # Some backends deliver queued input immediately. Exercise pause before
         # allowing a duration limit or an event-loop delay to finish that take.
         observe();pause();QTimer.singleShot(100,resume)
-        QTimer.singleShot(450,window.stop_recording);timeout.start(7000);loop.exec()
+        # Backend startup varies: stop on actual input, not a wall-clock assumption.
+        captured.start();timeout.start(7000);loop.exec()
         if window.recorder.active:window.stop_recording()
         clips=window.session.tracks[1].clips
         if errors or not clips or ('Playing','Recording') not in observed or ('Paused','Paused') not in observed:
@@ -304,7 +311,7 @@ def run_duplex(window,rate=48000):
         assert len(window.session.media[clips[0].media_id].samples)>rate//5
         print(f'SoundSausage {__version__}: duplex selftest OK ({rate} Hz, simultaneous output/input, linked pause, take kept)')
     finally:
-        timeout.stop();window.recorder.state_changed.disconnect(finished)
+        timeout.stop();captured.stop();window.recorder.state_changed.disconnect(finished)
         window.player.stop()
         if window.recorder.active:window.recorder.stop(keep=False)
         if window.recording_busy:window.end_recording_view()

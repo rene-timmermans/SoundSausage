@@ -195,3 +195,15 @@ class DuplexTests(unittest.TestCase):
         self.window.recorder._source_factory=BacklogSource
         run_duplex(self.window)
         self.assertFalse(self.window.recording_busy)
+
+    def test_duplex_selftest_waits_for_delayed_input_before_stopping(self):
+        from PySide6.QtCore import QTimer
+        from soundsausage.selftest import run_duplex
+        class DelayedSource(Source):
+            def start(self):
+                result=super().start()
+                QTimer.singleShot(650,lambda:self.push(np.zeros((24000,2),np.float32).tobytes()))
+                return result
+        self.window.recorder._source_factory=DelayedSource
+        run_duplex(self.window,44100)
+        self.assertFalse(self.window.recording_busy)
