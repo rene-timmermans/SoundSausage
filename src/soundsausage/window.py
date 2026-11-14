@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 from functools import partial
 
@@ -170,6 +171,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.no_audio = no_audio
         self.audio_devices = AudioDevices(self)
         self.ui_settings = ui_settings if ui_settings is not None else self.audio_devices.settings
+        self._remember_geometry = False
         self.player = Playback(self, devices=self.audio_devices)
         self.init_recording()
         self.player.state_changed.connect(self.playback_state)
@@ -190,6 +192,18 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         install_language().changed.connect(self.update_window_title)
         install_language().changed.connect(self.update_minimum_size)
         self.update_minimum_size()
+
+    def restore_window_geometry(self):
+        self._remember_geometry = True
+        saved = self.ui_settings.value('ui/window_geometry', None)
+        if not saved:
+            return False
+        try:
+            # Qt also keeps the normal size behind fullscreen/maximized windows
+            # and brings a window back onto an available display when necessary.
+            return self.restoreGeometry(saved)
+        except (TypeError, ValueError):
+            return False
 
     def changeEvent(self, event):
         super().changeEvent(event)
@@ -926,6 +940,10 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.state_label.setToolTip(self.player.output_description if state != "Stopped" else "")
         self.actions["pause"].setEnabled(state in ("Playing", "Paused"))
         self.actions["stop"].setEnabled(state != "Stopped")
+        if state=='Paused':
+            model=self.active_model()
+            self.time_label.setText(clock_text(model.cursor/model.sample_rate))
+            self.active_view().playhead=model.cursor;self.active_view().update()
         if state == "Stopped":
             self.active_view().playhead = None
             self.active_view().update()
@@ -936,6 +954,10 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         if self.recording_busy: return
         frame = min(frame, self.active_model().frames)
         self.active_model().cursor = frame
+        now=time.monotonic()
+        if (self.player.state=='Playing' and frame!=self.player._start_frame and
+                now-getattr(self,'_last_playback_paint',0)<1/30):return
+        self._last_playback_paint=now
         self.time_label.setText(clock_text(frame / self.active_model().sample_rate))
         self.active_view().playhead = frame
         self.active_view().update()
@@ -1063,6 +1085,9 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
                 self._recovery_timer.stop()
                 self.recovery.close()
                 self.recovery = None
+            if self._remember_geometry:
+                self.ui_settings.setValue('ui/window_geometry', self.saveGeometry())
+                self.ui_settings.sync()
             event.accept()
         else:
             event.ignore()

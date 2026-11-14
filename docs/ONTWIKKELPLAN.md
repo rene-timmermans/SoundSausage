@@ -32,6 +32,10 @@ De [controles](validation/system-audio.md) dekken bronkeuze, verwerking en pakke
 De twee resterende v1-punten blijven gelijk; B33 omvat ook een fysieke proef van
 systeemgeluid op de eigen hoofduitgang.
 
+Haperend afspelen bij volledig scherm en grote golfvormvensters wordt met
+voorrang gecorrigeerd in 0.25.2. Zie de [afspeelcontroles](validation/fullscreen-playback.md).
+De twee gekozen uitbreidingen en de v1-route blijven gelijk.
+
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,
 versietags en korte toegevoegde functies/Work in progress. De datum voor v1.0

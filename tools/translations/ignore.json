@@ -58,6 +58,7 @@
   "TimeDisplay",
   "TrackControls",
   "TransportPanel",
+  "Waveform preview preparation failed: %s",
   "X11UI",
   "XDG_CONFIG_HOME",
   "XDG_DATA_HOME",

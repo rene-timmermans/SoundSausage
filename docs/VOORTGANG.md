@@ -2,15 +2,15 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
-SoundSausage 0.25.1 is gepubliceerd en geverifieerd. De startmelding is volledig
-verwijderd uit het golfvormvenster. Een lege werkruimte blijft leeg, zoals bij
-het starten; bij geladen of opgenomen audio blijven golfvorm en kanaalscheidingen
-vrij van deze tekst.
+SoundSausage 0.25.2 corrigeert haperend afspelen bij volledig scherm en grote
+vensters. De golfvorm krijgt een herbruikbaar beeld; zoomen en formaatwisselingen
+bereiden piekgegevens tijdens afspelen op de achtergrond voor. Cursor en meters
+worden maximaal dertigmaal per seconde getekend; de audioklok blijft onafhankelijk.
+De lege werkruimte blijft leeg.
 
-Alle 555 controles slagen zonder overslaan op Debian, Fedora en Arch. De vijf
-geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
-De [release](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.1)
-bevat de geteste pakketten. De werking van Systeemgeluid uit 0.25.0 blijft behouden.
+Lokale gerichte controles en de nieuwe weergaveregressies slagen. De volledige
+pakket- en audiocontroles moeten vóór publicatie nog slagen. Zie de
+[controlebeschrijving](validation/fullscreen-playback.md).
 
 Er blijven twee gekozen v1-punten: **B36b en B33**. De overige 18 blijven uitgesteld.
 Daarna volgen een releasecandidate en v1.0. De [todo](TODO.md) en het
@@ -542,3 +542,17 @@ slaagt met alle zeven jobs, alle 555 tests zonder overslaan op Debian/Fedora/Arc
 en vijf geïnstalleerde zelftests op vijf doelen. Bron en tag:
 `61faeaba00734e05b353347d9369c566d65f69bc`. De acht releasebestanden en korte
 releasepunten zijn geverifieerd. De v1-route blijft ongewijzigd.
+
+## Afspelen in volledig scherm — 0.25.2
+
+De gevulde min/max-polygonen zijn vervangen door verticale piekspannen met
+verbonden contouren. Een cache ter grootte van het tekenvlak voorkomt dat de
+hele golfvorm bij iedere cursorstap opnieuw wordt opgebouwd. Bij afspelen
+bereidt één achtergrondtaak nieuwe piekgegevens voor; achterhaalde resultaten
+worden verworpen. Audio wordt vóór de weergavepositie aangevuld. Selecties,
+audioveranderingen, thema, lettergrootte en formaat vernieuwen het beeld.
+
+Een afzonderlijke audioproef schakelt met F11, vergroot naar 4K en zoomt terwijl
+stereotonen worden afgespeeld en op een private uitgangsmonitor worden opgenomen.
+De proef controleert het opgenomen geluid op interne stiltes. Publicatie en
+installatiecontroles worden na de definitieve bouw vastgelegd.

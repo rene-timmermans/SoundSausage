@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.25.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.25.2. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -74,7 +74,7 @@ The application icon with its purple background appears in window title bars and
 
 Open a WAV or MP3 with **File → Open**. Press **Space** to listen or stop. Drag over a fragment, choose **Transform → Amplitude → Normalize**, listen with **Preview**, then confirm with **OK**. **Ctrl+Z** undoes the edit. Use **Save As** to keep a separate result. For several recordings, create a **New Multitrack Session**, import WAV or MP3 files and finish with **Mix Down**.
 
-**Edit Waveform View** edits one recording; **Multitrack View** combines clips. Switch with **Tab**, the top buttons or **View**. Both documents remain available. Tooltips explain buttons; **Show Toolbar Labels** adds text and **Options → Show Status Bar** shows or hides the thin information line at the very bottom, below the level meter. It displays playback state and file details; the choice is remembered for the next start. **F11** toggles full screen. The lower clock follows audio; selection fields show start, end and length, and view fields the visible time range. Red peaks indicate output overload. A star before a document name means unsaved changes.
+**Edit Waveform View** edits one recording; **Multitrack View** combines clips. Switch with **Tab**, the top buttons or **View**. Both documents remain available. Tooltips explain buttons; **Show Toolbar Labels** adds text and **Options → Show Status Bar** shows or hides the thin information line at the very bottom, below the level meter. It displays playback state and file details; the choice is remembered for the next start. **F11** toggles full screen. Window size, position and full-screen or maximized state are restored at the next start. If a display is no longer available, the window returns to an available screen. During playback, the cursor follows the audio clock. The waveform image is reused; after zooming or resizing, new peaks are prepared in the background. The previous overview may remain briefly visible. The lower clock follows audio; selection fields show start, end and length, and view fields the visible time range. Red peaks indicate output overload. A star before a document name means unsaved changes.
 
 Windows and graph scales adapt to the desktop font size and chosen language. If a form is too large for the screen, scroll through its settings; confirmation and cancel buttons remain accessible.
 

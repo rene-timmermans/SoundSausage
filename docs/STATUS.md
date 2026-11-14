@@ -1,4 +1,4 @@
-# SoundSausage 0.25.1
+# SoundSausage 0.25.2
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -54,9 +54,11 @@ SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in 
 - Zelfstandige projecten met ingebedde audio en WAV-mixdown.
 - Beperkte import van eenvoudige oudere sessies (`.ses`).
 - Qt-interface die het Linux-thema en de accentkleur volgt.
+- Venstergrootte, positie en volledig-scherm-/gemaximaliseerde stand onthouden bij normaal afsluiten.
 - Herkenbaar programma-icoon met paarse achtergrond in hoofdvenster, losse vensters en taakbalk.
 - Compacte werkbalken, gegroepeerde menu's en een grijs werkvlak zolang er geen audio openstaat.
 - Transport en grote klok onderaan, met selectie-/weergavetijden en een brede stereometer met dB-schaal.
+- Snellere golfvormweergave tijdens afspelen, met een herbruikbaar beeld en voorbereiding op de achtergrond bij zoomen of vensterwisselingen.
 - Geïntegreerd afspelen, blijvende apparaat-/bufferkeuze en een cursor die de verwerkte audiotijd volgt.
 - Samplerates omzetten bij import, plakken, clipkopieën toepassen en gehele golfvormen, met Undo/Redo.
 - Lange bestanden met blokverwerking, opslag op schijf en herbruikbare golfvormoverzichten.

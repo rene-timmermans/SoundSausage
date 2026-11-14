@@ -116,6 +116,15 @@ class PlaybackTests(unittest.TestCase):
         self.assertEqual(self.positions[-1], 4123)
         np.testing.assert_array_equal(self.player.meter_samples(4123), self.data[3734:4000])
 
+    def test_buffer_is_replenished_before_notifying_display_consumers(self):
+        self.player.play(self.data, 8000)
+        sink = self.player.sink
+        sink.queued = 0
+        observed = []
+        self.player.position.connect(lambda frame: observed.append(sink.queued))
+        self.player._tick()
+        self.assertEqual(observed, [sink.capacity])
+
     def test_partial_writes_preserve_every_pcm_byte_and_wait_for_drain(self):
         data = np.arange(12, dtype=np.float32).reshape(6, 2) / 16
         self.player.play(data, 8000, 11)

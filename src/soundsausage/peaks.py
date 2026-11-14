@@ -1,6 +1,7 @@
 """Exact reusable min/max pyramids over immutable audio, including disk buffers."""
 import math
 import weakref
+import time
 import numpy as np
 
 from . import storage
@@ -85,7 +86,7 @@ def bounds(samples, start, end):
     return low,high
 
 
-def piece_peaks(pieces, frames, channels, columns):
+def piece_peaks(pieces, frames, channels, columns, *, cooperative=False):
     if frames < columns:
         data=np.concatenate(pieces) if pieces else np.empty((0,channels),np.float32)
         return data,data,False
@@ -97,6 +98,10 @@ def piece_peaks(pieces, frames, channels, columns):
         first=max(0,int(np.searchsorted(edges,offset,side='right'))-1)
         last=min(columns,int(np.searchsorted(edges,stop,side='left')))
         for i in range(first,last):
+            if cooperative and (i-first)%32 == 0:
+                # Small NumPy reductions still compete for Python/Qt bindings.
+                # Yield during background display preparation so audio timers run.
+                time.sleep(.001)
             a,b=max(0,int(edges[i])-offset),min(len(piece),int(edges[i+1])-offset)
             if b>a:
                 p,q=bounds(piece,a,b)

@@ -1,6 +1,6 @@
 # Open punten richting v1.0
 
-Stand: 14 november 2026, SoundSausage 0.25.1.
+Stand: 14 november 2026, SoundSausage 0.25.2.
 
 Er blijven **twee gekozen punten**: B36b en B33. B23/B24 zijn
 [afgerond in 0.24.0](validation/tails-and-boundaries.md), B21 in 0.23.0 en
@@ -14,6 +14,10 @@ controles, Undo/Redo en opslag waar van toepassing, uitleg in alle vijf
 handleidingen en geteste pakketten bij een functionele release. Werk na
 handleidingwijzigingen de klikbare index bij met `python3 tools/index_manuals.py`.
 Afgeronde punten verdwijnen uit deze open lijst; hun resultaat blijft bewaard.
+
+De correctie voor haperend afspelen bij F11 en grote golfvormvensters krijgt
+voorrang in 0.25.2. De [controle](validation/fullscreen-playback.md) beschrijft
+de afspeel- en weergaveproeven; de twee gekozen uitbreidingen blijven gelijk.
 
 ## Nu uitwerken: B36b — markereditor
 

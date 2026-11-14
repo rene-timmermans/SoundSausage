@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.25.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.25.2. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -75,7 +75,7 @@ El icono del programa con fondo morado aparece en las barras de título y la bar
 
 Abre un WAV o MP3 con **Archivo → Abrir**. **Espacio** reproduce o detiene. Selecciona un fragmento, elige **Efectos → Amplitud → Normalizar**, escucha con **Escuchar** y confirma con **Aceptar**. **Ctrl+Z** deshace la edición. Usa **Guardar como** para guardar otro archivo. Para varias grabaciones, crea una **Nueva sesión multipista**, importa WAV o MP3 y termina con **Mezclar**.
 
-**Editar forma de onda** edita una grabación; **Vista multipista** combina clips. Cambia con **Tab**, los botones superiores o **Ver**; ambos documentos siguen disponibles. Las ayudas explican los botones. **Mostrar etiquetas de herramientas** añade texto y **Opciones → Mostrar barra de estado** muestra u oculta la fina línea de información situada abajo del todo, debajo del medidor de nivel. Indica el estado de reproducción y los datos del archivo; la elección se conserva para el próximo inicio. **F11** alterna pantalla completa. El reloj sigue el audio; los campos de selección muestran inicio, fin y duración, y los de vista el intervalo visible. Los picos rojos indican sobrecarga y un asterisco cambios sin guardar.
+**Editar forma de onda** edita una grabación; **Vista multipista** combina clips. Cambia con **Tab**, los botones superiores o **Ver**; ambos documentos siguen disponibles. Las ayudas explican los botones. **Mostrar etiquetas de herramientas** añade texto y **Opciones → Mostrar barra de estado** muestra u oculta la fina línea de información situada abajo del todo, debajo del medidor de nivel. Indica el estado de reproducción y los datos del archivo; la elección se conserva para el próximo inicio. **F11** alterna pantalla completa. El tamaño, la posición y el estado de pantalla completa o maximizado se restauran al iniciar de nuevo. Si una pantalla ya no está disponible, la ventana vuelve a una pantalla disponible. Durante la reproducción, el cursor sigue el reloj del audio. Se reutiliza la imagen de la forma de onda; al cambiar el zoom o el tamaño de la ventana, los nuevos picos se preparan en segundo plano. La vista anterior puede seguir visible brevemente. El reloj sigue el audio; los campos de selección muestran inicio, fin y duración, y los de vista el intervalo visible. Los picos rojos indican sobrecarga y un asterisco cambios sin guardar.
 
 Las ventanas y las escalas de los gráficos se adaptan al tamaño de letra del escritorio y al idioma elegido. Si un formulario no cabe en la pantalla, desplázate por sus ajustes; los botones para confirmar o cancelar siguen accesibles.
 

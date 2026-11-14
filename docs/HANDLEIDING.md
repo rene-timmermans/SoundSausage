@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.25.1. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.25.2. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -143,7 +143,13 @@ de muis boven een knop houdt. **Opties → Werkbalkteksten tonen** toont ook nam
 naast werkbalkiconen. **Opties → Statusbalk tonen** toont of verbergt de smalle
 informatieregel helemaal onderaan, onder de niveaumeter. Die regel toont de
 afspeelstatus en bestandsgegevens. De keuze blijft bij de volgende start bewaard.
-**F11** schakelt naar volledig scherm en terug.
+**F11** schakelt naar volledig scherm en terug. De venstergrootte, positie en volledig-scherm- of gemaximaliseerde stand blijven
+bij de volgende start behouden. Een verdwenen beeldscherm wordt opgevangen door
+het venster terug op een beschikbaar scherm te plaatsen.
+Tijdens afspelen volgt de cursor de audioklok. De golfvorm wordt hergebruikt;
+bij zoomen en wisselen van vensterformaat worden nieuwe piekgegevens op de
+achtergrond voorbereid. Het vorige overzicht kan daarbij heel kort blijven staan.
+
 
 Vensters en grafiekschalen passen zich aan de gekozen taal en de lettergrootte
 van het bureaublad aan. Past een formulier niet op het scherm, scroll dan door

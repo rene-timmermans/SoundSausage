@@ -216,10 +216,11 @@ class Playback(QObject):
     def _tick(self):
         if self.sink is None or self.state != "Playing" or self._data is None:
             return
+        self._feed()
+        if self.sink is None or self._data is None:return
         offset = max(0, self.sink.processedUSecs()) * self._rate // 1000000
         self._last_frame = max(self._last_frame, self._start_frame + min(len(self._data), offset))
         self.position.emit(self._last_frame)
-        self._feed()
         if self.sink is not None and self.sink.state() == QtAudio.State.IdleState and self._sent == len(self._payload):
             self._sink_state(self.sink, QtAudio.State.IdleState)
 

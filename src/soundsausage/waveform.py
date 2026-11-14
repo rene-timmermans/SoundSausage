@@ -1,15 +1,17 @@
 import math
+from concurrent.futures import ThreadPoolExecutor
+import logging
 
 import numpy as np
-from PySide6.QtCore import Qt, QRectF, QPointF, Signal
-from PySide6.QtGui import QColor, QPen, QPolygonF
+from PySide6.QtCore import Qt, QRectF, QPointF, QLineF, QTimer, Signal
+from PySide6.QtGui import QColor, QPen, QPolygonF, QPixmap
 from .i18n_widgets import QPainter
 from .i18n_widgets import QWidget
 
 from .theme import colors, blend, readable
 from .peaks import piece_peaks
 from .plot_layout import text_width, separated_labels
-from .i18n import tr
+from .i18n import tr, language
 from .drawing import DrawingStroke
 
 
@@ -27,6 +29,33 @@ def envelope_polygon(minimum, maximum, channel, left, width, center, scale, clam
     return QPolygonF(points(maximum) + list(reversed(points(minimum))))
 
 
+def draw_envelope(painter, minimum, maximum, channel, left, width, center, scale, clamp=1.08):
+    """Batch vertical peak spans and connected contours; avoid a huge filled polygon."""
+    count=len(minimum)
+    if not count:return
+    high=center-np.clip(maximum[:,channel],-clamp,clamp)*scale
+    low=center-np.clip(minimum[:,channel],-clamp,clamp)*scale
+    step=width/count
+    xs=left+np.arange(count)*step
+    painter.save()
+    pen=QPen(painter.pen());pen.setWidthF(max(1.,step));pen.setCapStyle(Qt.PenCapStyle.FlatCap)
+    painter.setPen(pen)
+    painter.drawLines([QLineF(float(x+step/2),float(a),float(x+step/2),float(b)) for x,a,b in zip(xs,high,low)])
+    pen.setWidthF(1.);pen.setCapStyle(Qt.PenCapStyle.SquareCap);painter.setPen(pen)
+    for values in (high,low):
+        points=QPolygonF([QPointF(float(x),float(y)) for x,y in zip(xs,values)])
+        points.append(QPointF(left+width,float(values[-1])))
+        painter.drawPolyline(points)
+    painter.restore()
+
+
+def _peak_data(pieces, frames, channels, columns, cooperative=False):
+    if frames<=columns*4:
+        data=np.concatenate(pieces) if pieces else np.empty((0,channels),np.float32)
+        return data,data,False
+    return piece_peaks(pieces,frames,channels,columns,cooperative=cooperative)
+
+
 def clock_text(seconds):
     seconds = max(0.0, seconds)
     minutes, rest = divmod(seconds, 60)
@@ -37,6 +66,7 @@ def clock_text(seconds):
 
 
 class Waveform(QWidget):
+    _peaks_ready = Signal(object)
     selection_changed = Signal(object, object)
     view_changed = Signal(object, object)
     sample_edit_started = Signal()
@@ -47,6 +77,7 @@ class Waveform(QWidget):
     def __init__(self, document, parent=None):
         super().__init__(parent)
         self.document = document
+        self._scene_cache = None
         self.view_start = 0
         self.view_end = max(1, document.frames)
         self.playhead = None
@@ -54,6 +85,15 @@ class Waveform(QWidget):
         self._anchor_channel = None
         self._keep_channels = False
         self._cache = None
+        self._peaks_revision = 0
+        self._peak_job = None
+        self._peak_error = None
+        self._peak_executor = None
+        self._pending_peaks = None
+        self._peak_start_timer = QTimer(self)
+        self._peak_start_timer.setSingleShot(True)
+        self._peak_start_timer.timeout.connect(self._start_peaks)
+        self._peaks_ready.connect(self._accept_peaks)
         self.sample_editable = True
         self._sample_drag = None
         self._sample_hover = None
@@ -66,6 +106,8 @@ class Waveform(QWidget):
         self.setToolTip("Drag inside L or R to select that channel; drag across both for stereo. Double-click selects visible audio. Ctrl+wheel zooms; wheel scrolls. Zoom in until sample points appear: drag a point vertically to edit it, or double-click for its exact value. Shift+drag selects audio; Escape cancels a sample drag.")
 
     def set_document(self, document, fit=True):
+        self._scene_cache = None
+        self._peak_error = None
         self._sample_drag = None
         self._sample_hover = None
         self._drawing_stroke = None
@@ -189,23 +231,90 @@ class Waveform(QWidget):
         self.cancel_sample_drag()
         super().focusOutEvent(event)
 
+    def _peak_key(self, columns):
+        return (self.document,self.document.revision,min(self.view_start,self.document.frames),
+                min(self.view_end,self.document.frames),columns)
+
+    def _accept_peaks(self, payload):
+        future,key,result,error=payload
+        if self._peak_job is future:self._peak_job=None
+        # A stale result must also trigger preparation for the newest viewport.
+        self._scene_cache=None
+        if key==self._peak_key(max(1,int(self.plot_rect().width()))):
+            if error:
+                self._peak_error=key
+                logging.getLogger(__name__).error('Waveform preview preparation failed: %s',error)
+            else:
+                self._cache=(key,result);self._peaks_revision+=1;self._scene_cache=None
+        self.update()
+
+    def _start_peaks(self):
+        token,key,pieces,frames,channels,columns=self._pending_peaks
+        self._pending_peaks=None
+        if key!=self._peak_key(max(1,int(self.plot_rect().width()))):
+            self._peak_job=None;self._scene_cache=None;self.update();return
+        if self._peak_executor is None:
+            executor=ThreadPoolExecutor(max_workers=1,thread_name_prefix='soundsausage-waveform')
+            self._peak_executor=executor
+            self.destroyed.connect(lambda *_:executor.shutdown(wait=False,cancel_futures=True))
+        future=self._peak_executor.submit(_peak_data,pieces,frames,channels,columns,True)
+        self._peak_job=future
+        def finished(job):
+            try:result,error=job.result(),None
+            except Exception as failure:result,error=None,str(failure)
+            try:self._peaks_ready.emit((job,key,result,error))
+            except RuntimeError:pass  # The editor was closed while the job finished.
+        future.add_done_callback(finished)
+
     def _peaks(self, columns):
-        start = min(self.view_start, self.document.frames)
-        end = min(self.view_end, self.document.frames)
-        key = (self.document.revision, start, end, columns)
-        if self._cache is not None and self._cache[0] == key:
-            return self._cache[1]
-        pieces = self.document._slices(start, end)
-        if end-start <= columns*4:
-            data = np.concatenate(pieces) if pieces else np.empty((0, self.document.channels), np.float32)
-            result = (data, data, False)
-        else:
-            result = piece_peaks(pieces, end-start, self.document.channels, columns)
-        self._cache = (key, result)
+        key=self._peak_key(columns)
+        if self._cache is not None and self._cache[0]==key:return self._cache[1]
+        _,_,start,end,_=key
+        pieces=self.document._slices(start,end)
+        if self.playhead is not None:
+            # A resize must never scan source ranges on the audio-feeding GUI thread.
+            if self._peak_job is None and self._peak_error!=key:
+                self._peak_job=object()
+                self._pending_peaks=(self._peak_job,key,pieces,end-start,self.document.channels,columns)
+                # Finish the first resized image before the worker starts competing
+                # for Python/Qt binding time. A QObject timer also dies with the view.
+                self._peak_start_timer.start(0)
+            if self._cache is not None and self._cache[0][:4]==key[:4]:return self._cache[1]
+            data=np.empty((0,self.document.channels),np.float32)
+            return data,data,False
+        result=_peak_data(pieces,end-start,self.document.channels,columns)
+        self._cache=(key,result);self._peaks_revision+=1
         return result
 
-    def paintEvent(self, event):
-        painter = QPainter(self)
+    def _scene_key(self):
+        return (self.document,self.document.revision,self.view_start,self.view_end,
+                self.width(),self.height(),self.devicePixelRatioF(),self.font().toString(),language(),
+                self.document.selection,self.document.selected_channels,self._peaks_revision,
+                self._sample_drag,self._sample_hover,
+                tuple(value.rgba() for value in vars(colors()).values()))
+
+    def paintEvent(self,event):
+        painter=QPainter(self);c=colors()
+        if not self.document.frames:
+            painter.fillRect(self.rect(),c.workspace);return
+        key=self._scene_key()
+        if self._drawing_stroke is not None:key=object()
+        if self._scene_cache is None or self._scene_cache[0]!=key:
+            ratio=self.devicePixelRatioF()
+            image=QPixmap(max(1,round(self.width()*ratio)),max(1,round(self.height()*ratio)))
+            image.setDevicePixelRatio(ratio)
+            background=QPainter(image)
+            self._paint_scene(background)
+            background.end()
+            self._scene_cache=(self._scene_key() if self._drawing_stroke is None else key,image)
+        painter.drawPixmap(0,0,self._scene_cache[1])
+        rect=self.plot_rect();cursor=self.document.cursor if self.playhead is None else self.playhead
+        if self.view_start<=cursor<=self.view_end:
+            painter.setPen(QPen(c.plot_text if self.playhead is None else readable(c.accent,c.plot,3.0),1))
+            painter.drawLine(QPointF(self.x_at(cursor),rect.top()),QPointF(self.x_at(cursor),rect.bottom()))
+        painter.setPen(QPen(QColor('#b5c9ca'),1));painter.drawRect(rect)
+
+    def _paint_scene(self, painter):
         c = colors()
         if not self.document.frames:
             painter.fillRect(self.rect(), c.workspace)
@@ -277,7 +386,7 @@ class Waveform(QWidget):
                 scale = channel_height * 0.45
                 if envelope:
                     painter.setBrush(c.waveform)
-                    painter.drawPolygon(envelope_polygon(minimum, maximum, channel, rect.left(), rect.width(), center, scale))
+                    draw_envelope(painter,minimum,maximum,channel,rect.left(),rect.width(),center,scale)
                     painter.setBrush(Qt.BrushStyle.NoBrush)
                 else:
                     points = QPolygonF([QPointF(self.x_at(self.view_start + i), center - min(1.08, max(-1.08, float(row[channel]))) * scale)
@@ -326,10 +435,6 @@ class Waveform(QWidget):
         for area, text in separated_labels(labels):
             painter.drawText(area, Qt.AlignmentFlag.AlignCenter, text)
         painter.drawText(QRectF(rect.right() + 4, rect.bottom() + 4, amplitude_width, line), Qt.AlignmentFlag.AlignLeft, "samples" if sample_axis else "sec")
-        cursor = self.document.cursor if self.playhead is None else self.playhead
-        if self.view_start <= cursor <= self.view_end:
-            painter.setPen(QPen(c.plot_text if self.playhead is None else readable(c.accent, c.plot, 3.0), 1))
-            painter.drawLine(QPointF(self.x_at(cursor), rect.top()), QPointF(self.x_at(cursor), rect.bottom()))
         painter.setPen(QPen(QColor("#b5c9ca"), 1))
         painter.drawRect(rect)
 
