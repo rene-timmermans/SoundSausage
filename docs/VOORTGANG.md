@@ -1,14 +1,16 @@
 # Ontwikkelroute
 
-## Nieuwe uitbreiding — 0.26.0 in afronding
+## Nieuwe uitbreiding — 0.26.0 gepubliceerd
 
 De markereditor voegt markeringen toe, benoemt/verplaatst/verwijdert ze en bewaart
 ze in WAV/MP3 en projecten/herstel. Metadata-only Undo wijzigt geen samples.
 Remaster vermindert kort wegzakkend midden/hoog bij drums, met begrensd herstel,
 gedeelde stereoregeling en vergelijking op gelijk luistervolume. Beide functies
 zijn vertaald en beschreven in alle vijf geïndexeerde offlinehandleidingen.
-Gerichte controles slagen; de volledige bouw/publicatie wordt na afloop vastgelegd
-in de [validatie](validation/markers-and-remaster.md). B33 omvat de nog open
+Alle 610 tests slagen zonder overslaan op Debian, Fedora en Arch. Vijf
+geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
+De acht releasebestanden, tag en korte releasepunten zijn gecontroleerd; zie de
+[validatie](validation/markers-and-remaster.md). B33 omvat de nog open
 fysieke proeven en Remaster-luistercontrole; de F11-proef is al bevestigd.
 
 ## Vorige stabiele stand — 14 november 2026
@@ -27,7 +29,7 @@ De vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04
 en Rolling. De [release](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.2)
 bevat de geteste pakketten. Zie de [controlebeschrijving](validation/fullscreen-playback.md).
 
-Er blijven twee gekozen v1-punten: **B36b en B33**. De overige 18 blijven uitgesteld.
+Bij deze vorige stand bleven **B36b en B33** open; B36b is in 0.26.0 afgerond. De overige 18 blijven uitgesteld.
 Daarna volgen een releasecandidate en v1.0. De [todo](TODO.md) en het
 [ontwikkelplan](ONTWIKKELPLAN.md) blijven leidend.
 

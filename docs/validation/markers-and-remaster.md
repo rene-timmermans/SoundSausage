@@ -51,8 +51,19 @@ volledige bereik. Het bronbestand blijft bij het vergelijken onaangeroerd.
 
 ## Afronding
 
-De gerichte lokale proeven slagen. De volledige distributiecontroles, geïnstalleerde
-pakketten en publicatiestatus worden na de bouw hieronder vastgelegd.
+Alle **610 tests** slagen zonder overslaan op Debian, Fedora en Arch. De vijf
+geïnstalleerde zelftests (gewoon, uitvoer, invoer, duplex en systeemgeluid) slagen op
+vijf doelen: Debian, Fedora, Arch, Ubuntu 26.04 en Ubuntu Rolling. Ook de bestaande
+volledig-scherm-/4K-/GUI-blokkeerproef en onafhankelijke plug-invensters blijven groen.
+De catalogi bevatten 1533 bronvormen zonder ontbrekende vertaling; de vijf manuals
+hebben actuele indexen. Nieuwe schermen zijn ook met grotere letters getoetst.
+
+[Workflow 43638942390](https://github.com/rene-timmermans/SoundSausage/actions/runs/43638942390)
+is in de eerste poging volledig groen. Bron/tag: `b47ea657ebb8d8e322e3f5920c70198961a7925c`.
+De [release 0.26.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.26.0)
+bevat Debian/Ubuntu-, Fedora- en Arch-pakketten, bronarchief, debugpakketten en
+SHA256SUMS: acht bestanden. Namen, groottes, uploadstatus en SHA256-digestmetadata
+zijn gecontroleerd; tag en releasepunten komen overeen met de geteste bron.
 De hoorbare Remaster-vergelijking op een fysieke uitgang blijft een praktijkproef;
 numerieke signalen alleen beoordelen geen muzikale balans of luisterkwaliteit.
 De overige B33-proeven blijven opgenomen in de [todo](../TODO.md).

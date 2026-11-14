@@ -5,7 +5,7 @@
 De afgesproken route van 14 november 2026 is leidend voor het resterende werk.
 De gekozen uitbreidingen zijn **B06, B07, B21, B23, B24, B33 en B36b**.
 B06/B07 zijn afgerond in 0.22.0, B21 in 0.23.0 en B23/B24 in 0.24.0.
-B36b is functioneel uitgewerkt voor 0.26.0. De [todo](TODO.md) bevat B33; de overige 18 uitbreidingen
+B36b is afgerond en gepubliceerd in 0.26.0. De [todo](TODO.md) bevat B33; de overige 18 uitbreidingen
 zijn [voorlopig uitgesteld](validation/beperkingen-keuzes.md) en komen alleen
 na een nieuwe afspraak terug. De afgeronde ontwikkelfases hieronder blijven
 als onderbouwing van de beschikbare app bewaard.
@@ -18,7 +18,7 @@ als onderbouwing van de beschikbare app bewaard.
 3. **B23/B24 — afgerond in 0.24.0:** automatische/langere uitklank en
    selectieovergangen bij EQ/filters; de natuurlijke causale fase blijft behouden.
    [Controles en publicatie](validation/tails-and-boundaries.md).
-4. **B36b — uitgewerkt voor 0.26.0:** toevoegen, verplaatsen, benoemen,
+4. **B36b — afgerond in 0.26.0:** toevoegen, verplaatsen, benoemen,
    verwijderen en behoud bij bewerken, opslaan en herstel.
 5. **B33:** de functioneel afgeronde app fysiek toetsen met kalibratie, langere
    overdub, punch/heropenen en echte plug-invensters/statusopslag.
@@ -29,15 +29,15 @@ als onderbouwing van de beschikbare app bewaard.
 Systeemgeluid opnemen is als aanvullende bron afgerond in
 [0.25.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.0).
 De [controles](validation/system-audio.md) dekken bronkeuze, verwerking en pakketten.
-De twee resterende v1-punten blijven gelijk; B33 omvat ook een fysieke proef van
+B33 omvat ook een fysieke proef van
 systeemgeluid op de eigen hoofduitgang.
 
 Haperend afspelen bij volledig scherm en grote golfvormvensters wordt met
 voorrang gecorrigeerd in 0.25.2. Zie de [afspeelcontroles](validation/fullscreen-playback.md).
 Afspelen in volledig scherm is op de eigen geluidsuitgang bevestigd.
-De twee gekozen uitbreidingen en de v1-route blijven gelijk.
+De eerder bevestigde proeven blijven geldig.
 
-Remaster is aanvullend uitgewerkt voor 0.26.0: begrensd herstel van wegzakkend
+Remaster is aanvullend gepubliceerd in 0.26.0: begrensd herstel van wegzakkend
 midden/hoog bij drums, met origineel/voorbeeld op gelijk luistervolume. De
 [controles](validation/markers-and-remaster.md) onderscheiden numerieke proeven
 en de nog open hoorbare vergelijking. Deze luisterproef valt onder B33.

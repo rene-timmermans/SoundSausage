@@ -1,6 +1,6 @@
 # Open punten richting v1.0
 
-Stand: 14 november 2026, volgende build 0.26.0.
+Stand: 14 november 2026, SoundSausage 0.26.0 gepubliceerd en gecontroleerd.
 
 B36b is functioneel uitgewerkt: markereditor voor golfvormen en sessies, met
 Undo/Redo, bewaren/heropenen en WAV/MP3-export. De
@@ -33,11 +33,10 @@ bij de proeven ongewijzigd.
 
 ## Afronden naar de eerste v1
 
-1. De 0.26.0-build afronden met volledige tests en geïnstalleerde pakketten.
-2. B33 met de afgeronde app uitvoeren; reeds bevestigde proeven blijven bevestigd.
-3. Een releasecandidate toetsen op dagelijkse workflow, vijf talen,
+1. B33 met de afgeronde app uitvoeren; reeds bevestigde proeven blijven bevestigd.
+2. Een releasecandidate toetsen op dagelijkse workflow, vijf talen,
    offlinehandleidingen en Debian/Ubuntu-, Fedora- en Arch-pakketten.
-4. Blokkerende fouten oplossen en v1.0 publiceren met korte releasepunten.
+3. Blokkerende fouten oplossen en v1.0 publiceren met korte releasepunten.
 
 De handleidingen zijn via Help/F1 beschikbaar. Werk bij wijzigingen de klikbare
 index bij met `python3 tools/index_manuals.py`. Een v1-datum volgt uit de proeven.
