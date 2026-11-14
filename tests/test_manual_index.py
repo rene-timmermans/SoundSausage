@@ -114,3 +114,34 @@ class ManualIndexTests(unittest.TestCase):
                     self.assertGreater(color.blue(), color.green())
                     self.assertTrue(fmt.fontUnderline())
                     self.assertEqual(color.name(), '#79bfff' if dark else '#0057b8')
+
+    def test_previous_next_walk_topics_without_search_and_stop_at_both_ends(self):
+        for code in ('nl', 'en', 'de', 'fr', 'es'):
+            self.manager.set_language(code, False); self.app.processEvents()
+            self.dialog.contents_button.click(); self.app.processEvents()
+            self.assertEqual(self.dialog.search.text(), '')
+            self.assertFalse(self.dialog.previous_button.isEnabled())
+            for index in range(len(self.dialog._topic_entries)):
+                self.assertTrue(self.dialog.next_button.isEnabled())
+                self.dialog.next_button.click(); self.app.processEvents()
+                self.assertEqual(self.dialog._topic_index, index)
+            self.assertFalse(self.dialog.next_button.isEnabled())
+            for index in range(len(self.dialog._topic_entries)-2, -1, -1):
+                self.assertTrue(self.dialog.previous_button.isEnabled())
+                self.dialog.previous_button.click(); self.app.processEvents()
+                self.assertEqual(self.dialog._topic_index, index)
+            self.assertFalse(self.dialog.previous_button.isEnabled())
+
+    def test_link_and_scroll_update_topic_navigation_while_f3_still_searches(self):
+        dialog = self.dialog
+        index = next(i for i, e in enumerate(dialog._topic_entries) if e.anchor == 'ss-topic-amplitude')
+        dialog.open_link(QUrl('#ss-topic-amplitude')); self.assertEqual(dialog._topic_index, index)
+        dialog.next_button.click(); self.assertEqual(dialog._topic_index, index+1)
+        dialog.previous_button.click(); self.assertEqual(dialog._topic_index, index)
+        dialog.search.setText('Normalize'); dialog.search.setFocus()
+        QTest.keyClick(dialog.search, Qt.Key.Key_F3); self.app.processEvents()
+        self.assertEqual(dialog.browser.textCursor().selectedText().casefold(), 'normalize')
+        QTest.keyClick(dialog.search, Qt.Key.Key_F3, Qt.KeyboardModifier.ShiftModifier); self.app.processEvents()
+        self.assertEqual(dialog.browser.textCursor().selectedText().casefold(), 'normalize')
+        dialog.browser.verticalScrollBar().setValue(dialog.browser.verticalScrollBar().maximum())
+        self.app.processEvents(); self.assertFalse(dialog.next_button.isEnabled())

@@ -85,12 +85,19 @@ class FrequencyDialog(EffectDialog):
     def footer(self, layout):
         row = QFormLayout()
         row.addRow("Output gain", self.output)
+        self.boundary = spin(5, 0, 100, ' ms', 2)
+        row.addRow('Selection transition', self.boundary)
+        self.boundary_label = row.labelForField(self.boundary)
         layout.addLayout(row)
         note = QLabel("Boosting bands can raise peaks above 0 dBFS. Lower Output gain to leave headroom.")
         note.setWordWrap(True)
         layout.addWidget(note)
+        self.boundary_note = QLabel('Selection transitions blend inside the chosen range; samples outside it stay unchanged.\n'
+                                    'The filters retain their natural phase response. Use 0 ms for direct processing.')
+        self.boundary_note.setWordWrap(True); layout.addWidget(self.boundary_note)
         self.add_footer(layout)
         self.output.valueChanged.connect(self.changed)
+        self.boundary.valueChanged.connect(self.changed)
         self.presets.currentIndexChanged.connect(self.preset)
         self.preset(1)
 
@@ -161,7 +168,7 @@ class GraphicEqualizerDialog(FrequencyDialog):
 
     def settings(self):
         return dict(gains=tuple(field.value() if field.isEnabled() else 0 for field in self.gains),
-                    output_db=self.output.value())
+                    output_db=self.output.value(), edge_ms=self.boundary.value())
 
 
 class ParametricEqualizerDialog(FrequencyDialog):
@@ -219,7 +226,7 @@ class ParametricEqualizerDialog(FrequencyDialog):
         return dict(bands=tuple(dict(enabled=e.isChecked(), kind=kind, frequency=f.value(),
                                     gain_db=g.value(), q=q.value())
                                 for kind, (e, f, g, q) in zip(self.KINDS, self.bands)),
-                    output_db=self.output.value())
+                    output_db=self.output.value(), edge_ms=self.boundary.value())
 
 
 class FilterDialog(FrequencyDialog):
@@ -271,4 +278,4 @@ class FilterDialog(FrequencyDialog):
 
     def settings(self):
         return dict(kind=self.KINDS[self.kind.currentIndex()], frequency=self.frequency.value(),
-                    slope=(12, 24, 36, 48)[self.slope.currentIndex()], q=self.q.value(), output_db=self.output.value())
+                    slope=(12, 24, 36, 48)[self.slope.currentIndex()], q=self.q.value(), output_db=self.output.value(), edge_ms=self.boundary.value())

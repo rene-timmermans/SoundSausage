@@ -15,7 +15,9 @@ als onderbouwing van de beschikbare app bewaard.
    [Controles en publicatie](validation/channel-timing.md).
 2. **B21 — afgerond in 0.23.0:** adaptieve ruisreductie, aanpassingstijd,
    detailbehoud en presets; [controles en publicatie](validation/adaptive-noise.md).
-3. **B23/B24:** uitklank van galm/echo en selectieranden/fasegedrag van EQ/filters uitwerken.
+3. **B23/B24 — in eindcontrole voor 0.24.0:** automatische/langere uitklank en
+   selectieovergangen bij EQ/filters; de natuurlijke causale fase blijft behouden.
+   [Controles en publicatie](validation/tails-and-boundaries.md).
 4. **B36b:** de markereditor afronden, inclusief toevoegen, verplaatsen, benoemen,
    verwijderen en behoud bij bewerken en opslaan.
 5. **B33:** de functioneel afgeronde app fysiek toetsen met kalibratie, langere

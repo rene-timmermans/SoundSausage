@@ -1,4 +1,4 @@
-# SoundSausage 0.23.0
+# SoundSausage 0.24.0
 
 SoundSausage is een golfvorm- en multitrackeditor voor Linux en bevindt zich in de testfase.
 
@@ -103,11 +103,12 @@ of voorwaarden voor v1.0.
 - Convolutie vereist een ongewijzigd responsbestand voor herhalen; stereo is kanaalgewijs.
 - Impulsresponsen zijn begrensd tot 10 s / 524.288 uitvoersamples en 32 MiB per bestand.
 - Tijd-/toonhoogtebewerking vraagt minimaal 50 ms (ten minste 64 samples) en analyseert de volledige selectie.
-- Alle vijf offlinehandleidingen hebben een inhoudsopgave met blauwe onderwerpverwijzingen en een knop om naar de inhoud terug te springen.
+- Alle vijf offlinehandleidingen hebben blauwe onderwerpverwijzingen, een Inhoud-knop en Vorige/Volgende voor onderwerpen. Enter/F3/Shift+F3 blijven zoekresultaten volgen.
+- Werkbalk- en afspeelknoppen zijn neutraal met leesbare accenticonen; een dun accentkader markeert de actieve keuze.
 - Vaste en adaptieve ruisreductie beginnen met een passend ruisprofiel. Adaptief volgt wijzigingen in de achtergrond; snelle instellingen kunnen aangehouden geluiden als ruis leren. Detailbehoud laat ook meer achtergrond door; stemseparatie en herstel van ontbrekende details ontbreken.
 - Click Removal behandelt korte geïsoleerde tikken, geen langdurige kraken of clipping.
-- Galm en echo hebben begrensde, optionele uitklank; extreme feedback kan langer dan 60 seconden doorlopen.
-- EQ en filters veranderen fase; korte selecties kunnen aan de randen een overgang geven.
+- Offline uitklank kan automatisch tot een lage restpiek worden bepaald of handmatig tot 600 s; galmtijd tot 60 s. Automatisch bewaart vertraagde gebeurtenissen over stille gaten en reserveert alleen werkelijke uitvoer. Als de 600 s-grens nog hoorbare toestand bevat, blijft de bewerking onaangepast en volgt een melding. Realtime spoorketens houden hun afzonderlijke 60 s-grens.
+- EQ en filters houden hun natuurlijke causale fase. Een selectieovergang van standaard 5 ms mengt binnen de selectie en bereidt het filter met maximaal 60 s voorafgaande audio voor; buitenliggende samples blijven exact. Kies 0 ms voor de eerdere directe verwerking. Zeer korte selecties kunnen geheel uit overgang bestaan.
 - Dynamics gebruikt piekdetectie zonder vooruitblik.
 - Multitrack blijft begrensd tot 24 uur, 32 sporen en 128 bronbestanden.
 - Bijzondere metadata wordt letterlijk bewaard; afgeleide meetgegevens worden niet opnieuw berekend.

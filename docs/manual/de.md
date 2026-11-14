@@ -1,13 +1,13 @@
 # SoundSausage — Handbuch
 
-Version 0.23.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.24.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
 
 ## Inhalt
 
-Ein Thema anklicken, um direkt dorthin zu springen. Die Schaltfläche Inhalt führt zurück.
+Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige und Nächste wechseln das Thema. F3 und Umschalt+F3 folgen Suchtreffern.
 
 - [1. Sprache und Hilfe](#ss-topic-1-sprache-und-hilfe)
 - [2. Schnellstart und Arbeitsbereich](#ss-topic-2-schnellstart-und-arbeitsbereich)
@@ -62,11 +62,13 @@ Ein Thema anklicken, um direkt dorthin zu springen. Die Schaltfläche Inhalt fü
 
 Unter **Optionen → Sprache** Nederlands, English, Deutsch, Français oder Español wählen. Menüs, Fenster, Hinweise und das geöffnete Handbuch wechseln sofort. Die Auswahl bleibt beim nächsten Start erhalten. Datei-, Spur- und Plug-in-Namen behalten ihre Schreibweise.
 
-**Hilfe → Handbuch** oder **F1** öffnet dieses Handbuch ohne Internet neben dem Editor. **Strg+F** aktiviert die Suche; **F3** findet den nächsten, **Umschalt+F3** den vorherigen Treffer. Die Suchknöpfe setzen am anderen Ende fort. Nur angeklickte Weblinks benötigen Internet. **Über** zeigt Version, Autor, Lizenz, Website und Komponenten.
+**Hilfe → Handbuch** oder **F1** öffnet dieses Handbuch ohne Internet neben dem Editor. **Strg+F** aktiviert die Suche; **F3** findet den nächsten, **Umschalt+F3** den vorherigen Treffer. Vorherige und Nächste wechseln das Thema ohne Suchbegriff; an den Grenzen sind sie deaktiviert. Eingabe/F3/Umschalt+F3 suchen mit Fortsetzung am anderen Ende. Nur angeklickte Weblinks benötigen Internet. **Über** zeigt Version, Autor, Lizenz, Website und Komponenten.
 
 <a id="ss-topic-2-schnellstart-und-arbeitsbereich"></a>
 
 ## 2. Schnellstart und Arbeitsbereich
+
+Werkzeugleisten- und Transportschaltflächen haben neutrale Hintergründe mit Akzent-Symbolen; ein dünner Akzentrahmen markiert die aktive Wahl.
 
 Das Programmsymbol mit violettem Hintergrund erscheint in den Fenstertitelleisten und der Taskleiste. **Hilfe → Über** zeigt das freigestellte Maskottchen neben den Programminformationen.
 
@@ -241,7 +243,9 @@ Unter **Filter** hat **Grafischer Equalizer** zehn Oktavbänder, 31,5 Hz–16 kH
 
 #### Filter
 
-**Filter** bietet Hochpass (Rumpeln, Start 80 Hz), Tiefpass (Höhen mildern, Start 8 kHz), Bandpass und Kerbfilter. Hoch-/Tiefpass nutzen Butterworth 12/24/36/48 dB/Okt, etwa −3 dB am Übergang; steiler kann stärker nachschwingen. Bandpass/Kerbe nutzen Q. Telefon ist ein breiter Bandpass; 50/60-Hz-Kerben behandeln nur den Brummgrundton. Zurücksetzen lädt Rumpeln. Filterzustand bleibt zwischen Blöcken, startet aber am Auswahlbeginn leer; Länge bleibt, Phase ändert sich. Kurze harte Auswahl kann klicken; größeren Bereich wählen.
+**Filter** bietet Hochpass (Rumpeln, Start 80 Hz), Tiefpass (Höhen mildern, Start 8 kHz), Bandpass und Kerbfilter. Hoch-/Tiefpass nutzen Butterworth 12/24/36/48 dB/Okt, etwa −3 dB am Übergang; steiler kann stärker nachschwingen. Bandpass/Kerbe nutzen Q. Telefon ist ein breiter Bandpass; 50/60-Hz-Kerben behandeln nur den Brummgrundton. Zurücksetzen lädt Rumpeln. Filter erhalten die Länge und ihren natürlichen kausalen Phasengang.
+
+**Auswahlübergang**, anfangs 5 ms, einstellbar 0–100 ms, mischt innerhalb der Ränder einer Teilauswahl. Randsamples und alles außerhalb bleiben exakt. Sehr kurze Bereiche können vollständig Übergang sein. Vorheriges Audio bereitet den Filterzustand blockweise vor, abhängig von den Polen bis 60 s. Mit 0 ms gilt die frühere direkte Verarbeitung ab leerem Zustand. Ganze Dateien nutzen den gewöhnlichen durchgehenden Filter. Die Grafik zeigt stationären Betrag; der Randübergang ist getrennt. Keine lineare/phasenfreie EQ: Frequenzen können verschiedene Zeitlagen haben. Extreme schmale tiefe Filter können die Kontextgrenze erreichen; mehr Audio oder ganze Datei wählen. Echtzeit-Inserts behalten ihren Zustand ohne Auswahlübergänge.
 
 <a id="ss-topic-delay-echo-und-hall"></a>
 
@@ -263,9 +267,13 @@ Unter **Filter** hat **Grafischer Equalizer** zehn Oktavbänder, 31,5 Hz–16 kH
 
 #### Hall
 
-**Hall** nutzt Raumgröße für Reflexionsabstände, Abklingzeit für ungefähr RT60 (0,1–10 s), Vorverzögerung (0–250 ms) vor dem Effekt, Höhendämpfung und Stereobreite (0 gleicher Hall beidseitig, 100 volle Breite; bei Mono aus). Kleiner Raum, Studio, große Halle, lange Atmosphäre variieren Raum/Abklingen. Für Sprache wenig Effekt, kurze Zeit und etwas Vorverzögerung. Algorithmischer Hall, kein exaktes Saalmodell.
+**Hall** nutzt Raumgröße für Reflexionsabstände, Abklingzeit für ungefähr RT60 (0,1–60 s), Vorverzögerung (0–250 ms) vor dem Effekt, Höhendämpfung und Stereobreite (0 gleicher Hall beidseitig, 100 volle Breite; bei Mono aus). Kleiner Raum, Studio, große Halle, lange Atmosphäre variieren Raum/Abklingen. Für Sprache wenig Effekt, kurze Zeit und etwas Vorverzögerung. Algorithmischer Hall, kein exaktes Saalmodell.
 
-Original und Effekt sind unabhängige addierte Prozente; Ausgangsverstärkung (−24…+24 dB) skaliert ohne automatische Begrenzung. Standardlänge bleibt, spätere Wiederholungen enden abrupt. Nachklang fügt 0,01–60 s ein, verschiebt folgendes Wellenformaudio und spätere Cuepunkte. Letzte 10 ms blenden aus. Presets schalten Nachklang aus; danach einstellen. Extremes Echo kann mehr als 60 s brauchen; Rückkopplung/Zeit senken. Beispiel: 2 s Stimme + 3 s Nachklang ergibt 5 s. Einzelkanal-Nachklang verschiebt nur diesen Kanal; gemeinsame Cuepunkte bleiben stehen.
+Original und Effekt werden addiert; Ausgangsverstärkung (−24…+24 dB) schafft Reserve ohne automatische Begrenzung. Die Länge bleibt standardmäßig gleich. **Ausklang nach Auswahl hinzufügen** und **Automatische Ausklanglänge** aktivieren, um dem verbleibenden Klang zu folgen. Automatik ausschalten für eine manuelle Dauer von 0,01–600 s. Hall-Abklingzeit (ungefähr RT60) reicht von 0,1–60 s. Presets schalten den Zusatz aus; danach wählen.
+
+Die Automatik prüft den gespeicherten Effektzustand und bewahrt späte Echos über stille Lücken. Prüfung alle 100 ms mit ruhigem Ende und Ausblendung der letzten 10 ms. Grenze ungefähr 90 dB unter der Referenzspitze, mindestens −140 dBFS; für extrem leise Ausklänge manuell wählen. Stille oder 0% Effekt fügt keine leere Zeit hinzu. Noch hörbarer Zustand bei 600 s führt zu einer Meldung und erhält Original/Rückgängig: Rückkopplung/Abklingzeit senken oder manuelle Länge wählen.
+
+Nur gewählte Kanäle verschieben sich. Beide verschiebt spätere gemeinsame Cuepunkte; Links/Rechts erhält sie und füllt den anderen Kanal bei Bedarf auf. Vorschau im Ausklang kann dessen Ende zuerst bestimmen und bleibt exakt der Anfang der vollständigen Verarbeitung. Große Ergebnisse wachsen auf Platte ohne Vorabreservierung von 600 s; Abbruch übernimmt kein Teilergebnis. Echtzeit-Spurausklang bleibt gesondert auf 60 s begrenzt.
 
 <a id="ss-topic-rauschminderung-und-klickreparatur"></a>
 

@@ -1,13 +1,13 @@
 # SoundSausage — manual
 
-Version 0.23.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.24.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
 
 ## Contents
 
-Click a topic to jump directly to it. The Contents button above brings you back.
+Click a topic to jump directly to it. Contents brings you back; Previous and Next move between topics. F3 and Shift+F3 follow search matches.
 
 - [1. Language and help](#ss-topic-1-language-and-help)
 - [2. Quick start and workspace](#ss-topic-2-quick-start-and-workspace)
@@ -61,11 +61,13 @@ Click a topic to jump directly to it. The Contents button above brings you back.
 
 Choose **Options → Language** and select Nederlands, English, Deutsch, Français or Español. Menus, windows, tips and the open manual change immediately. The choice is remembered for the next start. File names, track names and plug-in names retain their original spelling.
 
-**Help → Manual** or **F1** opens this manual offline, alongside the editor. **Ctrl+F** focuses search; **F3** finds the next occurrence and **Shift+F3** the previous one. The previous/next buttons wrap at the ends. Only an explicitly clicked website link needs internet. **About** shows the version, author, license, website and components.
+**Help → Manual** or **F1** opens this manual offline, alongside the editor. **Ctrl+F** focuses search; **F3** finds the next occurrence and **Shift+F3** the previous one. Previous and Next jump between topics without a search term and disable at the ends. Enter/F3/Shift+F3 search with wraparound. Only an explicitly clicked website link needs internet. **About** shows the version, author, license, website and components.
 
 <a id="ss-topic-2-quick-start-and-workspace"></a>
 
 ## 2. Quick start and workspace
+
+Toolbar and transport buttons have neutral backgrounds with accent-coloured icons; a thin accent border marks the active choice.
 
 The application icon with its purple background appears in window title bars and the taskbar. **Help → About** displays the separate mascot beside the application information.
 
@@ -240,7 +242,9 @@ Under **Filters**, **Graphic Equalizer** has ten octave bands, 31.5 Hz–16 kHz,
 
 #### Filters
 
-**Filters** offers high-pass (remove low rumble, starts 80 Hz), low-pass (soften highs, starts 8 kHz), band-pass and notch. High/low-pass use Butterworth 12/24/36/48 dB/oct, about −3 dB at cutoff; steeper can ring more. Band-pass/notch use Q. Telephone is a broad band-pass; 50/60 Hz notches remove only the fundamental hum, not its harmonics. Reset restores the rumble preset. Filters keep state between blocks, but start empty at the selection boundary, preserve length and change phase. Abrupt short selections can click; use a wider range.
+**Filters** offers high-pass (remove low rumble, starts 80 Hz), low-pass (soften highs, starts 8 kHz), band-pass and notch. High/low-pass use Butterworth 12/24/36/48 dB/oct, about −3 dB at cutoff; steeper can ring more. Band-pass/notch use Q. Telephone is a broad band-pass; 50/60 Hz notches remove only the fundamental hum, not its harmonics. Reset restores the rumble preset. Filters preserve length and retain their natural causal phase response.
+
+**Selection transition**, initially 5 ms and adjustable 0–100 ms, blends inside partial selection borders. Border samples and all audio outside the selection stay exact. Very short selections can consist entirely of the transition. Preceding audio prepares the filter state in bounded blocks, with pole-based context up to 60 s. Set 0 ms for the earlier direct processing from empty state. Whole-file processing remains the ordinary continuous filter. The response graph shows steady-state magnitude; the border blend is separate. This is not linear/zero-phase EQ: frequencies can have different timing. Extreme narrow low filters can reach the context limit; select more audio or process the whole recording. Realtime inserts keep continuous state and do not use selection transitions.
 
 <a id="ss-topic-delay-echo-and-reverb"></a>
 
@@ -262,9 +266,13 @@ Under **Filters**, **Graphic Equalizer** has ten octave bands, 31.5 Hz–16 kHz,
 
 #### Reverb
 
-**Reverb** uses Room size for reflection spacing, Decay for approximate RT60 (0.1–10 s), Predelay (0–250 ms) before the wet signal, high-frequency damping and stereo width (0 same wet signal both sides, 100 full spread; disabled for mono). Small room, studio, large hall and long ambient presets vary space/decay. For speech start with low Wet, short decay and some predelay. This is algorithmic reverb, not an exact hall model.
+**Reverb** uses Room size for reflection spacing, Decay for approximate RT60 (0.1–60 s), Predelay (0–250 ms) before the wet signal, high-frequency damping and stereo width (0 same wet signal both sides, 100 full spread; disabled for mono). Small room, studio, large hall and long ambient presets vary space/decay. For speech start with low Wet, short decay and some predelay. This is algorithmic reverb, not an exact hall model.
 
-Dry and Wet are independent percentages added together; Output gain (−24…+24 dB) scales the sum without automatic limiting. Default length is unchanged: later repeats are cut. Add effect tail inserts 0.01–60 s, shifting following waveform audio and later cues. The last 10 ms fades to silence. Presets untick the tail; set it after choosing one. Suggested tail can exceed the limit with extreme echo; lower feedback/delay. Example: 2 s voice + 3 s tail becomes 5 s. A tail on one channel shifts only that channel; shared cues stay in place.
+Dry and Wet add together; Output gain (−24…+24 dB) leaves headroom without automatic limiting. Default length stays fixed. Enable **Add effect tail after the selection** and leave **Automatic tail length** checked to follow the remaining sound. Uncheck Automatic for a manual 0.01–600 s duration. Reverb decay (approximate RT60) supports 0.1–60 s. Presets untick the added tail; choose it afterwards.
+
+Automatic checks pending effect state, so a delayed echo beyond a silent gap is retained. It checks in 100 ms steps and adds a quiet taper, fading the final 10 ms. The cutoff is about 90 dB below the reference peak with a −140 dBFS floor; use manual length to retain extremely quiet tails. Silence or 0% Wet adds no empty tail. If state is still audible at 600 s, processing reports an error and preserves the original/Undo: lower feedback/decay or choose manual length.
+
+Added time shifts only the chosen channels. Both shifts later shared cues; Left/Right keeps shared cues in place and pads the other channel if needed. Preview inside a tail may first determine its end and has the exact full-processing prefix. Large results grow on disk without reserving 600 s up front; cancellation commits no partial result. Realtime track tails keep their separate 60 s limit.
 
 <a id="ss-topic-noise-reduction-and-click-repair"></a>
 

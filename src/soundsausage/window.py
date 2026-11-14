@@ -229,7 +229,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
 
     def update_button_icon(self, key, button):
         icon_key="stop" if key=="play" and self.recording_busy else key
-        button.setIcon(make_icon(icon_key, colors(), key in PRIMARY_ACTIONS, button.isCheckable()))
+        button.setIcon(make_icon(icon_key, colors()))
 
     def apply_theme(self):
         c = colors()
@@ -241,7 +241,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         for toolbar in self.findChildren(QToolBar):
             overflow = toolbar.findChild(NativeToolButton, "qt_toolbar_ext_button")
             if overflow is not None:
-                overflow.setIcon(make_icon("more", c, primary=True))
+                overflow.setIcon(make_icon("more", c))
                 bind(overflow,"setToolTip","More actions")
         for key, button in self._action_buttons:
             self.update_button_icon(key, button)

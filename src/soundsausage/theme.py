@@ -82,6 +82,8 @@ def stylesheet(c):
     away_from_text = max((QColor("#000000"), QColor("#ffffff")),
                          key=lambda color: contrast(color, c.accent_text))
     pressed = blend(c.accent, away_from_text, 0.10)
+    tool_hover = blend(c.button, c.button_text, .07)
+    tool_pressed = blend(c.button, c.button_text, .12)
     return f"""
         QMainWindow, QDialog {{ background: {n(c.window)}; color: {n(c.text)}; }}
         QLabel, QGroupBox {{ color: {n(c.text)}; }}
@@ -94,15 +96,17 @@ def stylesheet(c):
         QToolBar[compact="true"] {{ spacing: 2px; padding: 2px; }}
         QToolButton, QPushButton {{ background: {n(c.button)}; color: {n(c.button_text)};
             border: 1px solid {n(c.border)}; border-radius: 4px; padding: 4px 7px; min-height: 18px; }}
-        QToolButton:hover:enabled, QPushButton:hover:enabled {{ background: {n(hover)}; border-color: {n(c.icon)}; }}
+        QToolButton:hover:enabled {{ background: {n(tool_hover)}; border-color: {n(c.icon)}; }}
+        QPushButton:hover:enabled {{ background: {n(hover)}; border-color: {n(c.icon)}; }}
         QToolButton:focus, QPushButton:focus {{ border-color: {n(c.icon)}; border-style: dashed; }}
-        QToolButton:checked:enabled, QPushButton:checked:enabled,
-        QToolButton[primary="true"]:enabled, QPushButton[primary="true"]:enabled,
-        QPushButton:default:enabled, QToolButton#qt_toolbar_ext_button {{
+        QToolButton:checked:enabled {{
+            background: {n(c.button)}; color: {n(c.button_text)}; border-color: {n(c.icon)}; }}
+        QPushButton:checked:enabled, QPushButton[primary="true"]:enabled,
+        QPushButton:default:enabled {{
             background: {n(c.accent)}; color: {n(c.accent_text)}; border-color: {n(c.icon)}; }}
         QToolButton#qt_toolbar_ext_button {{ padding: 0px; }}
-        QToolButton[primary="true"]:hover:enabled, QPushButton[primary="true"]:hover:enabled,
-        QToolButton:pressed:enabled, QPushButton:pressed:enabled {{
+        QToolButton:pressed:enabled {{ background: {n(tool_pressed)}; color: {n(c.button_text)}; border-color: {n(c.icon)}; }}
+        QPushButton[primary="true"]:hover:enabled, QPushButton:pressed:enabled {{
             background: {n(pressed)}; color: {n(c.accent_text)}; border-color: {n(c.icon)}; }}
         QToolButton:disabled, QPushButton:disabled {{ background: {n(c.button)}; color: {n(c.disabled)};
             border-color: {n(c.border)}; }}

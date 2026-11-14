@@ -117,7 +117,7 @@ class FilterTests(unittest.TestCase):
         cues = ((b"cue ", struct.pack("<I", 1) + struct.pack("<II4sIII", 7, 400, b"data", 0, 0, 400)),)
         doc.metadata = cues
         doc.select(200, 600)
-        settings = dict(bands=[dict(frequency=1000, gain_db=6)])
+        settings = dict(bands=[dict(frequency=1000, gain_db=6)], edge_ms=0)
         doc.apply("parametric_eq", **settings)
         expected = self.dsp.process_blocks("parametric_eq", source[200:600], 48000, **settings)
         np.testing.assert_array_equal(doc.read(200, 600), expected)

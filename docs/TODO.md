@@ -1,6 +1,6 @@
 # Open punten richting v1.0
 
-Stand: 14 november 2026, SoundSausage 0.23.0.
+Stand: 14 november 2026, SoundSausage 0.24.0 in eindcontrole.
 
 Er blijven **vier gekozen punten**: B23, B24, B36b en B33. B21 is
 [afgerond in 0.23.0](validation/adaptive-noise.md); B06/B07 in 0.22.0.
@@ -21,7 +21,11 @@ Automatische uitklank en langere galm/echo beoordelen en uitwerken, met beheerst
 feedback en ruimtegebruik. Daarna hoorbare overgangen aan selectieranden van
 EQ/filters verbeteren en het gewenste fasegedrag bepalen. Realtime ketengrenzen
 uit het uitgestelde B17 worden hiermee niet vanzelf opnieuw onderdeel van de scope.
-De softwarewijziging voor B23/B24 is nog niet begonnen.
+De softwarewijzigingen zijn gebouwd: automatische uitklank en langere tijden,
+instelbare selectieovergangen en voorbereiding van het filter. De natuurlijke
+causale fase blijft behouden. Onderwerpknoppen in de handleiding en neutrale
+pictogramknoppen zijn eveneens toegevoegd. De [controles](validation/tails-and-boundaries.md)
+en pakketpublicatie worden afgerond voordat B23/B24 uit deze lijst verdwijnen.
 
 ## De vier resterende punten
 

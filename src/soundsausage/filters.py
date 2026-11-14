@@ -71,6 +71,8 @@ def design(name, sample_rate, **settings):
     """
     maximum = frequency_limit(sample_rate)
     options = dict(settings)
+    # This controls waveform selection blending, not the steady-state response.
+    number(options.pop('edge_ms', 0), 0, 100, 'Selection transition (ms)')
     output = number(options.pop("output_db", 0), -24, 24, "Output gain (dB)")
     stages = []
     if name == "graphic_eq":
@@ -129,3 +131,15 @@ def response(coefficients, gain, frequencies, sample_rate):
     for b0, b1, b2, a1, a2 in coefficients:
         h *= (b0 + b1*z + b2*z*z) / (1 + a1*z + a2*z*z)
     return 20 * np.log10(np.maximum(np.abs(h), 1e-12))
+
+
+def warmup_frames(coefficients, rate):
+    """Pole-based settling context, bounded to sixty seconds of existing audio."""
+    radius = max((float(max(abs(np.roots((1., a1, a2)))))
+                  for _, _, _, a1, a2 in coefficients), default=0.)
+    if radius <= 0:
+        return 0
+    if radius >= 1:
+        return round(rate*60)
+    frames = math.ceil(math.log(1e-8)/math.log(radius)*(1+len(coefficients)/4))
+    return min(round(rate*60), max(0, frames))

@@ -11,6 +11,7 @@ from .dsp import Dsp
 from . import storage, metadata, peaks, id3_metadata
 from .operations import blocks, progress
 from .resample import resample, frame_count
+from .filters import EFFECTS as FILTER_EFFECTS, design, number, warmup_frames
 
 
 _state_ids = count(1)
@@ -451,6 +452,8 @@ class Document:
 
     def _process_effect(self, name, *, limit=None, **settings):
         start, end = self.effect_range
+        if name in FILTER_EFFECTS:
+            return self._process_filter(name, limit=limit, **settings)
         if self.partial_channels:
             settings = dict(settings)
             if name == "gain":
@@ -471,6 +474,55 @@ class Document:
             channel = self.selected_channels[0]
             return processed[:, channel:channel+1]
         return processed
+
+    def _process_filter(self, name, *, limit=None, **settings):
+        start, end = self.effect_range
+        settings = dict(settings)
+        edge_ms = number(settings.pop('edge_ms', 5), 0, 100, 'Selection transition (ms)')
+        if not edge_ms or (start == 0 and end == self.frames):
+            return self.dsp.process_blocks(name, self.effect_view(start, end), self.sample_rate, limit=limit, **settings)
+        coefficients, gain = design(name, self.sample_rate, **settings)
+        channels = self.effect_channel_count
+        state = np.zeros((len(coefficients), channels, 2), np.float64)
+        warm = min(start, warmup_frames(coefficients, self.sample_rate))
+        done = 0
+        progress(0, warm, 'Filter voorbereiden')
+        for piece in self._slices(start-warm, start):
+            for a, b in blocks(len(piece)):
+                source = piece[a:b]
+                if self.partial_channels:
+                    channel = self.selected_channels[0]; source = source[:, channel:channel+1]
+                data = np.array(source, dtype=np.float32, order='C')
+                # Output is discarded; a zero output gain avoids overflowing a
+                # float32 scratch frame while its double-precision state warms.
+                self.dsp.biquads(data, coefficients, state, 0)
+                storage.release_pages(piece)
+                done += b-a; progress(done, warm, 'Filter voorbereiden')
+        frames = end-start
+        wanted = frames if limit is None else min(frames, max(0, int(limit)))
+        result = storage.allocate((wanted, channels))
+        transition = min(max(2, round(edge_ms*self.sample_rate/1000)), max(1, frames//2))
+        progress(0, wanted, 'Effect toepassen')
+        for a, b in blocks(wanted):
+            source = self.effect_view(start+a, start+b)
+            data = np.array(source, dtype=np.float32, order='C')
+            self.dsp.biquads(data, coefficients, state, gain)
+            weight = np.ones(b-a, np.float64)
+            position = np.arange(a, b)
+            if start:
+                weight = np.minimum(weight, position/max(1, transition-1))
+            if end < self.frames:
+                weight = np.minimum(weight, (frames-1-position)/max(1, transition-1))
+            mixed = (weight > 0) & (weight < 1)
+            data[mixed] = source[mixed].astype(np.float64)+(data[mixed].astype(np.float64)-source[mixed])*weight[mixed, None]
+            data[weight == 0] = source[weight == 0]
+            if not np.isfinite(data).all():
+                raise AudioError('The effect overflows float32 precision.')
+            result[a:b] = data; storage.release_pages(source)
+            if isinstance(result, np.memmap):
+                result.flush(); storage.release_pages(result)
+            progress(b, wanted, 'Effect toepassen')
+        return storage.seal(result, checked=True)
 
     def _paste_channel(self, clip, mix):
         samples = clip.samples

@@ -173,7 +173,7 @@ class SpaceTests(unittest.TestCase):
             ("reverb", dict(decay_seconds=0)), ("reverb", dict(room_size=101)),
             ("reverb", dict(predelay_ms=251)), ("reverb", dict(width=-1)),
             ("reverb", dict(typo=1)), ("delay", dict(dry=-1)),
-            ("echo", dict(wet=2)), ("reverb", dict(tail_seconds=61)),
+            ("echo", dict(wet=2)), ("reverb", dict(tail_seconds=601)),
             ("echo", dict(output_db=float('inf'))),
         ):
             with self.subTest(name=name, settings=settings), self.assertRaises(ValueError):

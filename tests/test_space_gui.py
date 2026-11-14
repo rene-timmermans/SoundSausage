@@ -69,8 +69,20 @@ class SpaceGuiTests(unittest.TestCase):
         self.assertGreater(dialog.suggested_tail(), 60)
         self.assertIn("Suggested tail", dialog.hint.text())
         self.assertEqual(dialog.settings()["tail_seconds"], 0)
-        dialog.keep_tail.setChecked(True); dialog.tail.setValue(60)
+        dialog.automatic_tail.setChecked(False); dialog.keep_tail.setChecked(True); dialog.tail.setValue(60)
         self.assertEqual(dialog.settings()["tail_seconds"], 60)
+
+    def test_automatic_tail_controls_and_manual_extended_limit(self):
+        dialog = self.dialog(EchoDialog)
+        dialog.keep_tail.setChecked(True)
+        self.assertTrue(dialog.settings()['auto_tail']); self.assertFalse(dialog.tail.isEnabled())
+        preview = dialog.preview_samples()
+        self.window.document.apply('echo', **dialog.settings())
+        np.testing.assert_array_equal(self.window.document.view()[:len(preview)], preview)
+        self.window.document.undo()
+        dialog.automatic_tail.setChecked(False); dialog.tail.setValue(120)
+        self.assertTrue(dialog.tail.isEnabled()); self.assertFalse(dialog.settings()['auto_tail'])
+        self.assertEqual(dialog.settings()['tail_seconds'], 120)
 
     def test_reverb_preset_fields_and_mono_controls(self):
         dialog = self.dialog(ReverbDialog)
@@ -91,7 +103,7 @@ class SpaceGuiTests(unittest.TestCase):
             doc = self.window.document
             doc.select(500, 5500)
             dialog = self.dialog(cls)
-            dialog.keep_tail.setChecked(True); dialog.tail.setValue(.1)
+            dialog.automatic_tail.setChecked(False); dialog.keep_tail.setChecked(True); dialog.tail.setValue(.1)
             self.assertTrue(dialog.tail.isEnabled())
             preview = dialog.preview_samples()
             self.assertEqual(preview.shape, (5800, 2))
@@ -118,7 +130,7 @@ class SpaceGuiTests(unittest.TestCase):
         def accept():
             dialog = self.app.activeModalWidget()
             self.assertIsInstance(dialog, EchoDialog)
-            dialog.keep_tail.setChecked(True); dialog.tail.setValue(.1)
+            dialog.automatic_tail.setChecked(False); dialog.keep_tail.setChecked(True); dialog.tail.setValue(.1)
             dialog.button_box.button(QDialogButtonBox.StandardButton.Ok).click()
         QTimer.singleShot(0, accept)
         self.window.actions["echo"].trigger()

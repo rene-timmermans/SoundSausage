@@ -2,6 +2,11 @@
 
 ## Actuele stand richting v1.0 — 14 november 2026
 
+0.24.0 staat in eindcontrole: automatische uitklank, langere galm/echo,
+selectieovergangen bij EQ/filters, onderwerpknoppen in de handleiding en neutrale
+pictogramknoppen. B23/B24 blijven open tot de definitieve tests en pakketten
+zijn geverifieerd. Zie [uitklank en filterranden](validation/tails-and-boundaries.md).
+
 SoundSausage 0.23.0 is gepubliceerd en geverifieerd. B21 is afgerond: adaptieve
 ruisreductie, instelbare aanpassingstijd, detailbehoud en twee presets. De vaste
 profielstand blijft beschikbaar. Alle vijf handleidingen hebben bovendien een

@@ -60,5 +60,6 @@
   "XDG_CONFIG_HOME",
   "XDG_DATA_HOME",
   "blk ",
-  "hdr "
+  "hdr ",
+  "B"
 ]

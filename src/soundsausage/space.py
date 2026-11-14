@@ -16,6 +16,7 @@ from .filters import number
 from .operations import blocks, progress
 
 EFFECTS = ("delay", "echo", "reverb")
+MAX_TAIL_SECONDS = 600
 
 
 class DelayLine(C.Structure):
@@ -44,7 +45,12 @@ class Processor:
         self.dry = number(options.pop("dry", 1), 0, 1, "Dry level")
         self.wet = number(options.pop("wet", .3), 0, 1, "Wet level")
         self.gain = 10 ** (number(options.pop("output_db", 0), -24, 24, "Output gain (dB)") / 20)
-        self.tail_frames = round(number(options.pop("tail_seconds", 0), 0, 60, "Tail (seconds)") * self.sample_rate)
+        self.tail_frames = round(number(options.pop("tail_seconds", 0), 0, MAX_TAIL_SECONDS, "Tail (seconds)") * self.sample_rate)
+        self.auto_tail = options.pop('auto_tail', False)
+        if type(self.auto_tail) is not bool:
+            raise ValueError('Invalid automatic tail setting.')
+        if self.auto_tail and self.tail_frames:
+            raise ValueError('Choose automatic or manual tail length.')
         self.damping = 0
         self.ping_pong = False
         self.width = 1
@@ -65,7 +71,7 @@ class Processor:
                 specs.append((length, feedback, 1))
         elif name == "reverb":
             room = number(options.pop("room_size", 50), 20, 100, "Room size")
-            decay = number(options.pop("decay_seconds", 1.5), .1, 10, "Decay (seconds)")
+            decay = number(options.pop("decay_seconds", 1.5), .1, 60, "Decay (seconds)")
             pre = number(options.pop("predelay_ms", 20), 0, 250, "Predelay (ms)")
             self.damping = number(options.pop("damping", .4), 0, .95, "Damping")
             self.width = number(options.pop("width", 1), 0, 1, "Stereo width")
@@ -96,10 +102,84 @@ class Processor:
         mode = self.width if self.name == "reverb" else int(self.ping_pong)
         dsp._check(function(*dsp._buffer(data), self.lines, self.damping, mode, self.dry, self.wet, self.gain))
 
+    def pending_bound(self):
+        """Conservative future wet peak, including unplayed delayed events."""
+        if not self.wet:
+            return 0.
+        peak = max((float(np.max(abs(buffer))) for buffer in self.buffers if len(buffer)), default=0.)
+        peak = max(peak, max((abs(line.filter) for line in self.lines if line.feedback), default=0.))
+        # Eight parallel combs and four allpasses: a generous sup-norm bound
+        # also covers state already stored inside the allpass chain.
+        factor = 1024 if self.name == 'reverb' else 1
+        return peak*self.wet*self.gain*factor
+
+
+def _fade_tail(result, total, frames, sample_rate):
+    fade = min(total-frames, max(1, round(.01*sample_rate)))
+    start = max(frames, total-fade)
+    if fade and len(result) > start:
+        stop = min(len(result), total)
+        result[start:stop] *= ((total-1-np.arange(start, stop, dtype=np.float64))/max(1, fade-1))[:, None]
+
+
+def _automatic(dsp, processor, source, sample_rate, limit, block_frames):
+    from .audio import MAX_AUDIO_BYTES
+    frames, channels = source.shape
+    maximum = frames+round(MAX_TAIL_SECONDS*sample_rate)
+    wanted = maximum if limit is None else min(maximum, max(0, int(limit)))
+    if not frames or not wanted:
+        return storage.seal(np.empty((0, channels), np.float32), checked=True)
+    if maximum*channels*4 > MAX_AUDIO_BYTES:
+        raise ValueError('The effect exceeds the supported address space.')
+    reference = 0.
+    total = frames
+    guard = max(1, round(sample_rate*.01))
+    progress(0, maximum, 'Effect toepassen')
+    with storage.StreamBuffer(channels, wanted) as output:
+        for a, b in blocks(min(frames, wanted), block_frames):
+            data = np.array(source[a:b], dtype=np.float32, order='C')
+            reference = max(reference, float(np.max(abs(data)))*processor.wet*processor.gain)
+            processor.process(dsp, data)
+            reference = max(reference, float(np.max(abs(data))))
+            output.write(data); storage.release_pages(source)
+            progress(b, maximum, 'Effect toepassen')
+        # A preview wholly inside the source cannot overlap any final tail fade.
+        if wanted > frames:
+            threshold = max(1e-7, reference*10**(-90/20))
+            bound = processor.pending_bound()
+            if bound > threshold:
+                quiet = False
+                quantum = max(1, round(sample_rate*.1))
+                for a in range(frames, maximum-guard, quantum):
+                    b = min(maximum-guard, a+quantum)
+                    data = np.zeros((b-a, channels), np.float32)
+                    processor.process(dsp, data)
+                    if a < wanted:
+                        output.write(np.ascontiguousarray(data[:max(0, min(b, wanted)-a)]))
+                    total = b
+                    progress(b, maximum, 'Effect toepassen')
+                    if processor.pending_bound() <= threshold:
+                        quiet = True
+                        break
+                if not quiet:
+                    raise ValueError('The automatic tail is still audible at the limit. Lower Feedback or Decay, or choose a manual tail.')
+                # Keep a complete quiet taper after the last possibly loud tap.
+                data = np.zeros((guard, channels), np.float32)
+                processor.process(dsp, data)
+                if total < wanted:
+                    output.write(np.ascontiguousarray(data[:min(guard, wanted-total)]))
+                total += guard
+        result = output.finish()
+    _fade_tail(result, total, frames, sample_rate)
+    progress(len(result), len(result), 'Effect toepassen')
+    return storage.seal(result, checked=True)
+
 
 def process_blocks(dsp, name, source, sample_rate, *, limit=None, block_frames=262144, **settings):
     frames, channels = source.shape
     processor = Processor(name, sample_rate, channels, **settings)
+    if processor.auto_tail:
+        return _automatic(dsp, processor, source, sample_rate, limit, block_frames)
     total = frames + processor.tail_frames if frames else 0
     wanted = total if limit is None else min(total, max(0, int(limit)))
     result = storage.allocate((wanted, channels))

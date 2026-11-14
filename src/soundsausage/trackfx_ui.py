@@ -34,6 +34,9 @@ def dialog_for(kind, session, parent):
     if hasattr(dialog, 'keep_tail'):
         dialog.keep_tail.setChecked(False); dialog.keep_tail.setEnabled(False)
         dialog.keep_tail.setToolTip('Set the tail length in Track Effects.')
+        dialog.automatic_tail.setChecked(False); dialog.automatic_tail.setEnabled(False)
+    if hasattr(dialog, 'boundary'):
+        dialog.boundary.setValue(0); dialog.boundary.hide(); dialog.boundary_label.hide(); dialog.boundary_note.hide()
     return dialog
 
 
@@ -139,7 +142,10 @@ class TrackEffectsDialog(QDialog):
             applied = [False]
             def apply():
                 def save():
-                    spec = effect(kind,dialog.settings(),key=original.id if original else None,enabled=original.enabled if original else True)
+                    values = dialog.settings()
+                    if kind in ('graphic_eq', 'parametric_eq', 'filter'): values.pop('edge_ms', None)
+                    if kind in ('delay', 'echo', 'reverb'): values.pop('auto_tail', None)
+                    spec = effect(kind,values,key=original.id if original else None,enabled=original.enabled if original else True)
                     processor = Processor(spec,self.session.sample_rate,self.session.dsp); processor.close()
                     current = list(self.track().effects)
                     if original is not None or applied[0]:

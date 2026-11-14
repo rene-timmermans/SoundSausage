@@ -117,7 +117,7 @@ class Dsp:
             data[:] = restoration.process_blocks(name, data, sample_rate, **settings)
         elif name in space.EFFECTS:
             processor = space.Processor(name, sample_rate, data.shape[1], **settings)
-            if processor.tail_frames:
+            if processor.tail_frames or processor.auto_tail:
                 raise ValueError("Use block processing to append an effect tail.")
             processor.process(self, data)
         elif name in FILTER_EFFECTS:

@@ -1,13 +1,13 @@
 # SoundSausage — manuel
 
-Version 0.23.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.24.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
 
 ## Sommaire
 
-Cliquez sur un sujet pour y accéder. Le bouton Sommaire en haut permet de revenir ici.
+Cliquez sur un sujet pour y accéder. Sommaire revient ici ; Précédent et Suivant changent de sujet. F3 et Maj+F3 suivent les résultats de recherche.
 
 - [1. Langue et aide](#ss-topic-1-langue-et-aide)
 - [2. Démarrage rapide et espace de travail](#ss-topic-2-demarrage-rapide-et-espace-de-travail)
@@ -62,11 +62,13 @@ Cliquez sur un sujet pour y accéder. Le bouton Sommaire en haut permet de reven
 
 Dans **Options → Langue**, choisissez Nederlands, English, Deutsch, Français ou Español. Menus, fenêtres, conseils et manuel ouvert changent immédiatement. Le choix est mémorisé au prochain démarrage. Les noms de fichiers, pistes et plug-ins conservent leur orthographe.
 
-**Aide → Manuel** ou **F1** ouvre ce manuel hors ligne à côté de l'éditeur. **Ctrl+F** active la recherche ; **F3** trouve l'occurrence suivante et **Maj+F3** la précédente, avec retour au début ou à la fin. Seuls les liens web explicitement ouverts nécessitent Internet. **À propos** indique version, auteur, licence, site et composants.
+**Aide → Manuel** ou **F1** ouvre ce manuel hors ligne à côté de l'éditeur. **Ctrl+F** active la recherche ; **F3** trouve l'occurrence suivante et **Maj+F3** la précédente, avec retour au début ou à la fin. Précédent et Suivant changent de sujet sans recherche et se désactivent aux limites. Seuls les liens web explicitement ouverts nécessitent Internet. **À propos** indique version, auteur, licence, site et composants.
 
 <a id="ss-topic-2-demarrage-rapide-et-espace-de-travail"></a>
 
 ## 2. Démarrage rapide et espace de travail
+
+Les boutons de barre et de transport ont un fond neutre et des icônes de la couleur d’accent ; un cadre fin marque le choix actif.
 
 L’icône du programme sur fond violet apparaît dans les barres de titre et la barre des tâches. **Aide → À propos** affiche la mascotte détourée à côté des informations du programme.
 
@@ -241,7 +243,9 @@ Sous **Filtres**, **Égaliseur graphique** comporte dix bandes d'octave, 31,5 Hz
 
 #### Filtres
 
-**Filtres** propose passe-haut (grondement, départ 80 Hz), passe-bas (adoucir les aigus, 8 kHz), passe-bande et réjecteur. Passe-haut/bas utilisent Butterworth 12/24/36/48 dB/oct, environ −3 dB à la coupure ; une pente raide peut résonner davantage. Passe-bande/réjecteur utilisent Q. Téléphone est un passe-bande large ; les réjecteurs 50/60 Hz n'enlèvent pas les harmoniques du ronflement. Réinitialiser restaure le grondement. L'état suit les blocs mais démarre vide à la sélection ; durée conservée, phase modifiée. Une sélection courte abrupte peut cliquer ; élargissez-la.
+**Filtres** propose passe-haut (grondement, départ 80 Hz), passe-bas (adoucir les aigus, 8 kHz), passe-bande et réjecteur. Passe-haut/bas utilisent Butterworth 12/24/36/48 dB/oct, environ −3 dB à la coupure ; une pente raide peut résonner davantage. Passe-bande/réjecteur utilisent Q. Téléphone est un passe-bande large ; les réjecteurs 50/60 Hz n'enlèvent pas les harmoniques du ronflement. Réinitialiser restaure le grondement. Les filtres gardent la durée et leur phase causale naturelle.
+
+**Transition de sélection**, initialement 5 ms, réglable 0–100 ms, mélange à l’intérieur des limites d’une sélection partielle. Échantillons aux bords et audio extérieur restent exacts. Une sélection très courte peut être entièrement transition. L’audio précédent prépare l’état par blocs, selon les pôles jusqu’à 60 s. Avec 0 ms, ancien traitement direct depuis un état vide. Un fichier entier garde le filtre continu ordinaire. La courbe montre le gain stationnaire ; le mélange aux bords est distinct. Ce n’est pas une EQ à phase linéaire/nulle : les fréquences peuvent réagir à des instants différents. Un filtre très étroit et grave peut atteindre la limite de contexte ; sélectionnez plus ou le fichier entier. Les inserts temps réel gardent leur état sans transition de sélection.
 
 <a id="ss-topic-delai-echo-et-reverberation"></a>
 
@@ -263,9 +267,13 @@ Sous **Filtres**, **Égaliseur graphique** comporte dix bandes d'octave, 31,5 Hz
 
 #### Réverbération
 
-**Réverbération** règle taille de pièce (espacement des réflexions), déclin RT60 approximatif (0,1–10 s), prédélai (0–250 ms) avant l'effet, amortissement aigu et largeur stéréo (0 même effet des deux côtés, 100 pleine largeur ; désactivée en mono). Petite pièce, studio, grande salle et ambiance longue varient espace/déclin. Pour la parole, commencez avec peu d'effet, déclin court et un peu de prédélai. Réverbération algorithmique, sans modèle exact de salle.
+**Réverbération** règle taille de pièce (espacement des réflexions), déclin RT60 approximatif (0,1–60 s), prédélai (0–250 ms) avant l'effet, amortissement aigu et largeur stéréo (0 même effet des deux côtés, 100 pleine largeur ; désactivée en mono). Petite pièce, studio, grande salle et ambiance longue varient espace/déclin. Pour la parole, commencez avec peu d'effet, déclin court et un peu de prédélai. Réverbération algorithmique, sans modèle exact de salle.
 
-Son direct et effet sont des pourcentages indépendants additionnés ; le gain de sortie (−24…+24 dB) règle la somme sans limitation automatique. La durée reste fixe par défaut, coupant les répétitions tardives. Ajouter une queue insère 0,01–60 s et décale l'audio suivant et ses repères. Les 10 dernières ms s'estompent. Les préréglages décochent la queue ; réglez-la ensuite. Un écho extrême peut dépasser 60 s : réduisez réinjection/délai. Exemple : voix 2 s + queue 3 s = 5 s. Une queue sur un canal ne décale que ce canal ; les repères communs restent en place.
+Son direct et effet s’additionnent ; gain de sortie (−24…+24 dB) donne de la marge sans limitation automatique. La durée reste fixe par défaut. Activez **Ajouter une queue après la sélection** et **Durée de queue automatique** pour suivre le son restant. Décochez Automatique pour une durée manuelle de 0,01–600 s. Le déclin de réverbération (RT60 approximatif) va de 0,1–60 s. Les préréglages désactivent l’ajout ; réglez-le ensuite.
+
+L’automatique vérifie l’état mémorisé de l’effet et garde les échos tardifs malgré un intervalle silencieux. Vérification par pas de 100 ms, fin calme puis fondu des dernières 10 ms. Seuil environ 90 dB sous la crête de référence, plancher −140 dBFS ; choisissez manuel pour garder une queue extrêmement faible. Silence ou 0% effet n’ajoute pas de durée vide. État encore audible à 600 s : message et conservation de l’original/annulation ; baissez réinjection/déclin ou choisissez manuel.
+
+Seuls les canaux choisis se décalent. Les deux décale les repères communs suivants ; Gauche/Droite les garde et complète l’autre canal si besoin. Un aperçu dans la queue peut d’abord en déterminer la fin, tout en restant le début exact du traitement complet. Les gros résultats grandissent sur disque sans réserver 600 s ; annuler n’applique aucun résultat partiel. La queue des pistes en temps réel garde sa limite distincte de 60 s.
 
 <a id="ss-topic-reduction-du-bruit-et-declics"></a>
 

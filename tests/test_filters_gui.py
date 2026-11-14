@@ -67,6 +67,17 @@ class FilterGuiTests(unittest.TestCase):
         self.assertEqual(dialog.settings()["gains"], (0,)*10)
         self.assertFalse(dialog.preview_button.isEnabled())
 
+    def test_selection_transition_controls_preview_and_direct_mode(self):
+        doc = self.window.document; doc.select(1000, 2000)
+        dialog = self.dialog(FilterDialog)
+        self.assertEqual(dialog.settings()['edge_ms'], 5)
+        preview = dialog.preview_samples()
+        np.testing.assert_array_equal(preview[0], self.data[1000])
+        np.testing.assert_array_equal(preview[-1], self.data[1999])
+        dialog.boundary.setValue(0)
+        settings = dialog.settings(); preview = dialog.preview_samples()
+        np.testing.assert_array_equal(preview, doc.dsp.process_blocks('filter', self.data[1000:2000], 8000, **settings))
+
     def test_parametric_enables_band_controls_and_low_rate_presets(self):
         dialog = self.dialog(ParametricEqualizerDialog)
         self.assertFalse(dialog.bands[-1][0].isChecked())

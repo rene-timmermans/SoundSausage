@@ -130,6 +130,47 @@ def workspace():
     return _default_workspace
 
 
+class StreamBuffer:
+    """Grow a private audio file without reserving a worst-case tail in advance."""
+    def __init__(self, channels, max_frames):
+        self.owner = workspace()
+        self.path = self.owner.path / (uuid.uuid4().hex+'.buffer')
+        self.channels, self.max_frames, self.frames = channels, max_frames, 0
+        self.finished = False
+        self.file = self.path.open('xb', buffering=0)
+
+    def __enter__(self):
+        return self
+
+    def write(self, samples):
+        if (samples.dtype != np.float32 or not samples.flags.c_contiguous or samples.ndim != 2 or
+                samples.shape[1] != self.channels or self.frames+len(samples) > self.max_frames):
+            raise AudioError('Invalid streaming audio buffer.')
+        remaining = memoryview(samples).cast('B')
+        while remaining:
+            count = self.file.write(remaining)
+            if not count:
+                raise AudioError('The audio workspace could not be written.')
+            remaining = remaining[count:]
+        self.frames += len(samples)
+
+    def finish(self):
+        self.file.flush(); os.fsync(self.file.fileno()); self.file.close()
+        if self.frames:
+            result = np.memmap(self.path, dtype=np.float32, mode='r+', shape=(self.frames, self.channels))
+            result = self.owner.register(result, self.path)
+        else:
+            self.path.unlink(missing_ok=True)
+            result = np.empty((0, self.channels), np.float32)
+        self.finished = True
+        return result
+
+    def __exit__(self, *error):
+        self.file.close()
+        if not self.finished:
+            self.path.unlink(missing_ok=True)
+
+
 def root_array(array):
     result = array
     while isinstance(result.base, np.ndarray):

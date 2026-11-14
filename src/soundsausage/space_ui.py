@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
 from .i18n_widgets import QFormLayout, QLabel, QComboBox, QCheckBox, QPushButton
 
 from .amplitude_ui import EffectDialog, spin
+from .space import MAX_TAIL_SECONDS
 
 
 class SpaceDialog(EffectDialog):
@@ -34,9 +35,12 @@ class SpaceDialog(EffectDialog):
         form.addRow("Output gain", self.output)
         self.keep_tail = QCheckBox("Add effect tail after the selection")
         self.keep_tail.setToolTip("Only the chosen channel shifts. The other stays in place; shorter audio is padded with silence.")
-        self.tail = spin(tail_default, .01, 60, " s", 2)
+        self.tail = spin(tail_default, .01, MAX_TAIL_SECONDS, " s", 2)
         self.tail.setEnabled(False)
         form.addRow(self.keep_tail, self.tail)
+        self.automatic_tail = QCheckBox('Automatic tail length')
+        self.automatic_tail.setChecked(True); self.automatic_tail.setEnabled(False)
+        form.addRow(self.automatic_tail)
         layout.addLayout(form)
         self.hint = QLabel()
         self.hint.setWordWrap(True)
@@ -47,12 +51,18 @@ class SpaceDialog(EffectDialog):
         note.setWordWrap(True)
         layout.addWidget(note)
         self.add_footer(layout)
-        self.keep_tail.toggled.connect(self.tail.setEnabled)
+        self.keep_tail.toggled.connect(self.tail_controls)
+        self.automatic_tail.toggled.connect(self.tail_controls)
         for field in (self.dry, self.wet, self.output, self.tail):
             field.valueChanged.connect(self.changed)
         self.keep_tail.toggled.connect(self.changed)
+        self.automatic_tail.toggled.connect(self.changed)
         self.presets.currentIndexChanged.connect(self.preset)
         self.preset(1)
+
+    def tail_controls(self, *_):
+        self.automatic_tail.setEnabled(self.keep_tail.isChecked())
+        self.tail.setEnabled(self.keep_tail.isChecked() and not self.automatic_tail.isChecked())
 
     def changed(self, *_):
         if not self._setting:
@@ -61,14 +71,16 @@ class SpaceDialog(EffectDialog):
 
     def common_settings(self):
         return dict(dry=self.dry.value()/100, wet=self.wet.value()/100,
-                    output_db=self.output.value(), tail_seconds=self.tail.value() if self.keep_tail.isChecked() else 0)
+                    output_db=self.output.value(),
+                    tail_seconds=self.tail.value() if self.keep_tail.isChecked() and not self.automatic_tail.isChecked() else 0,
+                    auto_tail=self.keep_tail.isChecked() and self.automatic_tail.isChecked())
 
     def update_hint(self):
         if not hasattr(self, "hint"):
             return
         duration = self.suggested_tail()
-        limit = " This exceeds the 60 s tail limit; lower Feedback or Delay for a full decay." if duration > 60 else ""
-        self.hint.setText(f"Suggested tail: about {duration:.2f} s.{limit}\n"
+        self.hint.setText(f"Suggested tail: about {duration:.2f} s.\n"
+                          "Automatic follows the remaining sound; manual length is limited to 600 s.\n"
                           "The final 10 ms of an added tail fade to silence.")
 
 
@@ -161,7 +173,7 @@ class EchoDialog(DelayDialog):
     def suggested_tail(self):
         delay = super().suggested_tail()-.01
         feedback = self.feedback.value()/100
-        repeats = 1 if feedback == 0 else max(1, math.ceil(math.log(.001)/math.log(feedback)))
+        repeats = 1 if feedback == 0 else max(1, math.ceil(math.log(10**(-90/20))/math.log(feedback)))
         return delay*repeats+.01
 
     def preset(self, index):
@@ -173,7 +185,7 @@ class EchoDialog(DelayDialog):
         self.feedback.setValue(feedback*100); self.damping.setValue(damping*100)
         self.ping_pong.setChecked(ping_pong and self.document.effect_channel_count == 2)
         self.dry.setValue(100); self.wet.setValue(wet*100); self.output.setValue(0)
-        self.keep_tail.setChecked(False); self.tail.setValue(min(60, self.suggested_tail()))
+        self.keep_tail.setChecked(False); self.tail.setValue(min(MAX_TAIL_SECONDS, self.suggested_tail()))
         self.presets.setCurrentIndex(index)
         self._setting = False
         self.update_hint()
@@ -195,7 +207,7 @@ class ReverbDialog(SpaceDialog):
         layout = self.header("Reverb", [p[0] for p in self.PRESETS])
         form = QFormLayout()
         self.room = spin(50, 20, 100, " %")
-        self.decay = spin(1.5, .1, 10, " s", 2)
+        self.decay = spin(1.5, .1, 60, " s", 2)
         self.predelay = spin(20, 0, 250, " ms", 2)
         self.damping = spin(40, 0, 95, " %")
         self.width = spin(100, 0, 100, " %")
@@ -211,7 +223,7 @@ class ReverbDialog(SpaceDialog):
         self.footer(layout, 2)
 
     def suggested_tail(self):
-        return self.predelay.value()/1000 + self.decay.value()*1.25 + .1
+        return self.predelay.value()/1000 + self.decay.value()*1.5 + .1
 
     def preset(self, index):
         if index <= 0:

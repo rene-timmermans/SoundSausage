@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.23.0**.
+De huidige versie is **0.24.0**.
 
 ## Wat het kan
 
@@ -92,6 +92,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.24.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.24.0)** Automatische uitklank en langere galm/echo. Soepele selectieranden bij EQ en filters. Vorige/Volgende bladeren door handleidingonderwerpen; werkbalk- en afspeeliconen gebruiken de themakleur op neutrale knoppen.
 
 **[0.23.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.23.0)** Adaptieve ruisreductie volgt wisselende achtergrondruis. Detailbehoud en nieuwe presets geven meer controle over zachte geluiden. Alle vijf handleidingen hebben een klikbare inhoudsopgave.
 

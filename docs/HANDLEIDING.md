@@ -2,18 +2,21 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.23.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.24.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
-treffer en **Shift+F3** naar de vorige.
+treffer en **Shift+F3** naar de vorige. Enter herhaalt de zoekopdracht; zoeken gaat
+bij het einde verder vanaf het begin. **Vorige** en **Volgende** springen naar
+het vorige of volgende onderwerp, ook zonder zoekterm. Bij het eerste en laatste
+onderwerp is de betreffende knop grijs. **Inhoud** brengt je terug naar de index.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
 
 ## Inhoudsopgave
 
-Klik op een onderwerp om er direct naartoe te gaan. De knop Inhoud bovenaan brengt je terug.
+Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vorige en Volgende bladeren door onderwerpen. F3 en Shift+F3 volgen zoekresultaten.
 
 - [Taal kiezen](#ss-topic-taal-kiezen)
 - [Snel beginnen](#ss-topic-snel-beginnen)
@@ -130,6 +133,9 @@ bovenaan, via **Beeld**, of met **Tab**. De golfvorm en de multitracksessie kunn
 naast elkaar blijven bestaan; wisselen van weergave sluit ze niet. Twee dunne
 horizontale lijnen begrenzen de kanalen: de onderrand van links en de bovenrand
 van rechts. Ze lopen alleen binnen het tekenvlak, ook bij live opname.
+
+Werkbalk- en afspeelknoppen hebben een neutrale achtergrond met pictogrammen in de
+themakleur. Een dun gekleurd kader toont de actieve keuze.
 
 Bovenaan staan menu's en werkbalken. Een korte aanwijzing verschijnt wanneer je
 de muis boven een knop houdt. **Opties → Werkbalkteksten tonen** toont ook namen
@@ -843,13 +849,26 @@ knipt pieken niet automatisch af. De grafiek toont de gezamenlijke frequentie-
 respons inclusief Uitgangsversterking, binnen een weergave van −36 tot +36 dB.
 
 Dezelfde instellingen gelden voor de gekozen kanalen, zonder ze te mengen.
-Filtergeheugen loopt door tussen verwerkingsblokken, ook bij lange bestanden.
-Iedere bewerking begint bij het begin van de selectie met leeg filtergeheugen
-en houdt de bestaande lengte aan. Een heel korte of abrupt begrensde selectie
-kan daardoor een hoorbare overgang geven; kies een ruimer fragment of pas het
-effect op de hele opname toe. Filters verschuiven de fase en zijn geen
-lineairefase-EQ. Cueposities blijven staan; recordermeetgegevens worden niet
-opnieuw berekend.
+**Selectieovergang** mengt binnen de randen van een gedeeltelijke selectie tussen
+origineel en gefilterd geluid, standaard 5 ms, instelbaar van 0–100 ms. De eerste en
+laatste sample bij een grens met ongewijzigde audio blijven exact gelijk aan de
+bron. Audio buiten de selectie verandert niet. Bij een heel kort fragment kan
+de overgang het hele fragment innemen; kies 0 ms voor directe bewerking.
+
+Bij een overgang wordt het filter eerst voorbereid met voorafgaande audio,
+afhankelijk van het verval van het filter en tot maximaal 60 seconden. Dit gebeurt
+in blokken zonder die audio te wijzigen. Filtergeheugen loopt daarna door tussen
+blokken. Bij 0 ms begint een gedeeltelijke selectie zoals voorheen met leeg
+geheugen; de hele opname gebruikt eveneens de gewone doorlopende verwerking.
+De lengte en cueposities blijven gelijk; eerdere Undo herstelt de bron.
+
+Het natuurlijke causale faseverloop blijft behouden. Dit is geen lineairefase-
+of fasevrije EQ: frequenties kunnen verschillend in tijd reageren. De grafiek
+toont de stationaire amplituderespons; de korte mengovergang aan de selectierand
+staat daar los van. Bij extreme smalle lage filters kan voorbereiding begrensd
+zijn; kies een ruimer fragment of pas de hele opname toe. In realtime
+spooreffecten loopt de bestaande filtertoestand door; daar is deze selectie-
+instelling niet nodig. Bijzondere recordermeetgegevens worden niet herberekend.
 
 Bij een lange bewerking toont de voortgang een annuleerknop. Annuleren behoudt
 de oorspronkelijke golfvorm en Ongedaan maken-geschiedenis. Voor een multitrackclip open
@@ -909,7 +928,7 @@ opstapelen; zet Effect of Uitgangsversterking lager wanneer het niveau te hoog w
 - **Ruimtegrootte:** de afstand tussen reflecties. Een grotere waarde geeft meer
   spreiding in de tijd en een ruimer karakter; de nagalmtijd blijft apart instelbaar.
 - **Nagalmtijd (ongeveer RT60):** de richttijd waarin de galm ongeveer 60 dB afneemt,
-  van 0,1 tot 10 seconden. Het precieze verval hangt ook van demping, frequentie
+  van 0,1 tot 60 seconden. Het precieze verval hangt ook van demping, frequentie
   en de opname af.
 - **Voorvertraging:** tijd vóór de galm, van 0 tot 250 ms. Het oorspronkelijke geluid
   wordt hierdoor niet vertraagd; extra voorvertraging houdt de aanslag duidelijk.
@@ -942,26 +961,33 @@ kan boven 0 dBFS komen; verlaag het vóór PCM-export.
 
 ### Een uitklank behouden
 
-Standaard blijft de lengte gelijk. Herhalingen of galm na het einde van de
-selectie vallen dan buiten het resultaat. Vink **Toevoegen effect tail after the
-selection** aan om extra tijd toe te voegen en stel de duur in, van 0,01 tot
-60 seconden. De aanwijzing Suggested tail helpt bij een keuze; verander de
-duur zo nodig na het kiezen van een preset. De presets schakelen de extra tijd
-steeds uit, zodat een preset niet ongemerkt de opname verlengt.
+Standaard blijft de lengte gelijk. Vink **Extra uitklank na selectie** aan om de
+resterende vertraging, echo of galm toe te voegen. **Automatische uitklankduur**
+staat klaar om de duur zelf te bepalen. Schakel deze optie uit om een handmatige
+tijd van 0,01–600 seconden te kiezen. Een galmtijd (ongeveer RT60) kan 0,1–60 s zijn.
+Presets schakelen extra uitklank uit; kies de gewenste uitklank daarna.
 
-Bij toevoegen van een uitklank schuift de gekozen audio ná de selectie vooruit met die
-duur. Het effect begint met leeg geheugen aan het begin van de selectie en
-loopt niet door in de volgende oorspronkelijke audio. Cuepunten binnen de
-selectie blijven staan; bij Beide schuiven latere cuepunten met de volgende audio mee.
-Bij Links of Rechts blijven de gezamenlijke cuepunten op hun tijdstip.
-De selectie omvat na toepassen het volledige resultaat, inclusief de uitklank.
-De laatste 10 ms van de toegevoegde tijd lopen af naar stilte. Een te korte
-duur kan nog hoorbare herhalingen afkappen; gebruik meer tijd of minder
-Terugkoppeling/Decay. Bij extreme echoinstellingen kan de natuurlijke uitklank langer
-dan de maximale 60 seconden zijn; de aanwijzing meldt dit.
+Automatisch volgt het resterende effectgeheugen, ook wanneer een late echo pas
+na een stil gat klinkt. De controle gebeurt in stappen van 100 ms. Als de
+restpiek laag genoeg is, volgt een korte rustige afloop; de laatste 10 ms worden
+naar stilte uitgefade. Het criterium is ongeveer 90 dB onder de referentiepiek,
+met een absolute ondergrens van −140 dBFS. Voor extreem zachte uitklank die je
+volledig wilt bewaren kun je de handmatige duur kiezen. Stilte of 0% Effect
+voegt automatisch geen lege tijd toe. Bij 600 s nog hoorbare effecttoestand volgt
+een melding; de oorspronkelijke audio en Undo blijven intact. Kies dan een
+lagere terugkoppeling/galmtijd of een handmatige duur.
+
+Alleen gekozen kanalen schuiven door een toegevoegde uitklank. Bij Beide schuiven
+latere cuepunten mee; bij Links of Rechts blijven de gezamenlijke cuepunten
+staan en wordt het andere kanaal zo nodig achteraan met stilte aangevuld.
+De selectie omvat het volledige resultaat. Een luistervoorbeeld dat in de
+uitklank valt kan eerst die uitklank moeten bepalen; het blijft hetzelfde
+begin als bij volledig toepassen. Lange resultaten groeien in de werkruimte
+zonder vooraf 600 s te reserveren en kunnen worden geannuleerd.
 
 **Voorbeeld:** selecteer een korte stemopname, kies Echo → Warme echo en luister
-met Voorbeeld. Vink Toevoegen effect tail aan, kies de voorgestelde tijd en bevestig.
+met Voorbeeld. Vink Extra uitklank aan en laat de duur automatisch bepalen. Voor precies drie
+seconden: schakel Automatische uitklankduur uit, kies 3 s en bevestig.
 Een stemopname van twee seconden met drie seconden uitklank wordt vijf seconden.
 Gebruik Ctrl+Z om naar de oorspronkelijke lengte terug te gaan.
 

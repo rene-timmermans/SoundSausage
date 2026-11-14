@@ -70,7 +70,7 @@ class Processor:
             self.coefficients, self.output = design(spec.kind, rate, **settings)
             self.state = np.zeros((len(self.coefficients), 2, 2), np.float64)
         elif spec.kind in ('delay', 'echo', 'reverb'):
-            if settings.get('tail_seconds', 0): raise AudioError('Set the track tail instead of an offline effect tail.')
+            if settings.get('tail_seconds', 0) or settings.get('auto_tail', False): raise AudioError('Set the track tail instead of an offline effect tail.')
             self.space = SpaceProcessor(spec.kind, rate, 2, **settings)
         elif spec.kind == 'gain':
             if set(settings) - {'initial', 'final', 'logarithmic'}: raise AudioError('Unknown amplification setting.')

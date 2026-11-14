@@ -55,6 +55,13 @@ def run(window):
     np.testing.assert_array_equal(doc.view()[:, 0], [original[0, 0], original[1, 0], original[2, 0], 0, 0])
     np.testing.assert_array_equal(doc.view()[:, 1], [original[0, 1], original[1, 1], original[2, 1]+.25, .25, .25])
     doc.undo(); doc.select(0, 0)
+    tail_source = np.zeros((100, 1), np.float32); tail_source[-1] = 1
+    tail = doc.dsp.process_blocks('delay', tail_source, 8000, delay_ms=20, dry=0, wet=1, auto_tail=True)
+    assert len(tail) > len(tail_source) and tail[259, 0] == 1 and tail[-1, 0] == 0
+    border = Document(np.full((300, 1), .5, np.float32), 8000, dsp=doc.dsp)
+    border.select(50, 250); border.apply('graphic_eq', output_db=-6)
+    assert border.view()[50, 0] == .5 and border.view()[249, 0] == .5
+    assert border.view()[150, 0] < .3
     doc.select_channels()
     doc.apply("dynamics", points=((-96, -96), (0, 0)))
     np.testing.assert_array_equal(doc.read(), original)
@@ -187,6 +194,7 @@ def run(window):
             try:
                 if isinstance(dialog, ConvolutionDialog): dialog.use_impulse(response_path)
                 if isinstance(dialog, (DelayDialog, EchoDialog, ReverbDialog)):
+                    dialog.automatic_tail.setChecked(False)
                     dialog.keep_tail.setChecked(True)
                     dialog.tail.setValue(.1)
                 dialog.show()
@@ -208,6 +216,9 @@ def run(window):
             assert tr('Draw Waveform') in manual.browser.toPlainText()
             assert tr('Start Calibration') in manual.browser.toPlainText()
             assert 'LADSPA' in manual.browser.toPlainText()
+            manual.contents_button.click(); manual.next_button.click()
+            assert manual._topic_index == 0 and not manual.previous_button.isEnabled()
+            manual.next_button.click(); manual.previous_button.click(); assert manual._topic_index == 0
             for cls in (CalibrationDialog, RecordDialog):
                 dialog = cls(window)
                 try:

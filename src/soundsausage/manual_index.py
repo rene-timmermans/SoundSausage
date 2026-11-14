@@ -10,11 +10,11 @@ END = '<!-- soundsausage-contents:end -->'
 CONTENTS_ANCHOR = 'ss-contents'
 TITLES = {'nl': 'Inhoudsopgave', 'en': 'Contents', 'de': 'Inhalt', 'fr': 'Sommaire', 'es': 'Índice'}
 HINTS = {
-    'nl': 'Klik op een onderwerp om er direct naartoe te gaan. De knop Inhoud bovenaan brengt je terug.',
-    'en': 'Click a topic to jump directly to it. The Contents button above brings you back.',
-    'de': 'Ein Thema anklicken, um direkt dorthin zu springen. Die Schaltfläche Inhalt führt zurück.',
-    'fr': 'Cliquez sur un sujet pour y accéder. Le bouton Sommaire en haut permet de revenir ici.',
-    'es': 'Haz clic en un tema para ir a él. El botón Índice de arriba permite volver aquí.',
+    'nl': 'Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vorige en Volgende bladeren door onderwerpen. F3 en Shift+F3 volgen zoekresultaten.',
+    'en': 'Click a topic to jump directly to it. Contents brings you back; Previous and Next move between topics. F3 and Shift+F3 follow search matches.',
+    'de': 'Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige und Nächste wechseln das Thema. F3 und Umschalt+F3 folgen Suchtreffern.',
+    'fr': 'Cliquez sur un sujet pour y accéder. Sommaire revient ici ; Précédent et Suivant changent de sujet. F3 et Maj+F3 suivent les résultats de recherche.',
+    'es': 'Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente cambian de tema. F3 y Mayús+F3 recorren coincidencias de búsqueda.',
 }
 
 

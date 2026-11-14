@@ -1,7 +1,8 @@
 """Searchable, nonmodal manual, bundled for offline use in installed packages."""
 from pathlib import Path
+from bisect import bisect_right
 
-from PySide6.QtCore import QUrl, QEvent
+from PySide6.QtCore import QUrl, QEvent, QPoint
 from PySide6.QtGui import QDesktopServices, QKeySequence, QShortcut, QTextCursor, QTextDocument, QPalette, QColor, QTextCharFormat
 from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
 from .i18n_widgets import QDialogButtonBox
@@ -30,7 +31,9 @@ class ManualDialog(QDialog):
         self.search = QLineEdit()
         self.search.setPlaceholderText("Zoeken in de handleiding…")
         self.search.setAccessibleName("Zoeken in de handleiding")
-        previous, following = QPushButton("Vorige"), QPushButton("Volgende")
+        self.previous_button, self.next_button = QPushButton("Vorige"), QPushButton("Volgende")
+        previous, following = self.previous_button, self.next_button
+        previous.setToolTip('Previous topic'); following.setToolTip('Next topic')
         self.contents_button = QPushButton('Contents')
         self.contents_button.setAutoDefault(False)
         self.contents_button.clicked.connect(lambda: self.open_link(QUrl('#'+CONTENTS_ANCHOR)))
@@ -45,20 +48,26 @@ class ManualDialog(QDialog):
         self.browser.setOpenLinks(False)
         self.browser.setOpenExternalLinks(False)
         self._formatting_links = False
+        self._topic_index = -1
+        self._topic_entries = []
+        self._topic_positions = []
+        self._navigating = False
+        self.browser.verticalScrollBar().valueChanged.connect(self.update_topic_position)
         self.browser.installEventFilter(self)
         self.reload_language()
         install_language().changed.connect(self.reload_language)
         self.browser.anchorClicked.connect(self.open_link)
         layout.addWidget(self.browser, 1)
-        self.search_status = QLabel("Ctrl+F: zoeken · F3: volgende · Shift+F3: vorige")
+        self.search_status = QLabel("Ctrl+F: zoeken · F3: volgende treffer · Shift+F3: vorige treffer")
+        self.search_status.setWordWrap(True)
         layout.addWidget(self.search_status)
         box = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         box.button(QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         box.rejected.connect(self.close)
         layout.addWidget(box)
         self.search.returnPressed.connect(self.find)
-        following.clicked.connect(lambda: self.find())
-        previous.clicked.connect(lambda: self.find(True))
+        following.clicked.connect(lambda: self.navigate_topic(1))
+        previous.clicked.connect(lambda: self.navigate_topic(-1))
         self._shortcuts = []
         for keys, callback in (("Ctrl+F", self.focus_search), ("F3", self.find), ("Shift+F3", lambda: self.find(True))):
             shortcut = QShortcut(QKeySequence(keys), self)
@@ -73,6 +82,8 @@ class ManualDialog(QDialog):
         scroll=self.browser.verticalScrollBar()
         position=scroll.value()/max(1,scroll.maximum())
         markdown = manual_path().read_text(encoding='utf-8')
+        self._topic_entries = []; self._topic_positions = []; self._topic_index = -1
+        self._navigating = True
         self.browser.setMarkdown(markdown)
         # Qt's Markdown reader drops empty HTML anchors. Bind explicit names to
         # the rendered heading blocks as well, for Qt 6.8 and later alike.
@@ -86,9 +97,33 @@ class ManualDialog(QDialog):
                     cursor.movePosition(QTextCursor.MoveOperation.NextCharacter, QTextCursor.MoveMode.KeepAnchor)
                     anchor = QTextCharFormat(); anchor.setAnchor(True); anchor.setAnchorNames([entry.anchor])
                     cursor.mergeCharFormat(anchor)
+                    if entry.anchor != CONTENTS_ANCHOR:
+                        self._topic_entries.append(entry)
+                        self._topic_positions.append(block.position())
             block = block.next()
         self.format_links()
         scroll.setValue(round(position*scroll.maximum()))
+        self._navigating = False
+        self.update_topic_position()
+
+    def update_topic_position(self, *_):
+        if self._navigating:
+            return
+        position = self.browser.cursorForPosition(QPoint(0, 0)).position()
+        self._topic_index = bisect_right(self._topic_positions, position)-1
+        scroll = self.browser.verticalScrollBar()
+        if scroll.maximum() and scroll.value() == scroll.maximum():
+            self._topic_index = len(self._topic_entries)-1
+        self.update_topic_buttons()
+
+    def update_topic_buttons(self):
+        self.previous_button.setEnabled(self._topic_index > 0)
+        self.next_button.setEnabled(self._topic_index+1 < len(self._topic_entries))
+
+    def navigate_topic(self, direction):
+        index = self._topic_index+direction
+        if 0 <= index < len(self._topic_entries):
+            self.open_link(QUrl('#'+self._topic_entries[index].anchor))
 
     def eventFilter(self, obj, event):
         if obj is getattr(self, 'browser', None) and event.type() == QEvent.Type.PaletteChange:
@@ -138,6 +173,15 @@ class ManualDialog(QDialog):
 
     def open_link(self, url):
         if url.isRelative() and url.fragment():
+            self._navigating = True
             self.browser.scrollToAnchor(url.fragment())
+            self._navigating = False
+            if url.fragment() == CONTENTS_ANCHOR:
+                self._topic_index = -1
+            else:
+                index = next((i for i, entry in enumerate(self._topic_entries) if entry.anchor == url.fragment()), None)
+                if index is not None:
+                    self._topic_index = index
+            self.update_topic_buttons()
         elif url.scheme() in ("https", "http"):
             QDesktopServices.openUrl(url)

@@ -82,7 +82,9 @@ class ChannelZoomGuiTests(unittest.TestCase):
         self.assertFalse(mixer.weights[0][0].isEnabled()); self.assertTrue(mixer.weights[1][0].isEnabled())
         echo = EchoDialog(self.window.document, self.window, no_audio=True); self.dialogs.append(echo)
         self.assertTrue(echo.keep_tail.isEnabled())
-        echo.keep_tail.setChecked(True); self.assertTrue(echo.tail.isEnabled())
+        echo.keep_tail.setChecked(True); self.assertFalse(echo.tail.isEnabled())
+        self.assertTrue(echo.automatic_tail.isEnabled())
+        echo.automatic_tail.setChecked(False); self.assertTrue(echo.tail.isEnabled())
 
     def test_length_actions_follow_selection_and_remain_available_for_one_channel(self):
         self.drag(0, 0)

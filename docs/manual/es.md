@@ -1,13 +1,13 @@
 # SoundSausage — manual
 
-Versión 0.23.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.24.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
 
 ## Índice
 
-Haz clic en un tema para ir a él. El botón Índice de arriba permite volver aquí.
+Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente cambian de tema. F3 y Mayús+F3 recorren coincidencias de búsqueda.
 
 - [1. Idioma y ayuda](#ss-topic-1-idioma-y-ayuda)
 - [2. Inicio rápido y espacio de trabajo](#ss-topic-2-inicio-rapido-y-espacio-de-trabajo)
@@ -62,11 +62,13 @@ Haz clic en un tema para ir a él. El botón Índice de arriba permite volver aq
 
 En **Opciones → Idioma**, elige Nederlands, English, Deutsch, Français o Español. Los menús, ventanas, ayudas y el manual abierto cambian inmediatamente. La elección se conserva para el próximo inicio. Los nombres de archivos, pistas y complementos mantienen su escritura original.
 
-**Ayuda → Manual** o **F1** abre este manual sin conexión junto al editor. **Ctrl+F** activa la búsqueda; **F3** busca la siguiente coincidencia y **Mayús+F3** la anterior, continuando desde el otro extremo. Solo los enlaces web abiertos expresamente necesitan internet. **Acerca de** muestra versión, autor, licencia, sitio web y componentes.
+**Ayuda → Manual** o **F1** abre este manual sin conexión junto al editor. **Ctrl+F** activa la búsqueda; **F3** busca la siguiente coincidencia y **Mayús+F3** la anterior, continuando desde el otro extremo. Anterior y Siguiente cambian de tema sin búsqueda y se desactivan en los extremos. Solo los enlaces web abiertos expresamente necesitan internet. **Acerca de** muestra versión, autor, licencia, sitio web y componentes.
 
 <a id="ss-topic-2-inicio-rapido-y-espacio-de-trabajo"></a>
 
 ## 2. Inicio rápido y espacio de trabajo
+
+Los botones de barras y transporte tienen fondo neutro e iconos del color de acento; un borde fino marca la opción activa.
 
 El icono del programa con fondo morado aparece en las barras de título y la barra de tareas. **Ayuda → Acerca de** muestra la mascota recortada junto a la información del programa.
 
@@ -241,7 +243,9 @@ En **Filtros**, **Ecualizador gráfico** tiene diez bandas de octava, 31,5 Hz–
 
 #### Filtros
 
-**Filtros** ofrece paso alto (retumbo, inicio 80 Hz), paso bajo (suavizar agudos, 8 kHz), paso banda y rechazo. Paso alto/bajo usan Butterworth de 12/24/36/48 dB/oct, unos −3 dB en el corte; más pendiente puede resonar más. Banda/rechazo usan Q. Teléfono es una banda ancha; los rechazos de 50/60 Hz quitan solo la fundamental del zumbido. Restablecer carga retumbo. El estado continúa entre bloques pero empieza vacío en la selección; conserva duración y cambia fase. Una selección corta abrupta puede chasquear; amplíala.
+**Filtros** ofrece paso alto (retumbo, inicio 80 Hz), paso bajo (suavizar agudos, 8 kHz), paso banda y rechazo. Paso alto/bajo usan Butterworth de 12/24/36/48 dB/oct, unos −3 dB en el corte; más pendiente puede resonar más. Banda/rechazo usan Q. Teléfono es una banda ancha; los rechazos de 50/60 Hz quitan solo la fundamental del zumbido. Restablecer carga retumbo. Los filtros conservan duración y su fase causal natural.
+
+**Transición de selección**, inicialmente 5 ms, ajustable 0–100 ms, mezcla dentro de los bordes de una selección parcial. Muestras de borde y audio exterior permanecen exactos. Una selección muy corta puede ser toda transición. El audio previo prepara el estado por bloques, según los polos hasta 60 s. Con 0 ms vuelve el procesamiento directo anterior desde estado vacío. El archivo entero mantiene el filtro continuo habitual. La gráfica muestra magnitud estacionaria; la mezcla del borde es independiente. No es EQ de fase lineal/cero: las frecuencias pueden tener distinta respuesta temporal. Filtros estrechos graves extremos pueden alcanzar el límite de contexto; selecciona más audio o el archivo entero. Los inserts en tiempo real mantienen estado sin transiciones de selección.
 
 <a id="ss-topic-retardo-eco-y-reverberacion"></a>
 
@@ -263,9 +267,13 @@ En **Filtros**, **Ecualizador gráfico** tiene diez bandas de octava, 31,5 Hz–
 
 #### Reverberación
 
-**Reverberación** ajusta tamaño de sala (separación de reflexiones), decaimiento RT60 aproximado (0,1–10 s), retardo previo (0–250 ms) antes del efecto, amortiguación de agudos y anchura estéreo (0 efecto igual a ambos lados, 100 anchura completa; desactivada en mono). Sala pequeña, estudio, sala grande y ambiente largo varían espacio/decaimiento. Para voz empieza con poco efecto, decaimiento corto y algo de retardo previo. Es reverberación algorítmica, no un modelo exacto de sala.
+**Reverberación** ajusta tamaño de sala (separación de reflexiones), decaimiento RT60 aproximado (0,1–60 s), retardo previo (0–250 ms) antes del efecto, amortiguación de agudos y anchura estéreo (0 efecto igual a ambos lados, 100 anchura completa; desactivada en mono). Sala pequeña, estudio, sala grande y ambiente largo varían espacio/decaimiento. Para voz empieza con poco efecto, decaimiento corto y algo de retardo previo. Es reverberación algorítmica, no un modelo exacto de sala.
 
-Señal seca y efecto son porcentajes independientes sumados; ganancia de salida (−24…+24 dB) escala la suma sin limitar automáticamente. Por defecto se conserva duración y se cortan repeticiones tardías. Añadir cola inserta 0,01–60 s, desplazando audio posterior y marcadores. Los últimos 10 ms se desvanecen. Los preajustes desmarcan la cola: ajústala después. Un eco extremo puede superar 60 s; reduce realimentación/retardo. Ejemplo: voz de 2 s + cola de 3 s = 5 s. Una cola en un canal desplaza solo ese canal; los marcadores comunes permanecen.
+Señal seca y efecto se suman; ganancia de salida (−24…+24 dB) deja margen sin limitación automática. Por defecto conserva duración. Activa **Añadir cola tras la selección** y **Duración automática de cola** para seguir el sonido restante. Desactiva Automático para duración manual de 0,01–600 s. Decaimiento de reverberación (RT60 aproximado) admite 0,1–60 s. Los preajustes desmarcan la cola; elígela después.
+
+Automático comprueba el estado pendiente del efecto y conserva ecos tardíos aunque haya un hueco silencioso. Comprueba cada 100 ms, añade un final tranquilo y desvanece los últimos 10 ms. Umbral unos 90 dB bajo el pico de referencia, con suelo −140 dBFS; usa manual para colas extremadamente suaves. Silencio o 0% efecto no añade tiempo vacío. Si sigue audible a 600 s, avisa y conserva original/Deshacer: baja realimentación/decaimiento o elige manual.
+
+Solo se desplazan los canales elegidos. Ambos desplaza los marcadores comunes posteriores; Izquierda/Derecha los conserva y rellena el otro canal si hace falta. La vista previa dentro de una cola puede determinar primero su final y sigue siendo el principio exacto del resultado completo. Los resultados grandes crecen en disco sin reservar 600 s; cancelar no aplica resultados parciales. La cola de pista en tiempo real conserva su límite independiente de 60 s.
 
 <a id="ss-topic-reduccion-de-ruido-y-clics"></a>
 
