@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.26.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.27.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -235,10 +235,15 @@ Commencez par **Récupération équilibrée** ; **Récupération douce** change 
 | --- | --- |
 | Réduction du pompage | Intensité 0–100%, commencer vers 60%. |
 | Récupération maximale | Plafond de hausse locale, 0–9 dB ; défaut 4 dB. |
+| Correction des baisses brèves | Correction séparée des creux médiums/aigus, 0–18 dB. 0 désactive ; commencez à 12 dB pour les creux profonds. |
 | Seuil de percussion | 0–12 dB. Plus bas détecte davantage d’attaques ; plus haut réserve le traitement aux frappes fortes. |
 | Temps de récupération | 50–500 ms. Plus long prolonge la détection de percussion. |
 | Plafond de sortie | −12 à 0 dBFS ; défaut −1 dBFS. Une atténuation constante limite les crêtes d’échantillons ; ce n’est ni un autre compresseur ni un limiteur true peak. |
 | Écouter à partir de | Début en secondes dans la plage traitée. |
+
+Le préréglage **Baisses de volume brèves** associe Récupération forte à une réserve de correction de 12 dB pour les trous brefs. Utilisez-le si le réglage fort laisse encore des baisses rapides. Repartez de l’original ; pour comparer les modes, évitez d’appliquer Remaster plusieurs fois sur un résultat déjà traité.
+
+Cette commande repère des baisses d’environ 6–120 ms près des percussions et compare le son avant et après le creux. Elle suit plus finement les médiums/aigus dans le temps, remplaçant localement la correction normale au lieu d’additionner deux gains. Les graves ne sont pas relevés davantage. Un vrai silence ou fondu final progressif n’est pas rempli de musique inventée. L’atténuation constante finale peut réduire toute la plage pour garder de la réserve de crête ; égaliser le volume d’écoute facilite la comparaison. Une correction forte peut changer le timbre et ne peut pas restituer un instrument totalement absent.
 
 **Original** et **Aperçu** jouent jusqu’à huit secondes depuis la position choisie. La première écoute analyse et traite toute la plage, avec une progression annulable. Seuls le déplacement d’écoute ou l’égalisation de volume réutilisent le calcul. **Égaliser le volume d’écoute de l’original et de l’aperçu** compare à niveau moyen égal uniquement à l’écoute, sans modifier le résultat enregistré.
 

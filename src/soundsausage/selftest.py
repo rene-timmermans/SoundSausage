@@ -15,6 +15,7 @@ from .space_ui import DelayDialog, EchoDialog, ReverbDialog
 from .special_ui import DistortionDialog, ConvolutionDialog
 from .time_pitch_ui import StretchDialog, PitchShiftDialog
 from .restoration_ui import NoiseReductionDialog, ClickRemovalDialog
+from .remaster_ui import RemasterDialog
 from .restoration import learn_profile
 from .filters_ui import GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog
 from .icons import application_icon, mascot_icon
@@ -73,7 +74,7 @@ def run(window):
     recovery_source=np.zeros((4000,2),np.float32)
     recovery_source[:,0]=.2*np.sin(2*np.pi*887*np.arange(4000)/8000)
     recovery_source[:,1]=recovery_source[:,0]*.8
-    recovered_mix=doc.dsp.process_blocks('remaster',recovery_source,8000)
+    recovered_mix=doc.dsp.process_blocks('remaster',recovery_source,8000,cut_repair_db=12)
     assert recovered_mix.shape==recovery_source.shape and np.isfinite(recovered_mix).all()
     np.testing.assert_allclose(recovered_mix[:,1],recovered_mix[:,0]*.8,atol=2e-7)
     doc.apply("dynamics", points=((-96, -96), (0, 0)))
@@ -204,7 +205,7 @@ def run(window):
     with tempfile.TemporaryDirectory(prefix="soundsausage-ir-check-") as response_folder:
         response_path = Path(response_folder)/"Response.wav"
         write_wav(response_path, np.array([[1], [.25]], np.float32), 8000, "float32")
-        for cls in (DistortionDialog, ConvolutionDialog, StretchDialog, PitchShiftDialog, NoiseReductionDialog, ClickRemovalDialog, DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
+        for cls in (RemasterDialog, DistortionDialog, ConvolutionDialog, StretchDialog, PitchShiftDialog, NoiseReductionDialog, ClickRemovalDialog, DelayDialog, EchoDialog, ReverbDialog, GraphicEqualizerDialog, ParametricEqualizerDialog, FilterDialog, ChannelMixerDialog, DynamicsDialog, EnvelopeDialog, NormalizeDialog):
             dialog = cls(doc, window, no_audio=True)
             try:
                 if isinstance(dialog, ConvolutionDialog): dialog.use_impulse(response_path)

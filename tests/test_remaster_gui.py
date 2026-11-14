@@ -88,7 +88,10 @@ class RemasterGuiTests(unittest.TestCase):
         self.assertTrue(self.window.actions['remaster'].isEnabled())
 
     def test_presets_layout_and_five_languages_with_larger_font(self):
+        self.dialog.presets.setCurrentIndex(4)
+        self.assertEqual(self.dialog.settings()['cut_repair_db'],12)
         self.dialog.presets.setCurrentIndex(3)
+        self.assertEqual(self.dialog.settings()['cut_repair_db'],0)
         self.assertEqual(self.dialog.settings()['recovery_db'],6)
         self.dialog.amount.setValue(45);self.assertEqual(self.dialog.presets.currentIndex(),0)
         font=QFont(self.dialog.font());font.setPointSize(14);self.dialog.setFont(font)

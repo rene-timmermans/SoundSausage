@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.26.0**.
+De huidige versie is **0.27.0**.
 
 ## Wat het kan
 
@@ -35,7 +35,7 @@ De huidige versie is **0.26.0**.
 
 **Effecten en geluid**
 
-- Remaster vermindert het wegzakken van stemmen en instrumenten bij sterke drums, met vergelijking op gelijk luistervolume.
+- Remaster vermindert het wegzakken van stemmen en instrumenten bij sterke drums, met vergelijking op gelijk luistervolume en apart herstel voor korte volumedalingen.
 - Versterken, fades, normaliseren en ompolen; kanaalmixer, dynamiekbewerking en een bewerkbaar volumeverloop.
 - Grafische en parametrische EQ, hoog- en laagdoorlaat, banddoorlaat en notchfilters, met frequentiegrafieken.
 - Delay, echo en galm, met presets, luistervoorbeelden en optionele uitklank.
@@ -95,6 +95,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.27.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.0)** Remaster herstelt ook diepe, korte volumedalingen, met een aparte instelling en preset.
 
 **[0.26.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.26.0)** Remaster met origineel/voorbeeld-vergelijking en een markereditor voor golfvormen en sessies.
 

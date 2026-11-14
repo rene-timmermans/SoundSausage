@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.26.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.27.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -233,10 +233,15 @@ Start with **Balanced recovery**; **Gentle recovery** changes less, **Strong rec
 | --- | --- |
 | Pumping reduction | Recovery strength, 0–100%; start around 60%. |
 | Maximum recovery | Limit on the local lift, 0–9 dB; default 4 dB. |
+| Short-drop repair | Separate recovery of short mid/high gaps, 0–18 dB. 0 disables it; start at 12 dB for deep cuts. |
 | Drum threshold | 0–12 dB. Lower reacts to more onsets; higher confines recovery to stronger drum events. |
 | Recovery time | 50–500 ms. Longer retains drum detection for longer. |
 | Output ceiling | −12 to 0 dBFS; default −1 dBFS. One constant attenuation keeps sample peaks below this ceiling; it is not another compressor or a true-peak limiter. |
 | Preview from | Start time in seconds within the processed range. |
+
+The **Short volume drops** preset combines Strong recovery with 12 dB of recovery allowance for brief gaps. Use it when Strong recovery still leaves fast dips. Always start from the original recording; avoid applying Remaster repeatedly over an earlier result when comparing modes.
+
+This extra control finds approximately 6–120 ms dips near drums and compares sound before and after each gap. It follows mid/high energy more closely in time, replacing ordinary recovery locally rather than adding two gains. Bass receives no extra recovery lift. A real silence or gradual fade-out is not filled with invented music. Final constant attenuation can make the whole recording quieter to retain peak headroom; matched listening volume helps comparison. Strong correction can change timbre and cannot recover a completely missing instrument.
 
 **Original** and **Preview** play up to eight seconds from the chosen position. The first audition analyses and processes the complete range, with cancellable progress. That calculation is reused when only the listening position or volume matching changes. **Match listening volume for original and preview** compares equal average levels; this affects listening only, not the saved result.
 

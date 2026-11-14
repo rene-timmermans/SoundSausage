@@ -61,9 +61,10 @@ def _median(values, radius, first, stop):
 
 
 def process_blocks(name, source, rate, *, amount=60, recovery_db=4, sensitivity_db=3,
-                   release_ms=180, ceiling_db=-1, limit=None, block_frames=262144):
+                   release_ms=180, ceiling_db=-1, cut_repair_db=0, limit=None, block_frames=262144):
     if name!='remaster':raise ValueError('Unknown remaster effect.')
     amount,maximum,threshold,release,ceiling=parameters(amount,recovery_db,sensitivity_db,release_ms,ceiling_db)
+    cut_repair=number(cut_repair_db,0,18,'Short-drop repair')
     number(rate,1000,384000,'Sample rate')
     if (not isinstance(source,np.ndarray) or source.ndim!=2 or source.shape[1] not in (1,2)
             or type(block_frames) is not int or block_frames<1):
@@ -83,7 +84,7 @@ def process_blocks(name, source, rate, *, amount=60, recovery_db=4, sensitivity_
     normalization=size*float(np.sum(window.astype(np.float64)**2))
     batch=max(8,min(64,block_frames//hop))
     source_gain=1.
-    if amount and maximum:
+    if amount and (maximum or cut_repair):
         input_peak=0.
         for a,b in blocks(frames,block_frames):
             data=np.asarray(source[a:b])
@@ -106,6 +107,8 @@ def process_blocks(name, source, rate, *, amount=60, recovery_db=4, sensitivity_
             progress(stop,total*3,'Remaster analysis')
         features=storage.seal(features,checked=True)
         gain=storage.allocate((total,1),zero=True)
+        detector=storage.allocate((total,1),zero=True) if cut_repair else None
+        detail=storage.allocate((frames,channels),zero=True) if cut_repair else None
         radius=max(2,round(.45*rate/hop))
         gate=smoothed=0.
         gate_decay=math.exp(-hop/(release*rate))
@@ -119,6 +122,7 @@ def process_blocks(name, source, rate, *, amount=60, recovery_db=4, sensitivity_
             missing[current[:,0]<-60]=0
             for i in range(stop-first):
                 gate=max(float(event[i]),gate*gate_decay)
+                if detector is not None:detector[first+i,0]=gate
                 target=float(missing[i])*gate*amount
                 coefficient=attack if target>smoothed else recover
                 smoothed=coefficient*smoothed+(1-coefficient)*target
@@ -128,16 +132,25 @@ def process_blocks(name, source, rate, *, amount=60, recovery_db=4, sensitivity_
         for first in range(0,total,batch):
             stop=min(total,first+batch)
             spectra,mask=_separate(source,first,stop,total,size,hop,window,source_gain)
+            if detail is not None:
+                high=np.fft.irfft(spectra*high_weight[None,:,None],n=size,axis=1)*window[None,:,None]/2
             boosts=10**(np.asarray(gain[first:stop,0],np.float64)/20)-1
             spectra*=1+mask[:,:,None]*high_weight[None,:,None]*boosts[:,None,None]
             samples=np.fft.irfft(spectra,n=size,axis=1)*window[None,:,None]/2
             for i in range(stop-first):
                 start=(first+i)*hop-(size-hop)
                 a,b=max(0,start),min(frames,start+size)
-                if b>a:result[a:b]+=samples[i,a-start:b-start]
+                if b>a:
+                    result[a:b]+=samples[i,a-start:b-start]
+                    if detail is not None:detail[a:b]+=high[i,a-start:b-start]
             storage.release_pages(source)
             if isinstance(result,np.memmap):result.flush();storage.release_pages(result)
+            if isinstance(detail,np.memmap):detail.flush();storage.release_pages(detail)
             progress(total*2+stop,total*3,'Recovering musical detail')
+        if detail is not None:
+            from .remaster_cuts import repair
+            repair(source,storage.seal(detail,checked=True),result,rate,source_gain,gain,
+                   storage.seal(detector,checked=True),size,hop,amount,cut_repair,block_frames)
     else:
         for a,b in blocks(frames,block_frames):
             if not np.isfinite(source[a:b]).all():raise ValueError('Invalid remaster audio.')

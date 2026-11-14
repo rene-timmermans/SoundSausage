@@ -17,16 +17,18 @@ class RemasterDialog(EffectDialog):
         layout=QVBoxLayout(self)
         explanation=QLabel('Reduce voices and instruments sinking behind strong drum hits. Compare a section where the pumping is clearly audible.')
         explanation.setWordWrap(True);layout.addWidget(explanation)
-        self.presets=QComboBox();self.presets.addItems(['Custom','Gentle recovery','Balanced recovery','Strong recovery'])
+        self.presets=QComboBox();self.presets.addItems(['Custom','Gentle recovery','Balanced recovery','Strong recovery','Short volume drops'])
         layout.addWidget(self.presets)
         form=QFormLayout();layout.addLayout(form)
         self.amount=spin(60,0,100,' %')
         self.recovery=spin(4,0,9,' dB')
+        self.cuts=spin(0,0,18,' dB')
+        self.cuts.setToolTip('Repairs short mid/high volume drops near drums. 0 dB disables this extra repair; start with 12 dB for deep cuts. Silence and gradual fades are retained.')
         self.sensitivity=spin(3,0,12,' dB')
         self.release=spin(180,50,500,' ms',0)
         self.ceiling=spin(-1,-12,0,' dBFS')
         for title,field in [('Pumping reduction',self.amount),('Maximum recovery',self.recovery),
-                            ('Drum threshold',self.sensitivity),('Recovery time',self.release),('Output ceiling',self.ceiling)]:
+                            ('Short-drop repair',self.cuts),('Drum threshold',self.sensitivity),('Recovery time',self.release),('Output ceiling',self.ceiling)]:
             form.addRow(title,field)
         start,end=document.effect_range
         self.position=spin(min(max(start,document.cursor),max(start,end-1))/document.sample_rate,
@@ -41,20 +43,20 @@ class RemasterDialog(EffectDialog):
         self.original_button=self.button_box.addButton('Original',QDialogButtonBox.ButtonRole.ActionRole)
         self.original_button.setEnabled(not no_audio);self.original_button.clicked.connect(self.original)
         self.presets.currentIndexChanged.connect(self.preset)
-        for field in (self.amount,self.recovery,self.sensitivity,self.release,self.ceiling):
+        for field in (self.amount,self.recovery,self.cuts,self.sensitivity,self.release,self.ceiling):
             field.valueChanged.connect(lambda *_:self.presets.setCurrentIndex(0))
         self.presets.setCurrentIndex(2)
 
     def preset(self,index):
         if index<=0:return
-        amount,recovery,threshold,release=((35,2,4,160),(60,4,3,180),(90,6,2,240))[index-1]
-        for field,value in ((self.amount,amount),(self.recovery,recovery),(self.sensitivity,threshold),(self.release,release)):
+        amount,recovery,threshold,release,cuts=((35,2,4,160,0),(60,4,3,180,0),(90,6,2,240,0),(90,6,2,240,12))[index-1]
+        for field,value in ((self.amount,amount),(self.recovery,recovery),(self.sensitivity,threshold),(self.release,release),(self.cuts,cuts)):
             field.blockSignals(True);field.setValue(value);field.blockSignals(False)
         self.stop_preview()
 
     def settings(self):
         return dict(amount=self.amount.value(),recovery_db=self.recovery.value(),sensitivity_db=self.sensitivity.value(),
-                    release_ms=self.release.value(),ceiling_db=self.ceiling.value())
+                    release_ms=self.release.value(),ceiling_db=self.ceiling.value(),cut_repair_db=self.cuts.value())
 
     def _processed(self):
         key=(self.document.revision,self.document.effect_range,self.document.selected_channels,tuple(sorted(self.settings().items())))

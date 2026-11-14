@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.26.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.27.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -235,10 +235,15 @@ Empiece con **Recuperación equilibrada**; **Recuperación suave** cambia menos 
 | --- | --- |
 | Reducción del bombeo | Intensidad 0–100%; empezar cerca del 60%. |
 | Recuperación máxima | Límite del aumento local, 0–9 dB; predeterminado 4 dB. |
+| Reparar caídas breves | Corrección separada de huecos breves en medios/agudos, 0–18 dB. 0 desactiva; empiece con 12 dB para caídas profundas. |
 | Umbral de percusión | 0–12 dB. Más bajo responde a más ataques; más alto limita la recuperación a golpes fuertes. |
 | Tiempo de recuperación | 50–500 ms. Más largo mantiene la detección de batería durante más tiempo. |
 | Techo de salida | −12 a 0 dBFS; predeterminado −1 dBFS. Una atenuación constante limita picos de muestra; no es otro compresor ni un limitador true peak. |
 | Escuchar desde | Inicio en segundos dentro del intervalo procesado. |
+
+El ajuste **Caídas breves de volumen** combina Recuperación intensa con un margen de corrección de 12 dB para huecos cortos. Úselo si la recuperación intensa aún deja bajadas rápidas. Parta siempre de la grabación original; al comparar modos, evite aplicar Remaster repetidamente sobre un resultado anterior.
+
+Este control detecta caídas de unos 6–120 ms cerca de la batería y compara el sonido anterior y posterior. Sigue medios y agudos con mayor precisión temporal y sustituye localmente la corrección normal, sin sumar dos ganancias. No aumenta más los graves. Un silencio real o un fundido final gradual no se rellena con música inventada. La atenuación constante final puede bajar toda la grabación para mantener margen de pico; igualar el volumen de escucha facilita comparar. Una corrección fuerte puede cambiar el timbre y no recupera un instrumento totalmente ausente.
 
 **Original** y **Vista previa** reproducen hasta ocho segundos desde la posición elegida. La primera escucha analiza y procesa todo el intervalo con progreso cancelable. Cambiar solo la posición o igualar volumen reutiliza el cálculo. **Igualar el volumen de escucha del original y la vista previa** compara niveles medios iguales solo al escuchar, sin cambiar el resultado guardado.
 

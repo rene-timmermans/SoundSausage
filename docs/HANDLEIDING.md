@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.26.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.27.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -730,10 +730,15 @@ Begin met **Evenwichtig herstel**; **Voorzichtig herstel** verandert minder, **S
 | --- | --- |
 | Pompeffect verminderen | Sterkte van het herstel, 0–100%. Begin rond 60%. |
 | Maximaal herstel | Bovengrens van de plaatselijke verhoging, 0–9 dB; standaard 4 dB. |
+| Herstel korte volumedalingen | Apart herstel van korte gaten in midden/hoog, 0–18 dB. 0 schakelt dit uit; begin met 12 dB bij diepe cuts. |
 | Drumdrempel | 0–12 dB. Lager reageert op meer aanzetten; hoger beperkt het herstel tot sterkere drums. |
 | Hersteltijd | 50–500 ms. Langer laat de drumdetectie langer doorwerken. |
 | Uitvoerplafond | −12 tot 0 dBFS; standaard −1 dBFS. Eén constante verzwakking houdt de samplepieken onder dit plafond; dit is geen extra compressor of true-peaklimiter. |
 | Voorbeeld vanaf | Startpositie in seconden binnen het bewerkingsbereik. |
+
+De preset **Korte volumedalingen** combineert Sterk herstel met 12 dB extra herstelruimte voor korte gaten. Gebruik deze stand wanneer er ook met Sterk herstel nog snelle terugvallen hoorbaar zijn. Begin steeds vanaf de oorspronkelijke opname; pas Remaster niet herhaald over een eerdere bewerking toe om verschillende standen te vergelijken.
+
+Deze extra regeling zoekt korte dalingen van ongeveer 6–120 ms bij drums en vergelijkt het geluid vóór én na het gat. Ze volgt het midden en hoog fijner in de tijd en vervangt daar plaatselijk het gewone herstel, zodat beide versterkingen niet worden opgeteld. Bas krijgt geen extra herstelversterking. Een echte stilte of geleidelijke uitfade wordt niet als ontbrekende muziek ingevuld. De eindverzwakking kan wel de hele opname zachter maken om piekruimte te bewaren; gelijk luistervolume helpt vergelijken. Sterke correctie kan de klank veranderen en haalt geen volledig verdwenen instrument terug.
 
 **Origineel** en **Voorbeeld** spelen maximaal acht seconden vanaf de gekozen positie. Het eerste luistervoorbeeld analyseert en verwerkt het hele bereik; een voortgangsvenster biedt annuleren. De berekening wordt hergebruikt als alleen de luisterpositie of volumevergelijking wijzigt. **Luistervolume van origineel en voorbeeld gelijkmaken** vergelijkt op gelijk gemiddeld niveau; dit verandert alleen het luisteren, niet het opgeslagen resultaat.
 

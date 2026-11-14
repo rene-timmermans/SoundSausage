@@ -1,6 +1,17 @@
 # Ontwikkelroute
 
-## Nieuwe uitbreiding — 0.26.0 gepubliceerd
+## Korte volumedalingen — 0.27.0 in afronding
+
+Remaster krijgt een aparte regeling van 0–18 dB en de preset Korte volumedalingen.
+De correctie volgt korte gaten nauwkeuriger, met behoud van de lage bas, stiltes
+zonder invulling en een geleidelijke uitfade. Nieuwe en gewone herstelversterking
+worden niet opgeteld. Bestaande presets houden de extra route uitgeschakeld.
+Gerichte proeven slagen; de [validatie](validation/remaster-short-drops.md) legt de
+volledige bouw en publicatie na afloop vast. Alle vijf handleidingen zijn bijgewerkt.
+De oorspronkelijke Remaster-verbetering is hoorbaar bevestigd; de nieuwe stand
+vraagt een afzonderlijke luistervergelijking.
+
+## Vorige uitbreiding — 0.26.0 gepubliceerd
 
 De markereditor voegt markeringen toe, benoemt/verplaatst/verwijdert ze en bewaart
 ze in WAV/MP3 en projecten/herstel. Metadata-only Undo wijzigt geen samples.

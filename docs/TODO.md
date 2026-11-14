@@ -1,6 +1,6 @@
 # Open punten richting v1.0
 
-Stand: 14 november 2026, SoundSausage 0.26.0 gepubliceerd en gecontroleerd.
+Stand: 14 november 2026, SoundSausage 0.26.0 gepubliceerd; 0.27.0 in afronding.
 
 B36b is functioneel uitgewerkt: markereditor voor golfvormen en sessies, met
 Undo/Redo, bewaren/heropenen en WAV/MP3-export. De
@@ -13,7 +13,9 @@ in een eindmix blijft daaronder vallen (B31).
 Remaster is aanvullend uitgewerkt op het expliciete verzoek voor pompende
 muziekopnamen. De functie biedt instelbaar herstel en origineel/voorbeeld op gelijk
 luistervolume. Numerieke proeven en een eerste luistervergelijking bevestigen verbetering.
-Korte resterende wegzakkingen vragen nog nader onderzoek en vergelijking. De oorspronkelijke bronbestanden blijven
+De extra regeling voor korte volumedalingen is uitgewerkt voor 0.27.0;
+de nieuwe stand vraagt nog een luistervergelijking. Zie de
+[controles](validation/remaster-short-drops.md). De oorspronkelijke bronbestanden blijven
 bij de proeven ongewijzigd.
 
 ## B33 — fysieke praktijkcontrole
@@ -28,7 +30,7 @@ bij de proeven ongewijzigd.
 | Punch-in/out, opslaan en heropenen | Open. |
 | Systeemgeluid van de eigen hoofduitgang | Open. |
 | Echte VST3-/LV2-vensters, parameters en heropende plug-instatus | Open. |
-| Remaster: origineel/voorbeeld bij drums én rustig fragment | Hoorbare verbetering bevestigd; korte resterende wegzakkingen nader lokaliseren en vergelijken. |
+| Remaster: origineel/voorbeeld bij drums én rustig fragment | Eerdere verbetering bevestigd; nieuwe stand voor korte volumedalingen nog beluisteren. |
 | Markerbediening in de dagelijkse workflow | Open, samen met de nieuwe build. |
 
 ## Afronden naar de eerste v1

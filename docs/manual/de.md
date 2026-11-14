@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.26.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.27.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -235,10 +235,15 @@ Mit **Ausgewogene Wiederherstellung** beginnen; **Sanfte Wiederherstellung** ver
 | --- | --- |
 | Pumpen verringern | Stärke 0–100%; zunächst etwa 60%. |
 | Maximale Wiederherstellung | Höchstwert der örtlichen Anhebung, 0–9 dB; Vorgabe 4 dB. |
+| Kurze Pegeleinbrüche beheben | Separate Korrektur kurzer Mitten-/Höheneinbrüche, 0–18 dB. 0 schaltet aus; bei tiefen Einbrüchen mit 12 dB beginnen. |
 | Schlagzeugschwelle | 0–12 dB. Niedriger reagiert auf mehr Einsätze, höher nur auf stärkere. |
 | Erholungszeit | 50–500 ms. Länger hält die Schlagzeugerkennung länger aufrecht. |
 | Ausgangsgrenze | −12 bis 0 dBFS; Vorgabe −1 dBFS. Eine konstante Absenkung begrenzt Sample-Spitzen; kein weiterer Kompressor oder True-Peak-Limiter. |
 | Vorhören ab | Start in Sekunden innerhalb des bearbeiteten Bereichs. |
+
+Die Vorgabe **Kurze Pegeleinbrüche** verbindet Starke Wiederherstellung mit 12 dB Korrekturspielraum für kurze Lücken. Sie eignet sich, wenn auch die starke Vorgabe noch schnelle Einbrüche lässt. Immer von der Originalaufnahme ausgehen; beim Vergleichen Remaster nicht wiederholt auf ein früheres Ergebnis anwenden.
+
+Die zusätzliche Regelung sucht etwa 6–120 ms kurze Einbrüche bei Schlagzeug und vergleicht das Signal davor und danach. Sie folgt Mitten und Höhen zeitlich genauer und ersetzt die normale Korrektur örtlich, statt zwei Verstärkungen zu addieren. Der Bass wird nicht zusätzlich angehoben. Echte Stille oder eine allmähliche Ausblende wird nicht mit erfundener Musik gefüllt. Die konstante Endabsenkung kann die gesamte Aufnahme für Spitzenreserve leiser machen; abgeglichene Abhörlautstärke hilft beim Vergleich. Starke Korrektur kann die Klangfarbe ändern und kein vollständig fehlendes Instrument zurückholen.
 
 **Original** und **Vorschau** spielen bis zu acht Sekunden ab der gewählten Position. Das erste Vorhören analysiert und verarbeitet den gesamten Bereich mit abbrechbarem Fortschritt. Nur Position oder Lautstärkeabgleich ändern nutzt die Berechnung erneut. **Abhörlautstärke von Original und Vorschau angleichen** gleicht mittlere Pegel nur beim Hören an, nicht im gespeicherten Ergebnis.
 

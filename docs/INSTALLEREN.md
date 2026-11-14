@@ -12,7 +12,7 @@ of nieuwer uit de distributie. Ubuntu 24.04 en Debian 12 worden hiermee niet
 ondersteund. Op Ubuntu moet de universe-pakketbron ingeschakeld zijn.
 
 ```bash
-sudo apt install ./soundsausage_0.26.0-1_amd64.deb
+sudo apt install ./soundsausage_0.27.0-1_amd64.deb
 ```
 
 ## Fedora
@@ -20,7 +20,7 @@ sudo apt install ./soundsausage_0.26.0-1_amd64.deb
 Gebruik het `.rpm`-pakket voor de huidige Fedora-versie:
 
 ```bash
-sudo dnf install ./soundsausage-0.26.0-1*.x86_64.rpm
+sudo dnf install ./soundsausage-0.27.0-1*.x86_64.rpm
 ```
 
 ## Arch Linux
@@ -28,7 +28,7 @@ sudo dnf install ./soundsausage-0.26.0-1*.x86_64.rpm
 Werk Arch eerst normaal bij en installeer dan het pakket:
 
 ```bash
-sudo pacman -U ./soundsausage-0.26.0-1-x86_64.pkg.tar.zst
+sudo pacman -U ./soundsausage-0.27.0-1-x86_64.pkg.tar.zst
 ```
 
 ## Starten en controleren
