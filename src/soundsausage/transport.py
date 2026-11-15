@@ -161,7 +161,8 @@ class TimeField(QLineEdit):
 
     def event(self,event):
         if event.type()==QEvent.Type.ShortcutOverride:
-            editing=(Qt.Key.Key_Escape,Qt.Key.Key_Return,Qt.Key.Key_Enter,Qt.Key.Key_Home,Qt.Key.Key_End)
+            editing=(Qt.Key.Key_Escape,Qt.Key.Key_Return,Qt.Key.Key_Enter,Qt.Key.Key_Home,
+                     Qt.Key.Key_End,Qt.Key.Key_Tab,Qt.Key.Key_Backtab)
             control=(Qt.Key.Key_A,Qt.Key.Key_C,Qt.Key.Key_X,Qt.Key.Key_V,Qt.Key.Key_Z,Qt.Key.Key_Y)
             if event.key() in editing or (event.modifiers() & Qt.KeyboardModifier.ControlModifier and event.key() in control):
                 event.accept();return True

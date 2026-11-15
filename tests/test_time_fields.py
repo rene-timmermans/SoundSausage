@@ -91,9 +91,12 @@ class TimeFieldTests(unittest.TestCase):
         w.selection_changed(*w.document.selection);self.assertEqual(field.text(),'9')
         QTest.keyClick(field,Qt.Key.Key_Escape);self.assertEqual(field.text(),'0:02.000')
         self.assertEqual(w.document.selection,(8000,16000))
-        self.type_value('Sel','End','3',False)
-        w.waveform.setFocus();self.app.processEvents()
+        field=self.type_value('Sel','End','3',False)
+        QTest.keyClick(field,Qt.Key.Key_Tab);self.app.processEvents()
+        self.assertEqual(w.mode,'waveform');self.assertIs(self.app.focusWidget(),w.fields['Length'])
         self.assertEqual(w.document.selection,(8000,24000))
+        QTest.keyClick(w.fields['Length'],Qt.Key.Key_Backtab);self.app.processEvents()
+        self.assertEqual(w.mode,'waveform');self.assertIs(self.app.focusWidget(),w.fields['End'])
 
     def test_local_undo_and_home_end_do_not_trigger_audio_shortcuts(self):
         w=self.window;w.document.replace(0,10,np.zeros((10,2),np.float32),'Test edit')
