@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **0.27.1**.
+De huidige versie is **0.27.2**.
 
 ## Wat het kan
 
@@ -96,6 +96,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[0.27.2](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.2)** Automatische correctie van gemeten opnameverschuivingen na pauzes. Een zelfstandig handleidingvenster met minimaliseren en maximaliseren. Volledig vertaalde knoppen voor clips verplaatsen, de volumelijn en de panlijn.
 
 **[0.27.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.1)** Tijdens afspelen naar een andere plek springen. Meer VST3-effecten laden en hun instellingen bewaren en heropenen, waaronder TAL-Reverb-4. Duidelijkere handleidingen.
 

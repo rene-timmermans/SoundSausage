@@ -1,16 +1,21 @@
 # Ontwikkelroute
 
-## Pauzesynchronisatie en handleidingvenster — 0.27.2 in voorbereiding
+## Pauzesynchronisatie en handleidingvenster — 0.27.2 gepubliceerd
 
 Automatische synchronisatie behandelt een betrouwbaar gemeten verschuiving na
 een opnamepauze afzonderlijk van klokdrift. De opnamegedeelten worden na Stop
 geplaatst, met korte overgangen bij een opening of overlap. De ruwe opname blijft
 bij annuleren beschikbaar voor herstel. Controles dekken beide richtingen,
 herhaalde pauzes, samplerates, stereo, grote buffers, Undo en bewaren/heropenen.
-De handleiding krijgt een zelfstandig SoundSausage-venster met minimaliseren en
+De handleiding heeft een zelfstandig SoundSausage-venster met minimaliseren en
 maximaliseren; het hoofdvenster kan ervoor komen. Drie multitrackknoppen volgen
-nu ook bij taalwisselen hun vertaling. Alle vijf handleidingen worden bijgewerkt.
-De distributiebouw en de herhaalde fysieke pauzeproef moeten nog volgen.
+nu ook bij taalwisselen hun vertaling. Alle vijf handleidingen zijn bijgewerkt.
+Alle **640 tests** slagen zonder overslaan op Debian, Fedora en Arch, inclusief
+de pauzeproef via de echte Qt-backend met virtuele audio. De vijf geïnstalleerde
+zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht
+releasebestanden, tag en korte releasepunten zijn gecontroleerd. Catalogi:
+1539 bronvormen zonder ontbrekende vertaling. De fysieke herhaalproef van de
+pauzecorrectie en de vensterbediening blijven nog open.
 
 ## Afspeelpositie aanklikken — 0.27.1 gepubliceerd
 
