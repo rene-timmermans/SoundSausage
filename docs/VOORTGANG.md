@@ -18,8 +18,11 @@ ABI-proeven controleren de ongebruikte bussen en afwijzen van verplichte routeri
 Alle **629 tests** slagen zonder overslaan op Debian, Fedora en Arch. De vijf
 geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
 De acht releasebestanden, tag en korte releasepunten zijn gecontroleerd.
-Catalogi: 1538 bronvormen zonder ontbrekende vertaling. De fysieke
-plug-invensterproef en de resterende opnamecontroles blijven onderdeel van B33.
+Catalogi: 1538 bronvormen zonder ontbrekende vertaling. Het verplaatsen van de
+afspeelpositie met een klik en het openen van het eigen TAL-Reverb-4-venster
+zijn ook in de praktijk bevestigd. Gewijzigde TAL-instellingen en het geluid
+blijven na bewaren en heropenen behouden. De resterende opnamecontroles blijven
+onderdeel van B33.
 
 ## Praktijkcontrole richting v1.0 — 15 november 2026
 
@@ -37,7 +40,10 @@ is in de praktijk bevestigd: alleen het interval verandert, omliggende audio
 en markeringen blijven behouden, en het opgeslagen project is opnieuw ingelezen.
 Systeemgeluid opnemen, pauzeren/hervatten en terugluisteren zijn eveneens
 bevestigd. De WAV- en MP3-export openen met dezelfde duur en samplerate.
-Echte plug-invensters/status blijven open.
+Het eigen TAL-Reverb-4-venster (VST3), wijzigen, terugluisteren en het behouden
+van waarden en geluid na bewaren en heropenen zijn bevestigd. Een aanvullende
+projectcontrole herstelt de gewijzigde Wet/Dry-waarden exact uit de componentstatus;
+de oorspronkelijke bron blijft ongewijzigd. LV2-vensters hebben automatische testdekking.
 Daarna volgen de releasecandidate en het oplossen van blokkerende fouten.
 
 ## Korte volumedalingen — 0.27.0 gepubliceerd

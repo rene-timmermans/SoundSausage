@@ -55,8 +55,11 @@ toetsen ook stilte, uitfade en veilig annuleren; de hoorbare vergelijking op bei
 In [0.27.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.1)
 verplaatst klikken tijdens afspelen ook het hoorbare afspeelpunt. De VST3-host
 laadt effecten met ongebruikte optionele aansluitingen en herstelt ook hun
-componentstatus. Alle 629 tests en de geïnstalleerde pakketten zijn gecontroleerd;
-de nog open fysieke proeven blijven onder B33.
+componentstatus. Alle 629 tests en de geïnstalleerde pakketten zijn gecontroleerd.
+De afspeelklik en het eigen TAL-Reverb-4-venster (VST3) zijn ook in de praktijk
+bevestigd, inclusief wijzigen, terugluisteren en behoud van waarden en geluid
+na bewaren en heropenen. LV2-vensters hebben automatische testdekking.
+De kalibratiemelding en de timing bij pauzeren/hervatten blijven onder B33.
 
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,

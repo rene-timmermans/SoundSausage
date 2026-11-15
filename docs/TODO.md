@@ -32,11 +32,12 @@ benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
 | --- | --- |
 | Gewone B910/HDMI-opname, pauzeren/hervatten en terugluisteren | Bevestigd. |
 | Afspelen in volledig scherm | Haperen verdwenen, fysiek bevestigd in 0.25.2. |
+| Afspeelpositie aanklikken tijdens afspelen | Bevestigd na bijwerken naar 0.27.1: geluid, cursor en klok volgen de aangeklikte plek. |
 | Kalibratie met de eigen in-/uitgangsroute | Profiel opgeslagen en op schijf leesbaar; de wisselende melding in het opnamevenster nog controleren. |
 | Langere overdub en klokdrift | Bijna drie minuten gemeten met 68 herkenbare meetpulsen. Kleine timingsprong bij hervatten nog controleren. |
 | Punch-in/out, opslaan en heropenen | Bevestigd: alleen het interval vervangen; omliggende audio, referentiespoor en markeringen behouden. Opgeslagen sessie opnieuw ingelezen. |
 | Systeemgeluid van de eigen hoofduitgang | Bevestigd: opnemen, pauzeren/hervatten, terugluisteren en WAV/MP3-export. Beide exports opnieuw geopend. |
-| Echte VST3-/LV2-vensters, parameters en heropende plug-instatus | Open. |
+| Echt plug-invenster, parameters en heropende plug-instatus | TAL-Reverb-4 (VST3) bevestigd: eigen venster, wijzigen, terugluisteren en behoud van waarden en geluid na bewaren/heropenen. LV2-vensters hebben automatische testdekking. |
 
 ## Afronden naar de eerste v1
 
