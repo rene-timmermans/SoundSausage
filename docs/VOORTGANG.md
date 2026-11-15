@@ -1,10 +1,10 @@
 # Ontwikkelroute
 
-## Uitklapbare effectgroepen — 1.1.1 in controle
+## Uitklapbare effectgroepen — 1.1.1 gepubliceerd
 
 De linker gereedschapsbalk biedt effectgroepen met een uitklappijltje en een hoofdicoon voor het laatst gekozen effect. De lijsten gebruiken dezelfde opdrachten als het menu Effecten. Elke groep onthoudt zijn keuze; een tijdelijk onbeschikbaar effect krijgt een beschikbaar alternatief zonder de voorkeur te verliezen. Remaster staat rechtstreeks op de balk, spooreffecten verschijnen in multitrack. Taal, accentkleur, werkbalkteksten, opnamevergrendeling en de bestaande werkbalkindeling blijven gekoppeld aan de appinstellingen.
 
-Vijf nieuwe controles toetsen echte menuklikken en enkelvoudige uitvoering, instellingsvensters, kanaalgebonden bewerkingen/Undo, beschikbaarheid en opnemen, bewaren/heropenen, ongeldige voorkeuren en live taal-/themawissels. De vijf handleidingen hebben een nieuw geïndexeerd onderwerp. De afsluitende controles en pakketbouw volgen vóór publicatie.
+Vijf nieuwe controles toetsen echte menuklikken en enkelvoudige uitvoering, instellingsvensters, kanaalgebonden bewerkingen/Undo, beschikbaarheid en opnemen, bewaren/heropenen, ongeldige voorkeuren en live taal-/themawissels. De vijf handleidingen hebben een nieuw geïndexeerd onderwerp. Alle **662 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op elk van vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en korte releasepunten zijn gecontroleerd. De catalogi bevatten 1549 bronvormen zonder ontbrekende vertaling; de handleidingen hebben 86 Nederlandse, 54 Engelse en 55 Duitse, Franse en Spaanse onderwerpen.
 
 ## Werkbalkvernieuwing — 1.1.0 gepubliceerd
 

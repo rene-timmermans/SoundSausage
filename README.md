@@ -99,6 +99,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 
 ## Wat er nieuw is
 
+**[1.1.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.1.1)** Uitklapbare effectgroepen op de linker werkbalk. Het grote pictogram opent of herhaalt het laatst gekozen effect; elke groep onthoudt de keuze. Remaster en spooreffecten zijn rechtstreeks bereikbaar.
+
 **[1.1.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.1.0)** Nieuwe werkbalkindeling met gereedschappen links en een aparte optiebalk. Kaderloze pictogrammen, verplaatsbare werkbalken en tonen/verbergen via Beeld → Werkbalken. De indeling blijft bewaard; zoomknoppen staan bij de afspeelbediening.
 
 **[1.0.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.0.1)** Begin, Einde en Lengte rechtsonder aanpassen voor selectie en zichtbaar bereik. Tijdinvoer met Enter, Escape en Tab, met uitleg in alle vijf handleidingen.

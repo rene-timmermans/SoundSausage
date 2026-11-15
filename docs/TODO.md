@@ -1,8 +1,8 @@
 # Voortgang en vervolg
 
-Stand: 15 november 2026, SoundSausage 1.1.0 gepubliceerd en gecontroleerd.
+Stand: 15 november 2026, SoundSausage 1.1.1 gepubliceerd en gecontroleerd.
 
-## Uitklapbare effectgroepen — 1.1.1 in controle
+## Uitklapbare effectgroepen — afgerond in 1.1.1
 
 - Effectgroepen op de linker werkbalk, met dezelfde opdrachten als het menu Effecten.
 - Pijltje voor de lijst en hoofdicoon voor het laatst gebruikte effect; keuze per groep onthouden.
@@ -10,7 +10,7 @@ Stand: 15 november 2026, SoundSausage 1.1.0 gepubliceerd en gecontroleerd.
 - Bestaande kanaalkeuze, Undo en opnamevergrendeling blijven gelden. Niet-beschikbare effecten zijn uitgeschakeld.
 - Alle vijf handleidingen en vertalingen bijgewerkt.
 
-Nog af te ronden: regressiecontroles, pakketbouw en publicatie van de update. De 18 uitgestelde uitbreidingen blijven uitgesteld.
+Alle **662 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd. Er staan geen open punten voor deze update. De 18 uitgestelde uitbreidingen blijven uitgesteld.
 
 ## Werkbalkvernieuwing — afgerond in 1.1.0
 
