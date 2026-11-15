@@ -82,7 +82,7 @@ L’icône du programme sur fond violet apparaît dans les barres de titre et la
 
 Ouvrez un WAV ou MP3 par **Fichier → Ouvrir**. **Espace** démarre ou arrête la lecture. Sélectionnez un passage, choisissez **Effets → Amplitude → Normaliser**, écoutez avec **Écouter**, puis validez par **OK**. **Ctrl+Z** annule. **Enregistrer sous** garde un résultat séparé. Pour plusieurs prises, créez une **Nouvelle session multipiste**, importez les WAV ou MP3 puis utilisez **Mixer**.
 
-**Édition la forme d’onde** modifie une prise ; **Vue multipiste** combine des clips. Passez de l'une à l'autre avec **Tab**, les boutons supérieurs ou **Affichage** ; les deux documents restent disponibles. Les infobulles expliquent les boutons. **Afficher le texte des barres d’outils** ajoute leur texte, **Options → Afficher la barre d’état** affiche ou masque la fine ligne d’information tout en bas, sous les indicateurs de niveau. Elle indique l’état de lecture et les détails du fichier ; le choix est conservé au prochain démarrage. **F11** bascule le plein écran. La taille, la position et l’état plein écran ou agrandi de la fenêtre sont restaurés au prochain démarrage. Si un écran n’est plus disponible, la fenêtre revient sur un écran disponible. Pendant la lecture, le curseur suit l’horloge audio. L’image de la forme d’onde est réutilisée ; après un zoom ou un redimensionnement, les nouvelles crêtes sont préparées en arrière-plan. L’aperçu précédent peut rester brièvement visible. L'horloge suit l'audio ; les champs de sélection indiquent début, fin et durée, ceux de vue l'intervalle visible. Des crêtes rouges signalent une surcharge ; une étoile indique des modifications non enregistrées.
+**Édition la forme d’onde** modifie une prise ; **Vue multipiste** combine des clips. Passez de l'une à l'autre avec **Tab**, les boutons supérieurs ou **Affichage** ; les deux documents restent disponibles. Les infobulles expliquent les boutons. **Afficher le texte des barres d’outils** ajoute leur texte, **Options → Afficher la barre d’état** affiche ou masque la fine ligne d’information tout en bas, sous les indicateurs de niveau. Elle indique l’état de lecture et les détails du fichier ; le choix est conservé au prochain démarrage. **F11** bascule le plein écran. La taille et l’état plein écran ou agrandi de la fenêtre sont restaurés au prochain démarrage. Si un écran n’est plus disponible, la fenêtre revient sur un écran disponible. Pendant la lecture, le curseur suit l’horloge audio. L’image de la forme d’onde est réutilisée ; après un zoom ou un redimensionnement, les nouvelles crêtes sont préparées en arrière-plan. L’aperçu précédent peut rester brièvement visible. L'horloge suit l'audio ; les champs de sélection indiquent début, fin et durée, ceux de vue l'intervalle visible. Des crêtes rouges signalent une surcharge ; une étoile indique des modifications non enregistrées.
 
 Les fenêtres et les échelles des graphiques s’adaptent à la taille de police du bureau et à la langue choisie. Si un formulaire dépasse l’écran, faites défiler ses réglages ; les boutons de validation et d’annulation restent accessibles.
 
@@ -293,9 +293,18 @@ La première écoute analyse toute la plage avec progression et annulation. Chan
 
 #### Résultats attendus de Remaster
 
-Un passage adapté peut sembler plus régulier, avec moins d’effacement des voix et instruments derrière la batterie. Un mixage propre peut changer peu. Tous les creux ne répondent pas aux critères ; des baisses fortes ou longues peuvent rester. Des coupures musicales intentionnelles peuvent être adoucies inutilement.
+Le but est un équilibre instrumental plus régulier : voix et instruments restent mieux audibles près des attaques de batterie. Adaptez la récupération à l’enregistrement et écoutez le passage problématique ainsi qu’un passage calme. Changez un réglage à la fois, en comparant depuis l’original à niveau moyen égal.
 
-Un réglage fort peut changer timbre, équilibre et dynamique naturelle, ou révéler du bruit/de la distorsion existants. Remaster ne reconstruit pas un instrument totalement absent, ne supprime pas l’écrêtage et ne restaure pas les détails MP3 perdus. Il ne remplit ni silence ni fondu avec de la musique nouvelle. Comparez à niveau moyen égal et jugez aussi le résultat musical.
+| Qu’entendez-vous ? | Quel réglage adapter ? |
+| --- | --- |
+| Pompage ou effacement léger | Commencez par Récupération équilibrée. Réduction du pompage règle l’intensité de la hausse détectée ; Récupération maximale règle sa réserve ordinaire. |
+| Des coupures brèves et profondes restent audibles | Choisissez Baisses de volume brèves. Commencez à 12 dB de correction brève et adaptez cette réserve par petits pas au passage. |
+| Une attaque de batterie compte trop peu | Baissez Seuil de percussion pour inclure davantage d’attaques. Relevez-le si seules les attaques fortes doivent déclencher une correction. |
+| Une baisse arrive plus tard après la frappe | Allongez Temps de récupération pour prolonger la pertinence de la détection. Raccourcissez-le pour moins prolonger l’effet de l’attaque. |
+| Le résultat est trop marqué ou trop plat | Diminuez Réduction du pompage ou la réserve de la voie active. Davantage de variations et d’accents d’origine restent audibles. |
+| Le niveau moyen d’écoute change | Comparez avec égalisation du volume. Plafond de sortie règle la réserve de crête du résultat enregistré ; l’égalisation ne concerne que l’écoute. |
+
+Pourcentages et limites en dB donnent une réserve de récupération. La correction suit le déficit mesuré, la détection de percussion et la plage de fréquences. Elle permet un réglage subtil ou plus marqué sans appliquer le même gain à chaque passage.
 
 | Traitement | But et différence |
 | --- | --- |

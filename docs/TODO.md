@@ -1,6 +1,6 @@
 # Open punten richting v1.0
 
-Stand: 14 november 2026, SoundSausage 0.27.0 gepubliceerd en gecontroleerd.
+Stand: 15 november 2026, SoundSausage 0.27.0 gepubliceerd en gecontroleerd.
 
 B36b is functioneel uitgewerkt: markereditor voor golfvormen en sessies, met
 Undo/Redo, bewaren/heropenen en WAV/MP3-export. De
@@ -14,10 +14,15 @@ Remaster is aanvullend uitgewerkt op het expliciete verzoek voor pompende
 muziekopnamen. De functie biedt instelbaar herstel en origineel/voorbeeld op gelijk
 luistervolume. Numerieke proeven en een eerste luistervergelijking bevestigen verbetering.
 De extra regeling voor korte volumedalingen is gepubliceerd in 0.27.0;
-de eerste luisterproef met de nieuwe stand is positief. Andere probleemfragmenten
-en rustige passages vragen nog vergelijking. Zie de
+de luisterproeven op beide praktijkopnamen zijn positief en de balans is goed.
+De regeling kan verder naar smaak worden afgesteld. Zie de
 [controles](validation/remaster-short-drops.md). De oorspronkelijke bronbestanden blijven
 bij de proeven ongewijzigd.
+
+Remaster is praktisch goedgekeurd op beide voorbeeldopnamen. De venstergrootte
+blijft bewaard; centraal starten is als gewenste werkwijze geaccepteerd. Deze
+punten vragen geen verdere wijziging voor v1.0. De markerproef met toevoegen,
+benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
 
 ## B33 — fysieke praktijkcontrole
 
@@ -25,14 +30,11 @@ bij de proeven ongewijzigd.
 | --- | --- |
 | Gewone B910/HDMI-opname, pauzeren/hervatten en terugluisteren | Bevestigd. |
 | Afspelen in volledig scherm | Haperen verdwenen, fysiek bevestigd in 0.25.2. |
-| Vensterafmetingen na afsluiten/herstarten | Automatisch gecontroleerd; fysiek nog bevestigen. |
-| Kalibratie met de eigen in-/uitgangsroute | Open. |
+| Kalibratie met de eigen in-/uitgangsroute | Correctie opgeslagen; toepassing wordt met de overdub gecontroleerd. |
 | Langere overdub en klokdrift | Open. |
 | Punch-in/out, opslaan en heropenen | Open. |
 | Systeemgeluid van de eigen hoofduitgang | Open. |
 | Echte VST3-/LV2-vensters, parameters en heropende plug-instatus | Open. |
-| Remaster: origineel/voorbeeld bij drums én rustig fragment | Verbetering met Korte volumedalingen bevestigd op één praktijkopname; overige passages en rustige fragmenten nog controleren. |
-| Markerbediening in de dagelijkse workflow | Open, samen met de nieuwe build. |
 
 ## Afronden naar de eerste v1
 

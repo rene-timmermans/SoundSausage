@@ -82,7 +82,7 @@ El icono del programa con fondo morado aparece en las barras de título y la bar
 
 Abre un WAV o MP3 con **Archivo → Abrir**. **Espacio** reproduce o detiene. Selecciona un fragmento, elige **Efectos → Amplitud → Normalizar**, escucha con **Escuchar** y confirma con **Aceptar**. **Ctrl+Z** deshace la edición. Usa **Guardar como** para guardar otro archivo. Para varias grabaciones, crea una **Nueva sesión multipista**, importa WAV o MP3 y termina con **Mezclar**.
 
-**Editar forma de onda** edita una grabación; **Vista multipista** combina clips. Cambia con **Tab**, los botones superiores o **Ver**; ambos documentos siguen disponibles. Las ayudas explican los botones. **Mostrar etiquetas de herramientas** añade texto y **Opciones → Mostrar barra de estado** muestra u oculta la fina línea de información situada abajo del todo, debajo del medidor de nivel. Indica el estado de reproducción y los datos del archivo; la elección se conserva para el próximo inicio. **F11** alterna pantalla completa. El tamaño, la posición y el estado de pantalla completa o maximizado se restauran al iniciar de nuevo. Si una pantalla ya no está disponible, la ventana vuelve a una pantalla disponible. Durante la reproducción, el cursor sigue el reloj del audio. Se reutiliza la imagen de la forma de onda; al cambiar el zoom o el tamaño de la ventana, los nuevos picos se preparan en segundo plano. La vista anterior puede seguir visible brevemente. El reloj sigue el audio; los campos de selección muestran inicio, fin y duración, y los de vista el intervalo visible. Los picos rojos indican sobrecarga y un asterisco cambios sin guardar.
+**Editar forma de onda** edita una grabación; **Vista multipista** combina clips. Cambia con **Tab**, los botones superiores o **Ver**; ambos documentos siguen disponibles. Las ayudas explican los botones. **Mostrar etiquetas de herramientas** añade texto y **Opciones → Mostrar barra de estado** muestra u oculta la fina línea de información situada abajo del todo, debajo del medidor de nivel. Indica el estado de reproducción y los datos del archivo; la elección se conserva para el próximo inicio. **F11** alterna pantalla completa. El tamaño y el estado de pantalla completa o maximizado se restauran al iniciar de nuevo. Si una pantalla ya no está disponible, la ventana vuelve a una pantalla disponible. Durante la reproducción, el cursor sigue el reloj del audio. Se reutiliza la imagen de la forma de onda; al cambiar el zoom o el tamaño de la ventana, los nuevos picos se preparan en segundo plano. La vista anterior puede seguir visible brevemente. El reloj sigue el audio; los campos de selección muestran inicio, fin y duración, y los de vista el intervalo visible. Los picos rojos indican sobrecarga y un asterisco cambios sin guardar.
 
 Las ventanas y las escalas de los gráficos se adaptan al tamaño de letra del escritorio y al idioma elegido. Si un formulario no cabe en la pantalla, desplázate por sus ajustes; los botones para confirmar o cancelar siguen accesibles.
 
@@ -293,9 +293,18 @@ La primera escucha analiza todo el intervalo con progreso y cancelación. Cambia
 
 #### Qué esperar de Remaster
 
-El material adecuado puede sonar más uniforme al hundirse menos voces e instrumentos tras la batería. Una mezcla limpia puede cambiar poco. No toda caída cumple las condiciones; pueden quedar bajadas fuertes o largas. Los cortes musicales intencionales pueden suavizarse sin necesidad.
+El objetivo es un equilibrio instrumental más uniforme: voces e instrumentos siguen siendo audibles junto a los ataques de batería. Ajuste la recuperación a la grabación y escuche el pasaje problemático y otro tranquilo. Cambie un control cada vez y compare siempre desde el original a nivel medio igual.
 
-Los ajustes fuertes pueden cambiar timbre, equilibrio y dinámica natural, o revelar ruido/distorsión existente. Remaster no reconstruye un instrumento totalmente ausente, no elimina clipping ni recupera detalles MP3 perdidos. No llena silencios ni fundidos con música nueva. Compare a nivel medio igual y valore también el resultado musical.
+| ¿Qué oye? | ¿Qué puede ajustar? |
+| --- | --- |
+| Bombeo o caída leve | Empiece con Recuperación equilibrada. Reducción del bombeo determina la intensidad del aumento detectado; Recuperación máxima determina el margen ordinario. |
+| Persisten cortes profundos y breves | Elija Caídas breves de volumen. Empiece con 12 dB en Reparar caídas breves y ajuste ese margen en pasos pequeños para el pasaje. |
+| Un ataque de batería cuenta demasiado poco | Baje Umbral de percusión para incluir más ataques. Súbalo si solo los ataques fuertes deben provocar corrección. |
+| La caída llega más tarde tras el golpe | Aumente Tiempo de recuperación para mantener la detección durante más tiempo. Acórtelo cuando el ataque deba contar menos tiempo. |
+| El resultado es demasiado marcado o plano | Reduzca Reducción del bombeo o el margen de la ruta activa. Así se oyen más variaciones y acentos originales. |
+| Cambia el nivel medio de reproducción | Compare con igualación de volumen. Techo de salida determina el margen de pico del resultado guardado; la igualación solo afecta a la escucha. |
+
+Los porcentajes y límites en dB dan margen de recuperación. La corrección sigue el déficit medido, la detección de percusión y las frecuencias elegidas. Así se ajusta de forma sutil o más intensa sin dar la misma ganancia a todo el pasaje.
 
 | Proceso | Propósito y diferencia |
 | --- | --- |

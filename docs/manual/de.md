@@ -82,7 +82,7 @@ Das Programmsymbol mit violettem Hintergrund erscheint in den Fenstertitelleiste
 
 Eine WAV- oder MP3-Datei mit **Datei → Öffnen** öffnen. **Leertaste** startet oder stoppt. Einen Abschnitt markieren, **Effekte → Amplitude → Normalisieren** wählen, mit **Vorschau** anhören und mit **OK** anwenden. **Strg+Z** macht die Änderung rückgängig. Mit **Speichern unter** ein separates Ergebnis speichern. Für mehrere Aufnahmen **Neue Mehrspursitzung** erstellen, WAVs oder MP3s importieren und mit **Abmischen** abschließen.
 
-**Wellenform bearbeiten** bearbeitet eine Aufnahme; **Mehrspuransicht** kombiniert Clips. Mit **Tab**, oberen Knöpfen oder **Ansicht** wechseln; beide Dokumente bleiben verfügbar. Hinweise erklären die Knöpfe. **Werkzeugleistenbeschriftungen anzeigen** ergänzt Text, **Optionen → Statusleiste anzeigen** blendet die schmale Informationszeile ganz unten unter der Pegelanzeige ein oder aus. Sie zeigt Wiedergabestatus und Dateidaten; die Auswahl bleibt beim nächsten Start erhalten. **F11** schaltet Vollbild. Fenstergröße, Position und Vollbild- oder maximierter Zustand bleiben beim nächsten Start erhalten. Ist ein Bildschirm nicht mehr verfügbar, wird das Fenster auf einen verfügbaren Bildschirm zurückgeholt. Bei der Wiedergabe folgt der Cursor der Audiouhr. Das Wellenformbild wird wiederverwendet; nach Zoom- oder Größenänderungen werden neue Spitzenwerte im Hintergrund vorbereitet. Die vorherige Übersicht kann dabei kurz sichtbar bleiben. Die Uhr folgt dem Audio; Auswahlfelder zeigen Anfang, Ende und Länge, Ansichtsfelder den sichtbaren Zeitraum. Rote Spitzen zeigen Übersteuerung, ein Stern ungespeicherte Änderungen.
+**Wellenform bearbeiten** bearbeitet eine Aufnahme; **Mehrspuransicht** kombiniert Clips. Mit **Tab**, oberen Knöpfen oder **Ansicht** wechseln; beide Dokumente bleiben verfügbar. Hinweise erklären die Knöpfe. **Werkzeugleistenbeschriftungen anzeigen** ergänzt Text, **Optionen → Statusleiste anzeigen** blendet die schmale Informationszeile ganz unten unter der Pegelanzeige ein oder aus. Sie zeigt Wiedergabestatus und Dateidaten; die Auswahl bleibt beim nächsten Start erhalten. **F11** schaltet Vollbild. Fenstergröße und Vollbild- oder maximierter Zustand bleiben beim nächsten Start erhalten. Ist ein Bildschirm nicht mehr verfügbar, wird das Fenster auf einen verfügbaren Bildschirm zurückgeholt. Bei der Wiedergabe folgt der Cursor der Audiouhr. Das Wellenformbild wird wiederverwendet; nach Zoom- oder Größenänderungen werden neue Spitzenwerte im Hintergrund vorbereitet. Die vorherige Übersicht kann dabei kurz sichtbar bleiben. Die Uhr folgt dem Audio; Auswahlfelder zeigen Anfang, Ende und Länge, Ansichtsfelder den sichtbaren Zeitraum. Rote Spitzen zeigen Übersteuerung, ein Stern ungespeicherte Änderungen.
 
 Fenster und Diagrammskalen passen sich an die Schriftgröße des Desktops und die gewählte Sprache an. Ist ein Formular zu groß für den Bildschirm, durch die Einstellungen scrollen; die Schaltflächen zum Bestätigen und Abbrechen bleiben erreichbar.
 
@@ -293,9 +293,18 @@ Das erste Vorhören analysiert den gesamten Bereich mit Fortschritt und Abbruch.
 
 #### Was von Remaster zu erwarten ist
 
-Geeignetes Material kann gleichmäßiger klingen, weil vorhandene Stimmen und Instrumente hinter Schlagzeug weniger absinken. Eine saubere Mischung kann sich wenig ändern. Nicht jeder Einbruch erfüllt die Erkennung; tiefe oder längere Einbrüche können bleiben. Absichtlich gesetzte musikalische Cuts können unnötig abgeschwächt werden.
+Ziel ist eine gleichmäßigere Instrumentenbalance: Stimmen und Instrumente bleiben bei Schlagzeugeinsätzen besser hörbar. Die Korrektur auf die Aufnahme abstimmen und Problemstelle sowie leisere Passage anhören. Immer nur einen Regler ändern und vom Original bei abgeglichenem mittlerem Pegel vergleichen.
 
-Hohe Werte können Klangfarbe, Balance und natürliche Dynamik verändern oder vorhandenes Rauschen/Verzerrungen betonen. Remaster rekonstruiert kein vollständig fehlendes Instrument, entfernt kein Clipping und stellt keine verlorenen MP3-Details wieder her. Stille oder Blenden werden nicht mit neuer Musik gefüllt. Bei abgeglichenem mittlerem Pegel auch die musikalische Qualität beurteilen.
+| Was ist zu hören? | Was lässt sich anpassen? |
+| --- | --- |
+| Leichtes Pumpen oder Absinken | Mit Ausgewogene Wiederherstellung beginnen. Pumpen verringern regelt die Stärke der Anhebung erkannter Einbrüche; Maximale Wiederherstellung ihren normalen Spielraum. |
+| Tiefe, kurze Cuts bleiben hörbar | Kurze Pegeleinbrüche wählen. Beim Zusatzregler mit 12 dB beginnen und den Spielraum in kleinen Schritten auf die Passage abstimmen. |
+| Ein Schlagzeugeinsatz zählt zu wenig | Schlagzeugschwelle senken, um mehr Einsätze zu berücksichtigen. Erhöhen, wenn nur die stärksten Einsätze eine Korrektur auslösen sollen. |
+| Ein Einbruch kommt später nach dem Schlag | Erholungszeit verlängern, damit die Erkennung länger relevant bleibt. Verkürzen, wenn der Einsatz kürzer berücksichtigt werden soll. |
+| Das Ergebnis wirkt zu stark oder flach | Pumpen verringern oder den Spielraum der aktiven Korrektur senken. So bleiben mehr ursprüngliche Pegelunterschiede und Akzente hörbar. |
+| Die mittlere Abhörlautstärke ändert sich | Bei abgeglichener Lautstärke vergleichen. Ausgangsgrenze bestimmt die Spitzenreserve des gespeicherten Ergebnisses; der Abgleich wirkt nur beim Hören. |
+
+Prozentwerte und dB-Grenzen geben den Korrekturspielraum vor. Die Regelung folgt dem gemessenen Defizit, der Schlagzeugerkennung und dem Frequenzbereich. So lässt sie sich subtil oder kräftiger einstellen, ohne jede Passage gleich zu verstärken.
 
 | Bearbeitung | Zweck und Unterschied |
 | --- | --- |

@@ -40,11 +40,12 @@ De eerder bevestigde proeven blijven geldig.
 Remaster is aanvullend gepubliceerd in 0.26.0: begrensd herstel van wegzakkend
 midden/hoog bij drums, met origineel/voorbeeld op gelijk luistervolume. De
 [controles](validation/markers-and-remaster.md) onderscheiden numerieke proeven
-en de nog open hoorbare vergelijking. Deze luisterproef valt onder B33.
+en de hoorbare vergelijking. De luisterproef op beide praktijkopnamen is
+inmiddels onder B33 bevestigd.
 
 Remaster heeft sinds 0.27.0 een aparte regeling voor diepe, korte volumedalingen,
 met behoud van de eerdere presets. [Controles](validation/remaster-short-drops.md)
-toetsen ook stilte, uitfade en veilig annuleren; de hoorbare vergelijking blijft B33.
+toetsen ook stilte, uitfade en veilig annuleren; de hoorbare vergelijking op beide praktijkopnamen is inmiddels bevestigd.
 
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,

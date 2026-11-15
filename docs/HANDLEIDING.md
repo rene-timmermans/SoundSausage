@@ -150,7 +150,7 @@ de muis boven een knop houdt. **Opties → Werkbalkteksten tonen** toont ook nam
 naast werkbalkiconen. **Opties → Statusbalk tonen** toont of verbergt de smalle
 informatieregel helemaal onderaan, onder de niveaumeter. Die regel toont de
 afspeelstatus en bestandsgegevens. De keuze blijft bij de volgende start bewaard.
-**F11** schakelt naar volledig scherm en terug. De venstergrootte, positie en volledig-scherm- of gemaximaliseerde stand blijven
+**F11** schakelt naar volledig scherm en terug. De venstergrootte en volledig-scherm- of gemaximaliseerde stand blijven
 bij de volgende start behouden. Een verdwenen beeldscherm wordt opgevangen door
 het venster terug op een beschikbaar scherm te plaatsen.
 Tijdens afspelen volgt de cursor de audioklok. De golfvorm wordt hergebruikt;
@@ -788,9 +788,18 @@ Het eerste luistervoorbeeld analyseert het hele bereik, met voortgang en annuler
 
 #### Wat kun je van Remaster verwachten?
 
-Een passende opname kan gelijkmatiger klinken doordat nog aanwezige stemmen en instrumenten bij drums minder wegzakken. Een schone mix kan weinig veranderen. Niet elke dip voldoet aan de detectievoorwaarden; sterke of langere terugvallen kunnen blijven bestaan. Bewuste muzikale cuts kunnen juist onterecht worden verzacht.
+Het doel is een gelijkmatiger instrumentenbeeld: stemmen en instrumenten blijven bij drumaanzetten beter hoorbaar. Stem het herstel af op de opname en luister naar het probleemfragment én een rustig gedeelte. Verander één instelling tegelijk en vergelijk steeds vanaf het origineel op gelijk gemiddeld niveau.
 
-Sterke instellingen kunnen klankkleur, balans en natuurlijke dynamiek veranderen of bestaande ruis/vervorming hoorbaarder maken. Remaster reconstrueert geen volledig ontbrekend instrument, verwijdert geen clipping en herstelt geen verloren MP3-detail. Stilte of een uitfade wordt niet met nieuwe muziek ingevuld. Beluister de vergelijking op gelijk gemiddeld niveau en beoordeel ook het muzikale resultaat.
+| Wat hoor je? | Wat kun je aanpassen? |
+| --- | --- |
+| Licht pompen of wegzakken | Begin met Evenwichtig herstel. Pompeffect verminderen bepaalt hoe nadrukkelijk de gevonden dalingen worden opgehaald; Maximaal herstel bepaalt de ruimte voor het gewone herstel. |
+| Diepe, korte cuts blijven hoorbaar | Kies Korte volumedalingen. Begin met 12 dB bij Herstel korte volumedalingen en stel deze herstelruimte in kleine stappen af op de passage. |
+| Een drumaanzet telt onvoldoende mee | Verlaag Drumdrempel om meer aanzetten in de detectie mee te nemen. Verhoog de drempel als alleen de sterkste aanzetten correctie moeten uitlokken. |
+| Een terugval komt pas wat later na de drum | Verleng Hersteltijd zodat de drumdetectie langer blijft meetellen. Verkort die tijd als de aanzet korter relevant moet blijven. |
+| Het resultaat wordt te nadrukkelijk of vlak | Verminder Pompeffect verminderen of de herstelruimte van de actieve regeling. Zo blijven meer oorspronkelijke niveauverschillen en accenten hoorbaar. |
+| Het gemiddelde afspeelniveau verandert | Vergelijk met gelijk luistervolume. Het Uitvoerplafond bepaalt de piekruimte van het opgeslagen resultaat; de volumevergelijking geldt alleen voor het luisteren. |
+
+De percentages en dB-grenzen geven ruimte voor herstel. De correctie volgt het gemeten tekort, de drumdetectie en het gekozen frequentiegebied; zo kun je van subtiel tot nadrukkelijk herstel afstellen zonder iedere passage dezelfde versterking te geven.
 
 | Bewerking | Doel en verschil |
 | --- | --- |

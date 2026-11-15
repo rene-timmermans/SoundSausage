@@ -1,5 +1,19 @@
 # Ontwikkelroute
 
+## Praktijkcontrole richting v1.0 — 15 november 2026
+
+Remaster is op beide voorbeeldopnamen goedgekeurd: duidelijk beter en de balans
+goed. De venstergrootte blijft in de praktijk behouden. De plaatsing van het
+venster vraagt voor deze route geen wijziging. De handleidingen beschrijven
+parameterwerking en praktische afsteltips.
+
+De markerbediening is in de praktijk bevestigd: toevoegen, benoemen, verslepen,
+Undo/Redo, WAV bewaren en heropenen. De opnamekalibratie heeft een correctie
+opgeslagen. De toepassing daarvan wordt met de langere opname gecontroleerd.
+Open blijven langere overdub/drift, punch-in/out met heropenen, systeemgeluid
+en echte plug-invensters/status.
+Daarna volgen de releasecandidate en het oplossen van blokkerende fouten.
+
 ## Korte volumedalingen — 0.27.0 gepubliceerd
 
 Remaster heeft een aparte regeling van 0–18 dB en de preset Korte volumedalingen.
@@ -10,8 +24,9 @@ Alle 619 tests slagen zonder overslaan op Debian, Fedora en Arch. De vijf
 geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
 De acht releasebestanden, tag en korte releasepunten zijn gecontroleerd. Zie de
 [validatie](validation/remaster-short-drops.md). Alle vijf handleidingen zijn bijgewerkt.
-Een eerste praktijkproef bevestigt ook een duidelijke hoorbare verbetering met
-Korte volumedalingen. Vergelijking op ander materiaal blijft onderdeel van B33.
+De praktijkproeven bevestigen op beide voorbeeldopnamen een duidelijke hoorbare
+verbetering met Korte volumedalingen en een goede balans. De Remaster-proef is
+voor v1.0 afgerond. Verdere afstelling volgt de opname en voorkeur.
 De vijf handleidingen bevatten nu exacte presetwaarden, de werking van beide
 herstelregelingen en hun grenzen, en het verschil met andere volumebewerkingen.
 

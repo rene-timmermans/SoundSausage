@@ -100,7 +100,7 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 
 **[0.26.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.26.0)** Remaster met origineel/voorbeeld-vergelijking en een markereditor voor golfvormen en sessies.
 
-**[0.25.2](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.2)** Vloeiender afspelen in volledig scherm en bij grote golfvormvensters. De venstergrootte en positie blijven bij de volgende start behouden.
+**[0.25.2](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.2)** Vloeiender afspelen in volledig scherm en bij grote golfvormvensters. De venstergrootte blijft bij de volgende start behouden.
 
 **[0.25.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.1)** Een lege werkruimte blijft leeg; de overbodige startmelding verschijnt niet meer over de golfvorm.
 
