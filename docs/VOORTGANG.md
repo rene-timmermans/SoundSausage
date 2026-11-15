@@ -1,14 +1,18 @@
 # Ontwikkelroute
 
-## Eerste stabiele versie — 1.0.0 in voorbereiding
+## Eerste stabiele versie — 1.0.0 gepubliceerd
 
 De releasecandidate gebruikt de functionele broncode van 0.27.2. De volledige
 automatische controles en de afgeronde fysieke proeven vormen de basis van 1.0.
 Ook het zelfstandige handleidingvenster is in de praktijk bevestigd: de editor
 kan ervoor komen en de vensterknoppen en titel werken zoals bedoeld.
-De definitieve versie krijgt bijgewerkte versiegegevens, handleidingen en
-installatiepakketten. Deze pakketten doorlopen de volledige distributiebouw,
-testreeks en geïnstalleerde zelftests vóór publicatie.
+De definitieve versie bevat bijgewerkte versiegegevens, handleidingen en
+installatiepakketten. Alle **640 tests** slagen zonder overslaan op Debian, Fedora
+en Arch; vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu
+26.04 en Rolling. De acht releasebestanden, tag, bron en korte releasepunten
+zijn gecontroleerd. Catalogi: 1539 bronvormen zonder ontbrekende vertaling.
+De eerste stabiele publicatie is afgerond. De eerstvolgende kleine uitbreiding
+maakt de selectie- en weergavetijden rechtsonder bewerkbaar.
 
 ## Pauzesynchronisatie en handleidingvenster — 0.27.2 gepubliceerd
 
