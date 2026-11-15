@@ -1,8 +1,8 @@
 # Ontwikkelroute
 
-## Titelruimte in voortgangsvensters — 1.1.2 in controle
+## Titelruimte in voortgangsvensters — 1.1.2 gepubliceerd
 
-De minimale breedte van het gedeelde voortgangsvenster houdt rekening met de volledige programmatitel, de titelbalkknoppen en de ingestelde lettergrootte. De correctie geldt voor alle offlinebewerkingen met dit voortgangsvenster. Vier bestaande controles voor annuleren, herstel, schuiven en grotere formulierletters slagen. Een weergavecontrole met drie lettergroottes bevestigt dat de vensterbreedte meegroeit. De pakketcontroles en publicatie volgen; de handleidingen vermelden de nieuwe versie, zonder de ongewijzigde bediening uit te breiden.
+De minimale breedte van het gedeelde voortgangsvenster houdt rekening met de volledige programmatitel, de titelbalkknoppen en de ingestelde lettergrootte. De correctie geldt voor alle offlinebewerkingen met dit voortgangsvenster. Vier bestaande controles voor annuleren, herstel, schuiven en grotere formulierletters slagen. Een weergavecontrole met drie lettergroottes bevestigt dat de vensterbreedte meegroeit. Alle **662 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd. De vijf handleidingen vermelden de nieuwe versie; de bediening en indexen blijven gelijk.
 
 ## Uitklapbare effectgroepen — 1.1.1 gepubliceerd
 

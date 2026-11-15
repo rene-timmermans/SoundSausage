@@ -1,10 +1,10 @@
 # Voortgang en vervolg
 
-Stand: 15 november 2026, SoundSausage 1.1.1 gepubliceerd en gecontroleerd.
+Stand: 15 november 2026, SoundSausage 1.1.2 gepubliceerd en gecontroleerd.
 
-## Titelruimte in voortgangsvensters — 1.1.2 in controle
+## Titelruimte in voortgangsvensters — afgerond in 1.1.2
 
-Het gedeelde voortgangsvenster heeft voldoende ruimte voor de volledige programmatitel en de titelbalkknoppen. De minimale breedte volgt de titel- en inhoudslettergrootte, ook bij korte voortgangsteksten. Annuleren en de audioverwerking blijven gelijk. Gerichte controles voor annuleren, herstel en tekstuitlijning slagen. Pakketbouw en publicatie volgen.
+Het gedeelde voortgangsvenster heeft voldoende ruimte voor de volledige programmatitel en de titelbalkknoppen. De minimale breedte volgt de titel- en inhoudslettergrootte, ook bij korte voortgangsteksten. Annuleren en de audioverwerking blijven gelijk. Gerichte controles voor annuleren, herstel en tekstuitlijning slagen. Alle **662 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd. Geen open punten voor deze correctie.
 
 ## Uitklapbare effectgroepen — afgerond in 1.1.1
 

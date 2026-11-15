@@ -1,8 +1,8 @@
 # Afgesproken ontwikkelroute
 
-## Titelruimte in voortgangsvensters — 1.1.2 in controle
+## Titelruimte in voortgangsvensters — 1.1.2 gepubliceerd
 
-Een ruimere minimale breedte in het gedeelde voortgangsvenster houdt de programmatitel leesbaar naast de titelbalkknoppen. De breedte past zich aan de lettergrootte aan. De bestaande bediening en verwerking blijven gelijk; de [todo](TODO.md) volgt de pakketcontroles en publicatie van deze visuele correctie.
+Een ruimere minimale breedte in het gedeelde voortgangsvenster houdt de programmatitel leesbaar naast de titelbalkknoppen. De breedte past zich aan de lettergrootte aan. De bestaande bediening en verwerking blijven gelijk; de [todo](TODO.md) legt de afronding vast. Alle **662 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling; de acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd.
 
 ## Effectgroepen op de werkbalk — 1.1.1 gepubliceerd
 
