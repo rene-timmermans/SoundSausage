@@ -52,6 +52,12 @@ Remaster heeft sinds 0.27.0 een aparte regeling voor diepe, korte volumedalingen
 met behoud van de eerdere presets. [Controles](validation/remaster-short-drops.md)
 toetsen ook stilte, uitfade en veilig annuleren; de hoorbare vergelijking op beide praktijkopnamen is inmiddels bevestigd.
 
+In [0.27.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.1)
+verplaatst klikken tijdens afspelen ook het hoorbare afspeelpunt. De VST3-host
+laadt effecten met ongebruikte optionele aansluitingen en herstelt ook hun
+componentstatus. Alle 629 tests en de geïnstalleerde pakketten zijn gecontroleerd;
+de nog open fysieke proeven blijven onder B33.
+
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,
 versietags en korte toegevoegde functies/Work in progress. De datum voor v1.0

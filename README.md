@@ -97,6 +97,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 
 ## Wat er nieuw is
 
+**[0.27.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.1)** Tijdens afspelen naar een andere plek springen. Meer VST3-effecten laden en hun instellingen bewaren en heropenen, waaronder TAL-Reverb-4. Duidelijkere handleidingen.
+
 **[0.27.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.0)** Remaster herstelt ook diepe, korte volumedalingen, met een aparte instelling en preset.
 
 **[0.26.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.26.0)** Remaster met origineel/voorbeeld-vergelijking en een markereditor voor golfvormen en sessies.

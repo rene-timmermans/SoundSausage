@@ -1,7 +1,8 @@
 # Open punten richting v1.0
 
-Stand: 15 november 2026, SoundSausage 0.27.0 gepubliceerd en gecontroleerd.
-0.27.1 is in voorbereiding: klikken tijdens afspelen verplaatst de afspeelpositie.
+Stand: 15 november 2026, SoundSausage 0.27.1 gepubliceerd en gecontroleerd.
+Klikken tijdens afspelen verplaatst de afspeelpositie. De VST3-host accepteert
+optionele ongebruikte aansluitingen en bewaart de instellingen van TAL-Reverb-4.
 
 B36b is functioneel uitgewerkt: markereditor voor golfvormen en sessies, met
 Undo/Redo, bewaren/heropenen en WAV/MP3-export. De

@@ -1,6 +1,6 @@
 # Ontwikkelroute
 
-## Afspeelpositie aanklikken — 0.27.1 in voorbereiding
+## Afspeelpositie aanklikken — 0.27.1 gepubliceerd
 
 Een gewone klik op de golfvorm verplaatst ook tijdens afspelen het geluid, de
 cursor en de klok. In Multitrack kan dit op de tijdliniaal of lege tijdlijn.
@@ -15,7 +15,11 @@ statusstream geeft ook gedeeltelijk gelezen gegevens correct terug en meldt
 zijn grootte. TAL-Reverb-4 laadt, verwerkt audio en herstelt Wet/Dry uit de
 bewaarde componentstatus in een nieuwe helper. Twee aanvullende onafhankelijke
 ABI-proeven controleren de ongebruikte bussen en afwijzen van verplichte routering.
-De volledige distributiebouw en publicatie volgen na afronding van de controles.
+Alle **629 tests** slagen zonder overslaan op Debian, Fedora en Arch. De vijf
+geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling.
+De acht releasebestanden, tag en korte releasepunten zijn gecontroleerd.
+Catalogi: 1538 bronvormen zonder ontbrekende vertaling. De fysieke
+plug-invensterproef en de resterende opnamecontroles blijven onderdeel van B33.
 
 ## Praktijkcontrole richting v1.0 — 15 november 2026
 
