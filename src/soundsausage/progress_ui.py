@@ -3,6 +3,7 @@ from functools import wraps
 import time
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QFontDatabase, QFontMetrics
 from PySide6.QtWidgets import QApplication
 from .i18n_widgets import QProgressDialog
 
@@ -24,6 +25,12 @@ def long_operation(function):
             if dialog is None:
                 dialog=QProgressDialog(label,"Annuleren",0,1000,parent)
                 dialog.setWindowTitle("SoundSausage")
+                # Native desktop title bars also need room for their icon and
+                # window controls, independently of the short progress label.
+                title_metrics=QFontMetrics(QFontDatabase.systemFont(QFontDatabase.SystemFont.TitleFont))
+                title_width=max(title_metrics.horizontalAdvance(dialog.windowTitle()),dialog.fontMetrics().horizontalAdvance(dialog.windowTitle()))
+                control_space=10*max(title_metrics.height(),dialog.fontMetrics().height())
+                dialog.setMinimumWidth(max(360,title_width+control_space))
                 dialog.setWindowModality(Qt.WindowModality.ApplicationModal)
                 dialog.setAutoClose(False);dialog.setAutoReset(False)
                 dialog.setMinimumDuration(0);dialog.show()

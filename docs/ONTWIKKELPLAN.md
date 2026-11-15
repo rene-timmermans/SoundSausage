@@ -1,5 +1,9 @@
 # Afgesproken ontwikkelroute
 
+## Titelruimte in voortgangsvensters — 1.1.2 in controle
+
+Een ruimere minimale breedte in het gedeelde voortgangsvenster houdt de programmatitel leesbaar naast de titelbalkknoppen. De breedte past zich aan de lettergrootte aan. De bestaande bediening en verwerking blijven gelijk; de [todo](TODO.md) volgt de pakketcontroles en publicatie van deze visuele correctie.
+
 ## Effectgroepen op de werkbalk — 1.1.1 gepubliceerd
 
 De linker werkbalk krijgt uitklapbare groepen voor golfvormbewerkingen, amplitude, filters, vertragingseffecten, ruisreductie, tijd/toonhoogte en speciale effecten. Het pijltje toont de groep; het hoofdicoon opent of herhaalt het laatst gekozen effect. De keuze blijft na herstart bewaard. De lijsten delen de bestaande menuopdrachten, met behoud van hun beschikbaarheid, kanaalkeuze, Undo en opnamevergrendeling. Remaster en spooreffecten hebben eigen knoppen. De vijf handleidingen beschrijven de bediening. Alle **662 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd. De [todo](TODO.md) legt de afronding vast; de 18 uitgestelde uitbreidingen blijven uitgesteld.

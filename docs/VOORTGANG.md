@@ -1,5 +1,9 @@
 # Ontwikkelroute
 
+## Titelruimte in voortgangsvensters — 1.1.2 in controle
+
+De minimale breedte van het gedeelde voortgangsvenster houdt rekening met de volledige programmatitel, de titelbalkknoppen en de ingestelde lettergrootte. De correctie geldt voor alle offlinebewerkingen met dit voortgangsvenster. Vier bestaande controles voor annuleren, herstel, schuiven en grotere formulierletters slagen. Een weergavecontrole met drie lettergroottes bevestigt dat de vensterbreedte meegroeit. De pakketcontroles en publicatie volgen; de handleidingen vermelden de nieuwe versie, zonder de ongewijzigde bediening uit te breiden.
+
 ## Uitklapbare effectgroepen — 1.1.1 gepubliceerd
 
 De linker gereedschapsbalk biedt effectgroepen met een uitklappijltje en een hoofdicoon voor het laatst gekozen effect. De lijsten gebruiken dezelfde opdrachten als het menu Effecten. Elke groep onthoudt zijn keuze; een tijdelijk onbeschikbaar effect krijgt een beschikbaar alternatief zonder de voorkeur te verliezen. Remaster staat rechtstreeks op de balk, spooreffecten verschijnen in multitrack. Taal, accentkleur, werkbalkteksten, opnamevergrendeling en de bestaande werkbalkindeling blijven gekoppeld aan de appinstellingen.

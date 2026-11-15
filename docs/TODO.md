@@ -2,6 +2,10 @@
 
 Stand: 15 november 2026, SoundSausage 1.1.1 gepubliceerd en gecontroleerd.
 
+## Titelruimte in voortgangsvensters — 1.1.2 in controle
+
+Het gedeelde voortgangsvenster heeft voldoende ruimte voor de volledige programmatitel en de titelbalkknoppen. De minimale breedte volgt de titel- en inhoudslettergrootte, ook bij korte voortgangsteksten. Annuleren en de audioverwerking blijven gelijk. Gerichte controles voor annuleren, herstel en tekstuitlijning slagen. Pakketbouw en publicatie volgen.
+
 ## Uitklapbare effectgroepen — afgerond in 1.1.1
 
 - Effectgroepen op de linker werkbalk, met dezelfde opdrachten als het menu Effecten.
