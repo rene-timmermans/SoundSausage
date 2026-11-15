@@ -63,8 +63,18 @@ class EffectToolTests(unittest.TestCase):
                 if key is None:
                     QTest.keyClick(menu, Qt.Key.Key_Escape)
                 else:
-                    QTest.mouseClick(menu, Qt.MouseButton.LeftButton,
-                                     pos=menu.actionGeometry(self.window.actions[key]).center())
+                    action = self.window.actions[key]
+                    position = menu.actionGeometry(action).center()
+                    self.assertTrue(menu.rect().contains(position))
+                    # Deliver a real pointer path through QWindow. Older Qt
+                    # menus reject clicks without movement since opening, and
+                    # offscreen QWidget moves need not generate mouse events.
+                    surface = menu.windowHandle()
+                    for offset in range(8, 0, -1):
+                        QTest.mouseMove(surface, position - QPoint(offset, 0))
+                    self.assertIs(menu.actionAt(position), action)
+                    self.assertIs(menu.activeAction(), action)
+                    QTest.mouseClick(surface, Qt.MouseButton.LeftButton, pos=position)
             except Exception as error:
                 errors.append(error)
             finally:
