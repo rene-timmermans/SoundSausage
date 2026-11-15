@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.27.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.27.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -133,7 +133,7 @@ Zusätzliche Metadaten bleiben auf 16 MiB begrenzt. Unlesbare eingebettete WAV-I
 
 ## 4. Wiedergabe, Zoom und Audiogeräte
 
-**Leertaste** startet/stoppt, **P** pausiert/setzt fort, **Esc** stoppt. Eine Auswahl wird als Bereich abgespielt, sonst beginnt es am Cursor. **Schleife** wiederholt mit möglichem kurzem Übergang. **Pos1/Ende** gehen zum Anfang/Ende, Sprungknöpfe um fünf Sekunden. Navigation oder Wellenformbearbeitung stoppt die Wiedergabe. **Vergrößern / Verkleinern**, **Strg+Mausrad**, Mausrad und Scrollbalken navigieren. **Gesamtansicht / Strg+0** zeigt alles, **Auswahl vergrößern / Strg+Umschalt+A** füllt die Ansicht mit der Auswahl. Die Symbole unterscheiden sich. Nah werden Samples verbunden, weiter außen bleiben Minima/Maxima je Bildschirmspalte sichtbar.
+**Leertaste** startet/stoppt, **P** pausiert/setzt fort, **Esc** stoppt. Eine Auswahl wird als Bereich abgespielt, sonst beginnt es am Cursor. **Schleife** wiederholt mit möglichem kurzem Übergang. **Pos1/Ende** gehen zum Anfang/Ende, Sprungknöpfe um fünf Sekunden. Während der Wiedergabe spielen **Pos1** und die Fünf-Sekunden-Knöpfe ab der neuen Position weiter; am Ende stoppt die Wiedergabe. In die Wellenform klicken, um ab dort weiterzuhören, auch bei Vergrößerung bis auf einzelne Samples. In der Mehrspuransicht auf das Zeitlineal oder eine freie Stelle der Zeitachse klicken. Der Klick hebt die Zeitauswahl auf und spielt ab der neuen Position bis zum Ende; Schleife verwendet dann diesen neuen Bereich. Das Ziehen einer Zeitauswahl versetzt die laufende Wiedergabe nicht. Zeichnen oder Wellenformbearbeitung stoppt die Wiedergabe. **Vergrößern / Verkleinern**, **Strg+Mausrad**, Mausrad und Scrollbalken navigieren. **Gesamtansicht / Strg+0** zeigt alles, **Auswahl vergrößern / Strg+Umschalt+A** füllt die Ansicht mit der Auswahl. Die Symbole unterscheiden sich. Nah werden Samples verbunden, weiter außen bleiben Minima/Maxima je Bildschirmspalte sichtbar.
 
 Unter **Optionen → Audiogeräte** Ausgang oder **Systemstandard** wählen. Die Auswahl bleibt für Wiedergabe und Vorschau gespeichert. Der Puffer beträgt standardmäßig 100 ms: größer verträgt Unterbrechungen, kleiner reagiert schneller. Geräte können abweichen. Änderungen stoppen Wiedergabe/Vorschau. Bei Geräteverlust neu verbinden oder Ausgang wählen und starten. Bei Stille Systemlautstärke, Route, Stumm und Solo prüfen. Ausgabe-Abtastratenwandlung verändert die Aufnahme nicht.
 
@@ -503,7 +503,7 @@ Einen **nativen 64-Bit-Linux-Audioeffekt** installieren. In Spureffekte **Extern
 
 **Plug-in-Fenster öffnen** öffnet einen unterstützten eigenen VST3-/LV2-Editor. Seine Parameter und speicherbaren Zustände werden beim Bestätigen übernommen. Eigene Fenster benötigen **X11 oder XWayland**. Fehlt der Editor oder wird er nicht unterstützt, bleiben allgemeine Parameterregler verfügbar. LADSPA verwendet immer diese Regler. LV2-Editoren mit erforderlichem GTK-/Qt-Adapter werden nicht eingebettet.
 
-VST3 unterstützt einen Stereo-Ein-/Ausgangsbus mit Float32. LV2/LADSPA unterstützen Mono-/Stereoeffekte mit gleich vielen Ein-/Ausgängen; Monoeffekte erhalten pro Stereokanal eine eigene Instanz. MIDI-Instrumente, zusätzliche Sidechains, VST2 und Windows-Plug-ins fehlen. Nicht unterstützte erforderliche LV2-Funktionen/Anschlusstypen werden gemeldet; MIDI/Atom-Verarbeitung fehlt. LV2-Zustände mit externen Dateien lassen sich nicht vollständig speichern und erzeugen eine Meldung. Dafür einen Effekt mit eigenständig speicherbarem Zustand wählen.
+VST3 verwendet einen aktiven Stereo-Ein-/Ausgangsbus mit Float32. Optionale zusätzliche Anschlüsse bleiben deaktiviert; so können auch Effekte mit einer ungenutzten Sidechain geladen werden. LV2/LADSPA unterstützen Mono-/Stereoeffekte mit gleich vielen Ein-/Ausgängen; Monoeffekte erhalten pro Stereokanal eine eigene Instanz. MIDI-Instrumente, zusätzliche Sidechains, VST2 und Windows-Plug-ins fehlen. Nicht unterstützte erforderliche LV2-Funktionen/Anschlusstypen werden gemeldet; MIDI/Atom-Verarbeitung fehlt. LV2-Zustände mit externen Dateien lassen sich nicht vollständig speichern und erzeugen eine Meldung. Dafür einen Effekt mit eigenständig speicherbarem Zustand wählen.
 
 Jedes Plug-in läuft in einem getrennten Hilfsprozess. Absturz, Zeitüberschreitung oder ungültiges Audio stoppen die Wiedergabe; aufgezeichnete Samples bleiben erhalten. Projekte speichern Parameter und höchstens 1 MiB Zustand je Effekt. Plug-in, Bibliotheken und externe Samples separat installieren. Auf anderen Rechnern dieselbe Version hinzufügen. Fehlende/geänderte Plug-ins werden gemeldet; Wiedergabe/Export verlangen den passenden Effekt oder bewusstes Umgehen.
 
@@ -529,9 +529,11 @@ Die automatische Synchronisierung verwendet das passende Geräteprofil. Ohne Pro
 
 ### Punch-in/out
 
-Zielspur und Zeitbereich am Mehrspurlineal oder über **Bearbeiten → Auswahl festlegen** wählen. **Optionen → Punch-in/out** oder **Shift+R** öffnen. Eingang, Synchronisierung, **Vorlauf** (2 s) und **Überblendung** (5 ms) einstellen. Die Auswahl bestimmt die Aufnahmegrenzen; Begleitung ist aktiv.
+Zielspur und Zeitbereich am Mehrspurlineal oder über **Bearbeiten → Auswahl festlegen** wählen. **Optionen → Punch-in/out** oder **Shift+R** öffnen. Unter **Ziel** die Auswahl **Punch-in/out in Auswahl** beibehalten. Eingang, Synchronisierung, **Vorlauf** (2 s) und **Überblendung** (5 ms) einstellen. Die Auswahl bestimmt die Aufnahmegrenzen; Begleitung ist aktiv.
 
 Der Eingang läuft vor der Wiedergabe warm. Im Vorlauf spielt das Original; innerhalb der Auswahl wird nur die Zielspur stummgeschaltet, während die neue Passage aufgenommen wird. Andere Spuren spielen weiter. Nach kurzer Synchronisierungsnachlaufzeit stoppt die Aufnahme automatisch. Nur korrigiertes Audio innerhalb der Auswahl wird als neuer Clip eingefügt.
+
+**Erst nach dem Vorlauf sprechen oder spielen, sobald der ausgewählte Bereich beginnt.** Bei 2 s Vorlauf auf **Punch-Aufnahme: Das gewählte Intervall wird aufgenommen** warten. Im Vorlauf erzeugtes Audio wird nicht in den ersetzten Bereich eingefügt. Bei einer Auswahl von 0:03–0:06 und 2 s Vorlauf beginnt die Begleitung bei 0:01, das Ersetzen bei 0:03. Ein neuer Clip oder eine neue Wellenform ist ein anderes Ziel und ersetzt diesen Bereich nicht.
 
 Überblendungen mischen Alt/Neu innerhalb der Grenzen, höchstens 100 ms. Audio außerhalb bleibt erhalten. Alte Clips behalten ihre Quellen und werden im Punch-Bereich verdeckt. Strg+Z stellt alles in einem Schritt wieder her. Am alten Clip **Überdecktes Audio wiederherstellen** wählen, um alle seine Abdeckungen zu entfernen; neue Aufnahme löschen/stummschalten, damit nicht beide gleichzeitig spielen. Früher Stopp behält nur den tatsächlich aufgenommenen Abschnitt im Intervall. Stopp vor dem Intervall ändert die Sitzung nicht; die rohe Aufnahme bleibt unter **Datei → Arbeit wiederherstellen**. Wiederherstellung einer unbestätigten Aufnahme bietet die Rohaufnahme samt Vor-/Nachlauf zur manuellen Platzierung. Abgeschlossene Punch-Bereiche bleiben im Projekt und in der Absturzwiederherstellung erhalten.
 

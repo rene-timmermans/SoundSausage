@@ -24,6 +24,9 @@ class Gain final : public IComponent,
   uint32 refs = 1;
   double value = .5, gain = 1, crash = 0, slow = 0;
   bool active = false, processing = false;
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+  bool auxInputActive = true, auxOutputActive = true;
+#endif
   IComponentHandler* handler = nullptr;
 
 public:
@@ -63,24 +66,44 @@ public:
   }
   tresult PLUGIN_API setIoMode(IoMode) override { return kResultOk; }
   int32 PLUGIN_API getBusCount(MediaType type, BusDirection) override {
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+    return type == kAudio ? 2 : 0;
+#else
     return type == kAudio ? 1 : 0;
+#endif
   }
   tresult PLUGIN_API getBusInfo(MediaType type, BusDirection dir, int32 index,
                                 BusInfo &info) override {
-    if (type != kAudio || index)
+    if (type != kAudio || index < 0 || index >= getBusCount(type, dir))
       return kInvalidArgument;
     info = {};
     info.mediaType = type;
     info.direction = dir;
     info.channelCount = 2;
     info.busType = kMain;
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+    if (index) {
+      info.busType = kAux;
+      info.channelCount = dir == kInput ? 1 : 2;
+    }
+#endif
     return kResultOk;
   }
   tresult PLUGIN_API getRoutingInfo(RoutingInfo &, RoutingInfo &) override {
     return kNotImplemented;
   }
-  tresult PLUGIN_API activateBus(MediaType, BusDirection, int32,
-                                 TBool) override {
+  tresult PLUGIN_API activateBus(MediaType, BusDirection dir, int32 index,
+                                 TBool state) override {
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+    if (index == 1) {
+#ifdef SOUNDSAUSAGE_TEST_REQUIRED_AUX
+      if (!state) return kResultFalse;
+#endif
+      (dir == kInput ? auxInputActive : auxOutputActive) = state;
+    }
+#else
+    (void)dir; (void)index; (void)state;
+#endif
     return kResultOk;
   }
   tresult PLUGIN_API setActive(TBool v) override {
@@ -89,9 +112,28 @@ public:
   }
   tresult PLUGIN_API setState(IBStream *state) override {
     int32 n = 0;
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+    ISizeableStream* sized = nullptr;
+    if (state->queryInterface(ISizeableStream::iid, (void**)&sized) != kResultOk || !sized)
+      return kResultFalse;
+    int64 size = 0;
+    auto result = sized->getStreamSize(size); sized->release();
+    if (result != kResultOk || size != sizeof(gain)) return kResultFalse;
+    char buffer[4096];
+    if (state->read(buffer, sizeof(buffer), &n) != kResultOk || n != sizeof(gain))
+      return kResultFalse;
+    std::memcpy(&gain, buffer, sizeof(gain));
+    if (state->read(buffer, sizeof(buffer), &n) != kResultFalse || n != 0)
+      return kResultFalse;
+#else
     if (state->read(&gain, sizeof(gain), &n) != kResultOk || n != sizeof(gain))
       return kResultFalse;
+#endif
     value = gain / 2;
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+    // A state reload can restore the default activation of optional buses.
+    auxInputActive = auxOutputActive = true;
+#endif
     return kResultOk;
   }
   tresult PLUGIN_API getState(IBStream *state) override {
@@ -100,14 +142,28 @@ public:
   tresult PLUGIN_API setBusArrangements(SpeakerArrangement *in, int32 ni,
                                         SpeakerArrangement *out,
                                         int32 no) override {
-    return ni == 1 && no == 1 && in[0] == SpeakerArr::kStereo &&
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+    if (ni != 2 || no != 2 || in[1] != SpeakerArr::kMono || out[1] != SpeakerArr::kStereo)
+      return kResultFalse;
+#else
+    if (ni != 1 || no != 1) return kResultFalse;
+#endif
+    return in[0] == SpeakerArr::kStereo &&
                    out[0] == SpeakerArr::kStereo
                ? kResultTrue
                : kResultFalse;
   }
-  tresult PLUGIN_API getBusArrangement(BusDirection, int32 index,
+  tresult PLUGIN_API getBusArrangement(BusDirection dir, int32 index,
                                        SpeakerArrangement &arr) override {
     arr = SpeakerArr::kStereo;
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+    if (index == 1) {
+      arr = dir == kInput ? SpeakerArr::kMono : SpeakerArr::kStereo;
+      return kResultOk;
+    }
+#else
+    (void)dir;
+#endif
     return index ? kInvalidArgument : kResultOk;
   }
   tresult PLUGIN_API canProcessSampleSize(int32 size) override {
@@ -126,6 +182,18 @@ public:
   tresult PLUGIN_API process(ProcessData &data) override {
     if (!active || !processing)
       return kResultFalse;
+#ifdef SOUNDSAUSAGE_TEST_AUX_BUSES
+    if (auxInputActive || auxOutputActive || data.numInputs != 2 || data.numOutputs != 2 ||
+        data.inputs[1].numChannels != 1 || data.outputs[1].numChannels != 2 ||
+        !data.inputs[1].channelBuffers32 || !data.inputs[1].channelBuffers32[0] ||
+        !data.outputs[1].channelBuffers32 || !data.outputs[1].channelBuffers32[0] ||
+        !data.outputs[1].channelBuffers32[1]) return kResultFalse;
+    for (int c = 0; c < 2; ++c)
+      for (int i = 0; i < data.numSamples; ++i)
+        data.outputs[1].channelBuffers32[c][i] = .9f;
+    for (int i = 0; i < data.numSamples; ++i)
+      if (data.inputs[1].channelBuffers32[0][i] != 0.f) return kResultFalse;
+#endif
     if (data.inputParameterChanges)
       for (int i = 0; i < data.inputParameterChanges->getParameterCount();
            i++) {

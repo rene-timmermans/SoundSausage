@@ -33,6 +33,12 @@ class PluginTests(unittest.TestCase):
         cls.binary=ROOT/'build/vst3-test-gain.so'
         subprocess.run(['c++','-std=c++20','-O2','-fPIC','-shared','-Ithird_party/vst3',
             'tests/fixtures/vst3_gain.cpp','third_party/vst3/pluginterfaces/base/funknown.cpp','-o',str(cls.binary)],cwd=ROOT,check=True)
+        cls.auxiliary=ROOT/'build/vst3-test-auxiliary.so'
+        cls.required_auxiliary=ROOT/'build/vst3-test-required-auxiliary.so'
+        for binary,extra in ((cls.auxiliary,[]),(cls.required_auxiliary,['-DSOUNDSAUSAGE_TEST_REQUIRED_AUX'])):
+            subprocess.run(['c++','-std=c++20','-O2','-fPIC','-shared','-Ithird_party/vst3',
+                '-DSOUNDSAUSAGE_TEST_AUX_BUSES',*extra,'tests/fixtures/vst3_gain.cpp',
+                'third_party/vst3/pluginterfaces/base/funknown.cpp','-o',str(binary)],cwd=ROOT,check=True)
     def setUp(self):
         self.folder=tempfile.TemporaryDirectory();self.path=Path(self.folder.name)
         self.env=patch.dict(os.environ,{'SOUNDSAUSAGE_PLUGIN_REGISTRY':str(self.path/'registry.json'),
@@ -51,6 +57,28 @@ class PluginTests(unittest.TestCase):
             actual=data.copy();processor.process(actual);np.testing.assert_array_equal(actual,data*.5)
             self.assertEqual(processor.info['parameters'][0]['name'],'Gain')
         finally:processor.close()
+
+    def test_optional_auxiliary_buses_stay_inactive_across_processing_and_state_restore(self):
+        entry=scan_plugin(self.auxiliary)[0]
+        settings=dict(plugin_id=entry['id'],fingerprint=entry['fingerprint'],values={'0':.25})
+        data=np.linspace(-.6,.6,6000,dtype=np.float32).reshape(3000,2)
+        processor=PluginProcess(settings,48000)
+        try:
+            actual=data.copy();processor.process(actual);np.testing.assert_array_equal(actual,data*.5)
+            snapshot=processor.snapshot()
+        finally:processor.close()
+        # State deliberately reactivates the fixture's auxiliary buses. Restoring
+        # must disable them again and keep their distinct pointer arrays valid.
+        processor=PluginProcess(dict(settings,state=snapshot['state'],values={}),48000)
+        try:
+            actual=data.copy();processor.process(actual);np.testing.assert_array_equal(actual,data*.5)
+            np.testing.assert_array_equal(data,np.linspace(-.6,.6,6000,dtype=np.float32).reshape(3000,2))
+        finally:processor.close()
+
+    def test_a_plugin_that_requires_auxiliary_routing_is_rejected(self):
+        entry=scan_plugin(self.required_auxiliary)[0]
+        with self.assertRaisesRegex(ValueError,'one stereo input and output bus'):
+            PluginProcess(dict(plugin_id=entry['id'],fingerprint=entry['fingerprint']),48000)
 
     def test_parameter_and_component_state_survive_helper_restart_project_and_recovery(self):
         processor=PluginProcess(self.settings,8000)

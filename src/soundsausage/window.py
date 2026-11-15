@@ -391,6 +391,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         wave_layout.addLayout(range_row)
         self.waveform = Waveform(self.document)
         self.waveform.selection_changed.connect(self.selection_changed)
+        self.waveform.seek_requested.connect(self.seek_playback)
         self.waveform.view_changed.connect(self.view_changed)
         self.waveform.sample_edit_started.connect(self.player.stop)
         self.waveform.sample_edited.connect(self.edit_sample)
@@ -421,6 +422,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.view_fields = self.transport.view_fields
         layout.addWidget(self.transport)
         self.multitrack.timeline.view_changed.connect(self.multitrack_view_changed)
+        self.multitrack.timeline.seek_requested.connect(self.seek_playback)
         self.multitrack.timeline.marker_started.connect(self.player.stop)
         self.multitrack.timeline.marker_moved.connect(self.move_marker)
         self.multitrack.timeline.marker_edit_requested.connect(self.edit_marker_dialog)
@@ -1004,7 +1006,28 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
             except (ValueError, RuntimeError) as error:
                 self.error("Playback", error)
 
+    @long_operation
+    def seek_playback(self, frame):
+        if self.recording_busy or self.no_audio or self.player.state != "Playing":
+            return
+        doc = self.active_model()
+        frame = max(0, min(int(frame), doc.frames))
+        self.player.stop()
+        doc.select(frame, frame)
+        self.selection_changed(frame, frame)
+        if frame == doc.frames:
+            return
+        try:
+            if self.mode == "multitrack":
+                self.player.play_session(doc, frame, doc.frames)
+            else:
+                self.player.play(doc.view(frame, doc.frames), doc.sample_rate, frame)
+        except (ValueError, RuntimeError) as error:
+            self.error("Playback", error)
+
     def playback_state(self, state):
+        if hasattr(self, "waveform"):
+            self.waveform.playback_active = state == "Playing" and not self.recording_busy
         if self.recording_busy:
             self.update_recording_actions()
             return
@@ -1041,8 +1064,11 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.transport.meter.set_samples(data)
 
     def to_start(self):
-        self.player.stop()
-        self.active_model().select(0, 0)
+        if self.player.state == "Playing":
+            self.seek_playback(0)
+        else:
+            self.player.stop()
+            self.active_model().select(0, 0)
         view = self.active_view()
         view.set_view(0, view.view_end - view.view_start)
         self.selection_changed(0, 0)

@@ -98,6 +98,7 @@ class Timeline(MarkerOverlay, EnvelopeTimeline, QWidget):
     marker_moved = Signal(str, object)
     marker_edit_requested = Signal(str)
     selection_changed = Signal()
+    seek_requested = Signal(object)
     edited = Signal()
     view_changed = Signal(object, object)
     failed = Signal(str)
@@ -421,9 +422,13 @@ class Timeline(MarkerOverlay, EnvelopeTimeline, QWidget):
                 self.edited.emit()
             except AudioError as error:
                 self.failed.emit(str(error))
+        seek = (self._range_anchor if event.button() == Qt.MouseButton.LeftButton
+                and not self.session.selected and self._drag is None else None)
         self._drag = self._preview = self._range_anchor = None
         self.setCursor(Qt.CursorShape.IBeamCursor)
         self.update()
+        if seek is not None:
+            self.seek_requested.emit(seek)
 
     def mouseDoubleClickEvent(self, event):
         if event.button()==Qt.MouseButton.LeftButton and self.marker_double_click(event.position()):return

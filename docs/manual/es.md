@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.27.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.27.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -133,7 +133,7 @@ Los metadatos adicionales siguen limitados a 16 MiB. Los ID3 WAV ilegibles se co
 
 ## 4. Reproducción, zoom y dispositivos
 
-**Espacio** reproduce/detiene, **P** pausa/reanuda y **Esc** detiene. Se reproduce la selección o, sin ella, desde el cursor. **Bucle** repite ese intervalo, con una posible transición breve. **Inicio/Fin** van a los extremos; los botones saltan cinco segundos. Navegar o aplicar una edición detiene la reproducción. **Acercar / Alejar**, **Ctrl+rueda**, rueda y barra horizontal recorren la vista. **Vista completa / Ctrl+0** muestra todo; **Ampliar selección / Ctrl+Mayús+A** encuadra la selección. Sus iconos son distintos. De cerca se unen las muestras; de lejos se conservan mínimos y máximos por columna.
+**Espacio** reproduce/detiene, **P** pausa/reanuda y **Esc** detiene. Se reproduce la selección o, sin ella, desde el cursor. **Bucle** repite ese intervalo, con una posible transición breve. **Inicio/Fin** van a los extremos; los botones saltan cinco segundos. Durante la reproducción, **Inicio** y los botones de cinco segundos siguen reproduciendo desde la nueva posición; llegar al final la detiene. Haga clic en la forma de onda para escuchar desde ese punto, incluso con zoom a muestras individuales. En multipista, haga clic en la regla temporal o un espacio vacío de la línea de tiempo. El clic borra la selección temporal y reproduce desde la nueva posición hasta el final; Bucle usa entonces ese nuevo intervalo. Arrastrar una selección temporal no desplaza la reproducción en curso. Dibujar o aplicar una edición de audio detiene la reproducción. **Acercar / Alejar**, **Ctrl+rueda**, rueda y barra horizontal recorren la vista. **Vista completa / Ctrl+0** muestra todo; **Ampliar selección / Ctrl+Mayús+A** encuadra la selección. Sus iconos son distintos. De cerca se unen las muestras; de lejos se conservan mínimos y máximos por columna.
 
 En **Opciones → Dispositivos de audio**, elige una salida o **Predeterminado del sistema**; se recuerda y sirve también para las vistas previas. El búfer predeterminado es de 100 ms: mayor tolera interrupciones y menor responde más rápido. El búfer real puede variar. Cambiarlo detiene reproducción y vistas previas. Si desaparece el dispositivo, reconecta o elige otra salida y reinicia. Comprueba volumen, ruta, silencio y solo. La conversión para la salida no cambia la grabación.
 
@@ -503,7 +503,7 @@ Instale un **efecto de audio nativo de Linux de 64 bits**. En Efectos de pista e
 
 **Abrir ventana del plug-in** abre un editor VST3/LV2 compatible. Sus parámetros y estado guardable se incluyen al confirmar. Las ventanas propias requieren **X11 o XWayland**. Los controles generales siguen disponibles si el editor falta o no es compatible; LADSPA siempre los utiliza. Los editores LV2 que requieren un adaptador GTK/Qt no se integran.
 
-VST3 admite un bus estéreo de entrada/salida con float32. LV2/LADSPA admiten efectos mono/estéreo con igual número de entradas/salidas; los efectos mono usan una instancia por canal estéreo. Instrumentos MIDI, cadenas laterales adicionales, VST2 y plug-ins de Windows no están admitidos. Se indican funciones/puertos LV2 obligatorios no disponibles; no hay procesamiento MIDI/Atom. El estado LV2 que necesita archivos externos no puede guardarse completo y genera un mensaje: elija un efecto con estado autónomo.
+VST3 usa un bus estéreo activo de entrada/salida con float32. Los buses adicionales opcionales quedan desactivados, permitiendo cargar efectos que declaran una cadena lateral sin usar. LV2/LADSPA admiten efectos mono/estéreo con igual número de entradas/salidas; los efectos mono usan una instancia por canal estéreo. Instrumentos MIDI, cadenas laterales adicionales, VST2 y plug-ins de Windows no están admitidos. Se indican funciones/puertos LV2 obligatorios no disponibles; no hay procesamiento MIDI/Atom. El estado LV2 que necesita archivos externos no puede guardarse completo y genera un mensaje: elija un efecto con estado autónomo.
 
 Cada plug-in se ejecuta en un proceso aislado. Fallo, tiempo agotado o audio no válido detienen la reproducción conservando lo grabado. Los proyectos guardan parámetros y hasta 1 MiB de estado por efecto. Instale aparte el plug-in y sus bibliotecas/muestras externas. En otro equipo añada la misma versión. Las versiones ausentes/cambiadas se indican; reproducir/exportar requiere el efecto correspondiente o una omisión deliberada.
 
@@ -529,9 +529,11 @@ La sincronización automática aplica el perfil correspondiente. Sin perfil func
 
 ### Punch-in/out
 
-Elija pista destino y un intervalo en la regla multipista o con **Editar → Establecer selección**. Use **Opciones → Punch-in/out** o **Mayús+R**. Configure entrada, sincronización, **Pregrabación** (2 s) y **Fundido cruzado** (5 ms). La selección fija los límites de grabación; el acompañamiento queda activado.
+Elija pista destino y un intervalo en la regla multipista o con **Editar → Establecer selección**. Use **Opciones → Punch-in/out** o **Mayús+R**. Mantenga **Destino** en **Punch-in/out en la selección**. Configure entrada, sincronización, **Pregrabación** (2 s) y **Fundido cruzado** (5 ms). La selección fija los límites de grabación; el acompañamiento queda activado.
 
 La entrada se prepara antes de reproducir. Durante la pregrabación suena el original. Dentro del intervalo se silencia solo la pista destino mientras se graba el reemplazo; las demás siguen sonando. Tras una breve finalización para sincronizar, se detiene automáticamente. Solo el audio corregido dentro de la selección se añade como nuevo clip.
+
+**Empiece a hablar o tocar después de la pregrabación, cuando comience el intervalo elegido.** Con 2 s de pregrabación, espere a **Grabación punch: se está grabando el intervalo seleccionado**. El sonido producido durante la pregrabación no se inserta en el intervalo reemplazado. Para una selección 0:03–0:06 y 2 s de pregrabación, el acompañamiento empieza en 0:01 y el reemplazo en 0:03. Un clip nuevo o una forma de onda nueva es otro destino y no reemplaza ese intervalo.
 
 Los fundidos mezclan antiguo/nuevo dentro de los límites, hasta 100 ms. El audio exterior queda intacto. Los clips originales conservan las fuentes y se cubre la región punch. Ctrl+Z restaura todo en un paso. En el clip antiguo use **Restaurar audio cubierto** para eliminar todas sus regiones cubiertas; borre/silencie la toma nueva para no oír ambas. Detener antes de tiempo conserva solo la parte capturada dentro del intervalo. Antes del intervalo no cambia la sesión; la toma bruta queda en **Archivo → Recuperar trabajo**. Recuperar una toma sin confirmar ofrece el audio bruto, con pregrabación/final, para colocarlo manualmente. Las regiones punch completadas se conservan en el proyecto y la recuperación tras fallo.
 

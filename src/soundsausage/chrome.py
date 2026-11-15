@@ -9,10 +9,13 @@ from .theme import colors
 
 
 def seek(window, seconds):
-    window.player.stop()
     model = window.active_model()
     frame = max(0, min(model.frames, model.cursor + round(seconds * model.sample_rate)))
-    model.select(frame, frame)
+    if window.player.state == "Playing":
+        window.seek_playback(frame)
+    else:
+        window.player.stop()
+        model.select(frame, frame)
     view = window.active_view()
     length = view.view_end - view.view_start
     if frame < view.view_start or frame > view.view_end:

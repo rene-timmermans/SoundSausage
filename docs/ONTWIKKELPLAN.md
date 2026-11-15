@@ -30,7 +30,12 @@ Systeemgeluid opnemen is als aanvullende bron afgerond in
 [0.25.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.0).
 De [controles](validation/system-audio.md) dekken bronkeuze, verwerking en pakketten.
 B33 omvat ook een fysieke proef van
-systeemgeluid op de eigen hoofduitgang.
+systeemgeluid op de eigen hoofduitgang. Deze is bevestigd, inclusief
+pauzeren/hervatten, terugluisteren en WAV/MP3-export. De langere overdub en punch-in/out zijn
+inmiddels uitgevoerd. De opname blijft na een kleine vroege sprong vrijwel
+gelijk lopen; hervatting en de kalibratiemelding worden nog gecontroleerd.
+Punch-in/out vervangt uitsluitend het gekozen interval, met behoud van de
+omliggende audio en sessiemarkeringen bij opslag en heropenen.
 
 Haperend afspelen bij volledig scherm en grote golfvormvensters wordt met
 voorrang gecorrigeerd in 0.25.2. Zie de [afspeelcontroles](validation/fullscreen-playback.md).

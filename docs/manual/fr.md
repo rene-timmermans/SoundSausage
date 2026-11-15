@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.27.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.27.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -133,7 +133,7 @@ Les métadonnées supplémentaires restent limitées à 16 Mio. Les données ID3
 
 ## 4. Lecture, zoom et matériel audio
 
-**Espace** démarre/arrête, **P** met en pause/reprend, **Échap** arrête. La sélection définit la lecture ; sinon elle part du curseur. **Boucle** répète, avec une éventuelle courte transition. **Début/Fin** vont aux extrémités ; les boutons sautent de cinq secondes. Naviguer ou appliquer une édition arrête la lecture. **Zoom avant / Zoom arrière**, **Ctrl+molette**, molette et barre horizontale déplacent la vue. **Vue complète / Ctrl+0** montre tout ; **Zoom sur la sélection / Ctrl+Maj+A** cadre la sélection. Leurs icônes diffèrent. De près les échantillons sont reliés ; de loin les crêtes min/max par colonne sont conservées.
+**Espace** démarre/arrête, **P** met en pause/reprend, **Échap** arrête. La sélection définit la lecture ; sinon elle part du curseur. **Boucle** répète, avec une éventuelle courte transition. **Début/Fin** vont aux extrémités ; les boutons sautent de cinq secondes. Pendant la lecture, **Début** et les boutons de cinq secondes poursuivent la lecture depuis la nouvelle position ; atteindre la fin l’arrête. Cliquez dans la forme d’onde pour écouter depuis ce point, même au zoom sur les échantillons. En multipiste, cliquez sur la règle temporelle ou une zone vide de la chronologie. Le clic efface la sélection temporelle et lit de la nouvelle position jusqu’à la fin ; Boucle utilise alors cette nouvelle plage. Faire glisser une sélection temporelle ne déplace pas la lecture en cours. Dessiner ou appliquer une édition audio arrête la lecture. **Zoom avant / Zoom arrière**, **Ctrl+molette**, molette et barre horizontale déplacent la vue. **Vue complète / Ctrl+0** montre tout ; **Zoom sur la sélection / Ctrl+Maj+A** cadre la sélection. Leurs icônes diffèrent. De près les échantillons sont reliés ; de loin les crêtes min/max par colonne sont conservées.
 
 Dans **Options → Périphériques audio**, choisissez une sortie ou **Valeur par défaut du système** ; ce choix mémorisé sert aussi à l'aperçu. Le tampon vaut 100 ms par défaut : plus grand, il tolère les interruptions ; plus petit, il répond plus vite. Le tampon réel peut différer. Changer arrête lecture/aperçus. Si le périphérique disparaît, reconnectez-le ou choisissez une sortie puis relancez. Vérifiez volume système, routage, muet et solo. La conversion pour la sortie ne change pas l'enregistrement.
 
@@ -503,7 +503,7 @@ Installez un **effet audio Linux natif 64 bits**. Dans Effets de piste, choisiss
 
 **Ouvrir la fenêtre du plug-in** ouvre un éditeur VST3/LV2 compatible. Ses paramètres et son état enregistrable sont repris à la confirmation. Les fenêtres propres nécessitent **X11 ou XWayland**. Les commandes générales restent disponibles si l’éditeur manque ou n’est pas compatible ; LADSPA les utilise toujours. Les éditeurs LV2 nécessitant un adaptateur GTK/Qt ne sont pas intégrés.
 
-VST3 accepte un bus stéréo d’entrée/sortie en float32. LV2/LADSPA acceptent les effets mono/stéréo avec autant d’entrées que de sorties ; les effets mono ont une instance par canal stéréo. Instruments MIDI, sidechains supplémentaires, VST2 et plug-ins Windows ne sont pas pris en charge. Les fonctions/ports LV2 requis mais indisponibles sont signalés ; le traitement MIDI/Atom est absent. Un état LV2 nécessitant des fichiers externes ne peut pas être sauvegardé complètement et déclenche un message : choisissez un effet dont l’état est autonome.
+VST3 utilise un bus stéréo d’entrée/sortie actif en float32. Les bus supplémentaires facultatifs restent désactivés, ce qui permet de charger des effets déclarant une sidechain inutilisée. LV2/LADSPA acceptent les effets mono/stéréo avec autant d’entrées que de sorties ; les effets mono ont une instance par canal stéréo. Instruments MIDI, sidechains supplémentaires, VST2 et plug-ins Windows ne sont pas pris en charge. Les fonctions/ports LV2 requis mais indisponibles sont signalés ; le traitement MIDI/Atom est absent. Un état LV2 nécessitant des fichiers externes ne peut pas être sauvegardé complètement et déclenche un message : choisissez un effet dont l’état est autonome.
 
 Chaque plug-in tourne dans un processus isolé. Plantage, délai dépassé ou audio invalide arrêtent la lecture en préservant l’audio enregistré. Les projets gardent paramètres et au plus 1 Mio d’état par effet. Installez séparément le plug-in, ses bibliothèques/échantillons externes. Sur une autre machine, ajoutez la même version. Les versions absentes/modifiées sont signalées ; lecture/export nécessitent l’effet correspondant ou un contournement volontaire.
 
@@ -529,9 +529,11 @@ La synchronisation automatique utilise le profil correspondant. Sans profil, la 
 
 ### Punch-in/out
 
-Choisissez une piste cible et une plage sur la règle multipiste ou via **Édition → Définir la sélection**. Choisissez **Options → Punch-in/out** ou **Maj+R**. Réglez entrée, synchronisation, **Prélecture** (2 s) et **Fondu enchaîné** (5 ms). La sélection fixe les limites d’enregistrement ; l’accompagnement est activé.
+Choisissez une piste cible et une plage sur la règle multipiste ou via **Édition → Définir la sélection**. Choisissez **Options → Punch-in/out** ou **Maj+R**. Gardez **Destination** sur **Punch-in/out dans la sélection**. Réglez entrée, synchronisation, **Prélecture** (2 s) et **Fondu enchaîné** (5 ms). La sélection fixe les limites d’enregistrement ; l’accompagnement est activé.
 
 L’entrée est préparée avant la lecture. L’original joue pendant la prélecture. Dans l’intervalle choisi, seule la piste cible est coupée pendant la capture de remplacement ; les autres continuent. Après une courte finalisation de synchronisation, l’enregistrement s’arrête automatiquement. Seul l’audio corrigé dans la sélection devient un nouveau clip.
+
+**Commencez à parler ou à jouer après la prélecture, lorsque l’intervalle choisi commence.** Avec 2 s de prélecture, attendez **Enregistrement punch : l’intervalle sélectionné est enregistré**. Le son produit pendant la prélecture ne figure pas dans l’intervalle remplacé. Pour une sélection 0:03–0:06 avec 2 s de prélecture, l’accompagnement part à 0:01 et le remplacement commence à 0:03. Un nouveau clip ou une nouvelle forme d’onde est une autre destination et ne remplace pas cet intervalle.
 
 Les fondus mélangent ancien/nouveau dans les limites, au plus 100 ms. L’audio extérieur reste intact. Les clips originaux gardent leurs sources, la zone punch étant recouverte. Ctrl+Z restaure tout en une étape. Sur l’ancien clip, **Restaurer l’audio recouvert** retire toutes ses zones de recouvrement ; supprimez/coupez la nouvelle prise pour éviter d’entendre les deux. Un arrêt anticipé garde seulement la partie capturée dans l’intervalle. Avant l’intervalle, il ne modifie pas la session ; la prise brute reste dans **Fichier → Récupérer le travail**. La récupération d’une prise non confirmée propose l’audio brut, avec prélecture/fin, à placer manuellement. Les zones punch terminées sont sauvegardées dans le projet et la récupération après plantage.
 

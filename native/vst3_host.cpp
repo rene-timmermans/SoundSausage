@@ -226,7 +226,7 @@ public:
     return kResultOk;
   }
 };
-class Stream final : public IBStream {
+class Stream final : public IBStream, public ISizeableStream {
 public:
   std::vector<char> bytes;
   int64 pos = 0;
@@ -235,14 +235,19 @@ public:
   uint32 PLUGIN_API release() override { return 1; }
   tresult PLUGIN_API queryInterface(const TUID id, void **obj) override {
     if (equal(id, IBStream::iid) || equal(id, FUnknown::iid)) {
-      *obj = this;
+      *obj = static_cast<IBStream*>(this);
+      return kResultOk;
+    }
+    if (equal(id, ISizeableStream::iid)) {
+      *obj = static_cast<ISizeableStream*>(this);
       return kResultOk;
     }
     *obj = nullptr;
     return kNoInterface;
   }
   tresult PLUGIN_API read(void *buffer, int32 n, int32 *got) override {
-    if (n < 0)
+    if (got) *got = 0;
+    if (n < 0 || (n && !buffer))
       return kInvalidArgument;
     int32 count = std::min<int64>(n, bytes.size() - pos);
     if (count > 0)
@@ -250,7 +255,9 @@ public:
     pos += count;
     if (got)
       *got = count;
-    return count == n ? kResultOk : kResultFalse;
+    // A short read at EOF still successfully returns its bytes. JUCE's
+    // unknown-stream reader discards that final block on kResultFalse.
+    return count || n == 0 ? kResultOk : kResultFalse;
   }
   tresult PLUGIN_API write(void *buffer, int32 n, int32 *written) override {
     if (n < 0 || pos + n > int64(maxState)) {
@@ -280,6 +287,19 @@ public:
     if (!result)
       return kInvalidArgument;
     *result = pos;
+    return kResultOk;
+  }
+  tresult PLUGIN_API getStreamSize(int64& size) override {
+    size = bytes.size();
+    return kResultOk;
+  }
+  tresult PLUGIN_API setStreamSize(int64 size) override {
+    if (size < 0 || size > int64(maxState)) {
+      failed = true;
+      return kInvalidArgument;
+    }
+    bytes.resize(size);
+    pos = std::min(pos, size);
     return kResultOk;
   }
 };
@@ -389,6 +409,44 @@ struct Module {
     }
   }
 };
+struct AudioBuffers {
+  std::vector<AudioBusBuffers> buses;
+  std::vector<std::vector<float*>> channels;
+  std::vector<std::vector<std::vector<float>>> scratch;
+  void prepare(IComponent* component, BusDirection direction, int block,
+               float* left, float* right) {
+    int count = component->getBusCount(kAudio, direction);
+    if (count < 1 || count > 16)
+      throw std::runtime_error("Choose a VST3 effect with one stereo input and output bus.");
+    buses.resize(count); channels.resize(count); scratch.resize(count);
+    for (int i = 0; i < count; ++i) {
+      BusInfo info{};
+      if (component->getBusInfo(kAudio, direction, i, info) != kResultOk ||
+          info.channelCount < 0 || info.channelCount > 32 ||
+          (!i && info.channelCount != 2))
+        throw std::runtime_error("Stereo VST3 buses required.");
+      channels[i].resize(info.channelCount);
+      if (!i) {
+        channels[i] = {left, right};
+      } else {
+        scratch[i].resize(info.channelCount);
+        for (int c = 0; c < info.channelCount; ++c) {
+          scratch[i][c].assign(block, 0.f);
+          channels[i][c] = scratch[i][c].data();
+        }
+      }
+      buses[i].numChannels = info.channelCount;
+      buses[i].channelBuffers32 = channels[i].data();
+      buses[i].silenceFlags = i && direction == kInput
+          ? (uint64(1) << info.channelCount) - 1 : 0;
+    }
+  }
+  void clearAuxiliaryInputs() {
+    for (size_t i = 1; i < scratch.size(); ++i)
+      for (auto& channel : scratch[i])
+        std::fill(channel.begin(), channel.end(), 0.f);
+  }
+};
 struct Instance {
   std::unique_ptr<Module> module;
   EditorFrame editor;
@@ -406,6 +464,7 @@ struct Instance {
   int64 position = 0;
   Changes pending;
   std::vector<float> left, right, outLeft, outRight;
+  AudioBuffers inputs, outputs;
   Instance(const char *path, const char *classId, double rate)
       : module(new Module(path)), rate(rate) {
     host.run_loop = &editor;
@@ -461,37 +520,62 @@ struct Instance {
         controller->setComponentState(&state);
       }
     }
-    if (component->getBusCount(kAudio, kInput) != 1 ||
-        component->getBusCount(kAudio, kOutput) != 1)
-      throw std::runtime_error(
-          "Choose a VST3 effect with one stereo input and output bus.");
-    SpeakerArrangement stereo = SpeakerArr::kStereo;
-    if (processor->setBusArrangements(&stereo, 1, &stereo, 1) != kResultTrue)
-      throw std::runtime_error("This VST3 effect does not accept stereo.");
-    for (auto dir : {kInput, kOutput}) {
-      BusInfo info{};
-      if (component->getBusInfo(kAudio, dir, 0, info) != kResultOk ||
-          info.channelCount != 2)
-        throw std::runtime_error("Stereo VST3 buses required.");
-      component->activateBus(kAudio, dir, 0, true);
-      for (int i = 0; i < component->getBusCount(kEvent, dir); i++)
-        component->activateBus(kEvent, dir, i, false);
-    }
     if (processor->canProcessSampleSize(kSample32) != kResultTrue)
       throw std::runtime_error("VST3 requires unsupported sample precision.");
-    ProcessSetup setup{kRealtime, kSample32, block, rate};
-    if (processor->setupProcessing(setup) != kResultOk)
-      throw std::runtime_error("VST3 processing setup failed.");
     left.resize(block);
     right.resize(block);
     outLeft.resize(block);
     outRight.resize(block);
+    configureBuses();
+    ProcessSetup setup{kRealtime, kSample32, block, rate};
+    if (processor->setupProcessing(setup) != kResultOk)
+      throw std::runtime_error("VST3 processing setup failed.");
     if (component->setActive(true) != kResultOk)
       throw std::runtime_error("VST3 activation failed.");
     active = true;
     if (processor->setProcessing(true) != kResultOk)
       throw std::runtime_error("VST3 processing could not start.");
     processing = true;
+  }
+  void configureBuses() {
+    auto arrangements = [&](BusDirection direction) {
+      int count = component->getBusCount(kAudio, direction);
+      if (count < 1 || count > 16)
+        throw std::runtime_error("Choose a VST3 effect with one stereo input and output bus.");
+      std::vector<SpeakerArrangement> result(count);
+      for (int i = 0; i < count; ++i) {
+        BusInfo info{};
+        if (component->getBusInfo(kAudio, direction, i, info) != kResultOk ||
+            info.channelCount < 0 || info.channelCount > 32 ||
+            info.busType != (i ? kAux : kMain))
+          throw std::runtime_error("Choose a VST3 effect with one stereo input and output bus.");
+        if (!i) result[i] = SpeakerArr::kStereo;
+        else if (processor->getBusArrangement(direction, i, result[i]) != kResultOk)
+          throw std::runtime_error("This VST3 effect does not accept stereo.");
+      }
+      return result;
+    };
+    auto in = arrangements(kInput), out = arrangements(kOutput);
+    if (processor->setBusArrangements(in.data(), in.size(), out.data(), out.size()) != kResultTrue ||
+        component->getBusCount(kAudio, kInput) != int(in.size()) ||
+        component->getBusCount(kAudio, kOutput) != int(out.size()))
+      throw std::runtime_error("This VST3 effect does not accept stereo.");
+    for (auto direction : {kInput, kOutput}) {
+      int count = component->getBusCount(kAudio, direction);
+      for (int i = 0; i < count; ++i) {
+        BusInfo info{};
+        if (component->getBusInfo(kAudio, direction, i, info) != kResultOk ||
+            (!i && info.channelCount != 2) || info.busType != (i ? kAux : kMain) ||
+            component->activateBus(kAudio, direction, i, i == 0) != kResultOk)
+          throw std::runtime_error("Choose a VST3 effect with one stereo input and output bus.");
+      }
+      for (int i = 0; i < component->getBusCount(kEvent, direction); ++i)
+        component->activateBus(kEvent, direction, i, false);
+    }
+    // Keep every reported bus index and channel-pointer array valid. Auxiliary
+    // buses stay inactive; their separate scratch buffers never route user audio.
+    inputs.prepare(component, kInput, block, left.data(), right.data());
+    outputs.prepare(component, kOutput, block, outLeft.data(), outRight.data());
   }
   ~Instance() {
     closeEditor();
@@ -560,12 +644,7 @@ struct Instance {
       right[i] = interleaved[2 * i + 1];
       outLeft[i] = outRight[i] = 0;
     }
-    float *in[] = {left.data(), right.data()},
-          *out[] = {outLeft.data(), outRight.data()};
-    AudioBusBuffers input, output;
-    input.numChannels = output.numChannels = 2;
-    input.channelBuffers32 = in;
-    output.channelBuffers32 = out;
+    inputs.clearAuxiliaryInputs();
     ProcessContext context{};
     context.sampleRate = rate;
     context.projectTimeSamples = position;
@@ -577,9 +656,10 @@ struct Instance {
     ProcessData data;
     data.processMode = kRealtime;
     data.numSamples = frames;
-    data.numInputs = data.numOutputs = 1;
-    data.inputs = &input;
-    data.outputs = &output;
+    data.numInputs = inputs.buses.size();
+    data.numOutputs = outputs.buses.size();
+    data.inputs = inputs.buses.data();
+    data.outputs = outputs.buses.data();
     data.inputParameterChanges = &pending;
     data.processContext = &context;
     if (processor->process(data) != kResultOk)
@@ -771,6 +851,7 @@ int ss_vst_restore(void *handle, const void *data, int bytes) {
     state.pos = 0;
     if (bytes && p->controller)
       p->controller->setComponentState(&state);
+    p->configureBuses();
     if (p->component->setActive(true) != kResultOk)
       throw std::runtime_error(
           "VST3 could not reactivate after restoring state.");

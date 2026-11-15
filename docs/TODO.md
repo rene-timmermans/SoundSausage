@@ -1,6 +1,7 @@
 # Open punten richting v1.0
 
 Stand: 15 november 2026, SoundSausage 0.27.0 gepubliceerd en gecontroleerd.
+0.27.1 is in voorbereiding: klikken tijdens afspelen verplaatst de afspeelpositie.
 
 B36b is functioneel uitgewerkt: markereditor voor golfvormen en sessies, met
 Undo/Redo, bewaren/heropenen en WAV/MP3-export. De
@@ -30,10 +31,10 @@ benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
 | --- | --- |
 | Gewone B910/HDMI-opname, pauzeren/hervatten en terugluisteren | Bevestigd. |
 | Afspelen in volledig scherm | Haperen verdwenen, fysiek bevestigd in 0.25.2. |
-| Kalibratie met de eigen in-/uitgangsroute | Correctie opgeslagen; toepassing wordt met de overdub gecontroleerd. |
-| Langere overdub en klokdrift | Open. |
-| Punch-in/out, opslaan en heropenen | Open. |
-| Systeemgeluid van de eigen hoofduitgang | Open. |
+| Kalibratie met de eigen in-/uitgangsroute | Profiel opgeslagen en op schijf leesbaar; de wisselende melding in het opnamevenster nog controleren. |
+| Langere overdub en klokdrift | Bijna drie minuten gemeten met 68 herkenbare meetpulsen. Kleine timingsprong bij hervatten nog controleren. |
+| Punch-in/out, opslaan en heropenen | Bevestigd: alleen het interval vervangen; omliggende audio, referentiespoor en markeringen behouden. Opgeslagen sessie opnieuw ingelezen. |
+| Systeemgeluid van de eigen hoofduitgang | Bevestigd: opnemen, pauzeren/hervatten, terugluisteren en WAV/MP3-export. Beide exports opnieuw geopend. |
 | Echte VST3-/LV2-vensters, parameters en heropende plug-instatus | Open. |
 
 ## Afronden naar de eerste v1

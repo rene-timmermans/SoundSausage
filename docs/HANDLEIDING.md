@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.27.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.27.1. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -353,9 +353,15 @@ hervat. **Esc** stopt. **Herhalen** herhaalt het gekozen afspeelbereik. Lussen k
 nog een korte overgang hebben.
 
 **Home** gaat naar het begin en **Einde** naar het einde. De navigatieknoppen laten
-je ook vijf seconden terug of vooruit springen. Navigeren of een bevestigde
-bewerking uitvoeren stopt lopend afspelen; start daarna opnieuw om het nieuwe
-resultaat te horen.
+je vijf seconden terug of vooruit springen. Tijdens afspelen blijven **Home** en
+de vijfsecondenknoppen doorspelen vanaf de nieuwe positie; aan het einde stopt de weergave.
+
+Klik tijdens afspelen in de golfvorm om vanaf dat punt verder te luisteren, ook
+wanneer je tot afzonderlijke samples bent ingezoomd. In Multitrack klik je op de
+tijdliniaal of een leeg stuk tijdlijn. De klik wist de tijdselectie en speelt van
+de nieuwe positie tot het einde; Herhalen gebruikt dan dat nieuwe bereik.
+Sleep in de golfvorm of op de tijdliniaal om een selectie te maken: dit verplaatst
+de lopende weergave niet. Tekenen of een bevestigde audiobewerking stopt afspelen.
 
 Gebruik **Inzoomen**, **Uitzoomen**, **Volledig overzicht** en **Inzoomen op selectie** onder
 **Beeld**. **Ctrl+0** toont de hele opname; **Ctrl+Shift+A** vult de weergave met de
@@ -1558,7 +1564,7 @@ Een keten bevat maximaal zestien effecten: vaste versterking, kanaalmixer, dynam
 
 Met **Plug-invenster openen** gebruik je het eigen venster van een ondersteunde VST3- of LV2-plug-in. Parameters en bewaarbare status uit dat venster worden meegenomen bij bevestigen. De eigen vensters vereisen **X11 of XWayland**. Bij een ontbrekend of niet-ondersteund venster blijven de algemene parameterregelaars beschikbaar. LADSPA gebruikt deze regelaars altijd. LV2-vensters die een GTK-/Qt-adapter vereisen, worden niet ingebed.
 
-VST3 ondersteunt één stereo-invoerbus en één stereo-uitvoerbus met float32-verwerking. LV2 en LADSPA ondersteunen mono- en stereo-effecten met evenveel in- en uitgangen; een mono-effect krijgt per stereokanaal een eigen instantie. MIDI-instrumenten, extra sidechains, VST2 en Windows-plug-ins worden niet ondersteund. Verplichte LV2-functies of poorttypen die niet beschikbaar zijn, worden gemeld; MIDI/Atom-verwerking ontbreekt. LV2-status die externe bestanden vereist, kan niet volledig worden opgeslagen en geeft een melding. Kies daarvoor een effect met zelfstandig bewaarbare status.
+VST3 gebruikt één actieve stereo-invoerbus en één actieve stereo-uitvoerbus met float32-verwerking. Optionele extra aansluitingen blijven uitgeschakeld; zo kunnen ook effecten met een ongebruikte sidechain worden geladen. LV2 en LADSPA ondersteunen mono- en stereo-effecten met evenveel in- en uitgangen; een mono-effect krijgt per stereokanaal een eigen instantie. MIDI-instrumenten, extra sidechains, VST2 en Windows-plug-ins worden niet ondersteund. Verplichte LV2-functies of poorttypen die niet beschikbaar zijn, worden gemeld; MIDI/Atom-verwerking ontbreekt. LV2-status die externe bestanden vereist, kan niet volledig worden opgeslagen en geeft een melding. Kies daarvoor een effect met zelfstandig bewaarbare status.
 
 Plug-ins draaien in een apart hulpproces. Een crash, vastloper of ongeldige audio stopt het afspelen met een melding; de vastgelegde opname blijft bewaard. Projecten bewaren parameters en maximaal 1 MiB status per effect. De plug-in en eigen bibliotheken, samples of responsbestanden blijven apart geïnstalleerd. Voeg op een andere computer dezelfde versie toe. Ontbrekende of gewijzigde plug-ins worden gemeld; afspelen/export vraagt om het passende effect of bewust uitschakelen.
 
@@ -1591,10 +1597,12 @@ Het profiel hoort bij de gekozen apparaatcombinatie en instellingen. Automatisch
 ### Punch-in/out: alleen een passage opnieuw opnemen
 
 1. Open Multitrack, kies het doelspoor en selecteer het gewenste tijdvak op de tijdlijn of met **Bewerken → Selectie instellen**.
-2. Kies **Opties → Punch-in/out** of **Shift+R**. In het opnamevenster staat **Punch-in/out in selectie**.
+2. Kies **Opties → Punch-in/out** of **Shift+R**. Laat **Bestemming** op **Punch-in/out in selectie** staan.
 3. Stel ingang, synchronisatie, **Voorloop** (standaard 2 s) en **Overgang** (standaard 5 ms) in. De selectie bepaalt de opnamegrenzen; begeleiding is ingeschakeld.
 4. Start. De ingang warmt eerst op; daarna speelt de oorspronkelijke passage tijdens de voorloop. Binnen het gekozen interval wordt alleen het doelspoor gedempt, terwijl de nieuwe take wordt opgenomen. Andere sporen blijven spelen.
 5. Na het interval stopt de opname automatisch, met een korte afronding voor synchronisatie. Alleen de gecorrigeerde audio binnen de selectie komt als nieuwe clip op het spoor.
+
+**Begin pas te spreken of spelen wanneer de voorloop voorbij is en het gekozen interval begint.** Bij 2 s voorloop wacht je op de melding **Punchopname: het gekozen interval wordt opgenomen**. Geluid tijdens de voorloop komt niet in het vervangen interval terecht. Selecteer je bijvoorbeeld 0:03–0:06 met 2 s voorloop, dan start de begeleiding op 0:01 en begint het vervangen op 0:03. Een nieuwe clip of nieuwe golfvorm is een andere bestemming en vervangt het interval niet.
 
 Een korte overgang mengt oud en nieuw binnen de selectiegrenzen, maximaal 100 ms. Audio buiten het interval blijft behouden. De oorspronkelijke clips blijven eveneens bewaard: een punch dekt hun betreffende gedeelte af. **Ctrl+Z** herstelt de vorige situatie in één stap. Selecteer de oude clip en kies **Afgedekte audio herstellen** om zijn afdekking op te heffen; verwijder of demp de nieuwe take als die anders tegelijk hoorbaar wordt. Deze opdracht herstelt alle afgedekte gebieden van de gekozen clip.
 

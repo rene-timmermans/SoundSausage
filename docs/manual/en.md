@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.27.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.27.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -132,7 +132,7 @@ Extra metadata remains limited to 16 MiB. Unreadable embedded WAV ID3 stays opaq
 
 ## 4. Playback, zoom and audio devices
 
-**Space** starts/stops; **P** pauses/resumes; **Esc** stops. A selection plays its range; otherwise playback starts at the cursor. **Loop** repeats that range, with a possible short boundary transition. **Home/End** go to start/end; skip buttons move five seconds. Navigating or applying a waveform edit stops playback. **Zoom In / Zoom Out**, **Ctrl+wheel**, the wheel and horizontal scrollbar navigate the display. **Zoom Full / Ctrl+0** shows everything; **Zoom to Selection / Ctrl+Shift+A** fills the view with the selection. Their icons differ. At close zoom samples join continuously; further out each screen column retains minimum/maximum peaks.
+**Space** starts/stops; **P** pauses/resumes; **Esc** stops. A selection plays its range; otherwise playback starts at the cursor. **Loop** repeats that range, with a possible short boundary transition. **Home/End** go to start/end; skip buttons move five seconds. During playback, **Home** and the five-second buttons keep playing from the new position; reaching the end stops playback. Click the waveform to listen from that point, including at individual-sample zoom. In Multitrack, click the time ruler or empty timeline space. A click clears the time selection and plays from the new position to the end; Loop then uses that new range. Dragging a time selection does not seek the running audio. Drawing or applying a waveform edit stops playback. **Zoom In / Zoom Out**, **Ctrl+wheel**, the wheel and horizontal scrollbar navigate the display. **Zoom Full / Ctrl+0** shows everything; **Zoom to Selection / Ctrl+Shift+A** fills the view with the selection. Their icons differ. At close zoom samples join continuously; further out each screen column retains minimum/maximum peaks.
 
 In **Options → Audio Hardware**, select an output or **System Default**; it is remembered and used for playback and Preview. The playback buffer defaults to 100 ms: larger tolerates interruptions, smaller responds faster. Actual device buffers can differ. Changes stop playback/previews. If a device disappears, reconnect or select an available output and restart. Check system volume, route, Mute and Solo when silent. Output-rate conversion does not change the recording.
 
@@ -497,7 +497,7 @@ Install a **64-bit native Linux audio effect**. In Track Effects choose **Extern
 
 **Open Plug-in Window** opens a supported VST3 or LV2 custom editor. Its parameters and saveable state are included when confirming. Custom windows require **X11 or XWayland**. General parameter controls remain available if the editor is absent or unsupported; LADSPA always uses these controls. LV2 editors needing a GTK/Qt adapter are not embedded.
 
-VST3 supports one stereo input/output bus with float32 processing. LV2/LADSPA support mono/stereo effects with matching inputs/outputs; mono effects use separate instances per stereo channel. MIDI instruments, extra sidechains, VST2 and Windows plug-ins are unsupported. Missing required LV2 features or port types are reported; MIDI/Atom processing is unavailable. LV2 state requiring external files cannot be saved completely and raises a message: choose an effect with self-contained saveable state.
+VST3 uses one active stereo input/output bus with float32 processing. Optional extra buses stay disabled, allowing effects that declare an unused sidechain to load. LV2/LADSPA support mono/stereo effects with matching inputs/outputs; mono effects use separate instances per stereo channel. MIDI instruments, extra sidechains, VST2 and Windows plug-ins are unsupported. Missing required LV2 features or port types are reported; MIDI/Atom processing is unavailable. LV2 state requiring external files cannot be saved completely and raises a message: choose an effect with self-contained saveable state.
 
 Each plug-in runs in an isolated helper. Crashes, timeout or invalid audio stop playback while preserving captured recording audio. Projects save parameters and at most 1 MiB state per effect. Install plug-in code and its external libraries/samples separately. On another computer add the same version. Missing/changed plug-ins are reported; playback/export needs a matching effect or deliberate bypass.
 
@@ -523,9 +523,11 @@ Automatic synchronization applies the matching device profile. Without a profile
 
 ### Punch-in/out
 
-Select a target track and a time range on the multitrack ruler or with **Edit → Set Selection**. Choose **Options → Punch In/Out** or **Shift+R**. Set input, synchronization, **Pre-roll** (default 2 s) and **Crossfade** (default 5 ms). The selection fixes the recording bounds and backing is enabled.
+Select a target track and a time range on the multitrack ruler or with **Edit → Set Selection**. Choose **Options → Punch In/Out** or **Shift+R**. Keep **Destination** set to **Punch In/Out in Selection**. Set input, synchronization, **Pre-roll** (default 2 s) and **Crossfade** (default 5 ms). The selection fixes the recording bounds and backing is enabled.
 
 The input warms up before playback. Original audio plays during pre-roll. Inside the selected interval only the target track is muted while the replacement is captured; other tracks keep playing. Recording stops automatically after a short synchronization finish. Only corrected audio inside the selection becomes a new clip.
+
+**Start speaking or playing only after pre-roll, when the selected interval begins.** With 2 s pre-roll, wait for **Punch recording: the selected interval is being captured**. Sound made during pre-roll is not inserted into the replacement interval. For a 0:03–0:06 selection and 2 s pre-roll, backing starts at 0:01 and replacement starts at 0:03. A new clip or new waveform is a different destination and does not replace that interval.
 
 Crossfades blend old/new inside the interval, at most 100 ms. Audio outside remains intact. Original clips retain their sources, with the punched portion covered. Ctrl+Z restores everything in one step. Select an old clip and **Restore Covered Audio** to clear all its covered regions; remove/mute the new take to avoid hearing both. Early Stop keeps only the captured portion inside the interval. Stopping before the interval changes no session audio; the raw take remains under **File → Recover Work**. Recovery of an uncommitted recording offers the raw take, including pre/post-roll, for manual placement. Completed punch regions survive project saves and crash recovery.
 

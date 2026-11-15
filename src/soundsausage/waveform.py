@@ -72,6 +72,7 @@ class Waveform(MarkerOverlay, QWidget):
     marker_edit_requested = Signal(str)
     _peaks_ready = Signal(object)
     selection_changed = Signal(object, object)
+    seek_requested = Signal(object)
     view_changed = Signal(object, object)
     sample_edit_started = Signal()
     sample_edited = Signal(object, object, float)
@@ -89,6 +90,7 @@ class Waveform(MarkerOverlay, QWidget):
         self._anchor = None
         self._anchor_channel = None
         self._keep_channels = False
+        self._seek_click = None
         self._cache = None
         self._peaks_revision = 0
         self._peak_job = None
@@ -100,6 +102,7 @@ class Waveform(MarkerOverlay, QWidget):
         self._peak_start_timer.timeout.connect(self._start_peaks)
         self._peaks_ready.connect(self._accept_peaks)
         self.sample_editable = True
+        self.playback_active = False
         self._sample_drag = None
         self._sample_hover = None
         self.drawing = False
@@ -117,6 +120,7 @@ class Waveform(MarkerOverlay, QWidget):
         self._sample_drag = None
         self._sample_hover = None
         self._drawing_stroke = None
+        self._seek_click = None
         self.document = document
         self.setCursor(Qt.CursorShape.IBeamCursor if document.frames else Qt.CursorShape.ArrowCursor)
         self.playhead = None
@@ -193,6 +197,8 @@ class Waveform(MarkerOverlay, QWidget):
         return lane.center().y() - min(1.08, max(-1.08, float(value))) * lane.height() * .45
 
     def sample_at(self, position):
+        if self.playback_active and not self.drawing:
+            return None
         if not self.sample_editable or not self.sample_points_visible() or not self.plot_rect().contains(position):
             return None
         channel = self.channel_at(position.y())
@@ -456,6 +462,7 @@ class Waveform(MarkerOverlay, QWidget):
         self.update()
 
     def mousePressEvent(self, event):
+        self._seek_click = None
         if event.button()==Qt.MouseButton.LeftButton and self.marker_press(event.position()):return
         if (self.drawing and self.sample_editable and self.document.frames and
                 event.button() == Qt.MouseButton.LeftButton and
@@ -491,6 +498,8 @@ class Waveform(MarkerOverlay, QWidget):
             if not event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
                 self.document.select_channels(None if self._anchor_channel is None else (self._anchor_channel,))
             self._anchor = self.document.selection[0] if event.modifiers() & Qt.KeyboardModifier.ShiftModifier else frame
+            if not self._keep_channels and self.plot_rect().contains(event.position()):
+                self._seek_click = frame
             self._select(self._anchor, frame)
             self.setFocus()
 
@@ -516,6 +525,8 @@ class Waveform(MarkerOverlay, QWidget):
                        Qt.CursorShape.SizeVerCursor if sample is not None else
                        Qt.CursorShape.IBeamCursor if self.document.frames else Qt.CursorShape.ArrowCursor)
         if self._anchor is not None and event.buttons() & Qt.MouseButton.LeftButton:
+            if self.frame_at(event.position().x()) != self._anchor:
+                self._seek_click = None
             channel = self.channel_at(event.position().y())
             if not self._keep_channels:
                 self.document.select_channels((channel,) if channel is not None and channel == self._anchor_channel else None)
@@ -535,9 +546,14 @@ class Waveform(MarkerOverlay, QWidget):
             self._sample_hover = None
             self.sample_edited.emit(*sample)
             self.update()
+        seek = self._seek_click
+        self._seek_click = None
         self._anchor = None
         self._anchor_channel = None
         self._keep_channels = False
+        if (event.button() == Qt.MouseButton.LeftButton and seek is not None
+                and not self.document.selected and self.plot_rect().contains(event.position())):
+            self.seek_requested.emit(seek)
 
     def mouseDoubleClickEvent(self, event):
         if event.button()==Qt.MouseButton.LeftButton and self.marker_double_click(event.position()):return

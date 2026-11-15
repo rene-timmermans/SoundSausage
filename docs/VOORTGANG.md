@@ -1,5 +1,22 @@
 # Ontwikkelroute
 
+## Afspeelpositie aanklikken — 0.27.1 in voorbereiding
+
+Een gewone klik op de golfvorm verplaatst ook tijdens afspelen het geluid, de
+cursor en de klok. In Multitrack kan dit op de tijdliniaal of lege tijdlijn.
+Slepen blijft een selectie maken; klikken op ingezoomde samples wijzigt tijdens
+normaal afspelen geen audio. De vijfsecondenknoppen en Naar begin spelen door.
+Acht nieuwe controles toetsen ook PCM-inhoud, herhalen, einde, selectie, pauze
+en een actieve opname. Alle 63 gerichte regressiecontroles slagen lokaal.
+De vijf handleidingen beschrijven de bediening en de opnamevoorloop duidelijker.
+VST3-effecten met optionele ongebruikte aansluitingen kunnen via hun hoofd-
+stereobussen werken; de overige aansluitingen blijven uitgeschakeld. De
+statusstream geeft ook gedeeltelijk gelezen gegevens correct terug en meldt
+zijn grootte. TAL-Reverb-4 laadt, verwerkt audio en herstelt Wet/Dry uit de
+bewaarde componentstatus in een nieuwe helper. Twee aanvullende onafhankelijke
+ABI-proeven controleren de ongebruikte bussen en afwijzen van verplichte routering.
+De volledige distributiebouw en publicatie volgen na afronding van de controles.
+
 ## Praktijkcontrole richting v1.0 — 15 november 2026
 
 Remaster is op beide voorbeeldopnamen goedgekeurd: duidelijk beter en de balans
@@ -9,9 +26,14 @@ parameterwerking en praktische afsteltips.
 
 De markerbediening is in de praktijk bevestigd: toevoegen, benoemen, verslepen,
 Undo/Redo, WAV bewaren en heropenen. De opnamekalibratie heeft een correctie
-opgeslagen. De toepassing daarvan wordt met de langere opname gecontroleerd.
-Open blijven langere overdub/drift, punch-in/out met heropenen, systeemgeluid
-en echte plug-invensters/status.
+opgeslagen. Een langere overdub bevat 68 betrouwbaar herkenbare meetpulsen;
+na een kleine vroege sprong blijft het verschil vrijwel constant. De timing bij
+hervatten en de wisselende kalibratiemelding vragen nog controle. Punch-in/out
+is in de praktijk bevestigd: alleen het interval verandert, omliggende audio
+en markeringen blijven behouden, en het opgeslagen project is opnieuw ingelezen.
+Systeemgeluid opnemen, pauzeren/hervatten en terugluisteren zijn eveneens
+bevestigd. De WAV- en MP3-export openen met dezelfde duur en samplerate.
+Echte plug-invensters/status blijven open.
 Daarna volgen de releasecandidate en het oplossen van blokkerende fouten.
 
 ## Korte volumedalingen — 0.27.0 gepubliceerd
