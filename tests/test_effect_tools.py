@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-from PySide6.QtCore import QPoint, QSettings, Qt, QTimer
+from PySide6.QtCore import QElapsedTimer, QPoint, QSettings, Qt, QTimer
 from PySide6.QtGui import QColor, QPalette
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QToolButton
@@ -55,6 +55,7 @@ class EffectToolTests(unittest.TestCase):
     def popup(self, button, key=None):
         menu = button.menu()
         observations = []
+        errors = []
         def choose():
             observations.append((menu.isVisible(), menu.geometry().left(),
                                  button.mapToGlobal(QPoint(button.width(), 0)).x()))
@@ -64,12 +65,29 @@ class EffectToolTests(unittest.TestCase):
                 else:
                     QTest.mouseClick(menu, Qt.MouseButton.LeftButton,
                                      pos=menu.actionGeometry(self.window.actions[key]).center())
+            except Exception as error:
+                errors.append(error)
             finally:
                 menu.close()
-        QTimer.singleShot(30, choose)
-        QTest.mouseClick(button, Qt.MouseButton.LeftButton,
-                         pos=QPoint(button.width() - 4, button.height() // 2))
-        self.app.processEvents()
+        timer = QTimer(button)
+        timer.setSingleShot(True)
+        timer.timeout.connect(choose)
+        timer.start(30)
+        try:
+            QTest.mouseClick(button, Qt.MouseButton.LeftButton,
+                             pos=QPoint(button.width() - 4, button.height() // 2))
+            # Qt versions may open menus with a nested event loop or return
+            # immediately. In both cases wait for the scheduled menu action.
+            elapsed = QElapsedTimer()
+            elapsed.start()
+            while not observations and elapsed.elapsed() < 2000:
+                QTest.qWait(10)
+        finally:
+            timer.stop()
+            menu.close()
+            timer.deleteLater()
+        if errors:
+            raise errors[0]
         self.assertTrue(observations)
         self.assertTrue(observations[0][0])
         self.assertGreaterEqual(observations[0][1], observations[0][2] - 4)
