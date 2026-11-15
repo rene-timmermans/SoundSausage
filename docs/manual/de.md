@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 0.27.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 0.27.2. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -67,6 +67,8 @@ Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige un
 <a id="ss-topic-1-sprache-und-hilfe"></a>
 
 ## 1. Sprache und Hilfe
+
+Das Handbuch hat ein eigenes SoundSausage-Fenster in der Taskleiste, mit Schaltflächen zum Minimieren und Maximieren. Ein Klick auf den Editor bringt ihn vor das Handbuch; Hilfe/F1 holt das Handbuch wieder nach vorn. Beim Schließen von SoundSausage wird auch das Handbuch geschlossen.
 
 Unter **Optionen → Sprache** Nederlands, English, Deutsch, Français oder Español wählen. Menüs, Fenster, Hinweise und das geöffnete Handbuch wechseln sofort. Die Auswahl bleibt beim nächsten Start erhalten. Datei-, Spur- und Plug-in-Namen behalten ihre Schreibweise.
 
@@ -520,6 +522,8 @@ Gemeldete algorithmische Verarbeitungsverzögerung wird je Spur bei Wiedergabe u
 Begleitclips auf Spuren platzieren, Zielspur und Cursor wählen. **R** drücken, Eingang und neues Clipziel wählen und **Vorhandene Spuren während der Aufnahme wiedergeben** aktivieren. Die Spuren spielen mit Effekten; der Eingang wird nicht über Lautsprecher zurückgespielt. **P** pausiert/setzt beide fort; **Stopp/Esc/Leertaste/R** behält die Aufnahme als einen Rückgängig-Schritt. Verwerfen entfernt nur diese Aufnahme. Geräte-/Plug-in-Ausfall bewahrt aufgezeichnetes Audio.
 
 **Automatische Synchronisierung** koppelt die Position an die Wiedergabeuhr und misst die Abweichung der Ein-/Ausgangstakte. Bei ausreichend langer, zuverlässiger Messung wird nach Stopp die Dauer leicht korrigiert. Kurze/instabile Messungen dehnen die Aufnahme nicht. Die Dauerkorrektur benötigt über zehn Sekunden brauchbare Taktmessungen. Der physische Signalweg wird damit nicht gemessen.
+
+Nach Pause und Fortsetzen wird jeder Aufnahmeabschnitt einzeln an die Wiedergabeuhr gekoppelt. Bei zuverlässigen Messungen korrigiert SoundSausage die Positionsänderung nach Stopp, ohne sie als Taktdrift zu behandeln. Nach dem Fortsetzen mindestens eine Sekunde aufnehmen, damit eine stabile Messung möglich ist. Kleine Lücken werden mit Stille und kurzen Blenden verbunden; Überlappungen erhalten einen Übergang von höchstens 5 ms. Beide Stereokanäle werden gemeinsam verschoben. Kurze oder unzuverlässige Messungen verschieben den Abschnitt nicht. Die gesamte Aufnahme bleibt ein Rückgängig-Schritt; beim Abbrechen bleibt die rohe Aufnahme unter Arbeit wiederherstellen verfügbar.
 
 Dafür **Optionen → Aufnahme kalibrieren** oder die Kalibrierungsschaltfläche im Aufnahmefenster wählen. Dieselben Geräte, Abtastrate, Mono/Stereo, ersten Eingangskanal und Puffer wie bei der Aufnahme einstellen. Ausgang und Eingang mit geeignetem Loopback-Kabel verbinden. Ein Mikrofon vor einem Lautsprecher misst auch die akustische Laufzeit. Mit niedrigem Pegel beginnen. **Kalibrierung starten** spielt etwa sechs Sekunden leise Impulse ohne Eingangsmonitoring. Nur zuverlässige Ergebnisse werden gespeichert. Stille, Übersteuerung, mehrdeutige Signale oder instabile Zeiten lassen ein früheres gutes Profil unverändert. Mit kurzer Aufnahme prüfen; bei Geräte-/Einstellungswechsel erneut kalibrieren.
 

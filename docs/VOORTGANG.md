@@ -1,5 +1,17 @@
 # Ontwikkelroute
 
+## Pauzesynchronisatie en handleidingvenster — 0.27.2 in voorbereiding
+
+Automatische synchronisatie behandelt een betrouwbaar gemeten verschuiving na
+een opnamepauze afzonderlijk van klokdrift. De opnamegedeelten worden na Stop
+geplaatst, met korte overgangen bij een opening of overlap. De ruwe opname blijft
+bij annuleren beschikbaar voor herstel. Controles dekken beide richtingen,
+herhaalde pauzes, samplerates, stereo, grote buffers, Undo en bewaren/heropenen.
+De handleiding krijgt een zelfstandig SoundSausage-venster met minimaliseren en
+maximaliseren; het hoofdvenster kan ervoor komen. Drie multitrackknoppen volgen
+nu ook bij taalwisselen hun vertaling. Alle vijf handleidingen worden bijgewerkt.
+De distributiebouw en de herhaalde fysieke pauzeproef moeten nog volgen.
+
 ## Afspeelpositie aanklikken — 0.27.1 gepubliceerd
 
 Een gewone klik op de golfvorm verplaatst ook tijdens afspelen het geluid, de
@@ -35,7 +47,8 @@ De markerbediening is in de praktijk bevestigd: toevoegen, benoemen, verslepen,
 Undo/Redo, WAV bewaren en heropenen. De opnamekalibratie heeft een correctie
 opgeslagen. Een langere overdub bevat 68 betrouwbaar herkenbare meetpulsen;
 na een kleine vroege sprong blijft het verschil vrijwel constant. De timing bij
-hervatten en de wisselende kalibratiemelding vragen nog controle. Punch-in/out
+hervatten wordt verder aangepakt. De opgeslagen kalibratie wordt met de passende
+ingang en automatische synchronisatie correct herkend. Punch-in/out
 is in de praktijk bevestigd: alleen het interval verandert, omliggende audio
 en markeringen blijven behouden, en het opgeslagen project is opnieuw ingelezen.
 Systeemgeluid opnemen, pauzeren/hervatten en terugluisteren zijn eveneens

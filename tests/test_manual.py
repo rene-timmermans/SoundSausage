@@ -56,6 +56,25 @@ class ManualTests(unittest.TestCase):
         dialog.find()
         self.assertIn("Not found", dialog.search_status.text())
 
+    def test_manual_has_an_independent_window_and_closes_with_the_app(self):
+        self.window.open_manual();dialog=self.window._manual_dialog
+        self.assertIsNone(dialog.parentWidget())
+        self.assertEqual(dialog.windowType(),Qt.WindowType.Window)
+        self.assertFalse(dialog.windowFlags() & Qt.WindowType.WindowStaysOnTopHint)
+        self.assertTrue(dialog.windowFlags() & Qt.WindowType.WindowMinimizeButtonHint)
+        self.assertTrue(dialog.windowFlags() & Qt.WindowType.WindowMaximizeButtonHint)
+        self.assertIn('SoundSausage',dialog.windowTitle())
+        self.assertIsNone(dialog.windowHandle().transientParent())
+        self.assertFalse(dialog.isModal())
+        self.assertFalse(dialog.testAttribute(Qt.WidgetAttribute.WA_QuitOnClose))
+        dialog.search.setText('Normalize');dialog.find()
+        selection=dialog.browser.textCursor().selectedText()
+        self.window.activateWindow();self.app.processEvents()
+        self.assertTrue(self.window.isEnabled());self.assertTrue(dialog.isVisible())
+        self.window.open_manual();self.assertIs(self.window._manual_dialog,dialog)
+        self.assertEqual(dialog.browser.textCursor().selectedText(),selection)
+        self.window.close();self.assertFalse(dialog.isVisible())
+
     def test_only_explicit_web_links_open_a_browser(self):
         self.window.open_manual()
         dialog = self.window._manual_dialog

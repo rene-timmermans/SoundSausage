@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 0.27.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 0.27.2. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -67,6 +67,8 @@ Cliquez sur un sujet pour y accéder. Sommaire revient ici ; Précédent et Suiv
 <a id="ss-topic-1-langue-et-aide"></a>
 
 ## 1. Langue et aide
+
+Le manuel possède sa propre fenêtre SoundSausage dans la barre des tâches, avec des boutons pour réduire et agrandir. Cliquez sur l’éditeur pour le placer devant le manuel ; Aide/F1 ramène le manuel au premier plan. Fermer SoundSausage ferme aussi le manuel.
 
 Dans **Options → Langue**, choisissez Nederlands, English, Deutsch, Français ou Español. Menus, fenêtres, conseils et manuel ouvert changent immédiatement. Le choix est mémorisé au prochain démarrage. Les noms de fichiers, pistes et plug-ins conservent leur orthographe.
 
@@ -520,6 +522,8 @@ Le retard de traitement algorithmique déclaré est compensé par piste en lectu
 Placez l’accompagnement sur des pistes, choisissez piste cible et curseur. Appuyez sur **R**, choisissez entrée et destination nouveau clip, puis **Lire les pistes existantes pendant l’enregistrement**. Les pistes jouent avec leurs effets ; l’entrée n’est pas renvoyée aux haut-parleurs. **P** suspend/reprend les deux ; **Arrêter/Échap/Espace/R** conserve la prise en une étape d’annulation. Rejeter supprime seulement cette prise. Une panne d’appareil/plug-in conserve l’audio capturé.
 
 **Synchronisation automatique** relie le placement à l’horloge de lecture et mesure l’écart entre horloges d’entrée/sortie. Une mesure assez longue et fiable corrige légèrement la durée après Arrêter. Une mesure courte/instable n’étire pas la prise. La correction de durée nécessite plus de dix secondes de mesures d’horloge utilisables. Elle ne mesure pas le trajet physique entrée/sortie.
+
+Après une pause et une reprise, chaque partie enregistrée est reliée séparément à l’horloge de lecture. Si les mesures sont fiables, SoundSausage corrige le changement de position après Arrêter, sans le traiter comme une dérive d’horloge. Enregistrez au moins une seconde après la reprise pour obtenir une mesure stable. Un petit intervalle devient du silence avec des fondus courts ; les parties superposées reçoivent une transition de 5 ms au maximum. Les deux canaux stéréo se déplacent ensemble. Une mesure trop courte ou peu fiable laisse la partie en place. Toute la prise reste une seule étape d’annulation ; annuler le traitement conserve la prise brute dans Récupérer le travail.
 
 Pour ce trajet, choisissez **Options → Étalonner l’enregistrement**, ou le bouton d’étalonnage du dialogue. Choisissez les mêmes appareils, fréquence, mode mono/stéréo, premier canal d’entrée et tampon que pour enregistrer. Reliez sortie et entrée avec un câble de bouclage adapté. Un microphone près d’un haut-parleur inclut aussi le délai acoustique. Commencez à faible niveau. **Démarrer l’étalonnage** joue des impulsions faibles pendant environ six secondes, sans retour de l’entrée. Seul un résultat fiable est enregistré ; silence, saturation, ambiguïté ou instabilité conservent un ancien bon profil. Vérifiez avec une courte prise ; refaites l’étalonnage après changement d’appareils/réglages.
 

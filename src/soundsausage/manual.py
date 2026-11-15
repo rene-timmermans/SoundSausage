@@ -2,7 +2,7 @@
 from pathlib import Path
 from bisect import bisect_right
 
-from PySide6.QtCore import QUrl, QEvent, QPoint
+from PySide6.QtCore import QUrl, QEvent, QPoint, Qt
 from PySide6.QtGui import QDesktopServices, QKeySequence, QShortcut, QTextCursor, QTextDocument, QPalette, QColor, QTextCharFormat
 from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
 from .i18n_widgets import QDialogButtonBox
@@ -21,7 +21,13 @@ def manual_path(code=None):
 
 class ManualDialog(QDialog):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        # A transient dialog can be kept above its owner by desktop window managers.
+        # Keep lifecycle ownership without a native transient/stacking relationship.
+        super().__init__(None, Qt.WindowType.Window | Qt.WindowType.WindowTitleHint |
+                         Qt.WindowType.WindowSystemMenuHint | Qt.WindowType.WindowMinMaxButtonsHint |
+                         Qt.WindowType.WindowCloseButtonHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_QuitOnClose,False)
+        if parent is not None:parent.destroyed.connect(self.deleteLater)
         self.setWindowTitle("Handleiding — SoundSausage")
         self.setWindowIcon(application_icon())
         self.resize(850, 680)

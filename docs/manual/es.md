@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 0.27.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 0.27.2. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -67,6 +67,8 @@ Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente ca
 <a id="ss-topic-1-idioma-y-ayuda"></a>
 
 ## 1. Idioma y ayuda
+
+El manual tiene su propia ventana SoundSausage en la barra de tareas, con botones para minimizar y maximizar. Haz clic en el editor para ponerlo delante del manual; Ayuda/F1 vuelve a mostrar el manual al frente. Cerrar SoundSausage también cierra el manual.
 
 En **Opciones → Idioma**, elige Nederlands, English, Deutsch, Français o Español. Los menús, ventanas, ayudas y el manual abierto cambian inmediatamente. La elección se conserva para el próximo inicio. Los nombres de archivos, pistas y complementos mantienen su escritura original.
 
@@ -520,6 +522,8 @@ El retardo algorítmico declarado se compensa por pista al reproducir y mezclar.
 Coloque acompañamiento en pistas, elija pista destino y cursor. Pulse **R**, elija entrada y destino nuevo clip y active **Reproducir pistas existentes al grabar**. Las pistas suenan con efectos; la entrada no se envía a altavoces. **P** pausa/reanuda ambos; **Detener/Esc/Espacio/R** conserva la toma como un paso de Deshacer. Descartar elimina solo esta toma. Un fallo de dispositivo/plug-in conserva el audio capturado.
 
 **Sincronización automática** vincula posición al reloj de reproducción y mide la diferencia de relojes de entrada/salida. Una medición larga y fiable corrige suavemente la duración tras Detener. Una medición corta/inestable no estira la toma. Corregir la duración requiere más de diez segundos de mediciones de reloj utilizables. Esto no mide la ruta física de entrada/salida.
+
+Después de pausar y reanudar, cada tramo grabado se vincula por separado al reloj de reproducción. Si las mediciones son fiables, SoundSausage corrige el cambio de posición tras Detener, sin tratarlo como deriva de reloj. Graba al menos un segundo después de reanudar para obtener una medición estable. Un pequeño hueco se convierte en silencio con fundidos cortos; los tramos superpuestos reciben una transición de hasta 5 ms. Ambos canales estéreo se desplazan juntos. Una medición demasiado corta o poco fiable deja el tramo en su sitio. Toda la toma sigue siendo un único paso de Deshacer; cancelar el procesamiento conserva la toma original en Recuperar trabajo.
 
 Para medirla, use **Opciones → Calibrar grabación** o el botón del diálogo de grabación. Elija los mismos dispositivos, frecuencia, modo mono/estéreo, primer canal y búfer que para grabar. Conecte salida y entrada con un cable de bucle adecuado. Un micrófono cerca de un altavoz incluye el retardo acústico. Empiece a bajo nivel. **Iniciar calibración** reproduce pulsos suaves durante unos seis segundos sin monitorizar la entrada. Solo se guardan resultados fiables; silencio, saturación, ambigüedad o inestabilidad conservan un perfil previo correcto. Compruebe con una toma corta; recalibre si cambia dispositivos/ajustes.
 

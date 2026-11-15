@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 0.27.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 0.27.2. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -66,6 +66,8 @@ Click a topic to jump directly to it. Contents brings you back; Previous and Nex
 <a id="ss-topic-1-language-and-help"></a>
 
 ## 1. Language and help
+
+The manual has its own SoundSausage window on the taskbar, with minimize and maximize buttons. Click the editor to bring it in front of the manual; Help/F1 brings the manual forward again. Closing SoundSausage also closes the manual.
 
 Choose **Options → Language** and select Nederlands, English, Deutsch, Français or Español. Menus, windows, tips and the open manual change immediately. The choice is remembered for the next start. File names, track names and plug-in names retain their original spelling.
 
@@ -514,6 +516,8 @@ Reported algorithmic processing delay is compensated per track in playback and m
 Place backing clips on tracks, select a target track and position the cursor. Press **R**, choose input and a new-clip destination, and enable **Play existing tracks while recording**. Existing tracks and effects play; the input is not monitored through speakers. **P** pauses/resumes both; **Stop/Esc/Space/R** keeps the take as one Undo step. Discard removes only this take. Device/plug-in failure preserves captured audio.
 
 **Automatic synchronization** links placement to the playback clock and measures the difference between input/output clocks. A sufficiently long, reliable measurement gently corrects the duration after Stop. Short or unstable measurements do not stretch the take. Duration correction needs more than ten seconds of usable clock observations. This does not measure the physical input/output route.
+
+After pausing and resuming, each recording segment is linked separately to the playback clock. With reliable measurements, SoundSausage corrects the placement change after Stop instead of treating it as clock drift. Record for at least one second after resuming to obtain a stable measurement. A small gap becomes silence with short fades; overlapping segments receive a transition of up to 5 ms. Both stereo channels move together. A short or unreliable measurement leaves the segment in place. The entire take remains one Undo step; cancelling keeps the raw take available through Recover Work.
 
 Use **Options → Calibrate Recording**, or the recording dialog’s calibration button, for that route. Choose the same devices, rate, mono/stereo mode, first input channel and buffer as for recording. Connect output to input with a suitable loopback cable; a microphone near a speaker also works but includes acoustic delay. Start at a low level. **Start Calibration** plays quiet pulses for about six seconds without monitoring the input. Only a reliable result is saved; silence, clipping, ambiguous signals or unstable timing leave an earlier good profile intact. Verify with a short take; calibrate again after changing the device combination or settings.
 

@@ -16,6 +16,7 @@ class ClockResult:
     reliable: bool=False
     drift_measured: bool=False
     error_ms: float=0.0
+    pause_shifts: tuple=()  # (native input boundary, session-frame shift from the first segment)
 
     @property
     def ppm(self):return (self.ratio-1)*1000000
@@ -27,8 +28,13 @@ class DuplexClock:
         frame_count(0,source_rate,session_rate)
         self.source_rate,self.rate=source_rate,session_rate
         self.points=[];self.first_points=[];self.group=0;self.beginnings={};self.last=None
+        self.boundaries={}
 
-    def new_segment(self):self.group+=1;self.last=None
+    def new_segment(self,native_frames=None):
+        self.group+=1;self.last=None
+        if native_frames is not None:
+            if type(native_frames) is not int or native_frames<0:raise ValueError('Invalid recording boundary.')
+            self.boundaries[self.group]=native_frames
 
     def observe(self,native_frames,playback_frame):
         if not math.isfinite(native_frames) or not math.isfinite(playback_frame) or native_frames<0:return
@@ -43,11 +49,12 @@ class DuplexClock:
         if len(self.points)>4096:self.points=self.points[::2]
 
     def result(self,fallback=0):
-        groups=[]
+        groups=[];group_ids=[]
         for group in sorted({p[0] for p in self.points}):
             begin=self.beginnings[group]
             data=np.array([(x,y) for g,x,y in self.points if g==group and x-begin[0]>=self.rate*.2 and y-begin[1]>=self.rate*.2],np.float64)
-            if len(data)>=6 and np.ptp(data[:,0])>=self.rate*.5:groups.append(data)
+            if len(data)>=6 and np.ptp(data[:,0])>=self.rate*.5:
+                groups.append(data);group_ids.append(group)
         if not groups:return ClockResult(float(fallback))
         def estimate(parts):
             xx=xy=0
@@ -56,12 +63,12 @@ class DuplexClock:
             return (xy/xx if xx else 1),xx
         ratio,denominator=estimate(groups)
         if not .995<=ratio<=1.005:return ClockResult(float(fallback))
-        cleaned=[]
-        for data in groups:
+        cleaned=[];cleaned_ids=[]
+        for group,data in zip(group_ids,groups):
             residual=data[:,1]-ratio*data[:,0];residual-=np.median(residual)
             limit=max(self.rate*.002,float(np.median(np.abs(residual)))*4)
             keep=data[np.abs(residual)<=limit]
-            if len(keep)>=6:cleaned.append(keep)
+            if len(keep)>=6:cleaned.append(keep);cleaned_ids.append(group)
         if not cleaned:return ClockResult(float(fallback))
         ratio,denominator=estimate(cleaned)
         if not .995<=ratio<=1.005:return ClockResult(float(fallback))
@@ -80,7 +87,66 @@ class DuplexClock:
         if len(offsets)<6:return ClockResult(float(fallback))
         middle=float(np.median(offsets));limit=max(self.rate*.002,float(np.median(np.abs(offsets-middle)))*4)
         offsets=offsets[np.abs(offsets-middle)<=limit]
-        return ClockResult(float(np.median(offsets)),ratio,True,measured,error*1000/self.rate)
+        anchor=float(np.median(offsets));pauses=[];previous=0.
+        for group,data in zip(cleaned_ids,cleaned):
+            if group not in self.boundaries:continue
+            residual=data[:,1]-ratio*data[:,0]
+            shift=float(np.median(residual))-anchor
+            uncertainty=max(self.rate*.001,3*error/math.sqrt(len(data)))
+            # A pause is a separate placement change, never a clock-rate change.
+            # Reject implausible scheduling jumps rather than moving arbitrary audio.
+            if abs(shift)>self.rate*.5:continue
+            if abs(shift-previous)<=uncertainty:shift=previous
+            pauses.append((self.boundaries[group],shift));previous=shift
+        return ClockResult(anchor,ratio,True,measured,error*1000/self.rate,tuple(pauses))
+
+
+def align_pause_segments(samples,rate,source_rate,skipped_frames,fit):
+    """Place already rate-corrected segments; retain immutable, bounded source audio.
+
+    Gaps become silence with short fades; overlaps are joined with a linear fade.
+    Only pause boundaries with a reliable clock measurement receive a shift.
+    """
+    from . import storage
+    from .operations import blocks,progress
+    boundaries=[(0,0)]
+    for native,shift in fit.pause_shifts:
+        frame=max(0,min(len(samples),round((native-skipped_frames)*rate/source_rate*fit.ratio)))
+        offset=round(shift)
+        if frame==0 or frame==len(samples):continue
+        if frame<=boundaries[-1][0]:continue
+        if offset!=boundaries[-1][1]:boundaries.append((frame,offset))
+    if len(boundaries)==1:return samples
+    pieces=[]
+    for i,(start,shift) in enumerate(boundaries):
+        end=boundaries[i+1][0] if i+1<len(boundaries) else len(samples)
+        destination=start+shift
+        if destination<0:
+            start-=destination;destination=0
+        if start<end:pieces.append((start,end,destination))
+    length=max(destination+end-start for start,end,destination in pieces)
+    output=storage.allocate((length,samples.shape[1]),zero=True)
+    written=0;done=0;fade=max(2,round(rate*.005))
+    progress(0,len(samples),'Audio kopiëren')
+    for start,end,destination in pieces:
+        overlap=max(0,min(written-destination,end-start,fade))
+        previous=output[destination:destination+overlap].copy() if overlap else None
+        if destination>written and written:
+            count=min(fade,written)
+            output[written-count:written]*=np.linspace(1,0,count,dtype=np.float32)[:,None]
+        for left,right in blocks(end-start,storage.BLOCK_FRAMES):
+            output[destination+left:destination+right]=samples[start+left:start+right]
+            storage.release_pages(samples)
+            if isinstance(output,np.memmap):output.flush();storage.release_pages(output)
+            done+=right-left;progress(done,len(samples),'Audio kopiëren')
+        if overlap:
+            gain=np.linspace(0,1,overlap,dtype=np.float32)[:,None]
+            output[destination:destination+overlap]=previous*(1-gain)+output[destination:destination+overlap]*gain
+        elif destination>written:
+            count=min(fade,end-start)
+            output[destination:destination+count]*=np.linspace(0,1,count,dtype=np.float32)[:,None]
+        written=max(written,destination+end-start)
+    return storage.seal(output,checked=True)
 
 
 def calibration_probe(rate):

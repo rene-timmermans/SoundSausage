@@ -1,6 +1,8 @@
 # Open punten richting v1.0
 
 Stand: 15 november 2026, SoundSausage 0.27.1 gepubliceerd en gecontroleerd.
+0.27.2 wordt voorbereid met correctie van gemeten opnameverschuivingen na pauzes,
+een zelfstandig handleidingvenster en volledig vertaalde multitrackknoppen.
 Klikken tijdens afspelen verplaatst de afspeelpositie. De VST3-host accepteert
 optionele ongebruikte aansluitingen en bewaart de instellingen van TAL-Reverb-4.
 
@@ -33,8 +35,8 @@ benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
 | Gewone B910/HDMI-opname, pauzeren/hervatten en terugluisteren | Bevestigd. |
 | Afspelen in volledig scherm | Haperen verdwenen, fysiek bevestigd in 0.25.2. |
 | Afspeelpositie aanklikken tijdens afspelen | Bevestigd na bijwerken naar 0.27.1: geluid, cursor en klok volgen de aangeklikte plek. |
-| Kalibratie met de eigen in-/uitgangsroute | Profiel opgeslagen en op schijf leesbaar; de wisselende melding in het opnamevenster nog controleren. |
-| Langere overdub en klokdrift | Bijna drie minuten gemeten met 68 herkenbare meetpulsen. Kleine timingsprong bij hervatten nog controleren. |
+| Kalibratie met de eigen in-/uitgangsroute | Bevestigd: de opgeslagen correctie van −47,821 ms wordt met B910, 48000 Hz, Stereo, ingangskanaal 1 en automatische synchronisatie teruggevonden. |
+| Langere overdub en klokdrift | Bijna drie minuten gemeten met 68 herkenbare meetpulsen. Een korte herhaalproef bevestigt een sprong van circa 11 ms na hervatten. Correctie per opnamegedeelte is in voorbereiding; praktijkproef met de nieuwe build blijft nodig. |
 | Punch-in/out, opslaan en heropenen | Bevestigd: alleen het interval vervangen; omliggende audio, referentiespoor en markeringen behouden. Opgeslagen sessie opnieuw ingelezen. |
 | Systeemgeluid van de eigen hoofduitgang | Bevestigd: opnemen, pauzeren/hervatten, terugluisteren en WAV/MP3-export. Beide exports opnieuw geopend. |
 | Echt plug-invenster, parameters en heropende plug-instatus | TAL-Reverb-4 (VST3) bevestigd: eigen venster, wijzigen, terugluisteren en behoud van waarden en geluid na bewaren/heropenen. LV2-vensters hebben automatische testdekking. |

@@ -9,6 +9,7 @@ from PySide6.QtWidgets import QApplication
 
 from soundsausage.window import MainWindow
 from soundsausage.session import Session
+from soundsausage.project import save_project,load_project
 from soundsausage.recording_ui import RecordDialog
 from soundsausage.calibration_ui import CalibrationDialog
 from soundsausage.synchronization import save_calibration,read_calibration
@@ -65,6 +66,49 @@ class AutomaticRecordingTests(unittest.TestCase):
         clip=w.session.tracks[1].clips[0]
         self.assertEqual((clip.start,clip.frames),(4560,480))
         np.testing.assert_array_equal(w.session.media[clip.media_id].samples,.25)
+
+    def test_paused_overdub_aligns_each_segment_and_survives_undo_and_reopen(self):
+        from pathlib import Path
+        w=self.window
+        for shift in (512,-512):
+            with self.subTest(shift=shift):
+                w.session.select(4800,4800)
+                self.assertTrue(w.start_recording(target='multitrack',rate=48000,channels=2,accompaniment=True,skip_start_ms=10,automatic_sync=True))
+                context=w._record_context;current_shift=[0]
+                def tick():w.player._last_frame=4920+w.recorder.received_frames+current_shift[0]
+                signal=np.zeros((96000,2),np.float32)
+                signal[24000]=(.25,-.5);signal[72000]=(-.3,.6)
+                with patch.object(w.player,'_tick',side_effect=tick):
+                    for start in range(0,48000,480):w.recorder.source.push(signal[start:start+480].tobytes())
+                    w.toggle_pause();self.assertEqual(w.recorder.state,'Paused')
+                    current_shift[0]=shift
+                    w.toggle_pause()
+                    for start in range(48000,96000,480):w.recorder.source.push(signal[start:start+480].tobytes())
+                    w.stop_recording()
+                clip=w.session.tracks[1].clips[0];audio=w.session.media[clip.media_id].samples
+                self.assertEqual(clip.start,5400)
+                self.assertEqual(clip.frames,95520+shift)
+                np.testing.assert_array_equal(audio[23520],signal[24000])
+                np.testing.assert_array_equal(audio[71520+shift],signal[72000])
+                self.assertEqual(np.count_nonzero(audio),4)
+                self.assertEqual(len(context['sync_result'].pause_shifts),1)
+                path=Path(self.temp.name)/f'pause-{shift}.celp';save_project(w.session,path)
+                reopened=load_project(path);saved=reopened.tracks[1].clips[0]
+                np.testing.assert_array_equal(reopened.media[saved.media_id].samples,audio)
+                w.session.undo();self.assertFalse(w.session.tracks[1].clips)
+                w.session.redo();self.assertEqual(w.session.tracks[1].clips[0].frames,len(audio))
+                w.session.undo()
+        self.errors.assert_not_called()
+
+    def test_manual_overdub_keeps_pause_audio_without_automatic_repositioning(self):
+        w=self.window
+        self.assertTrue(w.start_recording(target='multitrack',rate=48000,channels=2,accompaniment=True,skip_start_ms=0,automatic_sync=False))
+        signal=np.linspace(-.2,.2,9600,dtype=np.float32).reshape(-1,2)
+        w.recorder.source.push(signal[:2400].tobytes());w.toggle_pause();w.toggle_pause()
+        w.recorder.source.push(signal[2400:].tobytes());w.stop_recording()
+        clip=w.session.tracks[1].clips[0]
+        np.testing.assert_array_equal(w.session.media[clip.media_id].samples,signal)
+        self.errors.assert_not_called()
 
     def calibration_dialog(self):
         dialog=CalibrationDialog(self.window,rate=48000,channels=1);self.dialogs.append(dialog)

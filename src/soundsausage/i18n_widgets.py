@@ -43,7 +43,7 @@ def localized(base,text_method=None):
 
 for _name in ('QWidget','QDialog','QGroupBox','QLabel','QPushButton','QCheckBox','QRadioButton',
               'QToolButton','QSlider','QLineEdit','QDoubleSpinBox','QSpinBox','QProgressDialog','QTextBrowser'):
-    _text='setText' if _name in ('QLabel','QPushButton','QCheckBox','QRadioButton') else 'setTitle' if _name=='QGroupBox' else None
+    _text='setText' if _name in ('QLabel','QPushButton','QToolButton','QCheckBox','QRadioButton') else 'setTitle' if _name=='QGroupBox' else None
     globals()[_name]=localized(getattr(W,_name),_text)
 QAction=localized(G.QAction,'setText')
 QToolBar=localized(W.QToolBar,'setWindowTitle')

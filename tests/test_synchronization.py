@@ -4,13 +4,80 @@ from unittest.mock import patch
 import numpy as np
 from PySide6.QtWidgets import QApplication
 
-from soundsausage.synchronization import DuplexClock,calibration_probe,measure_latency,save_calibration,read_calibration
+from soundsausage.synchronization import DuplexClock,ClockResult,align_pause_segments,calibration_probe,measure_latency,save_calibration,read_calibration
 from soundsausage.resample import resample_frames
 from soundsausage.audio_devices import AudioDevices
 from test_playback import Device,MemorySettings
 
 
 class SynchronizationTests(unittest.TestCase):
+    def test_pause_offsets_are_measured_separately_from_clock_drift(self):
+        clock=DuplexClock(48000,44100);ratio=1.0002;anchor=130.;rng=np.random.default_rng(918)
+        for i in range(3600):
+            if i in (1200,2400):clock.new_segment(i*480)
+            native=i*480;shift=0 if i<1200 else 470 if i<2400 else -490
+            clock.observe(native,anchor+ratio*native*44100/48000+shift+rng.normal(0,1.5)+(2000 if i%19==0 else 0))
+        fit=clock.result()
+        self.assertTrue(fit.reliable);self.assertTrue(fit.drift_measured)
+        self.assertAlmostEqual(fit.ratio,ratio,delta=1e-6)
+        self.assertAlmostEqual(fit.anchor,anchor,delta=2)
+        self.assertEqual([p[0] for p in fit.pause_shifts],[576000,1152000])
+        np.testing.assert_allclose([p[1] for p in fit.pause_shifts],[470,-490],atol=2)
+
+    def test_short_or_implausible_pause_measurements_do_not_move_audio(self):
+        clock=DuplexClock(48000,48000)
+        for i in range(120):clock.observe(i*480,i*480+20)
+        clock.new_segment(120*480)
+        for i in range(120,130):clock.observe(i*480,i*480+532)
+        self.assertEqual(clock.result().pause_shifts,())
+        clock.new_segment(130*480)
+        for i in range(130,250):clock.observe(i*480,i*480+48020)
+        self.assertEqual(clock.result().pause_shifts,())
+
+    def test_pause_alignment_moves_both_channels_without_changing_surrounding_samples(self):
+        rng=np.random.default_rng(122)
+        source=rng.uniform(-.2,.2,(96000,2)).astype(np.float32);original=source.copy()
+        for shift in (512,-512):
+            with self.subTest(shift=shift):
+                fit=ClockResult(0,pause_shifts=((48000,shift),))
+                result=align_pause_segments(source,48000,48000,0,fit)
+                self.assertEqual(len(result),len(source)+shift)
+                np.testing.assert_array_equal(result[:47000],source[:47000])
+                np.testing.assert_array_equal(result[49000+shift:],source[49000:])
+                self.assertTrue(np.isfinite(result).all());self.assertFalse(result.flags.writeable)
+                if shift>0:np.testing.assert_array_equal(result[48000:48000+shift],0)
+                self.assertLessEqual(float(np.abs(result).max()),float(np.abs(source).max()))
+        np.testing.assert_array_equal(source,original)
+
+    def test_pause_alignment_converts_native_boundaries_after_the_skipped_start(self):
+        source=np.zeros((44000,2),np.float32);source[30000]=(.25,-.5)
+        fit=ClockResult(0,ratio=1.0001,pause_shifts=((24000,441.),(36000,441.)))
+        result=align_pause_segments(source,44100,48000,480,fit)
+        self.assertEqual(len(result),44441)
+        np.testing.assert_array_equal(result[30441],source[30000])
+        self.assertEqual(np.count_nonzero(result),2)
+
+    def test_repeated_pauses_use_absolute_offsets_without_accumulating_the_same_shift(self):
+        source=np.zeros((192000,2),np.float32)
+        for frame in (24000,72000,120000,168000):source[frame]=(.25,-.5)
+        fit=ClockResult(0,pause_shifts=((48000,512.),(96000,-512.),(144000,-512.)))
+        result=align_pause_segments(source,48000,48000,0,fit)
+        self.assertEqual(len(result),191488)
+        for frame in (24000,72512,119488,167488):np.testing.assert_array_equal(result[frame],[.25,-.5])
+        self.assertEqual(np.count_nonzero(result),8)
+
+    def test_disk_pause_alignment_can_be_cancelled_without_mutating_the_take(self):
+        from soundsausage import storage
+        from soundsausage.operations import operation
+        from soundsausage.errors import OperationCancelled
+        with patch.object(storage,'MEMORY_THRESHOLD',1):
+            source=storage.seal(storage.copy_array(np.full((100000,2),.2,np.float32),force_disk=True))
+            original=source.copy();self.assertIsInstance(source,np.memmap)
+            fit=ClockResult(0,pause_shifts=((48000,512.),))
+            with operation(lambda done,total,label: done==0):
+                with self.assertRaises(OperationCancelled):align_pause_segments(source,48000,48000,0,fit)
+            np.testing.assert_array_equal(source,original)
+
     def test_different_rates_drift_jitter_pause_jumps_and_outliers(self):
         clock=DuplexClock(48000,44100);rng=np.random.default_rng(5);ratio=1/1.0004;anchor=123.4
         for i in range(7000):

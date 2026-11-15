@@ -18,7 +18,7 @@ from .document import Document
 from .errors import OperationCancelled
 from .progress_ui import long_operation
 from .resample import resample,resample_frames
-from .synchronization import DuplexClock,read_calibration
+from .synchronization import DuplexClock,read_calibration,align_pause_segments
 from .theme import colors,blend
 from .icons import make_icon
 from .waveform import clock_text
@@ -435,7 +435,8 @@ class RecordingActions:
             paused=self.recorder.state=='Paused'
             if paused and self._record_context and self._record_context['target']=='punch' and not self._record_context.get('play_started'):
                 self._record_context['wait_deadline']=time.monotonic()+2
-            if paused and self._record_context and self._record_context.get('clock') is not None:self._record_context['clock'].new_segment()
+            if paused and self._record_context and self._record_context.get('clock') is not None:
+                self._record_context['clock'].new_segment(self.recorder.received_frames)
             if not paused and self.player.state=='Playing':self.player.toggle_pause()
             self.recorder.toggle_pause()
             if paused and self.player.state=='Paused':self.player.toggle_pause()
@@ -456,6 +457,8 @@ class RecordingActions:
             ratio=fit.ratio if fit is not None else 1
             frames=max(1,round(take.frames*context['rate']/take.rate*ratio))
             if frames!=take.frames or take.rate!=context['rate']:data=resample_frames(data,frames,take.rate)
+            if fit is not None and fit.pause_shifts:
+                data=align_pause_segments(data,context['rate'],take.rate,getattr(self.recorder,'skipped_frames',0),fit)
             calibration=context.get('calibration') or {}
             correction=calibration.get('offset_ms',0)*context['rate']/1000
             context['synchronized_position']=round((fit.anchor if fit is not None else fallback)+skipped*ratio+correction)

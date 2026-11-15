@@ -33,7 +33,9 @@ B33 omvat ook een fysieke proef van
 systeemgeluid op de eigen hoofduitgang. Deze is bevestigd, inclusief
 pauzeren/hervatten, terugluisteren en WAV/MP3-export. De langere overdub en punch-in/out zijn
 inmiddels uitgevoerd. De opname blijft na een kleine vroege sprong vrijwel
-gelijk lopen; hervatting en de kalibratiemelding worden nog gecontroleerd.
+gelijk lopen. Een korte herhaalproef bevestigt een sprong van circa 11 ms na
+hervatten; correctie per opnamegedeelte wordt voorbereid in 0.27.2.
+De opgeslagen kalibratie wordt met de passende instellingen correct herkend.
 Punch-in/out vervangt uitsluitend het gekozen interval, met behoud van de
 omliggende audio en sessiemarkeringen bij opslag en heropenen.
 
@@ -59,7 +61,10 @@ componentstatus. Alle 629 tests en de geïnstalleerde pakketten zijn gecontrolee
 De afspeelklik en het eigen TAL-Reverb-4-venster (VST3) zijn ook in de praktijk
 bevestigd, inclusief wijzigen, terugluisteren en behoud van waarden en geluid
 na bewaren en heropenen. LV2-vensters hebben automatische testdekking.
-De kalibratiemelding en de timing bij pauzeren/hervatten blijven onder B33.
+De kalibratiemelding is bevestigd; de nieuwe pauzecorrectie vraagt nog de
+distributiebouw en een korte fysieke herhaalproef onder B33. Dezelfde update
+maakt de handleiding tot een zelfstandig venster en vertaalt de drie
+multitrackknoppen ook bij taalwisselen.
 
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,

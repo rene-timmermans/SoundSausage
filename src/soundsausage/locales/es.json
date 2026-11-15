@@ -560,6 +560,7 @@
   "Invalid punch playback range.": "Rango de reproducción punch no válido.",
   "Invalid punch pre-roll or crossfade.": "Pregrabación o fundido punch no válido.",
   "Invalid punch region.": "Región punch no válida.",
+  "Invalid recording boundary.": "Límite de grabación no válido.",
   "Invalid recording destination.": "Elemento no válido: destino de grabación.",
   "Invalid recording input.": "Elemento no válido: entrada de grabación.",
   "Invalid recording position offset.": "Elemento no válido: desplazamiento de posición de grabación.",

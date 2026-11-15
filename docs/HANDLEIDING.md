@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 0.27.1. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 0.27.2. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -107,6 +107,8 @@ Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vori
 <a id="ss-topic-taal-kiezen"></a>
 
 ## Taal kiezen
+
+De handleiding heeft een eigen SoundSausage-venster op de taakbalk, met knoppen voor minimaliseren en maximaliseren. Klik op de editor om die vóór de handleiding te zetten; met Help/F1 haal je de handleiding weer naar voren. Sluiten van SoundSausage sluit ook de handleiding.
 
 Kies **Opties → Taal** en vervolgens **Nederlands**, **English**, **Deutsch**,
 **Français** of **Español**. Menu’s, vensters, aanwijzingen en de geopende
@@ -1581,6 +1583,8 @@ Gerapporteerde **verwerkingsvertraging** van plug-ins wordt automatisch per spoo
 Zet begeleiding op sporen, kies het doelspoor en plaats de cursor. Druk **R**, kies ingang en nieuwe clip als bestemming en vink **Bestaande sporen afspelen tijdens opnemen** aan. De bestaande sporen spelen met effecten; de ingang wordt niet via de luidsprekers teruggespeeld. **P** pauzeert/hervat beide; **Stoppen/Esc/Spatie/R** houdt de take als één Undo-stap. **Opname verwerpen** verwijdert alleen de nieuwe take. Bij apparaat- of plug-inverlies blijft vastgelegde audio behouden.
 
 **Automatische synchronisatie** koppelt de opnamepositie aan de afspeelklok en meet het verschil tussen de in- en uitvoerklokken. Bij voldoende lange, betrouwbare metingen wordt de opnamelengte na Stop voorzichtig gecorrigeerd. Een korte of onstabiele meting rekt de take niet op. Duurcorrectie vraagt ruim tien seconden bruikbare klokmetingen. Dit vervangt geen meting van de fysieke in-/uitvoerroute.
+
+Na pauzeren en hervatten wordt elk opnamegedeelte afzonderlijk aan de afspeelklok gekoppeld. Bij een betrouwbare meting corrigeert SoundSausage de verschuiving na Stop, zonder die als klokdrift te behandelen. Laat na hervatten minstens een seconde opnemen voor een stabiele meting. Een kleine opening wordt stilte met korte fades; overlappende delen krijgen een korte overgang van maximaal 5 ms. Beide stereokanalen verschuiven samen. Een te korte of onbetrouwbare meting verplaatst het gedeelte niet. De hele opname blijft één Undo-stap; bij annuleren blijft de ruwe take beschikbaar via Werk herstellen.
 
 Voor die route kies je **Opties → Opname kalibreren**, of de kalibratieknop in het opnamevenster:
 

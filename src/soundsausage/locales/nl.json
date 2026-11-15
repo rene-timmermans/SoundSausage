@@ -560,6 +560,7 @@
   "Invalid punch playback range.": "Ongeldig punchafspeelbereik.",
   "Invalid punch pre-roll or crossfade.": "Ongeldige voorloop of overgang voor punch.",
   "Invalid punch region.": "Ongeldig punchgebied.",
+  "Invalid recording boundary.": "Ongeldige opnamegrens.",
   "Invalid recording destination.": "Ongeldig: opnamebestemming.",
   "Invalid recording input.": "Ongeldig: opname-ingang.",
   "Invalid recording position offset.": "Ongeldig: opnamepositieverschuiving.",

@@ -54,6 +54,16 @@ class LanguageTests(unittest.TestCase):
 
     def switch(self,code):self.manager.set_language(code,False);self.app.processEvents()
 
+    def test_multitrack_mode_buttons_translate_live_and_preserve_the_edit_mode(self):
+        editor=self.window.multitrack;editor.set_envelope_mode('volume')
+        sources={'move':'Move Clips','volume':'Volume Line','pan':'Pan Line'}
+        for code in ('nl','en','de','fr','es'):
+            self.switch(code)
+            self.assertEqual({key:button.text() for key,button in editor.envelope_buttons.items()},
+                             {key:tr(source) for key,source in sources.items()})
+            self.assertEqual(editor.timeline.envelope_mode,'volume')
+            self.assertEqual([key for key,button in editor.envelope_buttons.items() if button.isChecked()],['volume'])
+
     def test_options_language_actions_switch_existing_ui_and_keep_one_choice(self):
         expected={'nl':('Bestand','Taal'),'en':('File','Language'),'de':('Datei','Sprache'),'fr':('Fichier','Langue'),'es':('Archivo','Idioma')}
         for code,(file,lang) in expected.items():

@@ -18,6 +18,42 @@ class SynchronizationBackendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):cls.app=QApplication.instance() or QApplication([])
 
+    def test_loopback_pause_keeps_later_pulse_groups_aligned(self):
+        window=MainWindow(no_audio=False);window.audio_devices.settings=MemorySettings();dialog=None
+        errors=[];window.recorder.failed.connect(errors.append);window.player.failed.connect(errors.append)
+        try:
+            incoming=next((d for d in window.audio_devices.inputs() if b'soundsausage_loopback' in bytes(d.id())),None)
+            outgoing=next((d for d in window.audio_devices.outputs() if b'soundsausage_test' in bytes(d.id())),None)
+            self.assertIsNotNone(incoming);self.assertIsNotNone(outgoing)
+            window.audio_devices.configure(bytes(outgoing.id()).hex(),80,bytes(incoming.id()).hex())
+            dialog=CalibrationDialog(window,rate=48000,channels=2);dialog.start_calibration()
+            deadline=time.monotonic()+12
+            while dialog._running and time.monotonic()<deadline:QTest.qWait(20)
+            self.assertIsNotNone(dialog.calibration_result,dialog.status.text())
+            probe,markers=calibration_probe(48000);reference=np.zeros((12*48000,2),np.float32)
+            for second in (0,4,8):reference[second*48000:second*48000+len(probe)]=probe
+            window.session=Session(48000,2);window.session.import_audio([(reference,48000,'Pulse groups')])
+            window.session.selected_track=window.session.tracks[1].id;window.set_mode('multitrack');window.session.select(0,0)
+            self.assertTrue(window.start_recording(target='multitrack',rate=48000,channels=2,accompaniment=True,automatic_sync=True,skip_start_ms=50))
+            context=window._record_context;deadline=time.monotonic()+16
+            while window.recorder.take.frames<3.5*48000 and time.monotonic()<deadline:QTest.qWait(10)
+            window.toggle_pause();self.assertEqual(window.recorder.state,'Paused');QTest.qWait(250);window.toggle_pause()
+            while window.recorder.take.frames<12.2*48000 and time.monotonic()<deadline:QTest.qWait(10)
+            window.stop_recording();self.assertFalse(errors)
+            clip=window.session.tracks[1].clips[0];samples=window.session.media[clip.media_id].samples
+            measured=[]
+            for second in (0,4,8):
+                group=[(start+second*48000,signal) for start,signal in markers]
+                measured.append(measure_latency(samples,group,48000,clip.start)['offset_ms'])
+            detail=f'{measured}; fit={context.get("sync_result")}'
+            self.assertLess(abs(measured[1]-measured[0]),8,detail)
+            self.assertLess(abs(measured[2]-measured[0]),8,detail)
+            self.assertLess(max(abs(value) for value in measured),15,detail)
+        finally:
+            if dialog is not None:dialog.reject();dialog.deleteLater()
+            if window.recorder.active:window.recorder.stop(keep=False)
+            window.player.stop();window.document.mark_saved();window.session.mark_saved();window.close();window.deleteLater();self.app.processEvents()
+
     def test_real_loopback_calibration_aligns_a_new_recording(self):
         window=MainWindow(no_audio=False);window.audio_devices.settings=MemorySettings();dialog=None
         errors=[];window.recorder.failed.connect(errors.append);window.player.failed.connect(errors.append)
