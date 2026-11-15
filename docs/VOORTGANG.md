@@ -14,8 +14,11 @@ Alle **640 tests** slagen zonder overslaan op Debian, Fedora en Arch, inclusief
 de pauzeproef via de echte Qt-backend met virtuele audio. De vijf geïnstalleerde
 zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht
 releasebestanden, tag en korte releasepunten zijn gecontroleerd. Catalogi:
-1539 bronvormen zonder ontbrekende vertaling. De fysieke herhaalproef van de
-pauzecorrectie en de vensterbediening blijven nog open.
+1539 bronvormen zonder ontbrekende vertaling. De fysieke pauzeproef is geslaagd:
+alle 24 pulsen zijn betrouwbaar herkend, met circa 0,04 ms verschil tussen de
+groepen direct vóór en na de pauze. In de vorige proef was dat circa 10,7 ms.
+Bronaudio en opgeslagen resultaat blijven ongewijzigd. B33 is daarmee afgerond;
+de fysieke venstercontrole blijft onderdeel van de releasecandidate.
 
 ## Afspeelpositie aanklikken — 0.27.1 gepubliceerd
 
@@ -38,8 +41,8 @@ De acht releasebestanden, tag en korte releasepunten zijn gecontroleerd.
 Catalogi: 1538 bronvormen zonder ontbrekende vertaling. Het verplaatsen van de
 afspeelpositie met een klik en het openen van het eigen TAL-Reverb-4-venster
 zijn ook in de praktijk bevestigd. Gewijzigde TAL-instellingen en het geluid
-blijven na bewaren en heropenen behouden. De resterende opnamecontroles blijven
-onderdeel van B33.
+blijven na bewaren en heropenen behouden. De aanvullende opnamecontroles zijn
+inmiddels met de herhaalproef in 0.27.2 afgerond.
 
 ## Praktijkcontrole richting v1.0 — 15 november 2026
 
@@ -51,8 +54,9 @@ parameterwerking en praktische afsteltips.
 De markerbediening is in de praktijk bevestigd: toevoegen, benoemen, verslepen,
 Undo/Redo, WAV bewaren en heropenen. De opnamekalibratie heeft een correctie
 opgeslagen. Een langere overdub bevat 68 betrouwbaar herkenbare meetpulsen;
-na een kleine vroege sprong blijft het verschil vrijwel constant. De timing bij
-hervatten wordt verder aangepakt. De opgeslagen kalibratie wordt met de passende
+na een kleine vroege sprong blijft het verschil vrijwel constant. De herhaalproef
+in 0.27.2 toont rond de pauze circa 0,04 ms verschil en rondt de timingcontrole af.
+De opgeslagen kalibratie wordt met de passende
 ingang en automatische synchronisatie correct herkend. Punch-in/out
 is in de praktijk bevestigd: alleen het interval verandert, omliggende audio
 en markeringen blijven behouden, en het opgeslagen project is opnieuw ingelezen.

@@ -28,7 +28,7 @@ blijft bewaard; centraal starten is als gewenste werkwijze geaccepteerd. Deze
 punten vragen geen verdere wijziging voor v1.0. De markerproef met toevoegen,
 benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
 
-## B33 — fysieke praktijkcontrole
+## B33 — fysieke praktijkcontrole afgerond
 
 | Proef | Stand |
 | --- | --- |
@@ -36,16 +36,18 @@ benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
 | Afspelen in volledig scherm | Haperen verdwenen, fysiek bevestigd in 0.25.2. |
 | Afspeelpositie aanklikken tijdens afspelen | Bevestigd na bijwerken naar 0.27.1: geluid, cursor en klok volgen de aangeklikte plek. |
 | Kalibratie met de eigen in-/uitgangsroute | Bevestigd: de opgeslagen correctie van −47,821 ms wordt met B910, 48000 Hz, Stereo, ingangskanaal 1 en automatische synchronisatie teruggevonden. |
-| Langere overdub en klokdrift | Bijna drie minuten gemeten met 68 herkenbare meetpulsen. Een korte herhaalproef bevestigt een sprong van circa 11 ms na hervatten. Correctie per opnamegedeelte is gepubliceerd in 0.27.2; de fysieke herhaalproef met die build blijft nodig. |
+| Langere overdub en klokdrift | Bevestigd: lange opname met 68 herkenbare meetpulsen en herhaalproef in 0.27.2 met 24 betrouwbare pulsen. Rond de pauze circa 0,04 ms verschil, tegenover circa 10,7 ms in de vorige proef. Bron en opgeslagen resultaat ongewijzigd. |
 | Punch-in/out, opslaan en heropenen | Bevestigd: alleen het interval vervangen; omliggende audio, referentiespoor en markeringen behouden. Opgeslagen sessie opnieuw ingelezen. |
 | Systeemgeluid van de eigen hoofduitgang | Bevestigd: opnemen, pauzeren/hervatten, terugluisteren en WAV/MP3-export. Beide exports opnieuw geopend. |
 | Echt plug-invenster, parameters en heropende plug-instatus | TAL-Reverb-4 (VST3) bevestigd: eigen venster, wijzigen, terugluisteren en behoud van waarden en geluid na bewaren/heropenen. LV2-vensters hebben automatische testdekking. |
 
 ## Afronden naar de eerste v1
 
-1. B33 met de afgeronde app uitvoeren; reeds bevestigde proeven blijven bevestigd.
+1. B33 is afgerond; reeds bevestigde proeven blijven bevestigd.
 2. Een releasecandidate toetsen op dagelijkse workflow, vijf talen,
    offlinehandleidingen en Debian/Ubuntu-, Fedora- en Arch-pakketten.
+   De fysieke controle van het zelfstandige handleidingvenster staat nog open:
+   hoofdvenster ervoor halen, minimaliseren/maximaliseren en taakbalktitel.
 3. Blokkerende fouten oplossen en v1.0 publiceren met korte releasepunten.
 
 De handleidingen zijn via Help/F1 beschikbaar. Werk bij wijzigingen de klikbare

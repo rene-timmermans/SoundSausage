@@ -5,7 +5,8 @@
 De afgesproken route van 14 november 2026 is leidend voor het resterende werk.
 De gekozen uitbreidingen zijn **B06, B07, B21, B23, B24, B33 en B36b**.
 B06/B07 zijn afgerond in 0.22.0, B21 in 0.23.0 en B23/B24 in 0.24.0.
-B36b is afgerond en gepubliceerd in 0.26.0. De [todo](TODO.md) bevat B33; de overige 18 uitbreidingen
+B36b is afgerond en gepubliceerd in 0.26.0. De fysieke proeven onder B33 zijn afgerond;
+de [todo](TODO.md) gaat verder met de releasecandidate. De overige 18 uitbreidingen
 zijn [voorlopig uitgesteld](validation/beperkingen-keuzes.md) en komen alleen
 na een nieuwe afspraak terug. De afgeronde ontwikkelfases hieronder blijven
 als onderbouwing van de beschikbare app bewaard.
@@ -20,8 +21,8 @@ als onderbouwing van de beschikbare app bewaard.
    [Controles en publicatie](validation/tails-and-boundaries.md).
 4. **B36b — afgerond in 0.26.0:** toevoegen, verplaatsen, benoemen,
    verwijderen en behoud bij bewerken, opslaan en herstel.
-5. **B33:** de functioneel afgeronde app fysiek toetsen met kalibratie, langere
-   overdub, punch/heropenen en echte plug-invensters/statusopslag.
+5. **B33 — afgerond:** de fysieke controles van kalibratie, langere overdub,
+   hervatten, punch/heropenen en een echt plug-invenster/statusopslag zijn bevestigd.
 6. **Releasecandidate:** dagelijkse workflow, vijf talen, volledige offlinehulp
    en geteste installatiepakketten controleren; blokkerende fouten oplossen.
 7. **Eerste v1.0:** publiceren zodra de gekozen punten en releasecandidate zijn afgerond.
@@ -34,7 +35,9 @@ systeemgeluid op de eigen hoofduitgang. Deze is bevestigd, inclusief
 pauzeren/hervatten, terugluisteren en WAV/MP3-export. De langere overdub en punch-in/out zijn
 inmiddels uitgevoerd. De opname blijft na een kleine vroege sprong vrijwel
 gelijk lopen. Een korte herhaalproef bevestigt een sprong van circa 11 ms na
-hervatten; correctie per opnamegedeelte is gepubliceerd in 0.27.2.
+hervatten; correctie per opnamegedeelte is gepubliceerd in 0.27.2. De fysieke
+herhaalproef met 24 betrouwbare pulsen toont direct rond de pauze circa 0,04 ms
+verschil. Bron en opgeslagen resultaat blijven ongewijzigd.
 De opgeslagen kalibratie wordt met de passende instellingen correct herkend.
 Punch-in/out vervangt uitsluitend het gekozen interval, met behoud van de
 omliggende audio en sessiemarkeringen bij opslag en heropenen.
@@ -61,12 +64,13 @@ componentstatus. Alle 629 tests en de geïnstalleerde pakketten zijn gecontrolee
 De afspeelklik en het eigen TAL-Reverb-4-venster (VST3) zijn ook in de praktijk
 bevestigd, inclusief wijzigen, terugluisteren en behoud van waarden en geluid
 na bewaren en heropenen. LV2-vensters hebben automatische testdekking.
-De kalibratiemelding is bevestigd; de pauzecorrectie in 0.27.2 vraagt nog een
-korte fysieke herhaalproef onder B33. Alle 640 tests slagen zonder overslaan
+De kalibratiemelding en de fysieke pauzeproef in 0.27.2 zijn bevestigd; B33 is
+afgerond. Alle 640 tests slagen zonder overslaan
 op Debian, Fedora en Arch; de pakketten zijn op vijf doelen geïnstalleerd en
 gecontroleerd. Dezelfde update
 maakt de handleiding tot een zelfstandig venster en vertaalt de drie
-multitrackknoppen ook bij taalwisselen.
+multitrackknoppen ook bij taalwisselen. De fysieke controle van het zelfstandige
+handleidingvenster staat nog open bij de releasecandidate.
 
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,
