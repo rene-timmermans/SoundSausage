@@ -98,6 +98,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 
 ## Wat er nieuw is
 
+**[1.0.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.0.1)** Begin, Einde en Lengte rechtsonder aanpassen voor selectie en zichtbaar bereik. Tijdinvoer met Enter, Escape en Tab, met uitleg in alle vijf handleidingen.
+
 **[1.0.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.0.0)** Eerste stabiele versie: WAV/MP3-bewerking, multitrackopnamen, effecten en Remaster, Linux-plug-ins en volledige handleidingen in vijf talen.
 
 **[0.27.2](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.27.2)** Automatische correctie van gemeten opnameverschuivingen na pauzes. Een zelfstandig handleidingvenster met minimaliseren en maximaliseren. Volledig vertaalde knoppen voor clips verplaatsen, de volumelijn en de panlijn.

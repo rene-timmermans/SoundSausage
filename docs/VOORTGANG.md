@@ -1,6 +1,6 @@
 # Ontwikkelroute
 
-## Bewerkbare selectie- en weergavetijden — 1.0.1 in voorbereiding
+## Bewerkbare selectie- en weergavetijden — 1.0.1 gepubliceerd
 
 De zes tijdvelden rechtsonder accepteren seconden of een tijdnotatie, met punt
 of komma. Enter en het verlaten van het veld bevestigen; Escape herstelt de
@@ -9,8 +9,13 @@ te wijzigen. Invoer blijft behouden tijdens modelupdates, wordt bij een ander
 document verworpen en is tijdens opname vergrendeld. De weergave houdt rekening
 met minuut- en uurovergangen. Negen nieuwe controles toetsen invoer, grenzen,
 multitrack, afspelen, opnamevergrendeling en behoud van de audio. Alle vijf
-handleidingen hebben een nieuw geïndexeerd onderwerp. De distributiebouw en
-pakketcontroles moeten nog volgen.
+handleidingen hebben een nieuw geïndexeerd onderwerp. Tab en Shift+Tab blijven
+binnen de velden en bevestigen de invoer bij het verlaten ervan. Alle **649 tests**
+slagen zonder overslaan op Debian, Fedora en Arch; vijf geïnstalleerde zelftests
+slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden,
+tag, bron en korte releasepunten zijn gecontroleerd. Catalogi: 1541 bronvormen
+zonder ontbrekende vertaling; de indexen bevatten 84 Nederlandse, 52 Engelse en
+53 Duitse, Franse en Spaanse onderwerpen.
 
 ## Eerste stabiele versie — 1.0.0 gepubliceerd
 

@@ -1,6 +1,6 @@
-# Open punten richting v1.0
+# Voortgang en vervolg
 
-Stand: 15 november 2026, SoundSausage 1.0.0 gepubliceerd en gecontroleerd.
+Stand: 15 november 2026, SoundSausage 1.0.1 gepubliceerd en gecontroleerd.
 De releasecandidate en de eerste stabiele publicatie zijn afgerond.
 0.27.2 bevat correctie van gemeten opnameverschuivingen na pauzes,
 een zelfstandig handleidingvenster en volledig vertaalde multitrackknoppen.
@@ -53,13 +53,14 @@ benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
    gepubliceerd. Alle 640 tests slagen zonder overslaan op Debian/Fedora/Arch;
    vijf geïnstalleerde zelftests slagen op vijf doelen.
 
-## Vervolgupdate 1.0.1
+## Vervolgupdate 1.0.1 afgerond
 
 - Begin, Einde en Lengte rechtsonder zijn uitgewerkt voor selectie en zichtbaar
   bereik. Invoer, grenzen, annuleren en behoud van audio/Undo zijn lokaal getoetst.
 - De vijf handleidingen hebben een nieuw geïndexeerd onderwerp met voorbeelden.
-- Distributiebouw, volledige testreeks en geïnstalleerde pakketcontroles volgen
-  vóór publicatie van 1.0.1.
+- Alle 649 tests slagen zonder overslaan op Debian/Fedora/Arch. Vijf
+  geïnstalleerde zelftests slagen op vijf doelen; pakketten en release zijn
+  gepubliceerd en gecontroleerd. De afgesproken wijzigingen zijn afgerond.
 
 De handleidingen zijn via Help/F1 beschikbaar. Werk bij wijzigingen de klikbare
 index bij met `python3 tools/index_manuals.py`. Een v1-datum volgt uit de proeven.

@@ -1,15 +1,16 @@
 # Afgesproken ontwikkelroute
 
-## Eerste 1.0 gepubliceerd; kleine vervolgupdate
+## Eerste 1.0 en tijdinvoer gepubliceerd
 
 De afgesproken route van 14 november 2026 is leidend voor het resterende werk.
 De gekozen uitbreidingen zijn **B06, B07, B21, B23, B24, B33 en B36b**.
 B06/B07 zijn afgerond in 0.22.0, B21 in 0.23.0 en B23/B24 in 0.24.0.
 B36b is afgerond en gepubliceerd in 0.26.0. De fysieke proeven onder B33 zijn afgerond;
 de releasecandidate en definitieve 1.0.0-publicatie zijn eveneens afgerond.
-De [todo](TODO.md) gaat verder met bewerkbare selectie- en weergavetijden in
-1.0.1. De bediening en lokale controles zijn uitgewerkt; de distributiebouw,
-volledige testreeks en geïnstalleerde pakketten volgen vóór publicatie.
+De [todo](TODO.md) legt ook de afgeronde vervolgupdate 1.0.1 vast: bewerkbare
+selectie- en weergavetijden, met bevestigen/annuleren, grenzen en behoud van de
+audio. Alle 649 tests slagen zonder overslaan op drie distributies; vijf
+geïnstalleerde zelftests op vijf doelen en de gepubliceerde pakketten zijn gecontroleerd.
 De overige 18 uitbreidingen
 zijn [voorlopig uitgesteld](validation/beperkingen-keuzes.md) en komen alleen
 na een nieuwe afspraak terug. De afgeronde ontwikkelfases hieronder blijven
