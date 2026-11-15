@@ -1,8 +1,8 @@
 # Voortgang en vervolg
 
-Stand: 15 november 2026, de werkbalkvernieuwing voor SoundSausage 1.1.0 is uitgewerkt. Pakketbouw en releasecontrole volgen.
+Stand: 15 november 2026, SoundSausage 1.1.0 gepubliceerd en gecontroleerd.
 
-## Werkbalkvernieuwing — uitgewerkt
+## Werkbalkvernieuwing — afgerond in 1.1.0
 
 - Algemene knoppen bovenaan, een horizontale gereedschapsoptiebalk daaronder en een aparte verticale gereedschapsbalk standaard links.
 - Selecteren/tekenen voor golfvormen en clips verplaatsen/volume-/panlijnen voor multitrack, met passende opties en kanaalkeuze.
@@ -12,7 +12,7 @@ Stand: 15 november 2026, de werkbalkvernieuwing voor SoundSausage 1.1.0 is uitge
 - Dubbele zoomgroep bovenaan verwijderd; de vier knoppen onderaan, menuopdrachten en sneltoetsen blijven beschikbaar.
 - Alle vijf handleidingen en vertalingen bijgewerkt.
 
-Nog af te ronden: regressiecontroles en geteste pakketten voor Debian/Ubuntu, Fedora en Arch publiceren. De 18 eerder uitgestelde uitbreidingen blijven uitgesteld.
+Alle **657 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd. Alle afgesproken werkbalkverbeteringen zijn afgerond; er staan geen open punten voor deze update. De 18 eerder uitgestelde uitbreidingen blijven uitgesteld.
 
 ## Afgeronde functionele basis
 

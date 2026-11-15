@@ -1,10 +1,10 @@
 # Afgesproken ontwikkelroute
 
-## Werkbalken vernieuwd voor 1.1.0
+## Werkbalken vernieuwd — 1.1.0 gepubliceerd
 
 De nieuwe werkruimte heeft algemene knoppen bovenaan, een aparte optiebalk voor het actieve gereedschap en standaard links een verticale gereedschapsbalk. Werkbalken hebben kaderloze pictogrammen, zichtbare handgrepen en eigen aan/uit-keuzes via **Beeld → Werkbalken**. Indeling, zichtbaarheid en werkbalkteksten blijven bewaard. De dubbele zoomgroep bovenaan is verwijderd; de bediening onderaan, menu's en sneltoetsen behouden alle zoomfuncties.
 
-Golfvorm- en multitrackgereedschappen delen hun bestaande opdrachten met de menu's. Kanaalkeuze, selectie, tekenen, clipeigenschappen en volume-/panlijnen blijven onderdeel van de dagelijkse werkwijze. Het Linux-palet, de accentkleur, paarse app-/venstericonen en lege werkruimte blijven behouden. Alle vijf handleidingen beschrijven de nieuwe bediening. De [todo](TODO.md) volgt de afsluitende regressie- en pakketcontroles. De overige 18 uitbreidingen blijven uitgesteld.
+Golfvorm- en multitrackgereedschappen delen hun bestaande opdrachten met de menu's. Kanaalkeuze, selectie, tekenen, clipeigenschappen en volume-/panlijnen blijven onderdeel van de dagelijkse werkwijze. Het Linux-palet, de accentkleur, paarse app-/venstericonen en lege werkruimte blijven behouden. Alle vijf handleidingen beschrijven de nieuwe bediening. De volledige **657 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd. De [todo](TODO.md) legt de afronding vast. De overige 18 uitbreidingen blijven uitgesteld.
 
 ## Eerste 1.0 en tijdinvoer gepubliceerd
 

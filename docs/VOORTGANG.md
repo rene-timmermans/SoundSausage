@@ -1,10 +1,10 @@
 # Ontwikkelroute
 
-## Werkbalkvernieuwing — 1.1.0 in controle
+## Werkbalkvernieuwing — 1.1.0 gepubliceerd
 
 De algemene werkbalk staat bovenaan, de gereedschapsopties daaronder en een aparte gereedschapsbalk standaard links. De gereedschappen en opties volgen golfvorm- of multitrackbewerking. Kaderloze pictogrammen volgen het Linux-accent; de actieve keuze blijft zichtbaar. De dubbele zoomgroep bovenaan is verwijderd. De vier zoomknoppen onderaan, menu's en sneltoetsen blijven beschikbaar.
 
-De drie werkbalken kunnen met zichtbare handgrepen worden verplaatst, herordend, losgemaakt en weer vastgezet. **Beeld → Werkbalken** toont of verbergt ze afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na herstart behouden. Alle vijf handleidingen zijn bijgewerkt met een klikbaar onderwerp over de nieuwe bediening. De afsluitende automatische controles en pakketbouw lopen vóór de publicatie.
+De drie werkbalken kunnen met zichtbare handgrepen worden verplaatst, herordend, losgemaakt en weer vastgezet. **Beeld → Werkbalken** toont of verbergt ze afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na herstart behouden. Alle vijf handleidingen zijn bijgewerkt met een klikbaar onderwerp over de nieuwe bediening. Alle **657 tests** slagen zonder overslaan op Debian, Fedora en Arch. Acht nieuwe controles toetsen onder meer gereedschapswissels, bewerkingen, opnamevergrendeling, taalkeuze, slepen/losmaken en behoud van indeling en zichtbaarheid bij herstart. Vijf geïnstalleerde zelftests slagen op elk van vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en korte releasepunten zijn gecontroleerd. De catalogi bevatten 1547 bronvormen zonder ontbrekende vertaling; de handleidingen hebben 85 Nederlandse, 53 Engelse en 54 Duitse, Franse en Spaanse onderwerpen.
 
 ## Bewerkbare selectie- en weergavetijden — 1.0.1 gepubliceerd
 
