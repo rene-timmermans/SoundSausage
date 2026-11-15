@@ -47,7 +47,6 @@ def draw(p, name, color):
     line = lambda x1, y1, x2, y2: p.drawLine(QPointF(x1, y1), QPointF(x2, y2))
     rect = lambda x, y, w, h: p.drawRect(QRectF(x, y, w, h))
     variants = {
-        "add_track": ("mode_multi", "plus"), "remove_track": ("mode_multi", "cross"),
         "new_session": ("mode_multi", "plus"), "open_session": ("open", "tracks"),
         "save_as": ("save", "arrow"), "save_selection": ("save", "selection"),
         "save_session": ("save", "tracks"), "save_session_as": ("save", "pen"),
@@ -158,6 +157,11 @@ def draw(p, name, color):
     elif name == "mode_wave":
         for x, y in ((3, 9), (6, 5), (9, 11), (12, 3), (15, 8), (18, 6), (21, 10)):
             line(x, y, x, 24 - y)
+    elif name in ("add_track", "remove_track"):
+        rect(2, 5, 11, 14)
+        for y in (8, 12, 16): line(4, y, 10, y)
+        line(15, 12, 23, 12)
+        if name == "add_track": line(19, 8, 19, 16)
     elif name == "mode_multi":
         for y, x in ((4, 4), (10, 8), (16, 5)):
             rect(x, y, 19 - x, 4)
