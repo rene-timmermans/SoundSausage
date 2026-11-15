@@ -47,6 +47,7 @@ def draw(p, name, color):
     line = lambda x1, y1, x2, y2: p.drawLine(QPointF(x1, y1), QPointF(x2, y2))
     rect = lambda x, y, w, h: p.drawRect(QRectF(x, y, w, h))
     variants = {
+        "add_track": ("mode_multi", "plus"), "remove_track": ("mode_multi", "cross"),
         "new_session": ("mode_multi", "plus"), "open_session": ("open", "tracks"),
         "save_as": ("save", "arrow"), "save_selection": ("save", "selection"),
         "save_session": ("save", "tracks"), "save_session_as": ("save", "pen"),
@@ -311,6 +312,20 @@ def draw(p, name, color):
     elif name == "convert_rate":
         for x in (3, 8, 13, 18, 23): line(x, 14, x, 22)
         line(3, 6, 21, 6); line(3, 6, 7, 2); line(21, 6, 17, 10)
+    elif name == "select_wave":
+        p.drawPolygon(QPolygonF([QPointF(5, 2), QPointF(20, 14), QPointF(13, 15),
+                                QPointF(10, 22), QPointF(5, 2)]))
+    elif name == "move_clips":
+        rect(7, 8, 10, 8)
+        for x, y, dx, dy in ((2, 12, 4, 0), (22, 12, -4, 0), (12, 2, 0, 4), (12, 22, 0, -4)):
+            line(x, y, x + dx, y + dy)
+            line(x, y, x + dx / 2 - dy / 2, y + dy / 2 + dx / 2)
+            line(x, y, x + dx / 2 + dy / 2, y + dy / 2 - dx / 2)
+    elif name in ("volume_line", "pan_line"):
+        points = ((3, 18), (10, 7), (21, 5)) if name == "volume_line" else ((3, 6), (12, 18), (21, 6))
+        p.drawPolyline(QPolygonF([QPointF(x, y) for x, y in points]))
+        for x, y in points: rect(x - 1, y - 1, 2, 2)
+        if name == "pan_line": line(2, 12, 22, 12)
     elif name == "draw_waveform":
         p.drawPolyline(QPolygonF([QPointF(2, 18), QPointF(6, 11), QPointF(10, 16), QPointF(14, 10)]))
         p.drawPolygon(QPolygonF([QPointF(10, 12), QPointF(12, 7), QPointF(20, 1), QPointF(23, 4), QPointF(15, 11)]))

@@ -6,7 +6,7 @@ from PySide6.QtGui import QColor, QPalette, QIcon
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QToolBar, QToolButton
 
-from soundsausage.theme import contrast
+from soundsausage.theme import contrast, colors, blend
 from soundsausage.window import MainWindow
 
 
@@ -36,6 +36,10 @@ class ThemeGuiTests(unittest.TestCase):
                 return result
         self.fail(f"No toolbar button for {key}")
 
+    def button_pixel(self, button, x, y):
+        position = button.mapTo(self.window, QPoint(x, y))
+        return self.window.grab().toImage().pixelColor(position)
+
     def use_palette(self, background, text, accent):
         palette = self.app.style().standardPalette()
         for role in ("Window", "Base", "Button"):
@@ -58,11 +62,12 @@ class ThemeGuiTests(unittest.TestCase):
                 self.window.actions["open"].setText("&Open audio…")
                 # Actual rendered pixels catch the old fixed light-grey backgrounds.
                 image = self.window.grab().toImage()
-                self.assertEqual(image.pixelColor(2, self.window.height() // 2).name(), background)
+                self.assertEqual(image.pixelColor(2, self.window.height() // 2).name(), colors().panel.name())
                 button = self.toolbar_button("open")
                 rendered = button.grab().toImage()
-                fill = rendered.pixelColor(3, button.height() - 4)
-                self.assertEqual(fill.name(), background)
+                fill = self.button_pixel(button, 3, button.height() - 4)
+                self.assertEqual(fill.name(), colors().panel.name())
+                self.assertEqual(self.button_pixel(button, 0, button.height() // 2).name(), colors().panel.name())
                 foreground = button.palette().color(QPalette.ColorGroup.Active, QPalette.ColorRole.ButtonText)
                 self.assertGreaterEqual(contrast(foreground, fill), 4.5)
                 icon_image = button.icon().pixmap(24, 24).toImage()
@@ -73,7 +78,7 @@ class ThemeGuiTests(unittest.TestCase):
                 self.assertNotEqual(ink[0].name(), fill.name())
                 QTest.mouseMove(button, QPoint(10, 10))
                 self.app.processEvents()
-                hover_fill = button.grab().toImage().pixelColor(3, button.height() - 4)
+                hover_fill = self.button_pixel(button, 3, button.height() - 4)
                 self.assertGreaterEqual(contrast(foreground, hover_fill), 4.5)
                 clock_palette = self.window.time_label.palette()
                 self.assertGreaterEqual(contrast(clock_palette.windowText().color(), clock_palette.window().color()), 4.5)
@@ -81,7 +86,7 @@ class ThemeGuiTests(unittest.TestCase):
                 undo = self.toolbar_button("undo")
                 self.assertFalse(undo.isEnabled())
                 disabled = undo.palette().color(QPalette.ColorGroup.Disabled, QPalette.ColorRole.ButtonText)
-                disabled_background = undo.grab().toImage().pixelColor(3, undo.height() - 4)
+                disabled_background = self.button_pixel(undo, 3, undo.height() - 4)
                 self.assertGreaterEqual(contrast(disabled, disabled_background), 3.0)
 
     def test_compact_mode_buttons_have_tooltips_and_highlight_the_active_view(self):
@@ -95,9 +100,9 @@ class ThemeGuiTests(unittest.TestCase):
                 self.assertEqual(button.toolButtonStyle(), Qt.ToolButtonStyle.ToolButtonIconOnly)
                 self.assertIn("View", button.toolTip())
                 self.assertEqual(self.window.mode, mode)
-                fill = button.grab().toImage().pixelColor(3, button.height() - 4)
-                self.assertEqual(fill.name(), "#252a30")
-                self.assertEqual(button.grab().toImage().pixelColor(0, button.height()//2).name(), '#36c5ac')
+                fill = self.button_pixel(button, 3, button.height() - 4)
+                self.assertEqual(fill.name(), blend(colors().button, colors().button_text, .12).name())
+                self.assertNotEqual(self.button_pixel(button, 0, button.height() // 2).name(), '#36c5ac')
 
     def test_optional_toolbar_labels_keep_the_selected_mode_and_theme(self):
         self.use_palette("#252a30", "#ecf0f4", "#36c5ac")
@@ -107,7 +112,7 @@ class ThemeGuiTests(unittest.TestCase):
         self.assertEqual(button.toolButtonStyle(), Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.assertIn("View", button.text())
         self.assertTrue(button.isChecked())
-        self.assertEqual(button.grab().toImage().pixelColor(3, button.height() - 4).name(), "#252a30")
+        self.assertEqual(self.button_pixel(button, 3, button.height() - 4).name(), blend(colors().button, colors().button_text, .12).name())
         self.window.actions["toolbar_labels"].setChecked(False)
         self.assertEqual(button.toolButtonStyle(), Qt.ToolButtonStyle.ToolButtonIconOnly)
 
@@ -130,7 +135,7 @@ class ThemeGuiTests(unittest.TestCase):
             self.app.processEvents()
             button = next(b for k, b in self.window._action_buttons if k == key)
             image = button.grab().toImage()
-            self.assertEqual(image.pixelColor(3, button.height()-4).name(), '#252a30')
+            self.assertNotEqual(self.button_pixel(button, 3, button.height()-4).name(), '#36c5ac')
             icon = button.icon().pixmap(24, 24, QIcon.Mode.Normal, QIcon.State.On if button.isChecked() else QIcon.State.Off).toImage()
             pixels = [icon.pixelColor(x, y) for y in range(24) for x in range(24) if icon.pixelColor(x, y).alpha() >= 220]
             self.assertTrue(pixels)

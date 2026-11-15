@@ -1,15 +1,10 @@
 # Ontwikkelroute
 
-## Gepland: visuele samenhang van de werkbalken
+## Werkbalkvernieuwing — 1.1.0 in controle
 
-De functionele mijlpaal is bereikt met 1.0 en de tijdinvoer in 1.0.1. De volgende
-kleine verbeteringen beginnen met de indeling van de werkbalken: algemene menu's
-en knoppen bovenaan, een gereedschapsoptiebalk daaronder en een aparte verticale
-gereedschapsbalk standaard links. Daarop volgen pictogramknoppen zonder vaste
-kaders, verplaatsbare werkbalken met zichtbare handgrepen en aangevinkte menukeuzes om
-elke balk te tonen of verbergen. De gekozen indeling en zichtbaarheid worden
-bewaard. PixelPickle is het visuele voorbeeld. Dit is een planning; er is voor
-deze punten nog geen nieuwe appversie gemaakt.
+De algemene werkbalk staat bovenaan, de gereedschapsopties daaronder en een aparte gereedschapsbalk standaard links. De gereedschappen en opties volgen golfvorm- of multitrackbewerking. Kaderloze pictogrammen volgen het Linux-accent; de actieve keuze blijft zichtbaar. De dubbele zoomgroep bovenaan is verwijderd. De vier zoomknoppen onderaan, menu's en sneltoetsen blijven beschikbaar.
+
+De drie werkbalken kunnen met zichtbare handgrepen worden verplaatst, herordend, losgemaakt en weer vastgezet. **Beeld → Werkbalken** toont of verbergt ze afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na herstart behouden. Alle vijf handleidingen zijn bijgewerkt met een klikbaar onderwerp over de nieuwe bediening. De afsluitende automatische controles en pakketbouw lopen vóór de publicatie.
 
 ## Bewerkbare selectie- en weergavetijden — 1.0.1 gepubliceerd
 

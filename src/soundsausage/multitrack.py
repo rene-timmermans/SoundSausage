@@ -491,6 +491,7 @@ class MultitrackEditor(QWidget):
     import_files = Signal(object, object, object)
     edit_copy = Signal(str)
     mixdown_requested = Signal()
+    tool_changed = Signal(str)
 
     def __init__(self, session, parent=None):
         super().__init__(parent)
@@ -498,7 +499,9 @@ class MultitrackEditor(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(4)
-        row = QHBoxLayout()
+        self.command_row = QWidget()
+        row = QHBoxLayout(self.command_row)
+        row.setContentsMargins(0, 0, 0, 0)
         self.primary_buttons = {}
         for name, callback in (("Import Audio…", self.import_requested.emit), ("+ Track", self.add_track),
             ("− Track", self.remove_track), ("Clip Properties…", self.properties),
@@ -512,8 +515,10 @@ class MultitrackEditor(QWidget):
             button.clicked.connect(lambda checked=False, action=callback: action())
             row.addWidget(button)
         row.addStretch()
-        layout.addLayout(row)
-        envelope_row = QHBoxLayout()
+        layout.addWidget(self.command_row)
+        self.tool_row = QWidget()
+        envelope_row = QHBoxLayout(self.tool_row)
+        envelope_row.setContentsMargins(0, 0, 0, 0)
         self.envelope_buttons = {}
         group = QButtonGroup(self)
         for mode, label in (("move", "Move Clips"), ("volume", "Volume Line"), ("pan", "Pan Line")):
@@ -534,7 +539,7 @@ class MultitrackEditor(QWidget):
         self.envelope_hint = QLabel("Move clips or choose a volume/pan line.")
         self.envelope_hint.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
         envelope_row.addWidget(self.envelope_hint, 1)
-        layout.addLayout(envelope_row)
+        layout.addWidget(self.tool_row)
         self.scroll = QScrollBar(Qt.Orientation.Horizontal)
         layout.addWidget(self.scroll)
         area = QScrollArea()
@@ -574,6 +579,7 @@ class MultitrackEditor(QWidget):
         self.timeline.envelope_mode = mode
         self.update_envelope_controls()
         self.timeline.update()
+        self.tool_changed.emit(mode)
 
     def update_envelope_controls(self):
         mode = self.timeline.envelope_mode

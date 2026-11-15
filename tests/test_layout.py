@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 from PySide6.QtCore import Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QToolBar, QToolButton
+from PySide6.QtWidgets import QApplication, QToolBar, QToolButton, QWidgetAction
 
 from soundsausage.document import Document
 from soundsausage.theme import colors
@@ -42,8 +42,10 @@ class LayoutTests(unittest.TestCase):
                 self.window.resize(width, height)
                 self.app.processEvents()
                 bars = self.window.findChildren(QToolBar)
-                self.assertEqual(len({bar.geometry().y() for bar in bars if bar.isVisible()}), 2)
-                self.assertLess(sum({bar.height() for bar in bars}), 80)
+                horizontal = [bar for bar in bars if bar.orientation() == Qt.Orientation.Horizontal]
+                self.assertEqual(len({bar.geometry().y() for bar in horizontal if bar.isVisible()}), 2)
+                self.assertLess(sum(bar.height() for bar in horizontal), 80)
+                self.assertEqual(self.window.toolBarArea(self.window.toolbar_controller.tools), Qt.ToolBarArea.LeftToolBarArea)
                 self.assertGreater(self.window.waveform.height(), height * .62)
                 image = self.window.waveform.grab().toImage()
                 self.assertEqual(image.pixelColor(100, 100), colors().workspace)
@@ -68,12 +70,16 @@ class LayoutTests(unittest.TestCase):
     def test_all_toolbar_commands_have_visible_icons_and_named_tooltips(self):
         for bar in self.window.findChildren(QToolBar):
             for action in bar.actions():
-                if action.isSeparator():
+                if action.isSeparator() or isinstance(action, QWidgetAction):
                     continue
                 button = bar.widgetForAction(action)
                 self.assertIsInstance(button, QToolButton)
                 self.assertFalse(button.icon().isNull(), action.text())
                 self.assertTrue(button.toolTip(), action.text())
+        for button in self.window.toolbar_controller.options.findChildren(QToolButton):
+            if button.defaultAction() is not None:
+                self.assertFalse(button.icon().isNull())
+                self.assertTrue(button.toolTip())
 
     def test_selection_and_visible_range_fields_follow_zoom_and_working_mode(self):
         self.load_waveform()

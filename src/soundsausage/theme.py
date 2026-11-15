@@ -34,6 +34,19 @@ def readable(color, background, minimum=4.5):
     return target
 
 
+def readable_on(color, backgrounds, minimum=3.0):
+    """Keep icon and disabled-text contrast on every neutral toolbar state."""
+    score = lambda candidate: min(contrast(candidate, background) for background in backgrounds)
+    if score(color) >= minimum:
+        return QColor(color)
+    target = max((QColor("#000000"), QColor("#ffffff")), key=score)
+    for step in range(1, 101):
+        candidate = QColor(blend(color, target, step / 100).name())
+        if score(candidate) >= minimum:
+            return candidate
+    return target
+
+
 @dataclass(frozen=True)
 class Colors:
     window: QColor
@@ -64,12 +77,14 @@ def from_palette(palette):
     text = readable(get(role.WindowText), window)
     button_text = readable(get(role.ButtonText), button)
     accent = get(role.Accent)
+    panel = blend(window, text, 0.035)
+    surfaces = (button, panel, blend(button, button_text, .07), blend(button, button_text, .12))
     return Colors(
-        window, text, blend(window, text, 0.035), button, button_text, base,
+        window, text, panel, button, button_text, base,
         readable(get(role.Text), base), readable(blend(window, text, 0.65), window),
-        readable(blend(button, button_text, 0.45), button, 3.0),
+        readable_on(blend(button, button_text, 0.45), surfaces),
         blend(window, text, 0.3), accent, readable(get(role.HighlightedText), accent),
-        readable(accent, button, 3.0), QColor("#070d0e"), QColor("#e3eeeb"),
+        readable_on(accent, surfaces), QColor("#070d0e"), QColor("#e3eeeb"),
         QColor("#29413f"), QColor("#27efae"), QColor("#404347"),
     )
 
@@ -93,23 +108,26 @@ def stylesheet(c):
         QToolBar {{ background: {n(c.panel)}; border: none; border-bottom: 1px solid {n(c.border)};
                     spacing: 4px; padding: 4px; }}
         QToolBar::separator {{ background: {n(c.border)}; width: 1px; margin: 4px; }}
+        QToolBar::handle {{ width: 9px; height: 9px; }}
         QToolBar[compact="true"] {{ spacing: 2px; padding: 2px; }}
         QToolButton, QPushButton {{ background: {n(c.button)}; color: {n(c.button_text)};
             border: 1px solid {n(c.border)}; border-radius: 4px; padding: 4px 7px; min-height: 18px; }}
-        QToolButton:hover:enabled {{ background: {n(tool_hover)}; border-color: {n(c.icon)}; }}
+        QToolButton {{ background: transparent; border-color: transparent; }}
+        QToolButton:hover:enabled {{ background: {n(tool_hover)}; }}
         QPushButton:hover:enabled {{ background: {n(hover)}; border-color: {n(c.icon)}; }}
         QToolButton:focus, QPushButton:focus {{ border-color: {n(c.icon)}; border-style: dashed; }}
         QToolButton:checked:enabled {{
-            background: {n(c.button)}; color: {n(c.button_text)}; border-color: {n(c.icon)}; }}
+            background: {n(tool_pressed)}; color: {n(c.button_text)}; }}
         QPushButton:checked:enabled, QPushButton[primary="true"]:enabled,
         QPushButton:default:enabled {{
             background: {n(c.accent)}; color: {n(c.accent_text)}; border-color: {n(c.icon)}; }}
         QToolButton#qt_toolbar_ext_button {{ padding: 0px; }}
-        QToolButton:pressed:enabled {{ background: {n(tool_pressed)}; color: {n(c.button_text)}; border-color: {n(c.icon)}; }}
+        QToolButton:pressed:enabled {{ background: {n(tool_pressed)}; color: {n(c.button_text)}; }}
         QPushButton[primary="true"]:hover:enabled, QPushButton:pressed:enabled {{
             background: {n(pressed)}; color: {n(c.accent_text)}; border-color: {n(c.icon)}; }}
         QToolButton:disabled, QPushButton:disabled {{ background: {n(c.button)}; color: {n(c.disabled)};
             border-color: {n(c.border)}; }}
+        QToolButton:disabled {{ background: transparent; border-color: transparent; }}
         QToolBar[compact="true"] QToolButton, QToolButton[compact="true"], QPushButton[compact="true"] {{
             padding: 2px; min-width: 20px; min-height: 18px; border-radius: 2px; }}
         QWidget#TransportPanel {{ background: {n(c.panel)}; border-top: 1px solid {n(c.border)}; }}

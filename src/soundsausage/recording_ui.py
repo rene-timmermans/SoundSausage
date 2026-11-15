@@ -365,6 +365,8 @@ class RecordingActions:
     def update_recording_actions(self):
         if 'record' not in self.actions:return
         busy=self.recording_busy
+        if hasattr(self,'toolbar_controller'):
+            self.toolbar_controller.sync()
         if hasattr(self,'transport'):
             self.transport.configure_time_fields(self.active_model(),self.mode,not busy)
         if 'punch' in self.actions:self.actions['punch'].setEnabled(not busy and not self.no_audio and self.mode=='multitrack' and self.session.selected)

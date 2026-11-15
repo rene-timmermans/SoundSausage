@@ -1,16 +1,10 @@
 # Afgesproken ontwikkelroute
 
-## Kleine visuele verfijningen na de eerste 1.0
+## Werkbalken vernieuwd voor 1.1.0
 
-De volgende stap begint met de indeling zoals bij PixelPickle: bovenaan de
-menubalk en algemene knoppen, daaronder een horizontale optiebalk voor het actieve
-gereedschap, en standaard links een aparte verticale gereedschapsbalk. Daarbij
-horen pictogramknoppen zonder vaste kaders, zichtbare handgrepen voor verplaatsen
-en herordenen, en afzonderlijke aan/uit-keuzes onder **Beeld → Werkbalken**.
-Indeling en zichtbaarheid blijven
-bij herstart bewaard. PixelPickle vormt het visuele voorbeeld; het Linux-thema
-en de accentkleur blijven leidend. Deze punten zijn gepland en nog niet uitgevoerd.
-De [todo](TODO.md) houdt ze bij. De eerder uitgestelde uitbreidingen blijven uitgesteld.
+De nieuwe werkruimte heeft algemene knoppen bovenaan, een aparte optiebalk voor het actieve gereedschap en standaard links een verticale gereedschapsbalk. Werkbalken hebben kaderloze pictogrammen, zichtbare handgrepen en eigen aan/uit-keuzes via **Beeld → Werkbalken**. Indeling, zichtbaarheid en werkbalkteksten blijven bewaard. De dubbele zoomgroep bovenaan is verwijderd; de bediening onderaan, menu's en sneltoetsen behouden alle zoomfuncties.
+
+Golfvorm- en multitrackgereedschappen delen hun bestaande opdrachten met de menu's. Kanaalkeuze, selectie, tekenen, clipeigenschappen en volume-/panlijnen blijven onderdeel van de dagelijkse werkwijze. Het Linux-palet, de accentkleur, paarse app-/venstericonen en lege werkruimte blijven behouden. Alle vijf handleidingen beschrijven de nieuwe bediening. De [todo](TODO.md) volgt de afsluitende regressie- en pakketcontroles. De overige 18 uitbreidingen blijven uitgesteld.
 
 ## Eerste 1.0 en tijdinvoer gepubliceerd
 

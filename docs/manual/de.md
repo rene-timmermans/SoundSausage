@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 1.0.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 1.1.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -11,6 +11,7 @@ Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige un
 
 - [1. Sprache und Hilfe](#ss-topic-1-sprache-und-hilfe)
 - [2. Schnellstart und Arbeitsbereich](#ss-topic-2-schnellstart-und-arbeitsbereich)
+  - [Werkzeugleisten und Werkzeugoptionen](#ss-topic-werkzeugleisten-und-werkzeugoptionen)
   - [Zeiten unten rechts eingeben](#ss-topic-zeiten-unten-rechts-eingeben)
 - [3. Dateien, Projekte und Wiederherstellung](#ss-topic-3-dateien-projekte-und-wiederherstellung)
   - [MP3 und WAV](#ss-topic-mp3-und-wav)
@@ -79,7 +80,7 @@ Unter **Optionen → Sprache** Nederlands, English, Deutsch, Français oder Espa
 
 ## 2. Schnellstart und Arbeitsbereich
 
-Werkzeugleisten- und Transportschaltflächen haben neutrale Hintergründe mit Akzent-Symbolen; ein dünner Akzentrahmen markiert die aktive Wahl.
+Werkzeugleisten- und Transportschaltflächen zeigen Symbole in der Akzentfarbe ohne feste Rahmen. Ein dezenter Hintergrund markiert das aktive Werkzeug; Mauszeiger und Tastaturfokus bleiben erkennbar.
 
 Das Programmsymbol mit violettem Hintergrund erscheint in den Fenstertitelleisten und der Taskleiste. **Hilfe → Über** zeigt das freigestellte Maskottchen neben den Programminformationen.
 
@@ -90,6 +91,16 @@ Eine WAV- oder MP3-Datei mit **Datei → Öffnen** öffnen. **Leertaste** starte
 Fenster und Diagrammskalen passen sich an die Schriftgröße des Desktops und die gewählte Sprache an. Ist ein Formular zu groß für den Bildschirm, durch die Einstellungen scrollen; die Schaltflächen zum Bestätigen und Abbrechen bleiben erreichbar.
 
 Zwei dünne horizontale Linien markieren die Unterkante des linken und die Oberkante des rechten Kanals. Sie enden an den Seiten des Wellenformbereichs, auch bei der Liveaufnahme.
+
+<a id="ss-topic-werkzeugleisten-und-werkzeugoptionen"></a>
+
+### Werkzeugleisten und Werkzeugoptionen
+
+Die allgemeine Leiste oben enthält Ansichtswahl, Öffnen, Speichern, Bearbeiten und Sitzungsbefehle. Die separate Werkzeugleiste steht zunächst links. **Wellenform auswählen** wählt einen Bereich oder setzt den Cursor; **Wellenform zeichnen / D** zeichnet Samples. In der Mehrspuransicht wählen Sie **Clips verschieben**, **Lautstärkekurve** oder **Panoramakurve**.
+
+Die horizontale Leiste **Werkzeugoptionen** unter der allgemeinen Leiste folgt dem aktiven Werkzeug. Beim Auswählen bietet sie Bereichs- und Nulldurchgangsbefehle sowie die Stereokanalauswahl, beim Zeichnen numerische Samplebearbeitung und Kanalauswahl. In der Mehrspuransicht stehen Clip-Eigenschaften, Duplizieren und Entfernen bereit. Bei Lautstärke- und Pan-Linien erscheint außerdem **Kurve zurücksetzen** für den ausgewählten Clip. **+ Spur / − Spur** stehen oben und unter **Fenster**. Effekte bleiben unter **Effekte**; die vier Zoomknöpfe stehen unten bei den Wiedergabeknöpfen und unter **Ansicht**, mit unveränderten Tastenkürzeln.
+
+Ziehen Sie eine Leiste am gepunkteten Griff, um sie zu verschieben, neu anzuordnen oder abzulösen. Am Fensterrand rastet sie wieder ein. **Ansicht → Werkzeugleisten → Allgemein / Werkzeugoptionen / Werkzeuge** zeigt oder verbirgt jede Leiste einzeln. Anordnung, Sichtbarkeit und Beschriftungen bleiben nach dem Schließen erhalten. Verborgene Leisten lassen sich über dasselbe Menü wieder einblenden.
 
 <a id="ss-topic-zeiten-unten-rechts-eingeben"></a>
 

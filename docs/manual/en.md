@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 1.0.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 1.1.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -11,6 +11,7 @@ Click a topic to jump directly to it. Contents brings you back; Previous and Nex
 
 - [1. Language and help](#ss-topic-1-language-and-help)
 - [2. Quick start and workspace](#ss-topic-2-quick-start-and-workspace)
+  - [Toolbars and tool options](#ss-topic-toolbars-and-tool-options)
   - [Entering times at the bottom right](#ss-topic-entering-times-at-the-bottom-right)
 - [3. Files, projects and recovery](#ss-topic-3-files-projects-and-recovery)
   - [MP3 and WAV](#ss-topic-mp3-and-wav)
@@ -78,7 +79,7 @@ Choose **Options → Language** and select Nederlands, English, Deutsch, França
 
 ## 2. Quick start and workspace
 
-Toolbar and transport buttons have neutral backgrounds with accent-coloured icons; a thin accent border marks the active choice.
+Toolbar and transport buttons use accent-coloured icons without permanent frames. A subtle background marks the active tool; hover and keyboard focus remain visible.
 
 The application icon with its purple background appears in window title bars and the taskbar. **Help → About** displays the separate mascot beside the application information.
 
@@ -89,6 +90,16 @@ Open a WAV or MP3 with **File → Open**. Press **Space** to listen or stop. Dra
 Windows and graph scales adapt to the desktop font size and chosen language. If a form is too large for the screen, scroll through its settings; confirmation and cancel buttons remain accessible.
 
 Two thin horizontal lines mark the bottom edge of the left channel and the top edge of the right channel. They end at the sides of the waveform plot, also during live recording.
+
+<a id="ss-topic-toolbars-and-tool-options"></a>
+
+### Toolbars and tool options
+
+The general toolbar at the top contains view selection, opening, saving, editing and session commands. The separate tools bar starts on the left. Choose **Select Waveform** to select a range or place the cursor, or **Draw Waveform / D** to draw samples. In multitrack choose **Move Clips**, **Volume Line** or **Pan Line**.
+
+The horizontal **Tool Options** bar below the general bar follows the active tool. Selection offers range and zero-crossing commands plus stereo channel selection; drawing offers numeric sample editing and channel selection. In multitrack it offers clip properties, duplication and removal. For volume and pan lines, **Reset Line** is also available for the selected clip. **+ Track / − Track** are at the top and in **Window**. Effects remain in **Transform**; the four zoom buttons are at the bottom beside playback controls and in **View**, with the same shortcuts.
+
+Drag a toolbar by its dotted handle to move, reorder or float it. Drag it to a window edge to dock it again. **View → Toolbars → General / Tool Options / Tools** shows or hides each bar separately. Layout, visibility and toolbar labels are remembered after closing. Restore any hidden bar through the same menu.
 
 <a id="ss-topic-entering-times-at-the-bottom-right"></a>
 

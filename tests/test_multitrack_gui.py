@@ -178,7 +178,7 @@ class MultitrackGuiTests(unittest.TestCase):
         self.window.set_mode("waveform")
         self.assertTrue(self.window.actions["amplify"].isEnabled())
         self.assertTrue(self.window.actions["tone"].isEnabled())
-        self.assertTrue(self.window.effects_toolbar.isVisible())
+        self.assertIn(self.window.actions["amplify"], self.window.menus["amplitude"].actions())
         self.window.effect("invert")
         np.testing.assert_array_equal(self.window.document.read(), -self.data)
 

@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 1.0.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 1.1.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -11,6 +11,7 @@ Cliquez sur un sujet pour y accéder. Sommaire revient ici ; Précédent et Suiv
 
 - [1. Langue et aide](#ss-topic-1-langue-et-aide)
 - [2. Démarrage rapide et espace de travail](#ss-topic-2-demarrage-rapide-et-espace-de-travail)
+  - [Barres d’outils et options de l’outil](#ss-topic-barres-doutils-et-options-de-loutil)
   - [Saisir les temps en bas à droite](#ss-topic-saisir-les-temps-en-bas-a-droite)
 - [3. Fichiers, projets et récupération](#ss-topic-3-fichiers-projets-et-recuperation)
   - [MP3 et WAV](#ss-topic-mp3-et-wav)
@@ -79,7 +80,7 @@ Dans **Options → Langue**, choisissez Nederlands, English, Deutsch, Français 
 
 ## 2. Démarrage rapide et espace de travail
 
-Les boutons de barre et de transport ont un fond neutre et des icônes de la couleur d’accent ; un cadre fin marque le choix actif.
+Les boutons de barre et de transport affichent des icônes de la couleur d’accent, sans cadre permanent. Un fond discret indique l’outil actif ; le survol et le focus clavier restent visibles.
 
 L’icône du programme sur fond violet apparaît dans les barres de titre et la barre des tâches. **Aide → À propos** affiche la mascotte détourée à côté des informations du programme.
 
@@ -90,6 +91,16 @@ Ouvrez un WAV ou MP3 par **Fichier → Ouvrir**. **Espace** démarre ou arrête 
 Les fenêtres et les échelles des graphiques s’adaptent à la taille de police du bureau et à la langue choisie. Si un formulaire dépasse l’écran, faites défiler ses réglages ; les boutons de validation et d’annulation restent accessibles.
 
 Deux fines lignes horizontales marquent le bord inférieur du canal gauche et le bord supérieur du canal droit. Elles s’arrêtent aux limites du graphique, également pendant l’enregistrement en direct.
+
+<a id="ss-topic-barres-doutils-et-options-de-loutil"></a>
+
+### Barres d’outils et options de l’outil
+
+La barre générale en haut contient le choix de vue, l’ouverture, l’enregistrement, l’édition et les commandes de session. La barre d’outils séparée se trouve initialement à gauche. **Sélectionner la forme d’onde** sélectionne une plage ou place le curseur ; **Dessiner la forme d’onde / D** dessine les échantillons. En multipiste, choisissez **Déplacer les clips**, **Courbe de volume** ou **Courbe de panoramique**.
+
+La barre horizontale **Options de l’outil**, sous la barre générale, suit l’outil actif. La sélection propose les commandes de plage et de passages par zéro ainsi que le choix des canaux stéréo ; le dessin propose l’édition numérique d’échantillons et le choix des canaux. En multipiste, elle offre les propriétés, la duplication et la suppression de clips. Pour les courbes de volume et de panoramique, **Réinitialiser la courbe** apparaît aussi pour le clip sélectionné. **+ Piste / − Piste** figurent en haut et dans **Fenêtre**. Les effets restent dans **Effets** ; les quatre boutons de zoom sont en bas près des commandes de lecture et dans **Affichage**, avec les mêmes raccourcis.
+
+Faites glisser une barre par sa poignée pointillée pour la déplacer, la réordonner ou la détacher. Faites-la glisser vers un bord de la fenêtre pour l’ancrer . **Affichage → Barres d’outils → Général / Options de l’outil / Outils** affiche ou masque chaque barre séparément. La disposition, la visibilité et les libellés sont conservés après fermeture. Le même menu permet de réafficher toute barre masquée.
 
 <a id="ss-topic-saisir-les-temps-en-bas-a-droite"></a>
 

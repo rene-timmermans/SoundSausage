@@ -1,25 +1,18 @@
 # Voortgang en vervolg
 
-Stand: 15 november 2026, SoundSausage 1.0.1 gepubliceerd en gecontroleerd.
-De releasecandidate en de eerste stabiele publicatie zijn afgerond.
+Stand: 15 november 2026, de werkbalkvernieuwing voor SoundSausage 1.1.0 is uitgewerkt. Pakketbouw en releasecontrole volgen.
 
-## Volgende kleine verbeteringen: werkbalken
+## Werkbalkvernieuwing — uitgewerkt
 
-1. **Eerst de indeling zoals bij PixelPickle opzetten.** Bovenaan de menubalk
-   met algemene opdrachten en een algemene knoppenrij. Daaronder een horizontale
-   gereedschapsoptiebalk voor het actieve gereedschap. Een aparte verticale
-   gereedschapsbalk staat standaard links naast de werkruimte.
-2. **Pictogramknoppen zonder vaste kaders.** De werkbalken visueel laten aansluiten
-   op PixelPickle: de accentkleur op de pictogrammen, met duidelijke aanwijzingen
-   voor aanwijzen, actieve functies en uitgeschakelde opdrachten.
-3. **Werkbalken verplaatsbaar maken.** Zichtbare handgrepen toevoegen om de balken
-   te verslepen, onderling te ordenen en opnieuw vast te zetten.
-4. **Werkbalken afzonderlijk aan- en uitzetten.** Onder **Beeld → Werkbalken**
-   een aangevinkte keuze per balk aanbieden. Indeling en zichtbaarheid bij
-   herstart behouden.
+- Algemene knoppen bovenaan, een horizontale gereedschapsoptiebalk daaronder en een aparte verticale gereedschapsbalk standaard links.
+- Selecteren/tekenen voor golfvormen en clips verplaatsen/volume-/panlijnen voor multitrack, met passende opties en kanaalkeuze.
+- Pictogramknoppen zonder vaste kaders, met accentkleur en herkenbare actieve, hover-, focus- en uitgeschakelde toestanden.
+- Verplaatsen, herordenen, losmaken en vastzetten via zichtbare handgrepen.
+- Afzonderlijke aan/uit-keuzes via **Beeld → Werkbalken**, met behoud van indeling, zichtbaarheid en werkbalkteksten bij herstart.
+- Dubbele zoomgroep bovenaan verwijderd; de vier knoppen onderaan, menuopdrachten en sneltoetsen blijven beschikbaar.
+- Alle vijf handleidingen en vertalingen bijgewerkt.
 
-Deze verbeteringen staan op de planning; de huidige 1.0.1-release blijft de
-afgeronde functionele basis.
+Nog af te ronden: regressiecontroles en geteste pakketten voor Debian/Ubuntu, Fedora en Arch publiceren. De 18 eerder uitgestelde uitbreidingen blijven uitgesteld.
 
 ## Afgeronde functionele basis
 

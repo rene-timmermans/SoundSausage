@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 1.0.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 1.1.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -11,6 +11,7 @@ Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente ca
 
 - [1. Idioma y ayuda](#ss-topic-1-idioma-y-ayuda)
 - [2. Inicio rápido y espacio de trabajo](#ss-topic-2-inicio-rapido-y-espacio-de-trabajo)
+  - [Barras de herramientas y opciones](#ss-topic-barras-de-herramientas-y-opciones)
   - [Introducir tiempos en la parte inferior derecha](#ss-topic-introducir-tiempos-en-la-parte-inferior-derecha)
 - [3. Archivos, proyectos y recuperación](#ss-topic-3-archivos-proyectos-y-recuperacion)
   - [MP3 y WAV](#ss-topic-mp3-y-wav)
@@ -79,7 +80,7 @@ En **Opciones → Idioma**, elige Nederlands, English, Deutsch, Français o Espa
 
 ## 2. Inicio rápido y espacio de trabajo
 
-Los botones de barras y transporte tienen fondo neutro e iconos del color de acento; un borde fino marca la opción activa.
+Los botones de barras y transporte muestran iconos del color de acento sin marcos permanentes. Un fondo sutil señala la herramienta activa; el paso del ratón y el foco del teclado siguen visibles.
 
 El icono del programa con fondo morado aparece en las barras de título y la barra de tareas. **Ayuda → Acerca de** muestra la mascota recortada junto a la información del programa.
 
@@ -90,6 +91,16 @@ Abre un WAV o MP3 con **Archivo → Abrir**. **Espacio** reproduce o detiene. Se
 Las ventanas y las escalas de los gráficos se adaptan al tamaño de letra del escritorio y al idioma elegido. Si un formulario no cabe en la pantalla, desplázate por sus ajustes; los botones para confirmar o cancelar siguen accesibles.
 
 Dos finas líneas horizontales marcan el borde inferior del canal izquierdo y el superior del derecho. Terminan en los límites del gráfico, también durante la grabación en directo.
+
+<a id="ss-topic-barras-de-herramientas-y-opciones"></a>
+
+### Barras de herramientas y opciones
+
+La barra general superior contiene selección de vista, apertura, guardado, edición y comandos de sesión. La barra de herramientas independiente aparece inicialmente a la izquierda. **Seleccionar forma de onda** selecciona un intervalo o coloca el cursor; **Dibujar forma de onda / D** dibuja muestras. En multipista, elige **Mover clips**, **Curva de volumen** o **Curva panorámica**.
+
+La barra horizontal **Opciones de herramienta**, bajo la barra general, sigue la herramienta activa. La selección ofrece comandos de intervalo y cruces por cero, además de selección de canales estéreo; el dibujo ofrece edición numérica de muestras y selección de canales. En multipista ofrece propiedades, duplicación y eliminación de clips. Para las líneas de volumen y panorámica aparece también **Restablecer curva** para el clip seleccionado. **+ Pista / − Pista** están arriba y en **Ventana**. Los efectos siguen en **Efectos**; los cuatro botones de zoom están abajo junto a los controles de reproducción y en **Ver**, con los mismos atajos.
+
+Arrastra una barra por su asa de puntos para moverla, reordenarla o separarla. Acércala a un borde de la ventana para acoplarla. **Ver → Barras de herramientas → General / Opciones de herramienta / Herramientas** muestra u oculta cada barra por separado. La disposición, la visibilidad y las etiquetas se conservan al cerrar. Recupera cualquier barra oculta mediante el mismo menú.
 
 <a id="ss-topic-introducir-tiempos-en-la-parte-inferior-derecha"></a>
 

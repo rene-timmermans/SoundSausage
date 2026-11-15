@@ -1,0 +1,6 @@
+General|||Algemeen|||Allgemein|||Général|||General
+Tool Options|||Gereedschapsopties|||Werkzeugoptionen|||Options de l’outil|||Opciones de herramienta
+Toolbars|||Werkbalken|||Werkzeugleisten|||Barres d’outils|||Barras de herramientas
+Tools|||Gereedschappen|||Werkzeuge|||Outils|||Herramientas
+Select Waveform|||Golfvorm selecteren|||Wellenform auswählen|||Sélectionner la forme d’onde|||Seleccionar forma de onda
+Drag to select audio; click to place the cursor.|||Sleep om audio te selecteren; klik om de cursor te plaatsen.|||Ziehen, um Audio auszuwählen; klicken, um den Cursor zu setzen.|||Faites glisser pour sélectionner l’audio ; cliquez pour placer le curseur.|||Arrastra para seleccionar audio; haz clic para colocar el cursor.

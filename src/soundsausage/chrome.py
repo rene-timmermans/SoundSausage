@@ -1,5 +1,5 @@
 """Compact desktop menus and toolbars shared by the two editor modes."""
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt
 from .i18n_widgets import QToolBar
 from .i18n import LANGUAGES, install_language, language
 from .i18n_widgets import QAction
@@ -87,6 +87,8 @@ def create_menus(window):
     view = menu("view", "&View")
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
     add(view,(None,'marker_previous','marker_next'))
+    view.addSeparator()
+    window.menus['toolbars'] = view.addMenu('Toolbars')
     transform = menu("transform", "&Transform")
     add(transform, ('remaster',None,"invert", "reverse", "silence", None))
     add(transform, ("track_fx", None))
@@ -136,25 +138,5 @@ def create_menus(window):
 
 
 def create_toolbars(window):
-    def bar(name, groups):
-        toolbar = QToolBar(name, window)
-        toolbar.setObjectName(name.replace(" ", "") + "Toolbar")
-        toolbar.setProperty("compact", True)
-        toolbar.setMovable(False)
-        toolbar.setIconSize(QSize(18, 18))
-        toolbar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
-        window.addToolBar(toolbar)
-        for index, keys in enumerate(groups):
-            if index:
-                toolbar.addSeparator()
-            for key in keys:
-                toolbar.addAction(window.actions[key])
-        return toolbar
-
-    bar("Working Mode", (("mode_wave", "mode_multi"),))
-    bar("File and Edit", (("new", "open", "save"), ("cut", "copy", "paste", "trim"), ("undo", "redo")))
-    bar("View", (("zoom_in", "zoom_out", "zoom_full", "zoom_selection"), ("draw_waveform",'marker_add','markers')))
-    window.addToolBarBreak()
-    window.effects_toolbar = bar("Transform", (("amplify", "normalize", "fade_in", "fade_out"),
-                                              ("invert", "reverse", "silence", "frequency")))
-    bar("Multitrack", (("insert_wave", "apply_clip"), ("import_audio", "mixdown")))
+    from .toolbars import WorkspaceToolbars
+    window.toolbar_controller = WorkspaceToolbars(window)

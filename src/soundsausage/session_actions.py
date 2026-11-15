@@ -72,8 +72,6 @@ class SessionActions:
         multi = self.mode == "multitrack"
         self.actions['remaster'].setEnabled(not multi and self.document.frames>0)
         self.actions['track_fx'].setEnabled(multi)
-        if hasattr(self, "effects_toolbar"):
-            self.effects_toolbar.setVisible(not multi)
         self.actions["new"].setText("&New Session…" if multi else "&New…")
         self.actions["open"].setText("&Open Session…" if multi else "&Open…")
         self.actions["save"].setText("&Save Session" if multi else "&Save")
@@ -101,6 +99,8 @@ class SessionActions:
             except AudioError:
                 pass
         self.actions["apply_clip"].setEnabled(not multi and linked and self.document.frames > 0)
+        if hasattr(self, "toolbar_controller"):
+            self.toolbar_controller.sync()
 
     def session_selection_changed(self):
         if self.mode == "multitrack":

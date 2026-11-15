@@ -185,8 +185,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.setMinimumSize(850, 540)
         self._create_actions()
         self._create_menus()
-        self._create_toolbars()
         self._create_editor()
+        self._create_toolbars()
         self._create_status()
         self.bind_button_icons()
         self.theme.changed.connect(self.apply_theme)
@@ -198,6 +198,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
 
     def restore_window_geometry(self):
         self._remember_geometry = True
+        self.toolbar_controller.restore()
         saved = self.ui_settings.value('ui/window_geometry', None)
         if not saved:
             return False
@@ -1213,6 +1214,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
                 self.recovery = None
             if self._remember_geometry:
                 self.ui_settings.setValue('ui/window_geometry', self.saveGeometry())
+                self.toolbar_controller.save()
                 self.ui_settings.sync()
             event.accept()
         else:

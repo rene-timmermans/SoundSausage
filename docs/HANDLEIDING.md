@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 1.0.1. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 1.1.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -21,6 +21,7 @@ Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vori
 - [Taal kiezen](#ss-topic-taal-kiezen)
 - [Snel beginnen](#ss-topic-snel-beginnen)
 - [1. De werkruimte](#ss-topic-1-de-werkruimte)
+  - [Werkbalken en gereedschapsopties](#ss-topic-werkbalken-en-gereedschapsopties)
   - [Tijden rechtsonder invoeren](#ss-topic-tijden-rechtsonder-invoeren)
 - [2. Bestanden openen, bewaren en sluiten](#ss-topic-2-bestanden-openen-bewaren-en-sluiten)
   - [Losse opnamen](#ss-topic-losse-opnamen)
@@ -145,8 +146,7 @@ naast elkaar blijven bestaan; wisselen van weergave sluit ze niet. Twee dunne
 horizontale lijnen begrenzen de kanalen: de onderrand van links en de bovenrand
 van rechts. Ze lopen alleen binnen het tekenvlak, ook bij live opname.
 
-Werkbalk- en afspeelknoppen hebben een neutrale achtergrond met pictogrammen in de
-themakleur. Een dun gekleurd kader toont de actieve keuze.
+Werkbalk- en afspeelknoppen tonen pictogrammen in de themakleur zonder vaste kaders. Een subtiele achtergrond markeert het actieve gereedschap; aanwijzen en toetsenbordfocus blijven herkenbaar.
 
 Bovenaan staan menu's en werkbalken. Een korte aanwijzing verschijnt wanneer je
 de muis boven een knop houdt. **Opties → Werkbalkteksten tonen** toont ook namen
@@ -173,6 +173,16 @@ signaal boven het maximale uitvoerniveau komt: verlaag het volume of normaliseer
 Een sterretje voor de bestandsnaam betekent dat er wijzigingen zijn die nog
 niet zijn opgeslagen. Een uitgeschakelde menuoptie kan bij de andere weergave
 horen, een selectie vereisen of nog in ontwikkeling zijn.
+
+<a id="ss-topic-werkbalken-en-gereedschapsopties"></a>
+
+### Werkbalken en gereedschapsopties
+
+De algemene werkbalk staat bovenaan, met weergavekeuze, openen, opslaan, bewerken en sessieopdrachten. De aparte gereedschapsbalk staat standaard links. Kies **Golfvorm selecteren** om een tijdvak te selecteren of de cursor te plaatsen, of **Golfvorm tekenen / D** om samples te tekenen. In multitrack kies je **Clips verplaatsen**, **Volumelijn** of **Panlijn**.
+
+De horizontale **Gereedschapsopties** onder de algemene werkbalk volgen het actieve gereedschap. Bij selecteren zijn het selectie- en nuldoorgangscommando en de stereokanaalkeuze beschikbaar; bij tekenen de numerieke samplebewerking en kanaalkeuze. In multitrack staan hier de clipeigenschappen, dupliceren en verwijderen. Bij volume- en panlijnen verschijnt ook **Lijn herstellen** voor de geselecteerde clip. **+ Spoor / − Spoor** staan bovenaan en in **Venster**. Effecten kies je via **Effecten**; de vier zoomknoppen staan onderaan bij de afspeelknoppen en in **Beeld**, met dezelfde sneltoetsen.
+
+Sleep een werkbalk aan de gestippelde handgreep om hem te verplaatsen, anders te ordenen of los te maken. Sleep hem naar een vensterrand om hem weer vast te zetten. **Beeld → Werkbalken → Algemeen / Gereedschapsopties / Gereedschappen** toont of verbergt elke balk afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na afsluiten bewaard. Een verborgen balk kun je via hetzelfde menu terughalen.
 
 <a id="ss-topic-tijden-rechtsonder-invoeren"></a>
 
