@@ -375,6 +375,8 @@
   "End (s)": "Ende (s)",
   "End frame": "End-Frame",
   "End frame (exclusive)": "End-Frame (exklusiv)",
+  "Enter a time as seconds, m:ss.mmm or h:mm:ss.mmm.": "Geben Sie eine Zeit als Sekunden, m:ss.mmm oder h:mm:ss.mmm ein.",
+  "Enter seconds or m:ss.mmm / h:mm:ss.mmm. Dot or comma is accepted. Enter applies; Escape cancels.": "Sekunden oder m:ss.mmm / h:mm:ss.mmm eingeben. Punkt und Komma sind möglich. Eingabe übernimmt; Escape verwirft.",
   "Envelope": "Lautstärkeverlauf",
   "Envelope frames must be unique, ordered and inside the source audio.": "Kurven-Frames müssen eindeutig, geordnet und innerhalb des Quellaudios liegen.",
   "Envelope points must be immutable.": "Kurvenpunkte müssen unveränderlich sein.",

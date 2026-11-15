@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 1.0.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 1.0.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -11,6 +11,7 @@ Cliquez sur un sujet pour y accéder. Sommaire revient ici ; Précédent et Suiv
 
 - [1. Langue et aide](#ss-topic-1-langue-et-aide)
 - [2. Démarrage rapide et espace de travail](#ss-topic-2-demarrage-rapide-et-espace-de-travail)
+  - [Saisir les temps en bas à droite](#ss-topic-saisir-les-temps-en-bas-a-droite)
 - [3. Fichiers, projets et récupération](#ss-topic-3-fichiers-projets-et-recuperation)
   - [MP3 et WAV](#ss-topic-mp3-et-wav)
   - [Métadonnées MP3 après modification](#ss-topic-metadonnees-mp3-apres-modification)
@@ -89,6 +90,16 @@ Ouvrez un WAV ou MP3 par **Fichier → Ouvrir**. **Espace** démarre ou arrête 
 Les fenêtres et les échelles des graphiques s’adaptent à la taille de police du bureau et à la langue choisie. Si un formulaire dépasse l’écran, faites défiler ses réglages ; les boutons de validation et d’annulation restent accessibles.
 
 Deux fines lignes horizontales marquent le bord inférieur du canal gauche et le bord supérieur du canal droit. Elles s’arrêtent aux limites du graphique, également pendant l’enregistrement en direct.
+
+<a id="ss-topic-saisir-les-temps-en-bas-a-droite"></a>
+
+### Saisir les temps en bas à droite
+
+Cliquez sur **Début**, **Fin** ou **Durée** dans **Sél.** ou **Affichage**, puis saisissez un temps. **Entrée** ou quitter le champ applique la valeur ; **Échap** rétablit la valeur actuelle. Utilisez des secondes (`1.25` ou `1,25`), minutes/secondes (`1:08.696`) ou heures/minutes/secondes (`1:02:03.456`). Point et virgule sont acceptés. La saisie est arrondie à l’échantillon le plus proche ; l’affichage indique les millisecondes.
+
+**Sél.** modifie la sélection. Début et Fin déplacent la limite correspondante ; Durée calcule la fin à partir du début. Si une limite dépasse l’autre, elles se rejoignent à cet endroit. Une durée nulle crée une position du curseur. **Affichage** modifie la plage visible et le zoom avec les mêmes commandes. La plage visible reste positive. Le son et l’historique d’annulation ne changent pas ; la lecture peut continuer.
+
+Les valeurs sont limitées au fichier, ou à la chronologie de 24 heures en multipiste. Un temps invalide ou négatif est rejeté : la valeur valide revient avec une indication près du champ. Pendant l’enregistrement, les champs sont en lecture seule. Changer de document abandonne une saisie non confirmée.
 
 <a id="ss-topic-3-fichiers-projets-et-recuperation"></a>
 

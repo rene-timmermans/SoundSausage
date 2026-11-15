@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 1.0.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 1.0.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -11,6 +11,7 @@ Click a topic to jump directly to it. Contents brings you back; Previous and Nex
 
 - [1. Language and help](#ss-topic-1-language-and-help)
 - [2. Quick start and workspace](#ss-topic-2-quick-start-and-workspace)
+  - [Entering times at the bottom right](#ss-topic-entering-times-at-the-bottom-right)
 - [3. Files, projects and recovery](#ss-topic-3-files-projects-and-recovery)
   - [MP3 and WAV](#ss-topic-mp3-and-wav)
   - [MP3 metadata after editing](#ss-topic-mp3-metadata-after-editing)
@@ -88,6 +89,16 @@ Open a WAV or MP3 with **File → Open**. Press **Space** to listen or stop. Dra
 Windows and graph scales adapt to the desktop font size and chosen language. If a form is too large for the screen, scroll through its settings; confirmation and cancel buttons remain accessible.
 
 Two thin horizontal lines mark the bottom edge of the left channel and the top edge of the right channel. They end at the sides of the waveform plot, also during live recording.
+
+<a id="ss-topic-entering-times-at-the-bottom-right"></a>
+
+### Entering times at the bottom right
+
+Click **Begin**, **End** or **Length** in **Sel** or **View** and type a time. **Enter** or leaving the field applies it; **Escape** restores the current value. Enter seconds (`1.25` or `1,25`), minutes/seconds (`1:08.696`) or hours/minutes/seconds (`1:02:03.456`). Dot and comma are both accepted. Input rounds to the nearest sample; the display shows milliseconds.
+
+**Sel** changes the selection. Begin and End move the corresponding boundary; Length calculates End from Begin. If either boundary crosses the other, both meet at that point. A zero length creates a cursor position. **View** changes the visible range and zoom using the same controls. The visible range stays positive. Audio and Undo history remain unchanged; playback can continue.
+
+Values are limited to the file bounds, or the 24-hour timeline in multitrack. Invalid or negative times are rejected: the valid value returns with a hint beside the field. During recording these fields are read-only. Switching documents discards unfinished input.
 
 <a id="ss-topic-3-files-projects-and-recovery"></a>
 

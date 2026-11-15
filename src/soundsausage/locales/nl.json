@@ -375,6 +375,8 @@
   "End (s)": "Einde (s)",
   "End frame": "Eindframe",
   "End frame (exclusive)": "Eindframe (exclusief)",
+  "Enter a time as seconds, m:ss.mmm or h:mm:ss.mmm.": "Voer een tijd in als seconden, m:ss.mmm of h:mm:ss.mmm.",
+  "Enter seconds or m:ss.mmm / h:mm:ss.mmm. Dot or comma is accepted. Enter applies; Escape cancels.": "Voer seconden of m:ss.mmm / h:mm:ss.mmm in. Punt en komma zijn toegestaan. Enter bevestigt; Escape annuleert.",
   "Envelope": "Volumeverloop",
   "Envelope frames must be unique, ordered and inside the source audio.": "Verloopframes moeten uniek, geordend en binnen de bronaudio zijn.",
   "Envelope points must be immutable.": "Verlooppunten moeten onveranderlijk zijn.",

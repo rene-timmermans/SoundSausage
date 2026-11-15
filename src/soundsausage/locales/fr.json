@@ -375,6 +375,8 @@
   "End (s)": "Fin (s)",
   "End frame": "Trame de fin",
   "End frame (exclusive)": "Trame de fin (exclu)",
+  "Enter a time as seconds, m:ss.mmm or h:mm:ss.mmm.": "Saisissez une durée en secondes, m:ss.mmm ou h:mm:ss.mmm.",
+  "Enter seconds or m:ss.mmm / h:mm:ss.mmm. Dot or comma is accepted. Enter applies; Escape cancels.": "Saisissez des secondes ou m:ss.mmm / h:mm:ss.mmm. Point et virgule acceptés. Entrée applique ; Échap annule.",
   "Envelope": "Enveloppe de volume",
   "Envelope frames must be unique, ordered and inside the source audio.": "Les trames d’enveloppe doivent être uniques, ordonnées et dans l’audio source.",
   "Envelope points must be immutable.": "Les points d’enveloppe doivent être immuables.",

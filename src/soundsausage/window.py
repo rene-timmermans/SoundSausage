@@ -420,6 +420,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.time_label = self.transport.time_label
         self.fields = self.transport.fields
         self.view_fields = self.transport.view_fields
+        self.transport.time_range_edited.connect(self.edit_transport_range)
         layout.addWidget(self.transport)
         self.multitrack.timeline.view_changed.connect(self.multitrack_view_changed)
         self.multitrack.timeline.seek_requested.connect(self.seek_playback)
@@ -496,6 +497,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         if self.recovery is not None:
             self._recovery_timer.start()
         doc = self.active_model()
+        self.transport.configure_time_fields(doc,self.mode,not self.recording_busy)
         self.fields["Begin"].setText(clock_text(start / doc.sample_rate))
         self.fields["End"].setText(clock_text(end / doc.sample_rate))
         self.fields["Length"].setText(clock_text((end - start) / doc.sample_rate))
@@ -506,6 +508,28 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.update_channel_controls()
         if 'punch' in self.actions:self.actions['punch'].setEnabled(not self.recording_busy and not self.no_audio and self.mode=='multitrack' and end>start)
         self.update_session_actions()
+
+    def edit_transport_range(self,row,key,frame):
+        if self.recording_busy or row not in ('Sel','View') or key not in ('Begin','End','Length'):return
+        model,view=self.active_model(),self.active_view()
+        field=(self.fields if row=='Sel' else self.view_fields)[key]
+        if field._model is not model or field._mode!=self.mode or field._rate!=model.sample_rate:
+            self.selection_changed(*model.selection);self.sync_view_fields();return
+        maximum=model.sample_rate*86400 if self.mode=='multitrack' else model.frames
+        if maximum<=0:return
+        minimum=0 if row=='Sel' else 8 if self.mode=='multitrack' else 1
+        start,end=model.selection if row=='Sel' else (view.view_start,view.view_end)
+        frame=max(0,min(int(frame),maximum))
+        if key=='Begin':
+            start=min(frame,maximum-minimum);end=max(end,start+minimum)
+        elif key=='End':
+            end=max(minimum,frame);start=min(start,end-minimum)
+        else:
+            end=min(maximum,start+max(minimum,frame));start=min(start,end-minimum)
+        start,end=max(0,start),min(maximum,end)
+        if row=='Sel':
+            model.select(start,end);self.selection_changed(*model.selection);view.update()
+        else:view.set_view(start,end)
 
     def choose_channels(self, channels):
         if self.recording_busy or self.mode != "waveform": return

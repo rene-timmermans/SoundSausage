@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 1.0.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 1.0.1. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -21,6 +21,7 @@ Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vori
 - [Taal kiezen](#ss-topic-taal-kiezen)
 - [Snel beginnen](#ss-topic-snel-beginnen)
 - [1. De werkruimte](#ss-topic-1-de-werkruimte)
+  - [Tijden rechtsonder invoeren](#ss-topic-tijden-rechtsonder-invoeren)
 - [2. Bestanden openen, bewaren en sluiten](#ss-topic-2-bestanden-openen-bewaren-en-sluiten)
   - [Losse opnamen](#ss-topic-losse-opnamen)
   - [MP3 openen en bewaren](#ss-topic-mp3-openen-en-bewaren)
@@ -172,6 +173,16 @@ signaal boven het maximale uitvoerniveau komt: verlaag het volume of normaliseer
 Een sterretje voor de bestandsnaam betekent dat er wijzigingen zijn die nog
 niet zijn opgeslagen. Een uitgeschakelde menuoptie kan bij de andere weergave
 horen, een selectie vereisen of nog in ontwikkeling zijn.
+
+<a id="ss-topic-tijden-rechtsonder-invoeren"></a>
+
+### Tijden rechtsonder invoeren
+
+Klik bij **Sel** of **Beeld** op **Begin**, **Einde** of **Lengte** en typ de gewenste tijd. **Enter** of het verlaten van het veld bevestigt; **Escape** herstelt de huidige waarde. Gebruik seconden (`1.25` of `1,25`), minuten/seconden (`1:08.696`) of uren/minuten/seconden (`1:02:03.456`). Punt en komma zijn beide toegestaan. De invoer wordt op de dichtstbijzijnde sample afgerond; de weergave toont milliseconden.
+
+**Sel** wijzigt de selectie. Begin en Einde passen de betreffende grens aan; Lengte berekent Einde vanaf Begin. Als Begin voorbij Einde komt, of andersom, worden de grenzen op dat punt samengebracht. Een lengte van nul maakt een cursorpositie. **Beeld** verandert het zichtbare bereik en daarmee de zoom, met dezelfde bediening. Het zichtbare bereik blijft positief. Audio en Undo-geschiedenis veranderen niet; afspelen kan doorgaan.
+
+Waarden buiten het bestand worden begrensd. In multitrack geldt de tijdlijn van maximaal 24 uur. Verkeerd geschreven of negatieve tijden worden geweigerd en de geldige waarde komt terug, met uitleg bij het veld. Tijdens opnemen zijn de velden alleen te lezen. Bij wisselen naar een ander document wordt onafgemaakte invoer verworpen.
 
 <a id="ss-topic-2-bestanden-openen-bewaren-en-sluiten"></a>
 

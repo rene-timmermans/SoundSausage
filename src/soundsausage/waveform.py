@@ -58,12 +58,12 @@ def _peak_data(pieces, frames, channels, columns, cooperative=False):
 
 
 def clock_text(seconds):
-    seconds = max(0.0, seconds)
-    minutes, rest = divmod(seconds, 60)
+    whole,milliseconds=divmod(max(0,round(seconds*1000)),1000)
+    minutes,rest=divmod(whole,60)
     if minutes >= 60:
         hours, minutes = divmod(int(minutes), 60)
-        return f"{hours}:{minutes:02d}:{rest:06.3f}"
-    return f"{int(minutes)}:{rest:06.3f}"
+        return f"{hours}:{minutes:02d}:{rest:02d}.{milliseconds:03d}"
+    return f"{minutes}:{rest:02d}.{milliseconds:03d}"
 
 
 class Waveform(MarkerOverlay, QWidget):

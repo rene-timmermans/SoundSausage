@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 1.0.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 1.0.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -11,6 +11,7 @@ Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige un
 
 - [1. Sprache und Hilfe](#ss-topic-1-sprache-und-hilfe)
 - [2. Schnellstart und Arbeitsbereich](#ss-topic-2-schnellstart-und-arbeitsbereich)
+  - [Zeiten unten rechts eingeben](#ss-topic-zeiten-unten-rechts-eingeben)
 - [3. Dateien, Projekte und Wiederherstellung](#ss-topic-3-dateien-projekte-und-wiederherstellung)
   - [MP3 und WAV](#ss-topic-mp3-und-wav)
   - [MP3-Metadaten nach dem Bearbeiten](#ss-topic-mp3-metadaten-nach-dem-bearbeiten)
@@ -89,6 +90,16 @@ Eine WAV- oder MP3-Datei mit **Datei → Öffnen** öffnen. **Leertaste** starte
 Fenster und Diagrammskalen passen sich an die Schriftgröße des Desktops und die gewählte Sprache an. Ist ein Formular zu groß für den Bildschirm, durch die Einstellungen scrollen; die Schaltflächen zum Bestätigen und Abbrechen bleiben erreichbar.
 
 Zwei dünne horizontale Linien markieren die Unterkante des linken und die Oberkante des rechten Kanals. Sie enden an den Seiten des Wellenformbereichs, auch bei der Liveaufnahme.
+
+<a id="ss-topic-zeiten-unten-rechts-eingeben"></a>
+
+### Zeiten unten rechts eingeben
+
+Bei **Ausw.** oder **Ansicht** auf **Beginn**, **Ende** oder **Länge** klicken und eine Zeit eingeben. **Eingabe** oder das Verlassen des Felds übernimmt sie; **Escape** stellt den aktuellen Wert wieder her. Möglich sind Sekunden (`1.25` oder `1,25`), Minuten/Sekunden (`1:08.696`) oder Stunden/Minuten/Sekunden (`1:02:03.456`). Punkt und Komma sind erlaubt. Die Eingabe wird auf das nächste Sample gerundet; angezeigt werden Millisekunden.
+
+**Ausw.** ändert die Auswahl. Beginn und Ende verschieben die jeweilige Grenze; Länge berechnet das Ende ab Beginn. Überschreitet eine Grenze die andere, treffen beide an diesem Punkt zusammen. Länge null setzt eine Cursorposition. **Ansicht** ändert mit denselben Feldern den sichtbaren Bereich und den Zoom. Dieser Bereich bleibt positiv. Audio und Rückgängig-Verlauf bleiben unverändert; die Wiedergabe kann weiterlaufen.
+
+Werte werden auf die Dateigrenzen beziehungsweise die 24-Stunden-Zeitleiste im Mehrspurmodus begrenzt. Ungültige oder negative Zeiten werden mit einem Hinweis am Feld verworfen; der gültige Wert erscheint wieder. Während der Aufnahme sind die Felder schreibgeschützt. Ein Dokumentwechsel verwirft noch nicht bestätigte Eingaben.
 
 <a id="ss-topic-3-dateien-projekte-und-wiederherstellung"></a>
 

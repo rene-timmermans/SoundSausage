@@ -375,6 +375,8 @@
   "End (s)": "End (s)",
   "End frame": "End frame",
   "End frame (exclusive)": "End frame (exclusive)",
+  "Enter a time as seconds, m:ss.mmm or h:mm:ss.mmm.": "Enter a time as seconds, m:ss.mmm or h:mm:ss.mmm.",
+  "Enter seconds or m:ss.mmm / h:mm:ss.mmm. Dot or comma is accepted. Enter applies; Escape cancels.": "Enter seconds or m:ss.mmm / h:mm:ss.mmm. Dot or comma is accepted. Enter applies; Escape cancels.",
   "Envelope": "Envelope",
   "Envelope frames must be unique, ordered and inside the source audio.": "Envelope frames must be unique, ordered and inside the source audio.",
   "Envelope points must be immutable.": "Envelope points must be immutable.",

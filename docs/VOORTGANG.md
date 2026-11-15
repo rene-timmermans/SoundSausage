@@ -1,5 +1,17 @@
 # Ontwikkelroute
 
+## Bewerkbare selectie- en weergavetijden — 1.0.1 in voorbereiding
+
+De zes tijdvelden rechtsonder accepteren seconden of een tijdnotatie, met punt
+of komma. Enter en het verlaten van het veld bevestigen; Escape herstelt de
+actuele waarde. Selectie en zichtbaar bereik veranderen zonder audio of Undo
+te wijzigen. Invoer blijft behouden tijdens modelupdates, wordt bij een ander
+document verworpen en is tijdens opname vergrendeld. De weergave houdt rekening
+met minuut- en uurovergangen. Negen nieuwe controles toetsen invoer, grenzen,
+multitrack, afspelen, opnamevergrendeling en behoud van de audio. Alle vijf
+handleidingen hebben een nieuw geïndexeerd onderwerp. De distributiebouw en
+pakketcontroles moeten nog volgen.
+
 ## Eerste stabiele versie — 1.0.0 gepubliceerd
 
 De releasecandidate gebruikt de functionele broncode van 0.27.2. De volledige

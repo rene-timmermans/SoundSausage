@@ -1,16 +1,34 @@
 """Compact transport strip, selection/view times and stereo dBFS meter."""
 import math
+import re
+from decimal import Decimal, ROUND_HALF_UP
 
 import numpy as np
-from PySide6.QtCore import Qt, QRectF, QPointF, QSize, QEvent
+from PySide6.QtCore import Qt, QRectF, QPointF, QSize, QEvent, Signal
 from PySide6.QtGui import QColor, QFont, QFontMetrics, QPen
 from .i18n_widgets import QPainter
-from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QGridLayout
+from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QGridLayout, QToolTip
 from .i18n_widgets import QWidget, QToolButton, QLabel, QLineEdit
 
 from .theme import colors
 from .waveform import clock_text
 from .plot_layout import text_width, separated_labels
+from .i18n import tr
+
+
+def parse_time_frames(text,rate,maximum):
+    """Read seconds or a clock value without losing precision through float parsing."""
+    parts=text.strip().replace(',','.').split(':')
+    message='Enter a time as seconds, m:ss.mmm or h:mm:ss.mmm.'
+    if (len(text)>64 or not 1<=len(parts)<=3 or
+            not re.fullmatch(r'(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)',parts[-1]) or
+            any(not re.fullmatch(r'[0-9]+',part) for part in parts[:-1])):
+        raise ValueError(message)
+    if len(parts)>1 and Decimal(parts[-1])>=60:raise ValueError(message)
+    if len(parts)==3 and int(parts[1])>=60:raise ValueError(message)
+    seconds=sum((Decimal(part)*60**i for i,part in enumerate(reversed(parts))),Decimal(0))
+    frames=int((seconds*int(rate)).to_integral_value(rounding=ROUND_HALF_UP))
+    return min(int(maximum),frames)
 
 
 class LevelMeter(QWidget):
@@ -98,7 +116,57 @@ class LevelMeter(QWidget):
 
 
 class TimeField(QLineEdit):
-    """Compact time readout that still fits the desktop font and hour values."""
+    """Editable clock with a separate draft and latest confirmed model value."""
+    value_edited=Signal(object)
+
+    def __init__(self,*args,**kwargs):
+        self._confirmed_text='';self._committing=False;self._model=None
+        self._rate=44100;self._maximum=0;self._mode=None
+        super().__init__(*args,**kwargs)
+        self._confirmed_text=self.text();self.setMaxLength(64)
+        self.setToolTip('Enter seconds or m:ss.mmm / h:mm:ss.mmm. Dot or comma is accepted. Enter applies; Escape cancels.')
+        self.editingFinished.connect(self.commit)
+
+    def bind(self,model,mode,maximum,editable):
+        if self._model is not model or self._mode!=mode or self._rate!=model.sample_rate or not editable:
+            self.cancel_edit()
+        self._model,self._mode=model,mode
+        self._rate,self._maximum=model.sample_rate,maximum
+        self.setReadOnly(not editable)
+
+    def setText(self,text):
+        self._confirmed_text=text
+        if not (self.hasFocus() and self.isModified() and not self._committing):
+            super().setText(text)
+
+    def cancel_edit(self):
+        super().setText(self._confirmed_text);self.setModified(False)
+
+    def commit(self):
+        if not self.isModified():return
+        self._committing=True
+        try:
+            if not self.isReadOnly():
+                frame=parse_time_frames(self.text(),self._rate,self._maximum)
+                self.value_edited.emit(frame)
+        except ValueError as error:
+            QToolTip.showText(self.mapToGlobal(self.rect().bottomLeft()),tr(str(error)),self)
+        finally:
+            self.cancel_edit();self._committing=False
+
+    def keyPressEvent(self,event):
+        if event.key()==Qt.Key.Key_Escape:
+            self.cancel_edit();event.accept();return
+        super().keyPressEvent(event)
+
+    def event(self,event):
+        if event.type()==QEvent.Type.ShortcutOverride:
+            editing=(Qt.Key.Key_Escape,Qt.Key.Key_Return,Qt.Key.Key_Enter,Qt.Key.Key_Home,Qt.Key.Key_End)
+            control=(Qt.Key.Key_A,Qt.Key.Key_C,Qt.Key.Key_X,Qt.Key.Key_V,Qt.Key.Key_Z,Qt.Key.Key_Y)
+            if event.key() in editing or (event.modifiers() & Qt.KeyboardModifier.ControlModifier and event.key() in control):
+                event.accept();return True
+        return super().event(event)
+
     def update_size(self):
         if getattr(self, "_sizing", False):
             return
@@ -136,6 +204,7 @@ class ClockLabel(QLabel):
 
 
 class TransportPanel(QWidget):
+    time_range_edited=Signal(str,str,object)
     def __init__(self, actions, parent=None):
         super().__init__(parent)
         self.setObjectName("TransportPanel")
@@ -187,6 +256,7 @@ class TransportPanel(QWidget):
             for column, title in enumerate(("Begin", "End", "Length"), 1):
                 field = TimeField("0:00.000")
                 field.setReadOnly(True)
+                field.value_edited.connect(lambda frame,row=label,key=title:self.time_range_edited.emit(row,key,frame))
                 field.setAccessibleName(f"Selection {title}" if label=="Sel" else f"View {title}")
                 field.setProperty("compact", True)
                 field.setAlignment(Qt.AlignmentFlag.AlignRight)
@@ -203,3 +273,8 @@ class TransportPanel(QWidget):
     def set_view_range(self, begin, end, rate):
         for key, frame in (("Begin", begin), ("End", end), ("Length", end - begin)):
             self.view_fields[key].setText(clock_text(frame / rate))
+
+    def configure_time_fields(self,model,mode,editable):
+        maximum=model.sample_rate*86400 if mode=='multitrack' else model.frames
+        for fields in (self.fields,self.view_fields):
+            for field in fields.values():field.bind(model,mode,maximum,editable and maximum>0)

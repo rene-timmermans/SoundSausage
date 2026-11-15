@@ -55,8 +55,11 @@ benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
 
 ## Vervolgupdate 1.0.1
 
-- Begin, Einde en Lengte rechtsonder bewerkbaar maken voor selectie en zichtbaar
-  bereik, met tijdinvoer, bestandsgrenzen en behoud van de audio.
+- Begin, Einde en Lengte rechtsonder zijn uitgewerkt voor selectie en zichtbaar
+  bereik. Invoer, grenzen, annuleren en behoud van audio/Undo zijn lokaal getoetst.
+- De vijf handleidingen hebben een nieuw geïndexeerd onderwerp met voorbeelden.
+- Distributiebouw, volledige testreeks en geïnstalleerde pakketcontroles volgen
+  vóór publicatie van 1.0.1.
 
 De handleidingen zijn via Help/F1 beschikbaar. Werk bij wijzigingen de klikbare
 index bij met `python3 tools/index_manuals.py`. Een v1-datum volgt uit de proeven.

@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 1.0.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 1.0.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -11,6 +11,7 @@ Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente ca
 
 - [1. Idioma y ayuda](#ss-topic-1-idioma-y-ayuda)
 - [2. Inicio rápido y espacio de trabajo](#ss-topic-2-inicio-rapido-y-espacio-de-trabajo)
+  - [Introducir tiempos en la parte inferior derecha](#ss-topic-introducir-tiempos-en-la-parte-inferior-derecha)
 - [3. Archivos, proyectos y recuperación](#ss-topic-3-archivos-proyectos-y-recuperacion)
   - [MP3 y WAV](#ss-topic-mp3-y-wav)
   - [Metadatos MP3 después de editar](#ss-topic-metadatos-mp3-despues-de-editar)
@@ -89,6 +90,16 @@ Abre un WAV o MP3 con **Archivo → Abrir**. **Espacio** reproduce o detiene. Se
 Las ventanas y las escalas de los gráficos se adaptan al tamaño de letra del escritorio y al idioma elegido. Si un formulario no cabe en la pantalla, desplázate por sus ajustes; los botones para confirmar o cancelar siguen accesibles.
 
 Dos finas líneas horizontales marcan el borde inferior del canal izquierdo y el superior del derecho. Terminan en los límites del gráfico, también durante la grabación en directo.
+
+<a id="ss-topic-introducir-tiempos-en-la-parte-inferior-derecha"></a>
+
+### Introducir tiempos en la parte inferior derecha
+
+Haz clic en **Inicio**, **Fin** o **Duración** de **Sel.** o **Vista** y escribe un tiempo. **Intro** o salir del campo aplica el valor; **Escape** restaura el valor actual. Introduce segundos (`1.25` o `1,25`), minutos/segundos (`1:08.696`) u horas/minutos/segundos (`1:02:03.456`). Se admite punto o coma. La entrada se redondea a la muestra más cercana; la pantalla muestra milisegundos.
+
+**Sel.** cambia la selección. Inicio y Fin mueven el límite correspondiente; Duración calcula el final desde el inicio. Si un límite cruza el otro, ambos se unen en ese punto. Una duración cero crea una posición del cursor. **Vista** cambia el intervalo visible y el zoom con los mismos controles. El intervalo visible sigue siendo positivo. El audio y el historial de Deshacer no cambian; la reproducción puede continuar.
+
+Los valores se limitan al archivo o a la línea temporal de 24 horas en multipista. Se rechazan los tiempos incorrectos o negativos: vuelve el valor válido y aparece una indicación junto al campo. Durante la grabación, estos campos son de solo lectura. Cambiar de documento descarta la entrada sin confirmar.
 
 <a id="ss-topic-3-archivos-proyectos-y-recuperacion"></a>
 
