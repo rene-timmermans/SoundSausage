@@ -203,6 +203,7 @@
   "Choose a LADSPA shared library.": "Choose a LADSPA shared library.",
   "Choose a Linux VST3 bundle": "Choose a Linux VST3 bundle",
   "Choose a Linux VST3 bundle or its shared library.": "Choose a Linux VST3 bundle or its shared library.",
+  "Choose a VST3 effect with one stereo input and output bus.": "Choose a VST3 effect with one active stereo input and output bus.",
   "Choose a WAV impulse response.": "Choose a WAV impulse response.",
   "Choose a WAV impulse-response file of at most 32 MiB.": "Choose a WAV impulse-response file of at most 32 MiB.",
   "Choose a dynamics curve.": "Choose a dynamics curve.",
