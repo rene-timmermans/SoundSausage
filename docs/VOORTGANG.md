@@ -1,5 +1,15 @@
 # Ontwikkelroute
 
+## Eerste stabiele versie — 1.0.0 in voorbereiding
+
+De releasecandidate gebruikt de functionele broncode van 0.27.2. De volledige
+automatische controles en de afgeronde fysieke proeven vormen de basis van 1.0.
+Ook het zelfstandige handleidingvenster is in de praktijk bevestigd: de editor
+kan ervoor komen en de vensterknoppen en titel werken zoals bedoeld.
+De definitieve versie krijgt bijgewerkte versiegegevens, handleidingen en
+installatiepakketten. Deze pakketten doorlopen de volledige distributiebouw,
+testreeks en geïnstalleerde zelftests vóór publicatie.
+
 ## Pauzesynchronisatie en handleidingvenster — 0.27.2 gepubliceerd
 
 Automatische synchronisatie behandelt een betrouwbaar gemeten verschuiving na
@@ -17,8 +27,8 @@ releasebestanden, tag en korte releasepunten zijn gecontroleerd. Catalogi:
 1539 bronvormen zonder ontbrekende vertaling. De fysieke pauzeproef is geslaagd:
 alle 24 pulsen zijn betrouwbaar herkend, met circa 0,04 ms verschil tussen de
 groepen direct vóór en na de pauze. In de vorige proef was dat circa 10,7 ms.
-Bronaudio en opgeslagen resultaat blijven ongewijzigd. B33 is daarmee afgerond;
-de fysieke venstercontrole blijft onderdeel van de releasecandidate.
+Bronaudio en opgeslagen resultaat blijven ongewijzigd. B33 is daarmee afgerond.
+De fysieke venstercontrole is eveneens bevestigd; de releasecandidate is afgerond.
 
 ## Afspeelpositie aanklikken — 0.27.1 gepubliceerd
 

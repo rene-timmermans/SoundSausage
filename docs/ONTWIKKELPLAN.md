@@ -1,12 +1,13 @@
 # Afgesproken ontwikkelroute
 
-## Actuele route: praktijkcontrole, daarna de eerste v1
+## Actuele route: releasecandidate afgerond, definitieve 1.0-bouw
 
 De afgesproken route van 14 november 2026 is leidend voor het resterende werk.
 De gekozen uitbreidingen zijn **B06, B07, B21, B23, B24, B33 en B36b**.
 B06/B07 zijn afgerond in 0.22.0, B21 in 0.23.0 en B23/B24 in 0.24.0.
 B36b is afgerond en gepubliceerd in 0.26.0. De fysieke proeven onder B33 zijn afgerond;
-de [todo](TODO.md) gaat verder met de releasecandidate. De overige 18 uitbreidingen
+de releasecandidate is eveneens afgerond. De [todo](TODO.md) gaat verder met de
+definitieve 1.0.0-pakketten. De overige 18 uitbreidingen
 zijn [voorlopig uitgesteld](validation/beperkingen-keuzes.md) en komen alleen
 na een nieuwe afspraak terug. De afgeronde ontwikkelfases hieronder blijven
 als onderbouwing van de beschikbare app bewaard.
@@ -23,9 +24,10 @@ als onderbouwing van de beschikbare app bewaard.
    verwijderen en behoud bij bewerken, opslaan en herstel.
 5. **B33 — afgerond:** de fysieke controles van kalibratie, langere overdub,
    hervatten, punch/heropenen en een echt plug-invenster/statusopslag zijn bevestigd.
-6. **Releasecandidate:** dagelijkse workflow, vijf talen, volledige offlinehulp
-   en geteste installatiepakketten controleren; blokkerende fouten oplossen.
-7. **Eerste v1.0:** publiceren zodra de gekozen punten en releasecandidate zijn afgerond.
+6. **Releasecandidate — afgerond:** dagelijkse workflow, vijf talen, volledige
+   offlinehulp, installatiepakketten en de aanvullende venstercontrole zijn getoetst.
+7. **Eerste v1.0 — in voorbereiding:** definitieve pakketten bouwen en opnieuw
+   controleren; publiceren zodra de distributie- en installatiecontroles slagen.
 
 Systeemgeluid opnemen is als aanvullende bron afgerond in
 [0.25.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v0.25.0).
@@ -70,7 +72,8 @@ op Debian, Fedora en Arch; de pakketten zijn op vijf doelen geïnstalleerd en
 gecontroleerd. Dezelfde update
 maakt de handleiding tot een zelfstandig venster en vertaalt de drie
 multitrackknoppen ook bij taalwisselen. De fysieke controle van het zelfstandige
-handleidingvenster staat nog open bij de releasecandidate.
+handleidingvenster is bevestigd. De releasecandidate is afgerond op deze
+functionele basis; 1.0.0 krijgt de definitieve versiegegevens en pakketten.
 
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,

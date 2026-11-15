@@ -1,2 +1,2 @@
 """SoundSausage audio editor."""
-__version__ = "0.27.2"
+__version__ = "1.0.0"
