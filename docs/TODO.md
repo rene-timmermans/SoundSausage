@@ -63,4 +63,5 @@ benoemen, verslepen, Undo/Redo, WAV-opslag en heropenen is eveneens bevestigd.
   gepubliceerd en gecontroleerd. De afgesproken wijzigingen zijn afgerond.
 
 De handleidingen zijn via Help/F1 beschikbaar. Werk bij wijzigingen de klikbare
-index bij met `python3 tools/index_manuals.py`. Een v1-datum volgt uit de proeven.
+index bij met `python3 tools/index_manuals.py`. De eerste stabiele versie is op
+15 november 2026 gepubliceerd.

@@ -2,7 +2,7 @@
 
 ## Eerste 1.0 en tijdinvoer gepubliceerd
 
-De afgesproken route van 14 november 2026 is leidend voor het resterende werk.
+De afgesproken route van 14 november 2026 naar de eerste stabiele versie is afgerond.
 De gekozen uitbreidingen zijn **B06, B07, B21, B23, B24, B33 en B36b**.
 B06/B07 zijn afgerond in 0.22.0, B21 in 0.23.0 en B23/B24 in 0.24.0.
 B36b is afgerond en gepubliceerd in 0.26.0. De fysieke proeven onder B33 zijn afgerond;
@@ -82,8 +82,8 @@ functionele basis; 1.0.0 krijgt de definitieve versiegegevens en pakketten.
 
 Bij iedere functionele uitbreiding horen passende tests en uitleg in alle vijf
 handleidingen. Releases houden geteste Debian/Ubuntu-, Fedora- en Arch-pakketten,
-versietags en korte toegevoegde functies/Work in progress. De datum voor v1.0
-wordt bepaald door de resultaten van deze afgesproken route.
+versietags en korte toegevoegde functies/Work in progress. De eerste stabiele
+versie is op 15 november 2026 gepubliceerd.
 
 De bouwvolgorde versterkt eerst de basis van SoundSausage. Daarna worden de
 overige effecten en tools per groep afgemaakt. Iedere afgeronde stap krijgt

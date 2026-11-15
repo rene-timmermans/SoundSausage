@@ -28,8 +28,8 @@ installatiepakketten. Alle **640 tests** slagen zonder overslaan op Debian, Fedo
 en Arch; vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu
 26.04 en Rolling. De acht releasebestanden, tag, bron en korte releasepunten
 zijn gecontroleerd. Catalogi: 1539 bronvormen zonder ontbrekende vertaling.
-De eerste stabiele publicatie is afgerond. De eerstvolgende kleine uitbreiding
-maakt de selectie- en weergavetijden rechtsonder bewerkbaar.
+De eerste stabiele publicatie is afgerond. In 1.0.1 zijn de selectie- en
+weergavetijden rechtsonder bewerkbaar gemaakt.
 
 ## Pauzesynchronisatie en handleidingvenster — 0.27.2 gepubliceerd
 
@@ -97,7 +97,7 @@ Het eigen TAL-Reverb-4-venster (VST3), wijzigen, terugluisteren en het behouden
 van waarden en geluid na bewaren en heropenen zijn bevestigd. Een aanvullende
 projectcontrole herstelt de gewijzigde Wet/Dry-waarden exact uit de componentstatus;
 de oorspronkelijke bron blijft ongewijzigd. LV2-vensters hebben automatische testdekking.
-Daarna volgen de releasecandidate en het oplossen van blokkerende fouten.
+De releasecandidate en de eerste stabiele publicatie zijn inmiddels afgerond.
 
 ## Korte volumedalingen — 0.27.0 gepubliceerd
 
