@@ -2,6 +2,27 @@
 
 Stand: 15 november 2026, SoundSausage 1.0.1 gepubliceerd en gecontroleerd.
 De releasecandidate en de eerste stabiele publicatie zijn afgerond.
+
+## Volgende kleine verbeteringen: werkbalken
+
+1. **Eerst de indeling zoals bij PixelPickle opzetten.** Bovenaan de menubalk
+   met algemene opdrachten en een algemene knoppenrij. Daaronder een horizontale
+   gereedschapsoptiebalk voor het actieve gereedschap. Een aparte verticale
+   gereedschapsbalk staat standaard links naast de werkruimte.
+2. **Pictogramknoppen zonder vaste kaders.** De werkbalken visueel laten aansluiten
+   op PixelPickle: de accentkleur op de pictogrammen, met duidelijke aanwijzingen
+   voor aanwijzen, actieve functies en uitgeschakelde opdrachten.
+3. **Werkbalken verplaatsbaar maken.** Zichtbare handgrepen toevoegen om de balken
+   te verslepen, onderling te ordenen en opnieuw vast te zetten.
+4. **Werkbalken afzonderlijk aan- en uitzetten.** Onder **Beeld → Werkbalken**
+   een aangevinkte keuze per balk aanbieden. Indeling en zichtbaarheid bij
+   herstart behouden.
+
+Deze verbeteringen staan op de planning; de huidige 1.0.1-release blijft de
+afgeronde functionele basis.
+
+## Afgeronde functionele basis
+
 0.27.2 bevat correctie van gemeten opnameverschuivingen na pauzes,
 een zelfstandig handleidingvenster en volledig vertaalde multitrackknoppen.
 Klikken tijdens afspelen verplaatst de afspeelpositie. De VST3-host accepteert

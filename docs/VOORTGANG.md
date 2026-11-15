@@ -1,5 +1,16 @@
 # Ontwikkelroute
 
+## Gepland: visuele samenhang van de werkbalken
+
+De functionele mijlpaal is bereikt met 1.0 en de tijdinvoer in 1.0.1. De volgende
+kleine verbeteringen beginnen met de indeling van de werkbalken: algemene menu's
+en knoppen bovenaan, een gereedschapsoptiebalk daaronder en een aparte verticale
+gereedschapsbalk standaard links. Daarop volgen pictogramknoppen zonder vaste
+kaders, verplaatsbare werkbalken met zichtbare handgrepen en aangevinkte menukeuzes om
+elke balk te tonen of verbergen. De gekozen indeling en zichtbaarheid worden
+bewaard. PixelPickle is het visuele voorbeeld. Dit is een planning; er is voor
+deze punten nog geen nieuwe appversie gemaakt.
+
 ## Bewerkbare selectie- en weergavetijden — 1.0.1 gepubliceerd
 
 De zes tijdvelden rechtsonder accepteren seconden of een tijdnotatie, met punt

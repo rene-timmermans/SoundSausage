@@ -1,5 +1,17 @@
 # Afgesproken ontwikkelroute
 
+## Kleine visuele verfijningen na de eerste 1.0
+
+De volgende stap begint met de indeling zoals bij PixelPickle: bovenaan de
+menubalk en algemene knoppen, daaronder een horizontale optiebalk voor het actieve
+gereedschap, en standaard links een aparte verticale gereedschapsbalk. Daarbij
+horen pictogramknoppen zonder vaste kaders, zichtbare handgrepen voor verplaatsen
+en herordenen, en afzonderlijke aan/uit-keuzes onder **Beeld → Werkbalken**.
+Indeling en zichtbaarheid blijven
+bij herstart bewaard. PixelPickle vormt het visuele voorbeeld; het Linux-thema
+en de accentkleur blijven leidend. Deze punten zijn gepland en nog niet uitgevoerd.
+De [todo](TODO.md) houdt ze bij. De eerder uitgestelde uitbreidingen blijven uitgesteld.
+
 ## Eerste 1.0 en tijdinvoer gepubliceerd
 
 De afgesproken route van 14 november 2026 naar de eerste stabiele versie is afgerond.
