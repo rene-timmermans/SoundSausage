@@ -1,5 +1,11 @@
 # Ontwikkelroute
 
+## Uitklapbare effectgroepen — 1.1.1 in controle
+
+De linker gereedschapsbalk biedt effectgroepen met een uitklappijltje en een hoofdicoon voor het laatst gekozen effect. De lijsten gebruiken dezelfde opdrachten als het menu Effecten. Elke groep onthoudt zijn keuze; een tijdelijk onbeschikbaar effect krijgt een beschikbaar alternatief zonder de voorkeur te verliezen. Remaster staat rechtstreeks op de balk, spooreffecten verschijnen in multitrack. Taal, accentkleur, werkbalkteksten, opnamevergrendeling en de bestaande werkbalkindeling blijven gekoppeld aan de appinstellingen.
+
+Vijf nieuwe controles toetsen echte menuklikken en enkelvoudige uitvoering, instellingsvensters, kanaalgebonden bewerkingen/Undo, beschikbaarheid en opnemen, bewaren/heropenen, ongeldige voorkeuren en live taal-/themawissels. De vijf handleidingen hebben een nieuw geïndexeerd onderwerp. De afsluitende controles en pakketbouw volgen vóór publicatie.
+
 ## Werkbalkvernieuwing — 1.1.0 gepubliceerd
 
 De algemene werkbalk staat bovenaan, de gereedschapsopties daaronder en een aparte gereedschapsbalk standaard links. De gereedschappen en opties volgen golfvorm- of multitrackbewerking. Kaderloze pictogrammen volgen het Linux-accent; de actieve keuze blijft zichtbaar. De dubbele zoomgroep bovenaan is verwijderd. De vier zoomknoppen onderaan, menu's en sneltoetsen blijven beschikbaar.

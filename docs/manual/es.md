@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 1.1.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 1.1.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -12,6 +12,7 @@ Haz clic en un tema para ir a él. Índice vuelve aquí; Anterior y Siguiente ca
 - [1. Idioma y ayuda](#ss-topic-1-idioma-y-ayuda)
 - [2. Inicio rápido y espacio de trabajo](#ss-topic-2-inicio-rapido-y-espacio-de-trabajo)
   - [Barras de herramientas y opciones](#ss-topic-barras-de-herramientas-y-opciones)
+  - [Grupos de efectos desplegables](#ss-topic-grupos-de-efectos-desplegables)
   - [Introducir tiempos en la parte inferior derecha](#ss-topic-introducir-tiempos-en-la-parte-inferior-derecha)
 - [3. Archivos, proyectos y recuperación](#ss-topic-3-archivos-proyectos-y-recuperacion)
   - [MP3 y WAV](#ss-topic-mp3-y-wav)
@@ -101,6 +102,16 @@ La barra general superior contiene selección de vista, apertura, guardado, edic
 La barra horizontal **Opciones de herramienta**, bajo la barra general, sigue la herramienta activa. La selección ofrece comandos de intervalo y cruces por cero, además de selección de canales estéreo; el dibujo ofrece edición numérica de muestras y selección de canales. En multipista ofrece propiedades, duplicación y eliminación de clips. Para las líneas de volumen y panorámica aparece también **Restablecer curva** para el clip seleccionado. **+ Pista / − Pista** están arriba y en **Ventana**. Los efectos siguen en **Efectos**; los cuatro botones de zoom están abajo junto a los controles de reproducción y en **Ver**, con los mismos atajos.
 
 Arrastra una barra por su asa de puntos para moverla, reordenarla o separarla. Acércala a un borde de la ventana para acoplarla. **Ver → Barras de herramientas → General / Opciones de herramienta / Herramientas** muestra u oculta cada barra por separado. La disposición, la visibilidad y las etiquetas se conservan al cerrar. Recupera cualquier barra oculta mediante el mismo menú.
+
+<a id="ss-topic-grupos-de-efectos-desplegables"></a>
+
+### Grupos de efectos desplegables
+
+La barra izquierda contiene **Edición de forma de onda**, **Amplitud**, **Filtros**, **Efectos de retardo**, **Reducción de ruido**, **Tiempo/tono** y **Especial**. Haz clic en la flecha pequeña junto a un icono para mostrar los efectos del grupo. La lista comparte los comandos, su disponibilidad y los atajos del menú **Efectos**.
+
+Elige un efecto: se abren sus ajustes o se aplica directamente una edición inmediata. El icono principal muestra después el último efecto elegido en ese grupo. Haz clic en él para volver a abrir o aplicar ese efecto; tras **Amplitud → Normalizar**, por ejemplo, vuelve a abrir el diálogo de normalización. La ayuda emergente indica el grupo y el comando actual. Cada grupo recuerda su elección al cerrar. Si ese efecto no está disponible temporalmente, el botón muestra una alternativa disponible; la preferencia anterior se conserva hasta usar otro efecto.
+
+**Remaster** también tiene un botón propio. En multipista, **Efectos de pista** abre la cadena de efectos de la pista seleccionada. Los efectos de forma de onda siguen visibles en los menús, pero no procesan toda la sesión. Los botones de efectos se bloquean durante la grabación. Se mantienen la herramienta activa y los canales elegidos; las ediciones respetan el audio seleccionado y admiten **Deshacer**.
 
 <a id="ss-topic-introducir-tiempos-en-la-parte-inferior-derecha"></a>
 

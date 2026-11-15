@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 1.1.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 1.1.1. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -22,6 +22,7 @@ Klik op een onderwerp om er direct naartoe te gaan. Inhoud brengt je terug; Vori
 - [Snel beginnen](#ss-topic-snel-beginnen)
 - [1. De werkruimte](#ss-topic-1-de-werkruimte)
   - [Werkbalken en gereedschapsopties](#ss-topic-werkbalken-en-gereedschapsopties)
+  - [Uitklapbare effectgroepen](#ss-topic-uitklapbare-effectgroepen)
   - [Tijden rechtsonder invoeren](#ss-topic-tijden-rechtsonder-invoeren)
 - [2. Bestanden openen, bewaren en sluiten](#ss-topic-2-bestanden-openen-bewaren-en-sluiten)
   - [Losse opnamen](#ss-topic-losse-opnamen)
@@ -183,6 +184,16 @@ De algemene werkbalk staat bovenaan, met weergavekeuze, openen, opslaan, bewerke
 De horizontale **Gereedschapsopties** onder de algemene werkbalk volgen het actieve gereedschap. Bij selecteren zijn het selectie- en nuldoorgangscommando en de stereokanaalkeuze beschikbaar; bij tekenen de numerieke samplebewerking en kanaalkeuze. In multitrack staan hier de clipeigenschappen, dupliceren en verwijderen. Bij volume- en panlijnen verschijnt ook **Lijn herstellen** voor de geselecteerde clip. **+ Spoor / − Spoor** staan bovenaan en in **Venster**. Effecten kies je via **Effecten**; de vier zoomknoppen staan onderaan bij de afspeelknoppen en in **Beeld**, met dezelfde sneltoetsen.
 
 Sleep een werkbalk aan de gestippelde handgreep om hem te verplaatsen, anders te ordenen of los te maken. Sleep hem naar een vensterrand om hem weer vast te zetten. **Beeld → Werkbalken → Algemeen / Gereedschapsopties / Gereedschappen** toont of verbergt elke balk afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na afsluiten bewaard. Een verborgen balk kun je via hetzelfde menu terughalen.
+
+<a id="ss-topic-uitklapbare-effectgroepen"></a>
+
+### Uitklapbare effectgroepen
+
+Op de linker gereedschapsbalk staan **Golfvormbewerkingen**, **Amplitude**, **Filters**, **Vertragingseffecten**, **Ruisreductie**, **Tijd/toonhoogte** en **Speciaal**. Klik op het kleine pijltje naast een pictogram om de effecten van die groep te tonen. De lijst bevat dezelfde opdrachten als het menu **Effecten**, inclusief hun beschikbaarheid en sneltoetsen.
+
+Kies een effect uit de lijst: het instellingenvenster opent, of een directe bewerking wordt meteen uitgevoerd. Het grote pictogram toont daarna het laatst gekozen effect uit die groep. Klik daarop om dat effect opnieuw te openen of toe te passen; bij **Amplitude → Normaliseren** opent bijvoorbeeld opnieuw het normaliseervenster. De aanwijzing bij de muis noemt de groep en de huidige opdracht. De keuze per groep blijft na afsluiten bewaard. Is een effect tijdelijk niet beschikbaar, dan toont de knop een beschikbaar alternatief; de eerdere keuze blijft behouden totdat je een ander effect gebruikt.
+
+**Remaster** heeft daarnaast een eigen knop. In multitrack verschijnt **Spooreffecten** om de effectketen van het geselecteerde spoor te openen. Golfvormeffecten zijn daar via de menu's zichtbaar maar niet toepasbaar op de gehele sessie. Tijdens opnemen zijn de effectknoppen vergrendeld. De bestaande gereedschapskeuze en kanaalselectie blijven gelden; effecten respecteren de gekozen audio en kunnen met **Ongedaan maken** worden hersteld.
 
 <a id="ss-topic-tijden-rechtsonder-invoeren"></a>
 

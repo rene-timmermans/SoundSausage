@@ -235,6 +235,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self._action_buttons = []
         by_action = {action: key for key, action in self.actions.items()}
         for button in self.findChildren(NativeToolButton):
+            if button.property('effectGroup'):
+                continue
             action = button.defaultAction()
             key = by_action.get(action)
             if key is not None:

@@ -130,6 +130,10 @@ def stylesheet(c):
         QToolButton:disabled {{ background: transparent; border-color: transparent; }}
         QToolBar[compact="true"] QToolButton, QToolButton[compact="true"], QPushButton[compact="true"] {{
             padding: 2px; min-width: 20px; min-height: 18px; border-radius: 2px; }}
+        QToolBar[compact="true"] QToolButton[effectGroup="true"] {{ padding-right: 13px; }}
+        QToolButton[effectGroup="true"]::menu-button {{
+            border: none; background: transparent; width: 12px; }}
+        QToolButton[effectGroup="true"]::menu-arrow {{ width: 7px; height: 7px; }}
         QWidget#TransportPanel {{ background: {n(c.panel)}; border-top: 1px solid {n(c.border)}; }}
         QLineEdit, QComboBox {{ background: {n(c.base)}; color: {n(c.field_text)};
             border: 1px solid {n(c.border)}; border-radius: 3px; padding: 3px;

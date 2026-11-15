@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 1.1.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 1.1.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -12,6 +12,7 @@ Click a topic to jump directly to it. Contents brings you back; Previous and Nex
 - [1. Language and help](#ss-topic-1-language-and-help)
 - [2. Quick start and workspace](#ss-topic-2-quick-start-and-workspace)
   - [Toolbars and tool options](#ss-topic-toolbars-and-tool-options)
+  - [Effect flyout groups](#ss-topic-effect-flyout-groups)
   - [Entering times at the bottom right](#ss-topic-entering-times-at-the-bottom-right)
 - [3. Files, projects and recovery](#ss-topic-3-files-projects-and-recovery)
   - [MP3 and WAV](#ss-topic-mp3-and-wav)
@@ -100,6 +101,16 @@ The general toolbar at the top contains view selection, opening, saving, editing
 The horizontal **Tool Options** bar below the general bar follows the active tool. Selection offers range and zero-crossing commands plus stereo channel selection; drawing offers numeric sample editing and channel selection. In multitrack it offers clip properties, duplication and removal. For volume and pan lines, **Reset Line** is also available for the selected clip. **+ Track / − Track** are at the top and in **Window**. Effects remain in **Transform**; the four zoom buttons are at the bottom beside playback controls and in **View**, with the same shortcuts.
 
 Drag a toolbar by its dotted handle to move, reorder or float it. Drag it to a window edge to dock it again. **View → Toolbars → General / Tool Options / Tools** shows or hides each bar separately. Layout, visibility and toolbar labels are remembered after closing. Restore any hidden bar through the same menu.
+
+<a id="ss-topic-effect-flyout-groups"></a>
+
+### Effect flyout groups
+
+The left tools bar contains **Waveform Edits**, **Amplitude**, **Filters**, **Delay Effects**, **Noise Reduction**, **Time/Pitch** and **Special**. Click the small arrow beside an icon to display that group’s effects. The list shares the same commands, availability and shortcuts as **Transform**.
+
+Choose an effect: its settings open, or an immediate edit is applied directly. The main icon then shows the last effect chosen in that group. Click it to reopen or apply that effect; for example, choosing **Amplitude → Normalize** makes the icon reopen the normalization dialog. The tooltip names the group and current command. Each group remembers its choice after closing. If that effect is temporarily unavailable, the button displays an available alternative; the earlier preference is retained until another effect is used.
+
+**Remaster** also has a dedicated button. In multitrack, **Track Effects** opens the selected track’s effect chain. Waveform effects remain visible in the menus but cannot process the entire session. Effect buttons are locked during recording. The existing editing tool and channel selection remain in effect; edits respect the selected audio and support **Undo**.
 
 <a id="ss-topic-entering-times-at-the-bottom-right"></a>
 

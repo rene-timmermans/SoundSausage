@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 1.1.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 1.1.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -12,6 +12,7 @@ Ein Thema anklicken, um dorthin zu springen. Inhalt führt zurück; Vorherige un
 - [1. Sprache und Hilfe](#ss-topic-1-sprache-und-hilfe)
 - [2. Schnellstart und Arbeitsbereich](#ss-topic-2-schnellstart-und-arbeitsbereich)
   - [Werkzeugleisten und Werkzeugoptionen](#ss-topic-werkzeugleisten-und-werkzeugoptionen)
+  - [Aufklappbare Effektgruppen](#ss-topic-aufklappbare-effektgruppen)
   - [Zeiten unten rechts eingeben](#ss-topic-zeiten-unten-rechts-eingeben)
 - [3. Dateien, Projekte und Wiederherstellung](#ss-topic-3-dateien-projekte-und-wiederherstellung)
   - [MP3 und WAV](#ss-topic-mp3-und-wav)
@@ -101,6 +102,16 @@ Die allgemeine Leiste oben enthält Ansichtswahl, Öffnen, Speichern, Bearbeiten
 Die horizontale Leiste **Werkzeugoptionen** unter der allgemeinen Leiste folgt dem aktiven Werkzeug. Beim Auswählen bietet sie Bereichs- und Nulldurchgangsbefehle sowie die Stereokanalauswahl, beim Zeichnen numerische Samplebearbeitung und Kanalauswahl. In der Mehrspuransicht stehen Clip-Eigenschaften, Duplizieren und Entfernen bereit. Bei Lautstärke- und Pan-Linien erscheint außerdem **Kurve zurücksetzen** für den ausgewählten Clip. **+ Spur / − Spur** stehen oben und unter **Fenster**. Effekte bleiben unter **Effekte**; die vier Zoomknöpfe stehen unten bei den Wiedergabeknöpfen und unter **Ansicht**, mit unveränderten Tastenkürzeln.
 
 Ziehen Sie eine Leiste am gepunkteten Griff, um sie zu verschieben, neu anzuordnen oder abzulösen. Am Fensterrand rastet sie wieder ein. **Ansicht → Werkzeugleisten → Allgemein / Werkzeugoptionen / Werkzeuge** zeigt oder verbirgt jede Leiste einzeln. Anordnung, Sichtbarkeit und Beschriftungen bleiben nach dem Schließen erhalten. Verborgene Leisten lassen sich über dasselbe Menü wieder einblenden.
+
+<a id="ss-topic-aufklappbare-effektgruppen"></a>
+
+### Aufklappbare Effektgruppen
+
+Die linke Werkzeugleiste enthält **Wellenformbearbeitung**, **Amplitude**, **Filter**, **Verzögerungseffekte**, **Rauschminderung**, **Zeit/Tonhöhe** und **Spezial**. Klicken Sie auf den kleinen Pfeil neben einem Symbol, um die Effekte der Gruppe anzuzeigen. Die Liste verwendet dieselben Befehle, Verfügbarkeiten und Tastenkürzel wie **Effekte**.
+
+Nach der Auswahl öffnet sich das Einstellungsfenster oder eine direkte Bearbeitung wird sofort angewendet. Das Hauptsymbol zeigt anschließend den zuletzt gewählten Effekt der Gruppe. Ein Klick darauf öffnet oder wiederholt diesen Effekt; nach **Amplitude → Normalisieren** öffnet es beispielsweise wieder den Normalisierungsdialog. Der Hinweis nennt Gruppe und aktuellen Befehl. Jede Gruppe behält ihre Auswahl nach dem Schließen. Ist ein Effekt vorübergehend nicht verfügbar, zeigt der Knopf eine verfügbare Alternative; die bisherige Auswahl bleibt erhalten, bis ein anderer Effekt verwendet wird.
+
+**Remaster** besitzt außerdem einen eigenen Knopf. In der Mehrspuransicht öffnet **Spureffekte** die Effektkette der ausgewählten Spur. Wellenformeffekte bleiben in den Menüs sichtbar, bearbeiten dort jedoch nicht die gesamte Sitzung. Während der Aufnahme sind die Effektknöpfe gesperrt. Werkzeug- und Kanalauswahl bleiben erhalten; Bearbeitungen beachten den ausgewählten Audiobereich und unterstützen **Rückgängig**.
 
 <a id="ss-topic-zeiten-unten-rechts-eingeben"></a>
 

@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 1.1.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 1.1.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -12,6 +12,7 @@ Cliquez sur un sujet pour y accéder. Sommaire revient ici ; Précédent et Suiv
 - [1. Langue et aide](#ss-topic-1-langue-et-aide)
 - [2. Démarrage rapide et espace de travail](#ss-topic-2-demarrage-rapide-et-espace-de-travail)
   - [Barres d’outils et options de l’outil](#ss-topic-barres-doutils-et-options-de-loutil)
+  - [Groupes d’effets déroulants](#ss-topic-groupes-deffets-deroulants)
   - [Saisir les temps en bas à droite](#ss-topic-saisir-les-temps-en-bas-a-droite)
 - [3. Fichiers, projets et récupération](#ss-topic-3-fichiers-projets-et-recuperation)
   - [MP3 et WAV](#ss-topic-mp3-et-wav)
@@ -101,6 +102,16 @@ La barre générale en haut contient le choix de vue, l’ouverture, l’enregis
 La barre horizontale **Options de l’outil**, sous la barre générale, suit l’outil actif. La sélection propose les commandes de plage et de passages par zéro ainsi que le choix des canaux stéréo ; le dessin propose l’édition numérique d’échantillons et le choix des canaux. En multipiste, elle offre les propriétés, la duplication et la suppression de clips. Pour les courbes de volume et de panoramique, **Réinitialiser la courbe** apparaît aussi pour le clip sélectionné. **+ Piste / − Piste** figurent en haut et dans **Fenêtre**. Les effets restent dans **Effets** ; les quatre boutons de zoom sont en bas près des commandes de lecture et dans **Affichage**, avec les mêmes raccourcis.
 
 Faites glisser une barre par sa poignée pointillée pour la déplacer, la réordonner ou la détacher. Faites-la glisser vers un bord de la fenêtre pour l’ancrer . **Affichage → Barres d’outils → Général / Options de l’outil / Outils** affiche ou masque chaque barre séparément. La disposition, la visibilité et les libellés sont conservés après fermeture. Le même menu permet de réafficher toute barre masquée.
+
+<a id="ss-topic-groupes-deffets-deroulants"></a>
+
+### Groupes d’effets déroulants
+
+La barre d’outils de gauche contient **Modifications de la forme d’onde**, **Amplitude**, **Filtres**, **Effets de retard**, **Réduction du bruit**, **Durée/hauteur** et **Spécial**. Cliquez sur la petite flèche à côté d’une icône pour afficher les effets du groupe. La liste partage les commandes, leur disponibilité et les raccourcis du menu **Effets**.
+
+Choisissez un effet : ses réglages s’ouvrent, ou une modification directe s’applique immédiatement. L’icône principale affiche ensuite le dernier effet choisi dans ce groupe. Cliquez dessus pour rouvrir ou appliquer cet effet ; après **Amplitude → Normaliser**, elle rouvre par exemple la fenêtre de normalisation. L’infobulle indique le groupe et la commande actuelle. Chaque groupe conserve son choix après fermeture. Si cet effet est temporairement indisponible, le bouton affiche une autre commande disponible ; le choix précédent reste mémorisé jusqu’à l’utilisation d’un autre effet.
+
+**Remaster** possède aussi son propre bouton. En multipiste, **Effets de piste** ouvre la chaîne d’effets de la piste sélectionnée. Les effets de forme d’onde restent visibles dans les menus, mais ne traitent pas toute la session. Les boutons d’effets sont verrouillés pendant l’enregistrement. L’outil actif et le choix des canaux sont conservés ; les modifications respectent l’audio sélectionné et prennent en charge **Annuler**.
 
 <a id="ss-topic-saisir-les-temps-en-bas-a-droite"></a>
 

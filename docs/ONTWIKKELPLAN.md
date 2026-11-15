@@ -1,5 +1,9 @@
 # Afgesproken ontwikkelroute
 
+## Effectgroepen op de werkbalk — 1.1.1 in controle
+
+De linker werkbalk krijgt uitklapbare groepen voor golfvormbewerkingen, amplitude, filters, vertragingseffecten, ruisreductie, tijd/toonhoogte en speciale effecten. Het pijltje toont de groep; het hoofdicoon opent of herhaalt het laatst gekozen effect. De keuze blijft na herstart bewaard. De lijsten delen de bestaande menuopdrachten, met behoud van hun beschikbaarheid, kanaalkeuze, Undo en opnamevergrendeling. Remaster en spooreffecten hebben eigen knoppen. De vijf handleidingen beschrijven de bediening. De [todo](TODO.md) volgt de afsluitende regressie- en pakketcontroles; de 18 uitgestelde uitbreidingen blijven uitgesteld.
+
 ## Werkbalken vernieuwd — 1.1.0 gepubliceerd
 
 De nieuwe werkruimte heeft algemene knoppen bovenaan, een aparte optiebalk voor het actieve gereedschap en standaard links een verticale gereedschapsbalk. Werkbalken hebben kaderloze pictogrammen, zichtbare handgrepen en eigen aan/uit-keuzes via **Beeld → Werkbalken**. Indeling, zichtbaarheid en werkbalkteksten blijven bewaard. De dubbele zoomgroep bovenaan is verwijderd; de bediening onderaan, menu's en sneltoetsen behouden alle zoomfuncties.

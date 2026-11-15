@@ -2,6 +2,16 @@
 
 Stand: 15 november 2026, SoundSausage 1.1.0 gepubliceerd en gecontroleerd.
 
+## Uitklapbare effectgroepen — 1.1.1 in controle
+
+- Effectgroepen op de linker werkbalk, met dezelfde opdrachten als het menu Effecten.
+- Pijltje voor de lijst en hoofdicoon voor het laatst gebruikte effect; keuze per groep onthouden.
+- Golfvormbewerkingen en Remaster rechtstreeks bereikbaar; spooreffecten in multitrack.
+- Bestaande kanaalkeuze, Undo en opnamevergrendeling blijven gelden. Niet-beschikbare effecten zijn uitgeschakeld.
+- Alle vijf handleidingen en vertalingen bijgewerkt.
+
+Nog af te ronden: regressiecontroles, pakketbouw en publicatie van de update. De 18 uitgestelde uitbreidingen blijven uitgesteld.
+
 ## Werkbalkvernieuwing — afgerond in 1.1.0
 
 - Algemene knoppen bovenaan, een horizontale gereedschapsoptiebalk daaronder en een aparte verticale gereedschapsbalk standaard links.

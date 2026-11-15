@@ -4,8 +4,9 @@ from PySide6.QtGui import QActionGroup
 from PySide6.QtWidgets import QBoxLayout, QHBoxLayout, QSizePolicy
 
 from .i18n import bind
-from .i18n_widgets import QToolBar, QToolButton, QWidget, QLabel
+from .i18n_widgets import QToolBar, QToolButton, QWidget, QLabel, QMenu
 from .icons import application_icon
+from .effect_tools import EffectToolButton
 
 
 class WorkspaceToolbars:
@@ -41,6 +42,37 @@ class WorkspaceToolbars:
                 action.setToolTip('Pan line: top R, middle centre, bottom L. Adds balance to the clip and track pan; centre keeps their settings.')
         self.add_groups(self.tools, (('select_wave', 'draw_waveform', 'move_clips', 'volume_line', 'pan_line'),
                                    ('marker_add', 'markers')))
+        self.tools.addSeparator()
+        self.effect_buttons = {}
+        self.effect_widgets = []
+        remaster = QToolButton()
+        remaster.setDefaultAction(window.actions['remaster'])
+        self.effect_widgets.append(self.tools.addWidget(remaster))
+        self.tools.toolButtonStyleChanged.connect(remaster.setToolButtonStyle)
+        wave_edits = QMenu('Waveform Edits', window)
+        for key in ('invert', 'reverse', 'silence'):
+            wave_edits.addAction(window.actions[key])
+        groups = (
+            ('wave_edits', 'Waveform Edits', wave_edits, 'invert'),
+            ('amplitude', 'Amplitude', window.menus['amplitude'], 'amplify'),
+            ('filters', 'Filters', window.menus['filters'], 'graphic_eq'),
+            ('delay', 'Delay Effects', window.menus['delay'], 'delay'),
+            ('noise', 'Noise Reduction', window.menus['noise'], 'noise_reduction'),
+            ('time_pitch', 'Time/Pitch', window.menus['time_pitch'], 'stretch'),
+            ('special', 'Special', window.menus['special'], 'distortion'),
+        )
+        for key, title, menu, default in groups:
+            button = EffectToolButton(window, key, title, menu, default, self.tools)
+            button.setIconSize(self.tools.iconSize())
+            button.setToolButtonStyle(self.tools.toolButtonStyle())
+            self.tools.iconSizeChanged.connect(button.setIconSize)
+            self.tools.toolButtonStyleChanged.connect(button.setToolButtonStyle)
+            self.effect_buttons[key] = button
+            self.effect_widgets.append(self.tools.addWidget(button))
+        track_fx = QToolButton()
+        track_fx.setDefaultAction(window.actions['track_fx'])
+        self.track_effects_action = self.tools.addWidget(track_fx)
+        self.tools.toolButtonStyleChanged.connect(track_fx.setToolButtonStyle)
         editor = window.multitrack
         # These controls also work in the standalone editor. The main window
         # exposes them through shared actions and its dockable options bar.
@@ -147,6 +179,9 @@ class WorkspaceToolbars:
         window.actions['select_wave'].setEnabled(not busy and not multi)
         for key in ('select_wave', 'draw_waveform'):
             window.actions[key].setVisible(not multi)
+        for action in self.effect_widgets:
+            action.setVisible(not multi)
+        self.track_effects_action.setVisible(multi)
         for mode, action in self.multi_tools.items():
             action.setVisible(multi)
             action.setEnabled(multi and not busy)
@@ -168,6 +203,8 @@ class WorkspaceToolbars:
 
     def restore(self):
         window = self.window
+        for button in self.effect_buttons.values():
+            button.restore()
         saved = window.ui_settings.value('ui/toolbar_layout', None)
         restored = False
         if saved:
@@ -181,5 +218,7 @@ class WorkspaceToolbars:
 
     def save(self):
         window = self.window
+        for button in self.effect_buttons.values():
+            button.save()
         window.ui_settings.setValue('ui/toolbar_layout', window.saveState(self.STATE_VERSION))
         window.ui_settings.setValue('ui/toolbar_labels', window.actions['toolbar_labels'].isChecked())

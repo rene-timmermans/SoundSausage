@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **1.1.0**.
+De huidige versie is **1.1.1**.
 
 ## Wat het kan
 
@@ -16,6 +16,7 @@ De huidige versie is **1.1.0**.
 
 - Golfvormweergave voor één opname en multitrack voor meerdere sporen; wissel met **Tab** of de knoppen bovenaan.
 - Verplaatsbare werkbalken met kaderloze pictogrammen: algemene knoppen bovenaan, gereedschappen links en opties voor het actieve gereedschap.
+- Uitklapbare effectgroepen op de linker werkbalk, met een pictogram voor het laatst gekozen effect.
 - Inzoomen tot afzonderlijke samples, afspelen in een lus en een frequentieanalyse van het gekozen fragment.
 - Tijdens afspelen naar een andere plek springen door op de golfvorm of tijdliniaal te klikken.
 - Transport, grote klok, selectie- en weergavetijden en een stereometer met dB-schaal en piekindicatie.
