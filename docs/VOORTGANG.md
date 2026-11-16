@@ -1,9 +1,10 @@
 # Ontwikkelroute
 
-## Effectkeuze en expliciete selectie — 1.2.1 in uitvoering
+## Effectkeuze en expliciete selectie — 1.2.1 gepubliceerd
 
-De uitklaplijsten links kiezen alleen het actieve effect; een hoofdklik voert uit of opent de instellingen. De menuopdrachten en herhalen met F2 vereisen een expliciete tijdselectie. Zonder selectie wordt geen golfvormeffect toegepast; Ctrl+A kiest de volledige opname. Kanaalkeuze, instellingenvensters, Undo, opnamevergrendeling en werkbalkvoorkeuren blijven behouden. De vijf handleidingen en aanwijzingen beschrijven de bediening. Gerichte regressiecontroles en de distributiebouw worden afgerond. De 18 uitgestelde uitbreidingen blijven uitgesteld.
+De uitklaplijsten links kiezen alleen het actieve effect; een hoofdklik voert uit of opent de instellingen. De menuopdrachten en herhalen met F2 vereisen een expliciete tijdselectie. Zonder selectie wordt geen golfvormeffect toegepast; Ctrl+A kiest de volledige opname. Kanaalkeuze, instellingenvensters, Undo, opnamevergrendeling en werkbalkvoorkeuren blijven behouden. De vijf handleidingen en aanwijzingen beschrijven de bediening.
 
+Alle **666 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op elk van vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd. De catalogi bevatten 1555 bronvormen zonder ontbrekende vertaling; de handleidingindexen zijn actueel. Er staan geen open punten voor deze correctie. De 18 uitgestelde uitbreidingen blijven uitgesteld.
 
 ## Compactere werkruimte — 1.2.0 gepubliceerd
 

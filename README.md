@@ -99,6 +99,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 
 ## Wat er nieuw is
 
+**[1.2.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.2.1)** Effectkeuze op de linker werkbalk verandert alleen het pictogram; een volgende klik opent of past toe. Golfvormeffecten vereisen een selectie; Ctrl+A kiest de hele opname.
+
 **[1.2.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.2.0)** Compactere werkruimte met kanaalkeuze bij de golfvorm en clipbediening bij de tijdlijn. Markeringen staan op de algemene werkbalk; gereedschappen en effecten hebben dezelfde groepen in de menu’s en links.
 
 **[1.1.2](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.1.2)** Voortgangsvensters bieden ruimte voor de volledige programmatitel, ook bij grotere letters.
