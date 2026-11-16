@@ -26,8 +26,10 @@ class RestorationGuiTests(unittest.TestCase):
         d = cls(self.window.document, self.window, no_audio=True); self.dialogs.append(d); d.show(); self.app.processEvents(); return d
 
     def test_capture_then_full_waveform_dialog_preview_and_apply(self):
-        self.window.document.select(0, 2000); self.window.actions['noise_profile'].trigger()
-        self.window.document.select(0, 0)
+        self.window.document.select(0, 2000)
+        self.window.selection_changed(*self.window.document.selection)
+        self.window.actions['noise_profile'].trigger()
+        self.window.select_all()
         d = self.dialog(NoiseReductionDialog)
         self.assertTrue(d.button_box.button(QDialogButtonBox.StandardButton.Ok).isEnabled())
         before = self.window.document.view(); preview = d.preview_samples()
@@ -63,7 +65,7 @@ class RestorationGuiTests(unittest.TestCase):
 
     def test_adaptive_presets_tracking_controls_and_preview_match_committed_audio(self):
         self.window.document.select(0, 2000); self.window.capture_noise_profile()
-        self.window.document.select(0, 0)
+        self.window.select_all()
         d = self.dialog(NoiseReductionDialog)
         self.assertFalse(d.tracking.isEnabled())
         d.preset(4)
