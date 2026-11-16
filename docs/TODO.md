@@ -1,6 +1,11 @@
 # Voortgang en vervolg
 
-Stand: 15 november 2026, SoundSausage 1.1.2 gepubliceerd en gecontroleerd.
+## Compactere werkruimte — 1.2.0 in uitvoering
+
+De algemene werkbalk bevat nu ook de markeringsknoppen. Golfvormgereedschappen staan samen onder Bewerken; clipgereedschappen verschijnen in multitrack. Ompolen, Achterstevoren en Stilte delen het submenu Golfvormbewerkingen met de linker effectgroep. De vaste optiebalk maakt plaats voor kanaalkeuze direct boven de golfvorm, een numerieke sampleknop tijdens tekenen en clipbediening boven de multitracktijdlijn. De twee verplaatsbare werkbalken behouden hun aan/uit-keuzes en voorkeuren. Bestaande indelingen worden overgenomen zonder de vroegere optiebalk. De vijf handleidingen beschrijven de bediening. Gerichte controles en de distributiebouw worden afgerond; de 18 uitgestelde uitbreidingen blijven uitgesteld.
+
+
+Stand: 16 november 2026, visuele verfijningen voor SoundSausage 1.2.0 in uitvoering.
 
 ## Titelruimte in voortgangsvensters — afgerond in 1.1.2
 

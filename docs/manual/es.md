@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 1.1.2. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 1.2.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -97,11 +97,13 @@ Dos finas líneas horizontales marcan el borde inferior del canal izquierdo y el
 
 ### Barras de herramientas y opciones
 
-La barra general superior contiene selección de vista, apertura, guardado, edición y comandos de sesión. La barra de herramientas independiente aparece inicialmente a la izquierda. **Seleccionar forma de onda** selecciona un intervalo o coloca el cursor; **Dibujar forma de onda / D** dibuja muestras. En multipista, elige **Mover clips**, **Curva de volumen** o **Curva panorámica**.
+La barra general superior contiene selección de vista, apertura, guardado, edición, marcadores y comandos de sesión. **Añadir marcador** y **Lista de marcadores** están juntos aquí. La barra de herramientas independiente aparece inicialmente a la izquierda. **Seleccionar forma de onda** selecciona un intervalo o coloca el cursor; **Dibujar forma de onda / D** dibuja muestras. Estos comandos y **Editar muestra** están agrupados en **Editar → Herramientas de forma de onda**.
 
-La barra horizontal **Opciones de herramienta**, bajo la barra general, sigue la herramienta activa. La selección ofrece comandos de intervalo y cruces por cero, además de selección de canales estéreo; el dibujo ofrece edición numérica de muestras y selección de canales. En multipista ofrece propiedades, duplicación y eliminación de clips. Para las líneas de volumen y panorámica aparece también **Restablecer curva** para el clip seleccionado. **+ Pista / − Pista** están arriba y en **Ventana**. Los efectos siguen en **Efectos**; los cuatro botones de zoom están abajo junto a los controles de reproducción y en **Ver**, con los mismos atajos.
+La selección de canales está directamente encima de la forma de onda. Al dibujar aparece a su lado el botón para editar muestras numéricamente. Los comandos de selección siguen en **Editar**; puedes introducir inicio, fin y duración abajo a la derecha.
 
-Arrastra una barra por su asa de puntos para moverla, reordenarla o separarla. Acércala a un borde de la ventana para acoplarla. **Ver → Barras de herramientas → General / Opciones de herramienta / Herramientas** muestra u oculta cada barra por separado. La disposición, la visibilidad y las etiquetas se conservan al cerrar. Recupera cualquier barra oculta mediante el mismo menú.
+En multipista, elige **Mover clips**, **Curva de volumen** o **Curva panorámica** a la izquierda o mediante **Editar → Herramientas de clip**. Las propiedades, la duplicación y la eliminación de clips están sobre la línea de tiempo. Para las líneas de volumen y panorámica aparece allí también **Restablecer curva** para el clip seleccionado. **+ Pista / − Pista** están en la barra general y en **Ventana**. Los ajustes de efectos se abren en sus propias ventanas. Los grupos de la izquierda coinciden con **Efectos**, incluida **Edición de forma de onda → Invertir polaridad / Invertir sentido / Silencio**. Los cuatro botones de zoom están abajo junto a los controles de reproducción y en **Ver**, con los mismos atajos.
+
+Arrastra una barra por su asa de puntos para moverla, reordenarla o separarla. Acércala a un borde de la ventana para acoplarla. **Ver → Barras de herramientas → General / Herramientas** muestra u oculta cada barra por separado. La disposición, la visibilidad y las etiquetas se conservan al cerrar. Recupera cualquier barra oculta mediante el mismo menú.
 
 <a id="ss-topic-grupos-de-efectos-desplegables"></a>
 
@@ -217,7 +219,7 @@ Pulsa para situar el cursor y arrastra para seleccionar. En estéreo, arrastra d
 
 **Cortar / Ctrl+X** elimina y copia; **Copiar / Ctrl+C** copia; **Pegar / Ctrl+V** reemplaza la selección o inserta en el cursor. **Pegar mezclando / Ctrl+M** suma el audio del portapapeles y puede elevar los picos. **Supr** elimina el intervalo; **Recortar / Ctrl+T** conserva solo ese intervalo. **Ctrl+Z / Ctrl+Mayús+Z** deshace/rehace. Pegar convierte el muestreo sin cambiar el portapapeles. Con ambos canales debe coincidir su número. Copiar/exportar izquierda o derecha produce mono; guardar normalmente conserva toda la forma estéreo.
 
-El estéreo conserva una línea temporal común. Con **Izquierda** o **Derecha**, cortar/eliminar, insertar, pegar con distinta duración, estirar, generar tonos/silencio y añadir colas desplaza solo el canal elegido. El otro conserva sus muestras en sus posiciones originales. El canal más corto se completa con silencio al final. **Ambos** desplaza los dos canales y sus marcadores comunes; **Efectos → Silencio** vacía sin desplazar.
+El estéreo conserva una línea temporal común. Con **Izquierda** o **Derecha**, cortar/eliminar, insertar, pegar con distinta duración, estirar, generar tonos/silencio y añadir colas desplaza solo el canal elegido. El otro conserva sus muestras en sus posiciones originales. El canal más corto se completa con silencio al final. **Ambos** desplaza los dos canales y sus marcadores comunes; **Efectos → Edición de forma de onda → Silencio** vacía sin desplazar.
 
 Ejemplo: eliminar los segundos 2–3 de Izquierda adelanta un segundo el audio izquierdo posterior y añade un segundo de silencio final; Derecha permanece. **Recortar** coloca solo el fragmento seleccionado del canal elegido en el instante cero y completa el resto con silencio. El relleno es audio normal: se conserva al guardar/reabrir y se desplaza con inserciones posteriores. Elimina el silencio final sobrante con Ambos. Los marcadores y capítulos MP3 comunes mantienen sus tiempos al editar un canal; comprueba su significado después de desplazar audio.
 
@@ -231,7 +233,7 @@ Para grabar en un canal, elige Izquierda/Derecha, **R**, y **Insertar en cursor*
 
 Amplíe con **+** o **Ctrl+rueda** hasta ver los puntos cuadrados (al menos dos píxeles lógicos entre muestras). El eje horizontal muestra índices desde 0. Arrastre un punto verticalmente para cambiar solo esa muestra de ese canal. Su posición queda fija aunque el puntero cruce otros puntos o canales. El arrastre muestra una vista previa; soltar confirma y **Escape** cancela. **Mayús+arrastrar** sigue seleccionando audio.
 
-Un doble clic o clic derecho abre **Editar muestra**. **Editar → Editar muestra** funciona con cualquier ampliación. Empieza en el cursor y el primer canal elegido; el índice y canal se pueden cambiar. Introduzca un valor normalizado o muéstrelo como 8, 16 o 24 bits con signo. Cero es silencio; −1/+1 son el nivel máximo normal. Por ejemplo, −16384 en la vista de 16 bits equivale a −0,5 normalizado. Cambiar el rango mostrado no modifica audio ni formato. **Aceptar** aplica un valor; **Cancelar** conserva el original.
+Un doble clic o clic derecho abre **Editar muestra**. **Editar → Herramientas de forma de onda → Editar muestra** funciona con cualquier ampliación. Empieza en el cursor y el primer canal elegido; el índice y canal se pueden cambiar. Introduzca un valor normalizado o muéstrelo como 8, 16 o 24 bits con signo. Cero es silencio; −1/+1 son el nivel máximo normal. Por ejemplo, −16384 en la vista de 16 bits equivale a −0,5 normalizado. Cambiar el rango mostrado no modifica audio ni formato. **Aceptar** aplica un valor; **Cancelar** conserva el original.
 
 Cada arrastre terminado o valor confirmado forma un paso Deshacer/Rehacer. Las demás muestras, el otro canal, la duración y los metadatos se conservan. Arrastrar está limitado a −1 … +1; los picos flotantes existentes siguen disponibles numéricamente. La reproducción se detiene al empezar una corrección; la edición queda bloqueada al grabar. Para clips multipista, edite una copia de forma de onda y aplíquela expresamente al clip. Escuche tras cada corrección; para un clic de varias muestras, acerque cada punto a la onda contigua. Un salto brusco a cero puede crear otro clic. WAV float32 conserva los valores internos exactos; guardar como MP3 recomprime todo el archivo con pérdidas.
 
@@ -239,7 +241,7 @@ Cada arrastre terminado o valor confirmado forma un paso Deshacer/Rehacer. Las d
 
 ### Dibujar forma de onda
 
-Activa **Editar → Dibujar forma de onda**, pulsa **D** o usa el lápiz junto a los controles de zoom. Dibuja directamente sobre la forma de onda con el botón izquierdo; no hace falta acertar en un punto individual. La línea dibujada sustituye los valores entre −1 y +1; no desplaza verticalmente la forma de onda original.
+Activa **Editar → Herramientas de forma de onda → Dibujar forma de onda**, pulsa **D** o usa el lápiz de la barra de herramientas izquierda. Dibuja directamente sobre la forma de onda con el botón izquierdo; no hace falta acertar en un punto individual. La línea dibujada sustituye los valores entre −1 y +1; no desplaza verticalmente la forma de onda original.
 
 El zoom determina el tamaño del grupo: aproximadamente dos píxeles lógicos de audio, redondeados hacia arriba a muestras enteras. De cerca cambia una muestra; al alejar el zoom cambian varias juntas. Cada grupo abarca como máximo un segundo. Un gesto largo puede tocar varios grupos y cambiar más de un segundo en total. Líneas rectas unen las posiciones sucesivas del puntero; volver a dibujar sobre un grupo sustituye su dibujo anterior.
 
@@ -504,7 +506,7 @@ Fino (predeterminado) y Rápido usan Rubber Band sin tiempo real. El estéreo se
 
 ## 8. Generar, analizar y convertir
 
-**Generar → Tonos** inserta una senoide en el cursor o reemplaza la selección con duración, frecuencia Hz y amplitud % elegidas. Prueba 440 Hz a nivel moderado. **Generar → Silencio** inserta/reemplaza una duración de silencio; **Efectos → Silencio** conserva la duración existente.
+**Generar → Tonos** inserta una senoide en el cursor o reemplaza la selección con duración, frecuencia Hz y amplitud % elegidas. Prueba 440 Hz a nivel moderado. **Generar → Silencio** inserta/reemplaza una duración de silencio; **Efectos → Edición de forma de onda → Silencio** conserva la duración existente.
 
 **Analizar → Análisis de frecuencias / Alt+Z** muestra frecuencia frente a dBFS de canales/intervalo elegidos (o grabación entera). En intervalos largos usa una parte central limitada, ventana de Hann y potencia media de canales. Muestra frecuencia/nivel del pico debajo. Selecciona un sonido corto para estudiarlo; no es un espectrómetro continuo. Cerrar no cambia audio.
 

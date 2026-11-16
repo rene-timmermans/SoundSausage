@@ -1,5 +1,10 @@
 # Afgesproken ontwikkelroute
 
+## Compactere werkruimte — 1.2.0 in uitvoering
+
+De algemene werkbalk bevat nu ook de markeringsknoppen. Golfvormgereedschappen staan samen onder Bewerken; clipgereedschappen verschijnen in multitrack. Ompolen, Achterstevoren en Stilte delen het submenu Golfvormbewerkingen met de linker effectgroep. De vaste optiebalk maakt plaats voor kanaalkeuze direct boven de golfvorm, een numerieke sampleknop tijdens tekenen en clipbediening boven de multitracktijdlijn. De twee verplaatsbare werkbalken behouden hun aan/uit-keuzes en voorkeuren. Bestaande indelingen worden overgenomen zonder de vroegere optiebalk. De vijf handleidingen beschrijven de bediening. Gerichte controles en de distributiebouw worden afgerond; de 18 uitgestelde uitbreidingen blijven uitgesteld.
+
+
 ## Titelruimte in voortgangsvensters — 1.1.2 gepubliceerd
 
 Een ruimere minimale breedte in het gedeelde voortgangsvenster houdt de programmatitel leesbaar naast de titelbalkknoppen. De breedte past zich aan de lettergrootte aan. De bestaande bediening en verwerking blijven gelijk; de [todo](TODO.md) legt de afronding vast. Alle **662 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op vijf doelen, inclusief Ubuntu 26.04 en Rolling; de acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd.

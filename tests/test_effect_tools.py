@@ -186,12 +186,12 @@ class EffectToolTests(unittest.TestCase):
         c = w.toolbar_controller
         c.effect_buttons['delay'].remember('echo')
         w.addToolBar(Qt.ToolBarArea.RightToolBarArea, c.tools)
-        c.options.toggleViewAction().trigger()
+        c.general.toggleViewAction().trigger()
         w.close()
         second = self.new_window()
         restored = second.toolbar_controller
         self.assertEqual(second.toolBarArea(restored.tools), Qt.ToolBarArea.RightToolBarArea)
-        self.assertFalse(restored.options.isVisible())
+        self.assertFalse(restored.general.isVisible())
         self.assertEqual(restored.effect_buttons['delay'].selected_key, 'echo')
         self.load(window=second)
         self.assertEqual(restored.effect_buttons['delay'].current_key, 'echo')

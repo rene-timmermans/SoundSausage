@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 1.1.2. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 1.2.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -97,11 +97,13 @@ Deux fines lignes horizontales marquent le bord inférieur du canal gauche et le
 
 ### Barres d’outils et options de l’outil
 
-La barre générale en haut contient le choix de vue, l’ouverture, l’enregistrement, l’édition et les commandes de session. La barre d’outils séparée se trouve initialement à gauche. **Sélectionner la forme d’onde** sélectionne une plage ou place le curseur ; **Dessiner la forme d’onde / D** dessine les échantillons. En multipiste, choisissez **Déplacer les clips**, **Courbe de volume** ou **Courbe de panoramique**.
+La barre générale en haut contient le choix de vue, l’ouverture, l’enregistrement, l’édition, les repères et les commandes de session. **Ajouter un repère** et **Liste des repères** y sont regroupés. La barre d’outils séparée se trouve initialement à gauche. **Sélectionner la forme d’onde** sélectionne une plage ou place le curseur ; **Dessiner la forme d’onde / D** dessine les échantillons. Ces commandes et **Modifier un échantillon** sont regroupées sous **Édition → Outils de forme d’onde**.
 
-La barre horizontale **Options de l’outil**, sous la barre générale, suit l’outil actif. La sélection propose les commandes de plage et de passages par zéro ainsi que le choix des canaux stéréo ; le dessin propose l’édition numérique d’échantillons et le choix des canaux. En multipiste, elle offre les propriétés, la duplication et la suppression de clips. Pour les courbes de volume et de panoramique, **Réinitialiser la courbe** apparaît aussi pour le clip sélectionné. **+ Piste / − Piste** figurent en haut et dans **Fenêtre**. Les effets restent dans **Effets** ; les quatre boutons de zoom sont en bas près des commandes de lecture et dans **Affichage**, avec les mêmes raccourcis.
+Le choix des canaux se trouve directement au-dessus de la forme d’onde. Pendant le dessin, un bouton d’édition numérique d’échantillons apparaît à côté. Les commandes de sélection restent dans **Édition** ; début, fin et durée se saisissent en bas à droite.
 
-Faites glisser une barre par sa poignée pointillée pour la déplacer, la réordonner ou la détacher. Faites-la glisser vers un bord de la fenêtre pour l’ancrer . **Affichage → Barres d’outils → Général / Options de l’outil / Outils** affiche ou masque chaque barre séparément. La disposition, la visibilité et les libellés sont conservés après fermeture. Le même menu permet de réafficher toute barre masquée.
+En multipiste, choisissez à gauche **Déplacer les clips**, **Courbe de volume** ou **Courbe de panoramique**, ou par **Édition → Outils de clip**. Les propriétés, la duplication et la suppression de clips se trouvent au-dessus de la chronologie. Pour les courbes de volume et de panoramique, **Réinitialiser la courbe** y figure aussi pour le clip sélectionné. **+ Piste / − Piste** sont sur la barre générale et dans **Fenêtre**. Les réglages des effets s’ouvrent dans leurs propres fenêtres. Les groupes à gauche correspondent à **Effets**, y compris **Modifications de la forme d’onde → Inverser la polarité / Inverser le sens / Silence**. Les quatre boutons de zoom sont en bas près des commandes de lecture et dans **Affichage**, avec les mêmes raccourcis.
+
+Faites glisser une barre par sa poignée pointillée pour la déplacer, la réordonner ou la détacher. Faites-la glisser vers un bord de la fenêtre pour l’ancrer. **Affichage → Barres d’outils → Général / Outils** affiche ou masque chaque barre séparément. La disposition, la visibilité et les libellés sont conservés après fermeture. Le même menu permet de réafficher toute barre masquée.
 
 <a id="ss-topic-groupes-deffets-deroulants"></a>
 
@@ -217,7 +219,7 @@ Cliquez pour placer le curseur, glissez pour sélectionner. En stéréo, glissez
 
 **Couper / Ctrl+X** retire et copie ; **Copier / Ctrl+C** copie ; **Coller / Ctrl+V** remplace la sélection ou insère au curseur. **Collage mixé / Ctrl+M** additionne l'audio du presse-papiers et peut augmenter les crêtes. **Suppr** retire l'intervalle ; **Rogner / Ctrl+T** garde uniquement celui-ci. **Ctrl+Z / Ctrl+Maj+Z** annule/rétablit. Le collage convertit la fréquence sans changer le presse-papiers. Pour les deux canaux, le nombre doit correspondre. Copier/exporter gauche ou droite donne du mono ; l'enregistrement normal garde toute la stéréo.
 
-La stéréo garde une ligne temporelle commune. Avec **Gauche** ou **Droite**, couper/supprimer, insérer, coller une durée différente, étirer, générer des sons/silences et ajouter une queue décale uniquement le canal choisi. L’autre garde ses échantillons à leurs positions d’origine. Le canal plus court est complété par du silence à la fin. **Les deux** décale les deux canaux et leurs repères communs ; **Effets → Silence** efface sans décaler.
+La stéréo garde une ligne temporelle commune. Avec **Gauche** ou **Droite**, couper/supprimer, insérer, coller une durée différente, étirer, générer des sons/silences et ajouter une queue décale uniquement le canal choisi. L’autre garde ses échantillons à leurs positions d’origine. Le canal plus court est complété par du silence à la fin. **Les deux** décale les deux canaux et leurs repères communs ; **Effets → Modifications de la forme d’onde → Silence** efface sans décaler.
 
 Exemple : supprimer les secondes 2–3 à gauche avance la suite gauche d’une seconde et ajoute une seconde de silence final ; droite reste en place. **Rogner** place uniquement le fragment choisi du canal choisi à l’instant zéro et complète le reste par du silence. Ce silence fait partie de l’audio, reste après enregistrement/réouverture et suit les insertions ultérieures. Supprimez le silence final indésirable avec Les deux. Les repères et chapitres MP3 communs gardent leurs positions lors d’une modification d’un seul canal ; vérifiez leur signification après un décalage.
 
@@ -231,7 +233,7 @@ Pour enregistrer dans un canal, choisissez Gauche/Droite, **R**, puis **Insérer
 
 Zoomez avec **+** ou **Ctrl+molette** jusqu’aux points carrés (au moins deux pixels logiques entre échantillons). L’axe horizontal indique alors les indices à partir de 0. Glissez un point verticalement pour modifier uniquement cet échantillon de ce canal. Sa position reste fixe, même si le pointeur traverse d’autres points ou canaux. Le déplacement donne un aperçu ; relâcher valide, **Échap** annule. **Maj+glisser** permet toujours de sélectionner l’audio.
 
-Un double-clic ou clic droit sur un point ouvre **Modifier un échantillon**. **Édition → Modifier un échantillon** fonctionne à tout niveau de zoom. La position initiale est celle du curseur dans le premier canal sélectionné ; indice et canal sont modifiables. Affichez une valeur normalisée ou en 8, 16 ou 24 bits signés. Zéro est le silence ; −1/+1 représentent le niveau maximal normal. Par exemple, −16384 en affichage 16 bits correspond à −0,5 normalisé. Changer la plage d’affichage ne change ni l’audio ni l’encodage. **OK** applique une valeur ; **Annuler** préserve l’original.
+Un double-clic ou clic droit sur un point ouvre **Modifier un échantillon**. **Édition → Outils de forme d’onde → Modifier un échantillon** fonctionne à tout niveau de zoom. La position initiale est celle du curseur dans le premier canal sélectionné ; indice et canal sont modifiables. Affichez une valeur normalisée ou en 8, 16 ou 24 bits signés. Zéro est le silence ; −1/+1 représentent le niveau maximal normal. Par exemple, −16384 en affichage 16 bits correspond à −0,5 normalisé. Changer la plage d’affichage ne change ni l’audio ni l’encodage. **OK** applique une valeur ; **Annuler** préserve l’original.
 
 Chaque déplacement terminé ou valeur confirmée forme une étape Annuler/Rétablir. Tous les autres échantillons, l’autre canal, la durée et les métadonnées restent inchangés. Le glissement est limité à −1 … +1 ; les crêtes flottantes existantes restent accessibles numériquement. La lecture s’arrête au début d’une correction ; l’édition est bloquée pendant l’enregistrement. Pour une région multipiste, modifiez sa copie en forme d’onde puis appliquez-la explicitement à la région. Écoutez après chaque correction ; pour un clic de plusieurs échantillons, rapprochez chaque point du tracé voisin. Une transition brutale vers zéro peut créer un clic. WAV float32 conserve exactement les valeurs internes ; enregistrer en MP3 recompresse tout le fichier avec pertes.
 
@@ -239,7 +241,7 @@ Chaque déplacement terminé ou valeur confirmée forme une étape Annuler/Réta
 
 ### Dessiner la forme d’onde
 
-Activez **Édition → Dessiner la forme d’onde**, appuyez sur **D** ou utilisez le crayon près des boutons de zoom. Dessinez directement sur la forme d’onde avec le bouton gauche ; inutile de viser un point individuel. La ligne dessinée remplace les valeurs entre −1 et +1 ; elle ne déplace pas verticalement la forme d’onde d’origine.
+Activez **Édition → Outils de forme d’onde → Dessiner la forme d’onde**, appuyez sur **D** ou utilisez le crayon de la barre d’outils de gauche. Dessinez directement sur la forme d’onde avec le bouton gauche ; inutile de viser un point individuel. La ligne dessinée remplace les valeurs entre −1 et +1 ; elle ne déplace pas verticalement la forme d’onde d’origine.
 
 Le zoom détermine la taille du groupe : environ deux pixels logiques d’audio, arrondis au nombre entier supérieur d’échantillons. À fort zoom, un échantillon change ; en dézoomant, plusieurs changent ensemble. Chaque groupe couvre au plus une seconde. Un geste plus long peut toucher plusieurs groupes et modifier plus d’une seconde au total. Des lignes droites relient les positions successives du pointeur ; repasser sur un groupe remplace son dessin précédent.
 
@@ -504,7 +506,7 @@ Fin (défaut) et Rapide utilisent Rubber Band hors ligne. La stéréo est trait�
 
 ## 8. Générer, analyser et convertir
 
-**Générer → Tonalités** insère une sinusoïde au curseur ou remplace la sélection avec durée, fréquence Hz et amplitude % choisies. Essayez 440 Hz à faible niveau. **Générer → Silence** insère/remplace une durée de silence ; **Effets → Silence** conserve la durée existante.
+**Générer → Tonalités** insère une sinusoïde au curseur ou remplace la sélection avec durée, fréquence Hz et amplitude % choisies. Essayez 440 Hz à faible niveau. **Générer → Silence** insère/remplace une durée de silence ; **Effets → Modifications de la forme d’onde → Silence** conserve la durée existante.
 
 **Analyser → Analyse fréquentielle / Alt+Z** affiche fréquences et dBFS des canaux/intervalle choisis (sinon toute la prise). Pour les longs passages, une partie centrale limitée est utilisée, avec fenêtre de Hann et puissance moyenne des canaux. Fréquence/niveau de crête sont indiqués dessous. Sélectionnez un son court pour l'étudier ; ce n'est pas un spectromètre continu. Fermer ne change rien.
 

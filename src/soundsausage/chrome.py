@@ -32,6 +32,22 @@ def show_toolbar_labels(window, enabled):
 
 
 def create_actions(window):
+    window.action('select_wave', 'Select Waveform', lambda: window.toolbar_controller.select_wave())
+    window.actions['select_wave'].setCheckable(True)
+    window.actions['select_wave'].setToolTip('Drag to select audio; click to place the cursor.')
+    group = QActionGroup(window)
+    window.multitrack_tool_actions = {}
+    for mode, key, label in (('move', 'move_clips', 'Move Clips'),
+                             ('volume', 'volume_line', 'Volume Line'),
+                             ('pan', 'pan_line', 'Pan Line')):
+        action = window.action(key, label, lambda mode=mode: window.multitrack.set_envelope_mode(mode))
+        action.setCheckable(True)
+        group.addAction(action)
+        window.multitrack_tool_actions[mode] = action
+        if mode == 'volume':
+            action.setToolTip('Volume line: bottom 0%, middle 100%, top 200%. Multiplies clip and track volume.')
+        elif mode == 'pan':
+            action.setToolTip('Pan line: top R, middle centre, bottom L. Adds balance to the clip and track pan; centre keeps their settings.')
     window.action('marker_add','Add Marker',window.add_marker,'M')
     window.action('markers','Marker List…',window.open_markers,'Ctrl+Shift+M')
     window.action('marker_previous','Previous Marker',lambda:window.step_marker(-1),'Alt+Left')
@@ -82,7 +98,13 @@ def create_menus(window):
     channels = edit.addMenu("Select Channels")
     window.menus["channels"] = channels
     add(channels, ("channels_both", "channels_left", "channels_right"))
-    add(edit, (None, "edit_sample", "draw_waveform", "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
+    wave_tools = edit.addMenu('Waveform Tools')
+    window.menus['wave_tools'] = wave_tools
+    add(wave_tools, ('select_wave', 'draw_waveform', None, 'edit_sample'))
+    clip_tools = edit.addMenu('Clip Tools')
+    window.menus['clip_tools'] = clip_tools
+    add(clip_tools, ('move_clips', 'volume_line', 'pan_line'))
+    add(edit, (None, "convert_rate", None, "clip_properties", "duplicate_clip", "remove_clip"))
     add(edit,(None,'marker_add','markers'))
     view = menu("view", "&View")
     add(view, ("mode_wave", "mode_multi", None, "zoom_in", "zoom_out", "zoom_full", "zoom_selection", None, "fullscreen"))
@@ -90,8 +112,10 @@ def create_menus(window):
     view.addSeparator()
     window.menus['toolbars'] = view.addMenu('Toolbars')
     transform = menu("transform", "&Transform")
-    add(transform, ('remaster',None,"invert", "reverse", "silence", None))
-    add(transform, ("track_fx", None))
+    add(transform, ('remaster', 'track_fx', None))
+    wave_edits = transform.addMenu('Waveform Edits')
+    window.menus['wave_edits'] = wave_edits
+    add(wave_edits, ('invert', 'reverse', 'silence'))
     amplitude = transform.addMenu("&Amplitude")
     amplitude.setToolTipsVisible(True)
     window.menus["amplitude"] = amplitude

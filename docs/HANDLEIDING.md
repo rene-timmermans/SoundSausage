@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 1.1.2. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 1.2.0. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -179,11 +179,13 @@ horen, een selectie vereisen of nog in ontwikkeling zijn.
 
 ### Werkbalken en gereedschapsopties
 
-De algemene werkbalk staat bovenaan, met weergavekeuze, openen, opslaan, bewerken en sessieopdrachten. De aparte gereedschapsbalk staat standaard links. Kies **Golfvorm selecteren** om een tijdvak te selecteren of de cursor te plaatsen, of **Golfvorm tekenen / D** om samples te tekenen. In multitrack kies je **Clips verplaatsen**, **Volumelijn** of **Panlijn**.
+De algemene werkbalk staat bovenaan, met weergavekeuze, openen, opslaan, bewerken, markeringen en sessieopdrachten. **Markering toevoegen** en **Markeringenlijst** staan hier bij elkaar. De aparte gereedschapsbalk staat standaard links. Kies **Golfvorm selecteren** om een tijdvak te selecteren of de cursor te plaatsen, of **Golfvorm tekenen / D** om samples te tekenen. Deze opdrachten en **Sample bewerken** staan samen onder **Bewerken → Golfvormgereedschappen**.
 
-De horizontale **Gereedschapsopties** onder de algemene werkbalk volgen het actieve gereedschap. Bij selecteren zijn het selectie- en nuldoorgangscommando en de stereokanaalkeuze beschikbaar; bij tekenen de numerieke samplebewerking en kanaalkeuze. In multitrack staan hier de clipeigenschappen, dupliceren en verwijderen. Bij volume- en panlijnen verschijnt ook **Lijn herstellen** voor de geselecteerde clip. **+ Spoor / − Spoor** staan bovenaan en in **Venster**. Effecten kies je via **Effecten**; de vier zoomknoppen staan onderaan bij de afspeelknoppen en in **Beeld**, met dezelfde sneltoetsen.
+De kanaalkeuze staat direct boven de golfvorm. Tijdens tekenen verschijnt daarnaast de knop voor numerieke samplebewerking. Selectiecommando’s blijven onder **Bewerken** beschikbaar; begin, einde en lengte kun je rechtsonder invoeren.
 
-Sleep een werkbalk aan de gestippelde handgreep om hem te verplaatsen, anders te ordenen of los te maken. Sleep hem naar een vensterrand om hem weer vast te zetten. **Beeld → Werkbalken → Algemeen / Gereedschapsopties / Gereedschappen** toont of verbergt elke balk afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na afsluiten bewaard. Een verborgen balk kun je via hetzelfde menu terughalen.
+In multitrack kies je links **Clips verplaatsen**, **Volumelijn** of **Panlijn**, of via **Bewerken → Clipgereedschappen**. Clipeigenschappen, dupliceren en verwijderen staan boven de tijdlijn. Bij volume- en panlijnen staat daar ook **Lijn herstellen** voor de geselecteerde clip. **+ Spoor / − Spoor** staan op de algemene werkbalk en in **Venster**. Effectinstellingen openen in hun eigen vensters. De groepen links komen overeen met **Effecten**, inclusief **Golfvormbewerkingen → Ompolen / Achterstevoren / Stilte**. De vier zoomknoppen staan onderaan bij de afspeelknoppen en in **Beeld**, met dezelfde sneltoetsen.
+
+Sleep een werkbalk aan de gestippelde handgreep om hem te verplaatsen, anders te ordenen of los te maken. Sleep hem naar een vensterrand om hem weer vast te zetten. **Beeld → Werkbalken → Algemeen / Gereedschappen** toont of verbergt elke balk afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na afsluiten bewaard. Een verborgen balk kun je via hetzelfde menu terughalen.
 
 <a id="ss-topic-uitklapbare-effectgroepen"></a>
 
@@ -680,7 +682,7 @@ correctie. **Escape** annuleert zonder iets te wijzigen. Met **Shift+slepen**
 kun je ook tussen de samplepunten gewoon audio selecteren.
 
 Dubbelklik of klik met rechts op een punt voor **Sample bewerken**. Je kunt
-ook **Bewerken → Sample bewerken** kiezen, ongeacht het zoomniveau. Het venster
+ook **Bewerken → Golfvormgereedschappen → Sample bewerken** kiezen, ongeacht het zoomniveau. Het venster
 begint bij de cursor en het eerste gekozen kanaal; sample-index en kanaal zijn
 aanpasbaar. Voer de waarde genormaliseerd in, of toon die als 8-, 16- of 24-bit
 met teken. Nul is stilte; −1 en +1 zijn het normale volledige uitvoerniveau.
@@ -705,8 +707,8 @@ MP3 opnieuw opslaan comprimeert het gehele bestand opnieuw met kwaliteitsverlies
 
 ### Golfvorm tekenen
 
-Schakel **Bewerken → Golfvorm tekenen** in, druk op **D** of gebruik de
-potloodknop naast de zoomknoppen. Teken met de linkermuisknop rechtstreeks op de
+Schakel **Bewerken → Golfvormgereedschappen → Golfvorm tekenen** in, druk op **D** of gebruik de
+potloodknop op de linker gereedschapsbalk. Teken met de linkermuisknop rechtstreeks op de
 golfvorm; afzonderlijke samplepunten raken is niet nodig. De getekende lijn
 vervangt de samplewaarden, binnen −1 tot +1. Dit verschuift de bestaande golf
 niet: het verloop onder de lijn wordt opnieuw getekend.
@@ -1463,7 +1465,7 @@ Een toon van bijvoorbeeld 440 Hz op een bescheiden niveau is bruikbaar om een
 bewerking te proberen. Begin bij luisteren met een laag afspeelvolume.
 
 **Genereren → Stilte** voegt een opgegeven duur aan stilte in of vervangt de
-selectie door die hoeveelheid stilte. Dit verschilt van Effecten → Stilte,
+selectie door die hoeveelheid stilte. Dit verschilt van Effecten → Golfvormbewerkingen → Stilte,
 dat de bestaande fragmentlengte altijd behoudt.
 
 <a id="ss-topic-7-frequenties-analyseren"></a>

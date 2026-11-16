@@ -5,9 +5,9 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-from PySide6.QtCore import QPoint, QSettings, Qt
+from PySide6.QtCore import QCoreApplication, QEvent, QPoint, QSettings, Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QToolButton
+from PySide6.QtWidgets import QApplication, QToolBar, QToolButton
 
 from soundsausage.document import Document
 from soundsausage.i18n import install_language, language as current_language
@@ -48,13 +48,11 @@ class ToolbarTests(unittest.TestCase):
         self.window.refresh(fit=True)
         self.app.processEvents()
 
-    def test_three_movable_bars_have_native_handles_and_no_duplicate_zoom_group(self):
+    def test_two_movable_bars_have_native_handles_and_no_duplicate_zoom_group(self):
         w = self.window
         c = w.toolbar_controller
-        self.assertEqual(len(c.bars), 3)
+        self.assertEqual(len(c.bars), 2)
         self.assertEqual(w.toolBarArea(c.general), Qt.ToolBarArea.TopToolBarArea)
-        self.assertEqual(w.toolBarArea(c.options), Qt.ToolBarArea.TopToolBarArea)
-        self.assertLess(c.general.geometry().y(), c.options.geometry().y())
         self.assertEqual(w.toolBarArea(c.tools), Qt.ToolBarArea.LeftToolBarArea)
         self.assertEqual(c.tools.orientation(), Qt.Orientation.Vertical)
         for bar in c.bars.values():
@@ -84,11 +82,13 @@ class ToolbarTests(unittest.TestCase):
         QTest.mouseClick(c.tools.widgetForAction(w.actions['draw_waveform']), Qt.MouseButton.LeftButton)
         self.assertTrue(w.waveform.drawing)
         self.assertFalse(w.actions['select_wave'].isChecked())
-        self.assertTrue(c.option_groups['draw'].isVisible())
-        self.assertFalse(c.option_groups['select'].isVisible())
+        self.assertTrue(w.sample_button.isVisible())
+        self.assertTrue(w.channel_choice.isVisible())
+        self.assertIs(w.sample_button.parent(), w.channel_choice.parent())
         w.waveform.setFocus()
         QTest.keyClick(w.waveform, Qt.Key.Key_D)
         self.assertFalse(w.waveform.drawing)
+        self.assertFalse(w.sample_button.isVisible())
         self.assertTrue(w.actions['select_wave'].isChecked())
         w.actions['draw_waveform'].trigger()
         QTest.mouseClick(c.tools.widgetForAction(w.actions['select_wave']), Qt.MouseButton.LeftButton)
@@ -109,14 +109,17 @@ class ToolbarTests(unittest.TestCase):
         clip_id = w.session.selected_clip
         self.assertFalse(w.actions['draw_waveform'].isVisible())
         self.assertTrue(w.actions['move_clips'].isChecked())
-        self.assertTrue(c.option_groups['clip'].isVisible())
-        self.assertFalse(c.wave_options_action.isVisible())
+        self.assertTrue(c.clip_controls.isVisible())
+        self.assertFalse(w.channel_choice.isVisible())
+        self.assertIs(c.clip_controls.parent(), w.multitrack)
+        self.assertFalse(w.multitrack.reset_line.isVisible())
         for mode, key in (('volume', 'volume_line'), ('pan', 'pan_line'), ('move', 'move_clips')):
             QTest.mouseClick(c.tools.widgetForAction(w.actions[key]), Qt.MouseButton.LeftButton)
             self.assertEqual(w.multitrack.timeline.envelope_mode, mode)
             self.assertTrue(w.actions[key].isChecked())
         w.multitrack.set_envelope_mode('volume')
         self.assertTrue(w.actions['volume_line'].isChecked())
+        self.assertTrue(w.multitrack.reset_line.isVisible())
         w.session.set_envelope(clip_id, 'volume', ((0, .5), (7999, 1.0)))
         w.refresh()
         self.assertTrue(w.multitrack.reset_line.isEnabled())
@@ -133,7 +136,7 @@ class ToolbarTests(unittest.TestCase):
         w.set_mode('waveform')
         self.assertFalse(c.tools.isVisible())
         self.assertTrue(w.actions['amplify'].isEnabled())
-        self.assertIn(w.actions['edit_sample'], w.menus['edit'].actions())
+        self.assertIn(w.actions['edit_sample'], w.menus['wave_tools'].actions())
 
     def test_recording_locks_tool_edits_and_restores_them_after_stop(self):
         self.load()
@@ -141,7 +144,8 @@ class ToolbarTests(unittest.TestCase):
         w._record_context = {}
         w.update_recording_actions()
         self.assertFalse(w.toolbar_controller.tools.isEnabled())
-        self.assertFalse(w.toolbar_controller.options.isEnabled())
+        self.assertFalse(w.toolbar_controller.clip_controls.isEnabled())
+        self.assertFalse(w.channel_choice.isEnabled())
         for key in ('select_wave', 'draw_waveform', 'move_clips', 'add_track', 'edit_sample'):
             self.assertFalse(w.actions[key].isEnabled())
         self.assertTrue(w.menus['toolbars'].menuAction().isEnabled())
@@ -155,7 +159,7 @@ class ToolbarTests(unittest.TestCase):
         w = self.window
         c = w.toolbar_controller
         w.addToolBar(Qt.ToolBarArea.RightToolBarArea, c.tools)
-        w.addToolBar(Qt.ToolBarArea.BottomToolBarArea, c.options)
+        w.addToolBar(Qt.ToolBarArea.BottomToolBarArea, c.general)
         c.general.toggleViewAction().trigger()
         w.actions['toolbar_labels'].setChecked(True)
         self.app.processEvents()
@@ -164,7 +168,7 @@ class ToolbarTests(unittest.TestCase):
         second = self.new_window()
         restored = second.toolbar_controller
         self.assertEqual(second.toolBarArea(restored.tools), Qt.ToolBarArea.RightToolBarArea)
-        self.assertEqual(second.toolBarArea(restored.options), Qt.ToolBarArea.BottomToolBarArea)
+        self.assertEqual(second.toolBarArea(restored.general), Qt.ToolBarArea.BottomToolBarArea)
         self.assertFalse(restored.general.isVisible())
         self.assertFalse(restored.general.toggleViewAction().isChecked())
         self.assertTrue(second.actions['toolbar_labels'].isChecked())
@@ -216,6 +220,68 @@ class ToolbarTests(unittest.TestCase):
                 manager.set_language(language, persist=False)
                 for bar in self.window.toolbar_controller.bars.values():
                     self.assertEqual(bar.windowTitle(), bar.toggleViewAction().text())
-                self.assertTrue(self.window.toolbar_controller.name.text())
+                for name in ('wave_tools', 'clip_tools', 'wave_edits'):
+                    self.assertTrue(self.window.menus[name].title())
         finally:
             manager.set_language(old, persist=False)
+
+    def test_tools_and_waveform_edits_have_single_shared_menu_entries(self):
+        w = self.window
+        c = w.toolbar_controller
+        def leaves(menu):
+            result = []
+            for action in menu.actions():
+                if action.menu():
+                    result.extend(leaves(action.menu()))
+                elif not action.isSeparator():
+                    result.append(action)
+            return result
+        edit = leaves(w.menus['edit'])
+        self.assertEqual(len(edit), len({id(action) for action in edit}))
+        for key in ('select_wave', 'draw_waveform', 'edit_sample'):
+            self.assertEqual(edit.count(w.actions[key]), 1)
+            self.assertIn(w.actions[key], w.menus['wave_tools'].actions())
+            self.assertNotIn(w.actions[key], w.menus['edit'].actions())
+        self.assertIs(c.effect_buttons['wave_edits'].menu(), w.menus['wave_edits'])
+        for key in ('invert', 'reverse', 'silence'):
+            self.assertIn(w.actions[key], w.menus['wave_edits'].actions())
+            self.assertNotIn(w.actions[key], w.menus['transform'].actions())
+        for key in ('marker_add', 'markers'):
+            self.assertIn(w.actions[key], c.general.actions())
+            self.assertNotIn(w.actions[key], c.tools.actions())
+            self.assertEqual(edit.count(w.actions[key]), 1)
+        self.assertEqual(w.actions['marker_add'].shortcut().toString(), 'M')
+        self.assertEqual(w.actions['markers'].shortcut().toString(), 'Ctrl+Shift+M')
+        self.assertTrue(w.menus['wave_tools'].menuAction().isVisible())
+        self.assertFalse(w.menus['clip_tools'].menuAction().isVisible())
+        w.set_mode('multitrack')
+        self.assertFalse(w.menus['wave_tools'].menuAction().isVisible())
+        self.assertTrue(w.menus['clip_tools'].menuAction().isVisible())
+
+    def test_previous_three_bar_layout_migrates_without_losing_positions_or_visibility(self):
+        w = self.window
+        c = w.toolbar_controller
+        legacy = QToolBar('Tool Options', w)
+        legacy.setObjectName('ToolOptionsToolbar')
+        w.addToolBarBreak(Qt.ToolBarArea.TopToolBarArea)
+        w.addToolBar(legacy)
+        legacy.addAction('Old option')
+        w.addToolBar(Qt.ToolBarArea.RightToolBarArea, c.tools)
+        c.general.hide()
+        self.app.processEvents()
+        w.ui_settings.setValue('ui/toolbar_layout', w.saveState(1))
+        second = self.new_window()
+        restored = second.toolbar_controller
+        QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+        self.assertEqual(second.toolBarArea(restored.tools), Qt.ToolBarArea.RightToolBarArea)
+        self.assertFalse(restored.general.isVisible())
+        self.assertFalse(restored.general.toggleViewAction().isChecked())
+        self.assertIsNone(second.findChild(QToolBar, 'ToolOptionsToolbar'))
+        self.assertEqual(len(second.findChildren(QToolBar)), 2)
+        restored.general.show()
+        self.app.processEvents()
+        self.assertEqual(second.centralWidget().y(), restored.general.geometry().bottom() + 1)
+        second.close()
+        third = self.new_window()
+        self.assertTrue(third.restoreState(third.ui_settings.value('ui/toolbar_layout'), 2))
+        self.assertEqual(third.toolBarArea(third.toolbar_controller.tools), Qt.ToolBarArea.RightToolBarArea)

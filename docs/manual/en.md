@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 1.1.2. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 1.2.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -96,11 +96,13 @@ Two thin horizontal lines mark the bottom edge of the left channel and the top e
 
 ### Toolbars and tool options
 
-The general toolbar at the top contains view selection, opening, saving, editing and session commands. The separate tools bar starts on the left. Choose **Select Waveform** to select a range or place the cursor, or **Draw Waveform / D** to draw samples. In multitrack choose **Move Clips**, **Volume Line** or **Pan Line**.
+The general toolbar at the top contains view selection, opening, saving, editing, markers and session commands. **Add Marker** and **Marker List** are together here. The separate tools bar starts on the left. Choose **Select Waveform** to select a range or place the cursor, or **Draw Waveform / D** to draw samples. These commands and **Edit Sample** are grouped under **Edit → Waveform Tools**.
 
-The horizontal **Tool Options** bar below the general bar follows the active tool. Selection offers range and zero-crossing commands plus stereo channel selection; drawing offers numeric sample editing and channel selection. In multitrack it offers clip properties, duplication and removal. For volume and pan lines, **Reset Line** is also available for the selected clip. **+ Track / − Track** are at the top and in **Window**. Effects remain in **Transform**; the four zoom buttons are at the bottom beside playback controls and in **View**, with the same shortcuts.
+Channel selection is directly above the waveform. While drawing, a button for numeric sample editing appears beside it. Selection commands remain in **Edit**; you can enter begin, end and length at the bottom right.
 
-Drag a toolbar by its dotted handle to move, reorder or float it. Drag it to a window edge to dock it again. **View → Toolbars → General / Tool Options / Tools** shows or hides each bar separately. Layout, visibility and toolbar labels are remembered after closing. Restore any hidden bar through the same menu.
+In multitrack choose **Move Clips**, **Volume Line** or **Pan Line** on the left or through **Edit → Clip Tools**. Clip properties, duplication and removal are above the timeline. For volume and pan lines, **Reset Line** is also available there for the selected clip. **+ Track / − Track** are on the general toolbar and in **Window**. Effect settings open in their own windows. The groups on the left match **Transform**, including **Waveform Edits → Invert / Reverse / Silence**. The four zoom buttons are at the bottom beside playback controls and in **View**, with the same shortcuts.
+
+Drag a toolbar by its dotted handle to move, reorder or float it. Drag it to a window edge to dock it again. **View → Toolbars → General / Tools** shows or hides each bar separately. Layout, visibility and toolbar labels are remembered after closing. Restore any hidden bar through the same menu.
 
 <a id="ss-topic-effect-flyout-groups"></a>
 
@@ -215,7 +217,7 @@ Click for a cursor; drag for a time range. In stereo, drag inside L or R to sele
 
 **Cut / Ctrl+X** removes and copies; **Copy / Ctrl+C** copies; **Paste / Ctrl+V** replaces the selection or inserts at the cursor. **Mix Paste / Ctrl+M** adds clipboard audio from that position and may raise peaks. **Delete** removes the range; **Trim / Ctrl+T** keeps only it. **Ctrl+Z / Ctrl+Shift+Z** undo/redo. Pasting converts sample rate, leaving the clipboard intact. With both channels, channel counts must match. Left/right Copy or Save Selection produces mono, while Save/Save As always retains the full stereo waveform.
 
-Stereo keeps a shared timeline. With **Left** or **Right**, cut/delete, insertion, unequal-length paste, Stretch, generated tones/silence and added tails shift only the chosen channel. The other channel keeps its original samples at their original times. The shorter channel is padded with silence at the end. **Both** shifts both channels and shared markers together; **Transform → Silence** clears audio without shifting it.
+Stereo keeps a shared timeline. With **Left** or **Right**, cut/delete, insertion, unequal-length paste, Stretch, generated tones/silence and added tails shift only the chosen channel. The other channel keeps its original samples at their original times. The shorter channel is padded with silence at the end. **Both** shifts both channels and shared markers together; **Transform → Waveform Edits → Silence** clears audio without shifting it.
 
 Example: delete seconds 2–3 on Left. Later left audio moves one second earlier, with a second of silence at the end; Right stays in place. **Trim** moves only the selected fragment of the chosen channel to time zero and pads the remainder with silence. Padding is ordinary audio, retained when saving/reopening and shifted by later insertions. Remove unwanted trailing silence with Both selected. Shared cues and MP3 chapters stay at their times when editing one channel; check their meaning after a shift.
 
@@ -229,7 +231,7 @@ To record into one channel, choose Left/Right, press **R**, then **Insert at cur
 
 Zoom with **+** or **Ctrl+wheel** until square sample points appear (at least two logical screen pixels apart). The horizontal axis now shows sample indices starting at 0. Drag a point vertically to change only that sample in that channel. Its sample position stays fixed even when the pointer crosses other points or channels. Dragging previews the change; release commits it, **Escape** cancels. **Shift+drag** still selects audio.
 
-Double-click or right-click a point for **Edit Sample**, or use **Edit → Edit Sample** at any zoom level. It starts at the cursor and first selected channel; the index and channel can be changed. Enter a normalized value or display it as signed 8-, 16- or 24-bit. Zero is silence; −1/+1 are normal full scale. For example, −16384 in the 16-bit display equals −0.5 normalized. Switching display ranges changes neither audio nor file encoding. **OK** applies one value; **Cancel** preserves the original.
+Double-click or right-click a point for **Edit Sample**, or use **Edit → Waveform Tools → Edit Sample** at any zoom level. It starts at the cursor and first selected channel; the index and channel can be changed. Enter a normalized value or display it as signed 8-, 16- or 24-bit. Zero is silence; −1/+1 are normal full scale. For example, −16384 in the 16-bit display equals −0.5 normalized. Switching display ranges changes neither audio nor file encoding. **OK** applies one value; **Cancel** preserves the original.
 
 Each completed drag or accepted value is one Undo/Redo step. Every other sample, the other channel, duration and metadata remain intact. Dragging is limited to −1 … +1; existing float headroom remains available numerically. Playback stops when editing begins; editing is locked during recording. For multitrack clips, edit a waveform copy and explicitly apply it back to the clip. Listen after each correction: for a click spanning several samples, adjust each point towards the surrounding waveform. An abrupt jump to zero can itself click. Save as WAV float32 for an exact internal-value round trip; MP3 saving recompresses the whole file with loss.
 
@@ -237,7 +239,7 @@ Each completed drag or accepted value is one Undo/Redo step. Every other sample,
 
 ### Draw Waveform
 
-Enable **Edit → Draw Waveform**, press **D**, or use the pencil button beside the zoom controls. Drag the left mouse button directly on the waveform; hitting individual sample points is unnecessary. The drawn line replaces sample values within −1 to +1; it does not shift the original waveform vertically.
+Enable **Edit → Waveform Tools → Draw Waveform**, press **D**, or use the pencil button on the left tools bar. Drag the left mouse button directly on the waveform; hitting individual sample points is unnecessary. The drawn line replaces sample values within −1 to +1; it does not shift the original waveform vertically.
 
 Zoom determines the group size: about two logical screen pixels of audio, rounded up to whole samples. Close up, one sample changes; zoomed out, multiple samples change together. Each group covers at most one second. A longer gesture can touch several groups and change more than one second in total. Straight lines join successive pointer positions; drawing over a group again replaces its previous drawing.
 
@@ -498,7 +500,7 @@ Fine (default) and Fast use Rubber Band offline. Stereo is processed jointly; ex
 
 ## 8. Generate, analyse and convert
 
-**Generate → Tones** inserts a sine wave at the cursor or replaces a selection with the specified duration, frequency in Hz and amplitude %. Try 440 Hz at modest level. **Generate → Silence** inserts/replaces with a chosen silence duration; **Transform → Silence** instead preserves the existing duration.
+**Generate → Tones** inserts a sine wave at the cursor or replaces a selection with the specified duration, frequency in Hz and amplitude %. Try 440 Hz at modest level. **Generate → Silence** inserts/replaces with a chosen silence duration; **Transform → Waveform Edits → Silence** instead preserves the existing duration.
 
 **Analyze → Frequency Analysis / Alt+Z** shows frequency versus dBFS for the selected channels/range (or full recording). It uses a bounded central part of long ranges, a Hann window and channel-power average. The peak frequency/level is shown below. Select a shorter sound to investigate it; this is not a continuous spectrum meter. Closing changes no audio.
 

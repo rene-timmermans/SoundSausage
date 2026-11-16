@@ -35,7 +35,7 @@ class LayoutTests(unittest.TestCase):
         self.window.refresh(fit=True)
         self.app.processEvents()
 
-    def test_empty_workspace_and_two_compact_toolbar_rows_leave_room_for_audio(self):
+    def test_empty_workspace_and_one_compact_toolbar_row_leave_room_for_audio(self):
         self.assertTrue(self.window.windowTitle().endswith("— SoundSausage"))
         for width, height in ((1015, 609), (1180, 720), (1280, 800)):
             with self.subTest(width=width, height=height):
@@ -43,8 +43,8 @@ class LayoutTests(unittest.TestCase):
                 self.app.processEvents()
                 bars = self.window.findChildren(QToolBar)
                 horizontal = [bar for bar in bars if bar.orientation() == Qt.Orientation.Horizontal]
-                self.assertEqual(len({bar.geometry().y() for bar in horizontal if bar.isVisible()}), 2)
-                self.assertLess(sum(bar.height() for bar in horizontal), 80)
+                self.assertEqual(len({bar.geometry().y() for bar in horizontal if bar.isVisible()}), 1)
+                self.assertLess(sum(bar.height() for bar in horizontal), 45)
                 self.assertEqual(self.window.toolBarArea(self.window.toolbar_controller.tools), Qt.ToolBarArea.LeftToolBarArea)
                 self.assertGreater(self.window.waveform.height(), height * .62)
                 image = self.window.waveform.grab().toImage()
@@ -76,7 +76,8 @@ class LayoutTests(unittest.TestCase):
                 self.assertIsInstance(button, QToolButton)
                 self.assertFalse(button.icon().isNull(), action.text())
                 self.assertTrue(button.toolTip(), action.text())
-        for button in self.window.toolbar_controller.options.findChildren(QToolButton):
+        controller = self.window.toolbar_controller
+        for button in [self.window.sample_button, *controller.clip_controls.findChildren(QToolButton)]:
             if button.defaultAction() is not None:
                 self.assertFalse(button.icon().isNull())
                 self.assertTrue(button.toolTip())

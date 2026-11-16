@@ -265,7 +265,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
                 bind(overflow,"setToolTip","More actions")
         for key, button in self._action_buttons:
             self.update_button_icon(key, button)
-        for group, glyph in (("amplitude", "amplify"), ("filters", "filter"), ("delay", "echo"),
+        for group, glyph in (("wave_tools", "select_wave"), ("clip_tools", "move_clips"),
+                             ("wave_edits", "invert"), ("amplitude", "amplify"), ("filters", "filter"), ("delay", "echo"),
                              ("noise", "noise_reduction"), ("time_pitch", "pitch_shift"), ("special", "distortion"), ("channels", "channels_both"), ("language", "language")):
             self.menus[group].setIcon(make_icon(glyph, c))
         for index, key in enumerate(("channels_both", "channels_left", "channels_right")):
@@ -391,6 +392,10 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.channel_choice.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
         self.channel_choice.currentIndexChanged.connect(lambda index: self.choose_channels((None, (0,), (1,))[index]))
         range_row.addWidget(self.channel_choice)
+        self.sample_button = QToolButton()
+        self.sample_button.setProperty('compact', True)
+        self.sample_button.setDefaultAction(self.actions['edit_sample'])
+        range_row.addWidget(self.sample_button)
         wave_layout.addLayout(range_row)
         self.waveform = Waveform(self.document)
         self.waveform.selection_changed.connect(self.selection_changed)

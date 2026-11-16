@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 1.1.2. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 1.2.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -97,11 +97,13 @@ Zwei dünne horizontale Linien markieren die Unterkante des linken und die Oberk
 
 ### Werkzeugleisten und Werkzeugoptionen
 
-Die allgemeine Leiste oben enthält Ansichtswahl, Öffnen, Speichern, Bearbeiten und Sitzungsbefehle. Die separate Werkzeugleiste steht zunächst links. **Wellenform auswählen** wählt einen Bereich oder setzt den Cursor; **Wellenform zeichnen / D** zeichnet Samples. In der Mehrspuransicht wählen Sie **Clips verschieben**, **Lautstärkekurve** oder **Panoramakurve**.
+Die allgemeine Leiste oben enthält Ansichtswahl, Öffnen, Speichern, Bearbeiten, Markierungen und Sitzungsbefehle. **Markierung hinzufügen** und **Markierungsliste** stehen hier zusammen. Die separate Werkzeugleiste steht zunächst links. **Wellenform auswählen** wählt einen Bereich oder setzt den Cursor; **Wellenform zeichnen / D** zeichnet Samples. Diese Befehle und **Sample bearbeiten** stehen zusammen unter **Bearbeiten → Wellenformwerkzeuge**.
 
-Die horizontale Leiste **Werkzeugoptionen** unter der allgemeinen Leiste folgt dem aktiven Werkzeug. Beim Auswählen bietet sie Bereichs- und Nulldurchgangsbefehle sowie die Stereokanalauswahl, beim Zeichnen numerische Samplebearbeitung und Kanalauswahl. In der Mehrspuransicht stehen Clip-Eigenschaften, Duplizieren und Entfernen bereit. Bei Lautstärke- und Pan-Linien erscheint außerdem **Kurve zurücksetzen** für den ausgewählten Clip. **+ Spur / − Spur** stehen oben und unter **Fenster**. Effekte bleiben unter **Effekte**; die vier Zoomknöpfe stehen unten bei den Wiedergabeknöpfen und unter **Ansicht**, mit unveränderten Tastenkürzeln.
+Die Kanalauswahl steht direkt über der Wellenform. Beim Zeichnen erscheint daneben die Schaltfläche zur numerischen Samplebearbeitung. Auswahlbefehle bleiben unter **Bearbeiten** verfügbar; Beginn, Ende und Länge lassen sich unten rechts eingeben.
 
-Ziehen Sie eine Leiste am gepunkteten Griff, um sie zu verschieben, neu anzuordnen oder abzulösen. Am Fensterrand rastet sie wieder ein. **Ansicht → Werkzeugleisten → Allgemein / Werkzeugoptionen / Werkzeuge** zeigt oder verbirgt jede Leiste einzeln. Anordnung, Sichtbarkeit und Beschriftungen bleiben nach dem Schließen erhalten. Verborgene Leisten lassen sich über dasselbe Menü wieder einblenden.
+In der Mehrspuransicht wählen Sie links **Clips verschieben**, **Lautstärkekurve** oder **Panoramakurve**, oder unter **Bearbeiten → Clipwerkzeuge**. Clip-Eigenschaften, Duplizieren und Entfernen stehen über der Zeitleiste. Bei Lautstärke- und Pan-Linien ist dort auch **Kurve zurücksetzen** für den ausgewählten Clip verfügbar. **+ Spur / − Spur** stehen auf der allgemeinen Leiste und unter **Fenster**. Effekteinstellungen öffnen sich in eigenen Fenstern. Die Gruppen links entsprechen **Effekte**, einschließlich **Wellenformbearbeitung → Invertieren / Rückwärts / Stille**. Die vier Zoomknöpfe stehen unten bei den Wiedergabeknöpfen und unter **Ansicht**, mit unveränderten Tastenkürzeln.
+
+Ziehen Sie eine Leiste am gepunkteten Griff, um sie zu verschieben, neu anzuordnen oder abzulösen. Am Fensterrand rastet sie wieder ein. **Ansicht → Werkzeugleisten → Allgemein / Werkzeuge** zeigt oder verbirgt jede Leiste einzeln. Anordnung, Sichtbarkeit und Beschriftungen bleiben nach dem Schließen erhalten. Verborgene Leisten lassen sich über dasselbe Menü wieder einblenden.
 
 <a id="ss-topic-aufklappbare-effektgruppen"></a>
 
@@ -217,7 +219,7 @@ Klicken setzt den Cursor, Ziehen einen Zeitbereich. In Stereo innerhalb L oder R
 
 **Ausschneiden / Strg+X** entfernt und kopiert, **Kopieren / Strg+C** kopiert, **Einfügen / Strg+V** ersetzt die Auswahl oder fügt am Cursor ein. **Einmischen / Strg+M** addiert Zwischenablageaudio dort und kann Spitzen erhöhen. **Entf** entfernt den Bereich; **Zuschneiden / Strg+T** behält nur ihn. **Strg+Z / Strg+Umschalt+Z** zurück/wiederholen. Einfügen wandelt die Rate, ohne die Zwischenablage zu ändern. Bei beiden Kanälen muss die Anzahl passen. Links/rechts kopieren oder Auswahlspeichern erzeugt Mono; normales Speichern erhält immer die ganze Stereowellenform.
 
-Stereo behält eine gemeinsame Zeitachse. Mit **Links** oder **Rechts** verschieben Ausschneiden/Löschen, Einfügen, unterschiedlich langes Ersetzen, Zeitdehnung, erzeugte Töne/Stille und Nachklang nur den gewählten Kanal. Der andere behält seine Samples an den ursprünglichen Zeitpunkten. Der kürzere Kanal wird am Ende mit Stille aufgefüllt. **Beide** verschiebt beide Kanäle und gemeinsame Markierungen; **Effekte → Stille** leert Audio ohne Verschiebung.
+Stereo behält eine gemeinsame Zeitachse. Mit **Links** oder **Rechts** verschieben Ausschneiden/Löschen, Einfügen, unterschiedlich langes Ersetzen, Zeitdehnung, erzeugte Töne/Stille und Nachklang nur den gewählten Kanal. Der andere behält seine Samples an den ursprünglichen Zeitpunkten. Der kürzere Kanal wird am Ende mit Stille aufgefüllt. **Beide** verschiebt beide Kanäle und gemeinsame Markierungen; **Effekte → Wellenformbearbeitung → Stille** leert Audio ohne Verschiebung.
 
 Beispiel: Sekunden 2–3 links löschen. Späteres linkes Audio rückt eine Sekunde vor, am Ende folgt eine Sekunde Stille; rechts bleibt alles stehen. **Zuschneiden** setzt nur den gewählten Abschnitt des gewählten Kanals an den Anfang und füllt den Rest mit Stille. Die Auffüllung ist gewöhnliches Audio, bleibt beim Speichern/Öffnen erhalten und wird bei späteren Einfügungen mitverschoben. Unerwünschte Endstille mit Beide entfernen. Gemeinsame Cuepunkte und MP3-Kapitel behalten bei Einzelkanalbearbeitung ihre Zeitpunkte; ihre Bedeutung danach prüfen.
 
@@ -231,7 +233,7 @@ Für eine Einzelkanalaufnahme Links/Rechts wählen, **R** drücken und **Am Curs
 
 Mit **+** oder **Strg+Mausrad** einzoomen, bis quadratische Samplepunkte erscheinen (mindestens zwei logische Bildschirmpixel Abstand). Die horizontale Achse zeigt dann Sample-Indizes ab 0. Einen Punkt vertikal ziehen, um nur dieses Sample in diesem Kanal zu ändern. Die Sampleposition bleibt fest, auch wenn der Zeiger andere Punkte oder Kanäle überquert. Ziehen zeigt eine Vorschau; Loslassen bestätigt, **Escape** bricht ab. **Umschalt+Ziehen** wählt weiterhin Audio aus.
 
-Doppel- oder Rechtsklick auf einen Punkt öffnet **Sample bearbeiten**. **Bearbeiten → Sample bearbeiten** ist bei jeder Zoomstufe verfügbar. Das Fenster beginnt am Cursor und im ersten gewählten Kanal; Index und Kanal sind einstellbar. Werte normalisiert oder als 8, 16 oder 24 Bit mit Vorzeichen anzeigen. Null ist Stille; −1/+1 sind der normale Vollpegel. −16384 in der 16-Bit-Anzeige entspricht beispielsweise −0,5 normalisiert. Ein anderer Anzeigebereich ändert weder Audio noch Dateiformat. **OK** übernimmt einen Wert; **Abbrechen** erhält das Original.
+Doppel- oder Rechtsklick auf einen Punkt öffnet **Sample bearbeiten**. **Bearbeiten → Wellenformwerkzeuge → Sample bearbeiten** ist bei jeder Zoomstufe verfügbar. Das Fenster beginnt am Cursor und im ersten gewählten Kanal; Index und Kanal sind einstellbar. Werte normalisiert oder als 8, 16 oder 24 Bit mit Vorzeichen anzeigen. Null ist Stille; −1/+1 sind der normale Vollpegel. −16384 in der 16-Bit-Anzeige entspricht beispielsweise −0,5 normalisiert. Ein anderer Anzeigebereich ändert weder Audio noch Dateiformat. **OK** übernimmt einen Wert; **Abbrechen** erhält das Original.
 
 Jedes abgeschlossene Ziehen und jeder bestätigte Wert ist ein Schritt Rückgängig/Wiederherstellen. Alle anderen Samples, der andere Kanal, Dauer und Metadaten bleiben erhalten. Ziehen ist auf −1 … +1 begrenzt; bestehende Float-Pegel darüber bleiben numerisch verfügbar. Wiedergabe stoppt beim Bearbeitungsbeginn; während der Aufnahme ist Bearbeiten gesperrt. Mehrspurclips über eine Wellenformkopie bearbeiten und ausdrücklich auf den Clip anwenden. Nach jeder Korrektur hören; bei mehreren betroffenen Samples die Punkte einzeln dem umgebenden Verlauf annähern. Ein abrupter Sprung auf null kann selbst klicken. WAV float32 bewahrt die internen Werte exakt; MP3-Speichern komprimiert die gesamte Datei erneut verlustbehaftet.
 
@@ -239,7 +241,7 @@ Jedes abgeschlossene Ziehen und jeder bestätigte Wert ist ein Schritt Rückgän
 
 ### Wellenform zeichnen
 
-**Bearbeiten → Wellenform zeichnen** einschalten, **D** drücken oder die Stiftschaltfläche neben den Zoomknöpfen verwenden. Mit der linken Maustaste direkt auf der Wellenform zeichnen; einzelne Samplepunkte müssen nicht getroffen werden. Die gezeichnete Linie ersetzt Samplewerte innerhalb −1 bis +1; die ursprüngliche Wellenform wird nicht vertikal verschoben.
+**Bearbeiten → Wellenformwerkzeuge → Wellenform zeichnen** einschalten, **D** drücken oder die Stiftschaltfläche auf der linken Werkzeugleiste verwenden. Mit der linken Maustaste direkt auf der Wellenform zeichnen; einzelne Samplepunkte müssen nicht getroffen werden. Die gezeichnete Linie ersetzt Samplewerte innerhalb −1 bis +1; die ursprüngliche Wellenform wird nicht vertikal verschoben.
 
 Der Zoom bestimmt die Gruppengröße: ungefähr zwei logische Bildschirmpixel Audio, auf ganze Samples aufgerundet. Stark vergrößert ändert sich ein Sample, weiter herausgezoomt ändern sich mehrere gemeinsam. Jede Gruppe umfasst höchstens eine Sekunde. Eine längere Bewegung darf mehrere Gruppen und insgesamt mehr als eine Sekunde ändern. Aufeinanderfolgende Zeigerpositionen werden geradlinig verbunden; erneutes Zeichnen über einer Gruppe ersetzt die vorherige Zeichnung.
 
@@ -504,7 +506,7 @@ Fein (Standard) und Schnell nutzen Rubber Band offline. Stereo wird gemeinsam ve
 
 ## 8. Erzeugen, analysieren und umwandeln
 
-**Erzeugen → Töne** fügt einen Sinus am Cursor ein oder ersetzt die Auswahl mit gewählter Dauer, Frequenz in Hz, Amplitude %. 440 Hz leise ausprobieren. **Erzeugen → Stille** fügt/ersetzt Stille gewählter Dauer; **Effekte → Stille** erhält dagegen die bestehende Dauer.
+**Erzeugen → Töne** fügt einen Sinus am Cursor ein oder ersetzt die Auswahl mit gewählter Dauer, Frequenz in Hz, Amplitude %. 440 Hz leise ausprobieren. **Erzeugen → Stille** fügt/ersetzt Stille gewählter Dauer; **Effekte → Wellenformbearbeitung → Stille** erhält dagegen die bestehende Dauer.
 
 **Analysieren → Frequenzanalyse / Alt+Z** zeigt Frequenz gegen dBFS für gewählte Kanäle/Bereich (sonst ganze Aufnahme). Bei langen Bereichen wird ein begrenzter mittlerer Teil mit Hann-Fenster und gemittelter Kanalleistung genutzt. Spitzenfrequenz/Pegel stehen darunter. Einen kurzen Klang gezielt auswählen; kein laufender Spektrumanalysator. Schließen ändert kein Audio.
 
