@@ -70,6 +70,7 @@ class CloseTests(unittest.TestCase):
         self.assertFalse(self.window.actions["redo"].isEnabled())
 
     def test_cancel_preserves_edits_selection_and_clipboard(self):
+        self.window.select_all()
         self.window.effect("invert")
         document = self.window.document
         document.select(0, 1)
@@ -87,6 +88,7 @@ class CloseTests(unittest.TestCase):
         session = self.make_session()
         before = session.render()
         self.window.set_mode("waveform")
+        self.window.select_all()
         self.window.effect("invert")
         with patch("soundsausage.window.QMessageBox.question", return_value=QMessageBox.StandardButton.Discard):
             self.assertTrue(self.window.close_current())
@@ -99,6 +101,7 @@ class CloseTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "saved.wav"
             self.window.document.path = path
+            self.window.select_all()
             self.window.effect("invert")
             with patch("soundsausage.window.QMessageBox.question", return_value=QMessageBox.StandardButton.Save):
                 self.assertTrue(self.window.close_current())
@@ -106,6 +109,7 @@ class CloseTests(unittest.TestCase):
             self.assertEqual(self.window.document.frames, 0)
 
     def test_canceling_save_or_a_write_error_keeps_waveform_open(self):
+        self.window.select_all()
         self.window.effect("invert")
         document = self.window.document
         with patch("soundsausage.window.QMessageBox.question", return_value=QMessageBox.StandardButton.Save):
@@ -177,6 +181,7 @@ class CloseTests(unittest.TestCase):
         session.mark_saved()
         before = session.render()
         self.window.edit_clip_copy(clip_id)
+        self.window.select_all()
         self.window.effect("invert")
         with patch("soundsausage.window.QMessageBox.question", return_value=QMessageBox.StandardButton.Discard):
             self.assertTrue(self.window.close_current())

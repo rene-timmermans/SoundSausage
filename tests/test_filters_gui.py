@@ -17,6 +17,7 @@ class FilterGuiTests(unittest.TestCase):
     def setUp(self):
         self.data = np.random.default_rng(7).normal(0, .1, (70000, 2)).astype(np.float32)
         self.window = MainWindow(Document(self.data, 8000), no_audio=True)
+        self.window.select_all()
         self.dialogs = []
 
     def tearDown(self):

@@ -214,6 +214,7 @@ class RecordingGuiTests(unittest.TestCase):
     def test_full_record_edit_multitrack_save_reopen_and_mixdown_chain(self):
         data=np.column_stack((np.linspace(-.5,.5,4800),np.linspace(.2,-.2,4800))).astype(np.float32)
         self.capture(data)
+        self.window.select_all()
         self.window.effect('gain',initial=.5)
         waveform=self.path/'take.wav'
         with patch.object(self.window,'_save_path',return_value=(waveform,'float32')):

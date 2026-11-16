@@ -41,7 +41,7 @@ class EffectDialog(QDialog):
 
     def add_footer(self, layout):
         note = QLabel(f"Channels: {self.document.channel_label}. "
-                      "Applies to the selection, or the whole waveform if nothing is selected.\n"
+                      "Applies to the selected audio. Select the whole waveform first with Ctrl+A to process everything.\n"
                       "Preview plays the first 8 seconds without changing the waveform.")
         self.range_note=note
         note.setWordWrap(True)

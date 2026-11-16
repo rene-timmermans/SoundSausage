@@ -39,7 +39,7 @@ class RemasterDialog(EffectDialog):
         note=QLabel('The first preview analyses the complete range. Sustained mid/high sound is recovered with linked stereo balance; the bass foundation is retained. Output headroom uses one constant gain.\nStronger recovery can change the balance of voices and drums. Missing or clipped detail cannot be reconstructed exactly.')
         note.setWordWrap(True);layout.addWidget(note)
         self.add_footer(layout)
-        self.range_note.setText(f'Channels: {document.channel_label}. Applies to the selection, or the whole waveform if nothing is selected.\nOriginal and preview play up to 8 seconds from the chosen position.')
+        self.range_note.setText(f'Channels: {document.channel_label}. Applies to the selected audio. Select the whole waveform first with Ctrl+A to process everything.\nOriginal and preview play up to 8 seconds from the chosen position.')
         self.original_button=self.button_box.addButton('Original',QDialogButtonBox.ButtonRole.ActionRole)
         self.original_button.setEnabled(not no_audio);self.original_button.clicked.connect(self.original)
         self.presets.currentIndexChanged.connect(self.preset)

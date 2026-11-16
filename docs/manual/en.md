@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 1.2.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 1.2.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -108,11 +108,11 @@ Drag a toolbar by its dotted handle to move, reorder or float it. Drag it to a w
 
 ### Effect flyout groups
 
-The left tools bar contains **Waveform Edits**, **Amplitude**, **Filters**, **Delay Effects**, **Noise Reduction**, **Time/Pitch** and **Special**. Click the small arrow beside an icon to display that group’s effects. The list shares the same commands, availability and shortcuts as **Transform**.
+The left tools bar contains **Waveform Edits**, **Amplitude**, **Filters**, **Delay Effects**, **Noise Reduction**, **Time/Pitch** and **Special**. Open a group with its arrow and choose a tool. Only the icon and active choice change: no effect runs and no settings window opens yet.
 
-Choose an effect: its settings open, or an immediate edit is applied directly. The main icon then shows the last effect chosen in that group. Click it to reopen or apply that effect; for example, choosing **Amplitude → Normalize** makes the icon reopen the normalization dialog. The tooltip names the group and current command. Each group remembers its choice after closing. If that effect is temporarily unavailable, the button displays an available alternative; the earlier preference is retained until another effect is used.
+Then select the time range and channels to process. Use **Ctrl+A** to explicitly select the whole waveform. Click the main icon to apply the chosen effect or open its settings. In a settings window, **Preview** auditions without changing the recording; **OK** applies it. Nothing is processed without a time selection. Commands in **Transform** and repeating with **F2** also require a selection.
 
-**Remaster** also has a dedicated button. In multitrack, **Track Effects** opens the selected track’s effect chain. Waveform effects remain visible in the menus but cannot process the entire session. Effect buttons are locked during recording. The existing editing tool and channel selection remain in effect; edits respect the selected audio and support **Undo**.
+The tooltip names the group and chosen tool. Each group remembers its choice after closing. If an effect is temporarily unavailable, an available alternative appears without losing the earlier preference. **Remaster** has its own button and also requires a selection. In multitrack, **Track Effects** opens the selected track’s effect chain. Effect buttons are locked during recording. Edits respect the chosen channels and support **Undo**.
 
 <a id="ss-topic-entering-times-at-the-bottom-right"></a>
 
@@ -261,13 +261,13 @@ WAV retains cue points and labels. MP3 export converts them to chapters with mil
 
 ## 7. Applying effects
 
-Waveform effects under **Transform** affect the selected range/channels, or their whole duration without a time selection. The other channel remains unchanged and audible in stereo Preview. **Preview** plays at most the first eight seconds without committing; click again, change a setting or close to stop. **OK** applies one Undo step; **Cancel** preserves the waveform. **F2 / Repeat Last Command** repeats the last settings on the current selection/channels. Some effects analyse the full selection before previewing: Normalize, time/pitch and high-quality distortion.
+Waveform effects under **Transform** require a time selection and affect the chosen range/channels. Select the whole waveform explicitly with **Ctrl+A** to process everything. The other channel remains unchanged and audible in stereo Preview. **Preview** plays at most the first eight seconds without committing; click again, change a setting or close to stop. **OK** applies one Undo step; **Cancel** preserves the waveform. **F2 / Repeat Last Command** repeats the last settings on the current selection/channels. Some effects analyse the full selection before previewing: Normalize, time/pitch and high-quality distortion.
 
 <a id="ss-topic-remaster"></a>
 
 ### Remaster
 
-Open **Transform → Remaster…** when voices or instruments briefly sink behind drums, or a mix has audible short volume cuts. Remaster detects suitable dips and locally lifts detail still present. It processes the selection, or the whole waveform when there is no selection.
+Open **Transform → Remaster…** when voices or instruments briefly sink behind drums, or a mix has audible short volume cuts. Remaster detects suitable dips and locally lifts detail still present. It processes only the selection. Select everything first with **Ctrl+A** to treat the whole recording.
 
 <a id="ss-topic-choosing-a-remaster-preset"></a>
 
@@ -316,7 +316,7 @@ Bass below about **180 Hz** receives no recovery lift; the crossover reaches abo
 
 #### Comparing and applying Remaster
 
-1. Open the original recording. Prefer the whole waveform for one shared output level. For a selection, retain about one second of context on either side and check its transitions after applying.
+1. Open the original recording and select everything with **Ctrl+A**. Prefer the whole waveform for one shared output level. For a selection, retain about one second of context on either side and check its transitions after applying.
 2. Place the cursor near a problem passage, open Remaster and choose a preset. Use **Short volume drops** if Strong recovery leaves brief cuts.
 3. Compare **Original** and **Preview** with **Match listening volume for original and preview** enabled. Both play up to eight seconds from the chosen position. Matching uses the excerpt’s average level (RMS) and does not change saved processing.
 4. Also listen to a quieter passage and the ending. Reduce strength or allowance if instruments become too bright, noise becomes prominent or natural accents disappear.

@@ -17,6 +17,7 @@ class SpaceGuiTests(unittest.TestCase):
     def setUp(self):
         self.source = np.random.default_rng(7).normal(0, .1, (6000, 2)).astype(np.float32)
         self.window = MainWindow(Document(self.source, 8000), no_audio=True)
+        self.window.select_all()
         self.dialogs = []
 
     def tearDown(self):

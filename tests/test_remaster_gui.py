@@ -76,6 +76,7 @@ class RemasterGuiTests(unittest.TestCase):
             self.dialog.preview();play.assert_not_called();warning.assert_not_called()
 
     def test_accept_applies_one_undo_step_and_action_is_waveform_only(self):
+        self.window.select_all()
         self.assertTrue(self.window.actions['remaster'].isEnabled())
         with patch.object(RemasterDialog,'exec',return_value=QDialog.DialogCode.Accepted):
             self.window.actions['remaster'].trigger()

@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 1.2.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 1.2.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -109,11 +109,11 @@ Ziehen Sie eine Leiste am gepunkteten Griff, um sie zu verschieben, neu anzuordn
 
 ### Aufklappbare Effektgruppen
 
-Die linke Werkzeugleiste enthält **Wellenformbearbeitung**, **Amplitude**, **Filter**, **Verzögerungseffekte**, **Rauschminderung**, **Zeit/Tonhöhe** und **Spezial**. Klicken Sie auf den kleinen Pfeil neben einem Symbol, um die Effekte der Gruppe anzuzeigen. Die Liste verwendet dieselben Befehle, Verfügbarkeiten und Tastenkürzel wie **Effekte**.
+Die linke Werkzeugleiste enthält **Wellenformbearbeitung**, **Amplitude**, **Filter**, **Verzögerungseffekte**, **Rauschminderung**, **Zeit/Tonhöhe** und **Spezial**. Öffnen Sie eine Gruppe mit dem Pfeil und wählen Sie ein Werkzeug. Nur Symbol und aktive Auswahl ändern sich: Es wird noch kein Effekt ausgeführt und kein Einstellungsfenster geöffnet.
 
-Nach der Auswahl öffnet sich das Einstellungsfenster oder eine direkte Bearbeitung wird sofort angewendet. Das Hauptsymbol zeigt anschließend den zuletzt gewählten Effekt der Gruppe. Ein Klick darauf öffnet oder wiederholt diesen Effekt; nach **Amplitude → Normalisieren** öffnet es beispielsweise wieder den Normalisierungsdialog. Der Hinweis nennt Gruppe und aktuellen Befehl. Jede Gruppe behält ihre Auswahl nach dem Schließen. Ist ein Effekt vorübergehend nicht verfügbar, zeigt der Knopf eine verfügbare Alternative; die bisherige Auswahl bleibt erhalten, bis ein anderer Effekt verwendet wird.
+Wählen Sie anschließend Zeitbereich und Kanäle aus. Mit **Strg+A** wählen Sie ausdrücklich die gesamte Wellenform. Ein Klick auf das Hauptsymbol wendet den gewählten Effekt an oder öffnet seine Einstellungen. **Vorschau** spielt ohne Änderung der Aufnahme; **OK** übernimmt. Ohne Zeitauswahl wird nichts bearbeitet. Auch Befehle unter **Effekte** und das Wiederholen mit **F2** erfordern eine Auswahl.
 
-**Remaster** besitzt außerdem einen eigenen Knopf. In der Mehrspuransicht öffnet **Spureffekte** die Effektkette der ausgewählten Spur. Wellenformeffekte bleiben in den Menüs sichtbar, bearbeiten dort jedoch nicht die gesamte Sitzung. Während der Aufnahme sind die Effektknöpfe gesperrt. Werkzeug- und Kanalauswahl bleiben erhalten; Bearbeitungen beachten den ausgewählten Audiobereich und unterstützen **Rückgängig**.
+Der Hinweis nennt Gruppe und gewähltes Werkzeug. Jede Gruppe behält ihre Auswahl nach dem Schließen. Ist ein Effekt vorübergehend nicht verfügbar, erscheint eine verfügbare Alternative, ohne die bisherige Auswahl zu verlieren. **Remaster** hat einen eigenen Knopf und erfordert ebenfalls eine Auswahl. In der Mehrspuransicht öffnet **Spureffekte** die Effektkette der gewählten Spur. Während der Aufnahme sind Effektknöpfe gesperrt. Bearbeitungen beachten die gewählten Kanäle und unterstützen **Rückgängig**.
 
 <a id="ss-topic-zeiten-unten-rechts-eingeben"></a>
 
@@ -263,13 +263,13 @@ WAV speichert Cue-Punkte und Namen; MP3 exportiert diese als Kapitel mit Millise
 
 ## 7. Effekte anwenden
 
-Wellenformeffekte unter **Effekte** bearbeiten die Auswahl/Kanäle oder ohne Zeitauswahl deren ganze Dauer. Der andere Kanal bleibt unverändert und in Stereo hörbar. **Vorschau** spielt höchstens die ersten acht Sekunden ohne Übernahme; erneut klicken, Einstellungen ändern oder schließen stoppt. **OK** übernimmt einen Rückgängig-Schritt; **Abbrechen** erhält die Wellenform. **F2 / Letzten Befehl wiederholen** wiederholt Einstellungen auf aktueller Auswahl/Kanälen. Normalisieren, Zeit/Tonhöhe und hochwertige Verzerrung analysieren vor der Vorschau die ganze Auswahl.
+Wellenformeffekte unter **Effekte** erfordern eine Zeitauswahl und bearbeiten den gewählten Bereich und die Kanäle. Für die gesamte Wellenform zuerst ausdrücklich alles mit **Strg+A** auswählen. Der andere Kanal bleibt unverändert und in Stereo hörbar. **Vorschau** spielt höchstens die ersten acht Sekunden ohne Übernahme; erneut klicken, Einstellungen ändern oder schließen stoppt. **OK** übernimmt einen Rückgängig-Schritt; **Abbrechen** erhält die Wellenform. **F2 / Letzten Befehl wiederholen** wiederholt Einstellungen auf aktueller Auswahl/Kanälen. Normalisieren, Zeit/Tonhöhe und hochwertige Verzerrung analysieren vor der Vorschau die ganze Auswahl.
 
 <a id="ss-topic-remaster"></a>
 
 ### Remaster
 
-**Effekte → Remaster…** hilft, wenn Stimmen oder Instrumente kurz hinter Schlagzeug absinken oder eine Mischung kurze Pegelsprünge nach unten enthält. Geeignete Einbrüche werden erkannt und noch vorhandene Details örtlich angehoben. Bearbeitet wird die Auswahl, ohne Auswahl die ganze Wellenform.
+**Effekte → Remaster…** hilft, wenn Stimmen oder Instrumente kurz hinter Schlagzeug absinken oder eine Mischung kurze Pegelsprünge nach unten enthält. Geeignete Einbrüche werden erkannt und noch vorhandene Details örtlich angehoben. Bearbeitet wird nur die Auswahl. Für die gesamte Aufnahme zuerst alles mit **Strg+A** auswählen.
 
 <a id="ss-topic-eine-remaster-vorgabe-wahlen"></a>
 
@@ -318,7 +318,7 @@ Bass unter etwa **180 Hz** wird nicht angehoben; der Übergang reicht bis etwa *
 
 #### Remaster vergleichen und anwenden
 
-1. Die Originalaufnahme öffnen. Möglichst die ganze Wellenform für einen gemeinsamen Ausgangspegel verwenden. Bei einer Auswahl etwa eine Sekunde Kontext auf beiden Seiten behalten und nach Anwenden die Übergänge prüfen.
+1. Die Originalaufnahme öffnen und mit **Strg+A** alles auswählen. Möglichst die ganze Wellenform für einen gemeinsamen Ausgangspegel verwenden. Bei einer Auswahl etwa eine Sekunde Kontext auf beiden Seiten behalten und nach Anwenden die Übergänge prüfen.
 2. Cursor an eine Problemstelle setzen, Remaster öffnen und Vorgabe wählen. **Kurze Pegeleinbrüche** verwenden, wenn Starke Wiederherstellung kurze Cuts übrig lässt.
 3. **Original** und **Vorschau** mit **Abhörlautstärke von Original und Vorschau angleichen** vergleichen. Beide spielen bis zu acht Sekunden ab der gewählten Position. Der Abgleich nutzt den mittleren Pegel (RMS) des Ausschnitts und ändert das gespeicherte Ergebnis nicht.
 4. Auch eine leise Stelle und das Ende anhören. Stärke oder Spielraum senken, wenn Instrumente zu hell, Rauschen deutlicher oder natürliche Akzente schwächer werden.

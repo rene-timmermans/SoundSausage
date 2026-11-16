@@ -135,6 +135,8 @@ class WorkspaceToolbars:
         window.sample_button.setVisible(not multi and drawing and window.document.frames > 0)
         window.multitrack.reset_line.setVisible(window.multitrack.timeline.envelope_mode != 'move')
         window.multitrack.update_envelope_controls()
+        for button in self.effect_buttons.values():
+            button.sync()
 
     def restore(self):
         window = self.window

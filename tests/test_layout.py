@@ -64,6 +64,8 @@ class LayoutTests(unittest.TestCase):
         mixer = next(action for action in amplitude.actions() if action.text() == "Channel Mixer…")
         self.assertFalse(mixer.isEnabled())
         self.load_waveform()
+        self.assertFalse(mixer.isEnabled())
+        self.window.select_all()
         self.assertTrue(mixer.isEnabled())
         self.assertFalse(self.window.actions["record"].isEnabled())
 

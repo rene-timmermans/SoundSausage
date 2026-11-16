@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 1.2.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 1.2.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -109,11 +109,11 @@ Arrastra una barra por su asa de puntos para moverla, reordenarla o separarla. A
 
 ### Grupos de efectos desplegables
 
-La barra izquierda contiene **Edición de forma de onda**, **Amplitud**, **Filtros**, **Efectos de retardo**, **Reducción de ruido**, **Tiempo/tono** y **Especial**. Haz clic en la flecha pequeña junto a un icono para mostrar los efectos del grupo. La lista comparte los comandos, su disponibilidad y los atajos del menú **Efectos**.
+La barra izquierda contiene **Edición de forma de onda**, **Amplitud**, **Filtros**, **Efectos de retardo**, **Reducción de ruido**, **Tiempo/tono** y **Especial**. Abre un grupo con su flecha y elige una herramienta. Solo cambian el icono y la elección activa: todavía no se ejecuta ningún efecto ni se abre una ventana de ajustes.
 
-Elige un efecto: se abren sus ajustes o se aplica directamente una edición inmediata. El icono principal muestra después el último efecto elegido en ese grupo. Haz clic en él para volver a abrir o aplicar ese efecto; tras **Amplitud → Normalizar**, por ejemplo, vuelve a abrir el diálogo de normalización. La ayuda emergente indica el grupo y el comando actual. Cada grupo recuerda su elección al cerrar. Si ese efecto no está disponible temporalmente, el botón muestra una alternativa disponible; la preferencia anterior se conserva hasta usar otro efecto.
+Después selecciona el intervalo y los canales que quieras procesar. **Ctrl+A** selecciona explícitamente toda la forma de onda. Haz clic en el icono principal para aplicar el efecto elegido o abrir sus ajustes. En la ventana de ajustes, **Escuchar** permite oír sin modificar la grabación; **Aceptar** aplica. No se procesa nada sin una selección temporal. Los comandos de **Efectos** y la repetición con **F2** también requieren una selección.
 
-**Remaster** también tiene un botón propio. En multipista, **Efectos de pista** abre la cadena de efectos de la pista seleccionada. Los efectos de forma de onda siguen visibles en los menús, pero no procesan toda la sesión. Los botones de efectos se bloquean durante la grabación. Se mantienen la herramienta activa y los canales elegidos; las ediciones respetan el audio seleccionado y admiten **Deshacer**.
+La ayuda emergente indica el grupo y la herramienta elegida. Cada grupo recuerda su elección al cerrar. Si un efecto no está disponible temporalmente, aparece una alternativa disponible sin perder la preferencia anterior. **Remaster** tiene un botón propio y también requiere una selección. En multipista, **Efectos de pista** abre la cadena de la pista seleccionada. Los botones de efectos se bloquean durante la grabación. Las ediciones respetan los canales elegidos y admiten **Deshacer**.
 
 <a id="ss-topic-introducir-tiempos-en-la-parte-inferior-derecha"></a>
 
@@ -263,13 +263,13 @@ WAV guarda puntos cue y nombres. MP3 los convierte en capítulos con posiciones 
 
 ## 7. Aplicar efectos
 
-Los efectos de forma de onda de **Efectos** tratan el intervalo y canales elegidos, o toda su duración sin selección temporal. El otro canal queda intacto y se oye en la vista previa estéreo. **Escuchar** reproduce hasta los ocho primeros segundos sin aplicar; vuelve a pulsar, cambia un ajuste o cierra para detener. **Aceptar** aplica un paso de deshacer; **Cancelar** conserva el original. **F2 / Repetir última orden** repite ajustes en la selección/canales actuales. Normalización, tiempo/tono y distorsión de alta calidad analizan toda la selección antes de la vista previa.
+Los efectos de forma de onda de **Efectos** requieren una selección temporal y tratan el intervalo y canales elegidos. Selecciona explícitamente toda la forma de onda con **Ctrl+A** para procesarlo todo. El otro canal queda intacto y se oye en la vista previa estéreo. **Escuchar** reproduce hasta los ocho primeros segundos sin aplicar; vuelve a pulsar, cambia un ajuste o cierra para detener. **Aceptar** aplica un paso de deshacer; **Cancelar** conserva el original. **F2 / Repetir última orden** repite ajustes en la selección/canales actuales. Normalización, tiempo/tono y distorsión de alta calidad analizan toda la selección antes de la vista previa.
 
 <a id="ss-topic-remaster"></a>
 
 ### Remaster
 
-Abra **Efectos → Remaster…** cuando voces o instrumentos bajen brevemente tras la batería, o una mezcla tenga cortes cortos de volumen. Remaster detecta caídas adecuadas y aumenta localmente los detalles que aún existen. Procesa la selección, o toda la forma de onda si no hay selección.
+Abra **Efectos → Remaster…** cuando voces o instrumentos bajen brevemente tras la batería, o una mezcla tenga cortes cortos de volumen. Remaster detecta caídas adecuadas y aumenta localmente los detalles que aún existen. Procesa solo la selección. Selecciona primero todo con **Ctrl+A** para tratar la grabación completa.
 
 <a id="ss-topic-elegir-un-ajuste-de-remaster"></a>
 
@@ -318,7 +318,7 @@ No se aumentan los graves por debajo de unos **180 Hz**; la transición llega ha
 
 #### Comparar y aplicar Remaster
 
-1. Abra la grabación original. Prefiera toda la forma de onda para un nivel final común. En una selección, deje alrededor de un segundo de contexto a cada lado y compruebe las transiciones tras aplicar.
+1. Abra la grabación original y seleccione todo con **Ctrl+A**. Prefiera toda la forma de onda para un nivel final común. En una selección, deje alrededor de un segundo de contexto a cada lado y compruebe las transiciones tras aplicar.
 2. Coloque el cursor cerca de un problema, abra Remaster y elija un ajuste. Use **Caídas breves de volumen** si la recuperación intensa deja cortes rápidos.
 3. Compare **Original** y **Vista previa** con **Igualar el volumen de escucha del original y la vista previa** activado. Ambos reproducen hasta ocho segundos desde la posición elegida. La igualación usa el nivel medio (RMS) del fragmento y no cambia el proceso guardado.
 4. Escuche también un pasaje tranquilo y el final. Reduzca intensidad o margen si los instrumentos resultan demasiado brillantes, destaca ruido o desaparecen acentos naturales.

@@ -2,7 +2,7 @@
 
 Onder **Transform → Amplitude** staan versterking, kanaalmenging, dynamiek,
 volumeverloop en normalisatie. Selecteer een fragment om alleen dat deel te
-bewerken. Zonder selectie werkt een effect op de hele golfvorm.
+bewerken. Zonder selectie wordt niets bewerkt. Selecteer eerst expliciet alles met **Ctrl+A** om de hele golfvorm te bewerken.
 
 **Preview** speelt de eerste acht seconden van het resultaat zonder iets te
 wijzigen. Nogmaals klikken stopt het voorbeeld. Een instelling wijzigen of het

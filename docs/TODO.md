@@ -1,5 +1,10 @@
 # Voortgang en vervolg
 
+## Effectkeuze en expliciete selectie — 1.2.1 in uitvoering
+
+De uitklaplijsten links kiezen alleen het actieve effect; een hoofdklik voert uit of opent de instellingen. De menuopdrachten en herhalen met F2 vereisen een expliciete tijdselectie. Zonder selectie wordt geen golfvormeffect toegepast; Ctrl+A kiest de volledige opname. Kanaalkeuze, instellingenvensters, Undo, opnamevergrendeling en werkbalkvoorkeuren blijven behouden. De vijf handleidingen en aanwijzingen beschrijven de bediening. Gerichte regressiecontroles en de distributiebouw worden afgerond. De 18 uitgestelde uitbreidingen blijven uitgesteld.
+
+
 ## Compactere werkruimte — 1.2.0 gepubliceerd
 
 De algemene werkbalk bevat nu ook de markeringsknoppen. Golfvormgereedschappen staan samen onder Bewerken; clipgereedschappen verschijnen in multitrack. Ompolen, Achterstevoren en Stilte delen het submenu Golfvormbewerkingen met de linker effectgroep. De vaste optiebalk maakt plaats voor kanaalkeuze direct boven de golfvorm, een numerieke sampleknop tijdens tekenen en clipbediening boven de multitracktijdlijn. De twee verplaatsbare werkbalken behouden hun aan/uit-keuzes en voorkeuren. Bestaande indelingen worden overgenomen zonder de vroegere optiebalk. De vijf handleidingen beschrijven de bediening.

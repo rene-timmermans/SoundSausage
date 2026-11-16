@@ -70,7 +70,7 @@ class SessionActions:
         if "mode_multi" not in self.actions:
             return
         multi = self.mode == "multitrack"
-        self.actions['remaster'].setEnabled(not multi and self.document.frames>0)
+        self.update_effect_actions()
         self.actions['track_fx'].setEnabled(multi)
         self.actions["new"].setText("&New Session…" if multi else "&New…")
         self.actions["open"].setText("&Open Session…" if multi else "&Open…")

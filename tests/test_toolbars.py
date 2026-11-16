@@ -135,7 +135,7 @@ class ToolbarTests(unittest.TestCase):
         c.tools.toggleViewAction().trigger()
         w.set_mode('waveform')
         self.assertFalse(c.tools.isVisible())
-        self.assertTrue(w.actions['amplify'].isEnabled())
+        self.assertEqual(w.actions['amplify'].isEnabled(), w.document.selected)
         self.assertIn(w.actions['edit_sample'], w.menus['wave_tools'].actions())
 
     def test_recording_locks_tool_edits_and_restores_them_after_stop(self):
@@ -242,7 +242,9 @@ class ToolbarTests(unittest.TestCase):
             self.assertEqual(edit.count(w.actions[key]), 1)
             self.assertIn(w.actions[key], w.menus['wave_tools'].actions())
             self.assertNotIn(w.actions[key], w.menus['edit'].actions())
-        self.assertIs(c.effect_buttons['wave_edits'].menu(), w.menus['wave_edits'])
+        self.assertIsNot(c.effect_buttons['wave_edits'].menu(), w.menus['wave_edits'])
+        for key, source in c.effect_buttons['wave_edits'].effects.items():
+            self.assertIs(source, w.actions[key])
         for key in ('invert', 'reverse', 'silence'):
             self.assertIn(w.actions[key], w.menus['wave_edits'].actions())
             self.assertNotIn(w.actions[key], w.menus['transform'].actions())

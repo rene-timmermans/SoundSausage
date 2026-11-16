@@ -38,6 +38,7 @@ class ReliabilityGuiTests(unittest.TestCase):
             return result
         before=(self.window.document._pieces,self.window.document.revision)
         with patch('soundsausage.progress_ui.time',SimpleNamespace(monotonic=lambda:next(ticks))),patch('soundsausage.progress_ui.QProgressDialog',side_effect=dialog),patch.object(self.window,'error') as error:
+            self.window.select_all()
             self.window.effect('invert')
         self.assertTrue(dialogs)
         self.assertEqual((self.window.document._pieces,self.window.document.revision),before)
@@ -52,11 +53,13 @@ class ReliabilityGuiTests(unittest.TestCase):
         self.window.enable_recovery(offer=False)
         journal=self.window.recovery.path
         self.assertFalse(journal.exists())
+        self.window.select_all()
         self.window.effect('invert');self.assertTrue(journal.exists())
         path=Path(self.folder.name)/'saved.wav'
         with patch.object(self.window,'_save_path',return_value=(path,'float32')):
             self.assertTrue(self.window.save_waveform())
         self.assertFalse(journal.exists());self.assertTrue(path.exists())
+        self.window.select_all()
         self.window.effect('invert');self.assertTrue(journal.exists())
         with patch('soundsausage.window.QMessageBox.question',return_value=QMessageBox.StandardButton.Discard):
             self.window.close()

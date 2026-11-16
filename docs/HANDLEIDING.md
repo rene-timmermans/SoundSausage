@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 1.2.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 1.2.1. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -191,11 +191,11 @@ Sleep een werkbalk aan de gestippelde handgreep om hem te verplaatsen, anders te
 
 ### Uitklapbare effectgroepen
 
-Op de linker gereedschapsbalk staan **Golfvormbewerkingen**, **Amplitude**, **Filters**, **Vertragingseffecten**, **Ruisreductie**, **Tijd/toonhoogte** en **Speciaal**. Klik op het kleine pijltje naast een pictogram om de effecten van die groep te tonen. De lijst bevat dezelfde opdrachten als het menu **Effecten**, inclusief hun beschikbaarheid en sneltoetsen.
+De linker gereedschapsbalk bevat **Golfvormbewerkingen**, **Amplitude**, **Filters**, **Vertragingseffecten**, **Ruisreductie**, **Tijd/toonhoogte** en **Speciaal**. Open een groep via het pijltje en kies een gereedschap. Alleen het pictogram en de actieve keuze veranderen: er wordt nog geen effect uitgevoerd en er opent nog geen instellingenvenster.
 
-Kies een effect uit de lijst: het instellingenvenster opent, of een directe bewerking wordt meteen uitgevoerd. Het grote pictogram toont daarna het laatst gekozen effect uit die groep. Klik daarop om dat effect opnieuw te openen of toe te passen; bij **Amplitude → Normaliseren** opent bijvoorbeeld opnieuw het normaliseervenster. De aanwijzing bij de muis noemt de groep en de huidige opdracht. De keuze per groep blijft na afsluiten bewaard. Is een effect tijdelijk niet beschikbaar, dan toont de knop een beschikbaar alternatief; de eerdere keuze blijft behouden totdat je een ander effect gebruikt.
+Selecteer daarna het gewenste tijdvak en de kanalen. Gebruik **Ctrl+A** om de hele golfvorm expliciet te selecteren. Klik op het hoofdicoon om het gekozen effect toe te passen of zijn instellingen te openen. In een instellingenvenster luistert **Voorbeeld** zonder de opname te wijzigen; **OK** past toe. Zonder tijdselectie wordt niets bewerkt. Ook opdrachten uit **Effecten** en herhalen met **F2** vereisen een selectie.
 
-**Remaster** heeft daarnaast een eigen knop. In multitrack verschijnt **Spooreffecten** om de effectketen van het geselecteerde spoor te openen. Golfvormeffecten zijn daar via de menu's zichtbaar maar niet toepasbaar op de gehele sessie. Tijdens opnemen zijn de effectknoppen vergrendeld. De bestaande gereedschapskeuze en kanaalselectie blijven gelden; effecten respecteren de gekozen audio en kunnen met **Ongedaan maken** worden hersteld.
+De aanwijzing bij het pictogram noemt de groep en het gekozen gereedschap. Elke groep onthoudt de keuze na afsluiten. Als een effect tijdelijk niet beschikbaar is, verschijnt een beschikbaar alternatief zonder de eerdere voorkeur te verliezen. **Remaster** heeft een eigen knop en vereist eveneens een selectie. In multitrack opent **Spooreffecten** de effectketen van het geselecteerde spoor. Tijdens opnemen zijn de effectknoppen vergrendeld. Bewerkingen volgen de gekozen kanalen en ondersteunen **Ongedaan maken**.
 
 <a id="ss-topic-tijden-rechtsonder-invoeren"></a>
 
@@ -750,8 +750,8 @@ WAV bewaart cuepunten en labels. Bij MP3-export worden deze hoofdstukken met mil
 
 ## 5. Effecten toepassen
 
-Een golfvormeffect werkt op het gekozen tijdvak en de gekozen kanalen. Zonder
-tijdselectie wordt de hele duur van die kanalen bewerkt. Het andere kanaal blijft
+Een golfvormeffect vereist een geselecteerd tijdvak en werkt op de gekozen kanalen.
+Zonder tijdselectie wordt niets bewerkt. Selecteer met **Ctrl+A** expliciet de hele golfvorm om alles te bewerken. Het andere kanaal blijft
 ongewijzigd en is bij Voorbeeld wel hoorbaar in de bestaande stereocontext. De opdrachten staan onder **Effecten**. Voor effecten op een
 multitrackclip gebruik je eerst **Kopie in golfvorm bewerken**; verderop staat hoe je
 het resultaat terugplaatst.
@@ -769,7 +769,7 @@ het tijdvak en de kanalen voordat je herhaalt.
 
 ### Remaster
 
-Open **Effecten → Remaster…** wanneer stemmen of instrumenten bij drumslagen kort wegzakken, of een mix hoorbare korte volume-cuts bevat. Remaster zoekt zulke dalingen en versterkt de nog aanwezige details plaatselijk. Het werkt op de selectie of, zonder selectie, op de hele golfvorm.
+Open **Effecten → Remaster…** wanneer stemmen of instrumenten bij drumslagen kort wegzakken, of een mix hoorbare korte volume-cuts bevat. Remaster zoekt zulke dalingen en versterkt de nog aanwezige details plaatselijk. Het werkt uitsluitend op de selectie. Selecteer eerst alles met **Ctrl+A** om de hele opname te behandelen.
 
 <a id="ss-topic-welke-remaster-stand-kiezen"></a>
 
@@ -818,7 +818,7 @@ Bas onder circa **180 Hz** krijgt geen herstelversterking; de overgang naar midd
 
 #### Remaster vergelijken en toepassen
 
-1. Open de oorspronkelijke opname. Gebruik bij voorkeur de hele golfvorm voor één gezamenlijk eindniveau. Bij een selectie laat je ongeveer een seconde context aan beide kanten staan en controleer je de overgangen na toepassen.
+1. Open de oorspronkelijke opname en selecteer alles met **Ctrl+A**. Gebruik bij voorkeur de hele golfvorm voor één gezamenlijk eindniveau. Bij een selectie laat je ongeveer een seconde context aan beide kanten staan en controleer je de overgangen na toepassen.
 2. Zet de cursor bij een probleemfragment en open Remaster. Kies een preset; gebruik **Korte volumedalingen** als Sterk herstel nog korte cuts overlaat.
 3. Vergelijk **Origineel** en **Voorbeeld** met **Luistervolume van origineel en voorbeeld gelijkmaken** aan. Beide spelen maximaal acht seconden vanaf de gekozen positie. De gelijkmaking gebruikt het gemiddelde niveau (RMS) van het luisterfragment en verandert het opgeslagen resultaat niet.
 4. Luister ook naar een rustige passage en het einde. Verlaag sterkte of herstelruimte als instrumenten te fel worden, ruis opvalt of natuurlijke accenten verdwijnen.
@@ -1064,7 +1064,7 @@ zie hoofdstuk 8a.
 ## 5b. Vertraging, echo en galm
 
 De drie effecten staan onder **Effecten → Vertragingseffecten**. Selecteer een
-fragment of laat de selectie leeg om de hele golfvorm te bewerken. **Voorbeeld**
+fragment of selecteer eerst alles met **Ctrl+A** om de hele golfvorm te bewerken. **Voorbeeld**
 speelt maximaal de eerste acht seconden van het resultaat, inclusief een
 eventuele uitklank. Een instelling wijzigen stopt het voorbeeld. **OK** past
 toe als één Ongedaan maken-stap; **Annuleren** laat de opname intact. **Ctrl+Z** draait terug,
@@ -1187,7 +1187,7 @@ Vertraging, Echo en Galm zijn ook beschikbaar via **Spooreffecten**; zie hoofdst
 ## 5c. Ruisreductie en klikverwijdering
 
 Deze effecten staan onder **Effecten → Ruisreductie** en werken op een
-selectie of, zonder selectie, de hele golfvorm. **Voorbeeld** laat maximaal acht
+selectie. Selecteer eerst alles met **Ctrl+A** voor de hele golfvorm. **Voorbeeld** laat maximaal acht
 seconden horen. **OK** past toe, **Annuleren** sluit zonder wijziging en **Ctrl+Z**
 draait terug. **F2** herhaalt de instellingen, inclusief het gebruikte ruisprofiel.
 
@@ -1198,8 +1198,8 @@ draait terug. **F2** herhaalt de instellingen, inclusief het gebruikte ruisprofi
 1. Zoek een stukje waarin alleen de ongewenste achtergrond hoorbaar is, zonder
    spraak of muziek. Een halve tot enkele seconden is meestal bruikbaar.
 2. Selecteer dat stukje en kies **Ruisprofiel vastleggen**. Ook **Uit selectie vastleggen** in het effectvenster kan dit doen. Er verandert nog geen audio.
-3. Selecteer vervolgens het fragment dat je wilt schoonmaken, of hef de selectie
-   op voor de hele opname. Openen **Ruisreductie**.
+3. Selecteer vervolgens het fragment dat je wilt schoonmaken, of druk op **Ctrl+A**
+   voor de hele opname. Open **Ruisreductie**.
 4. Begin met **Zacht** of **Gebalanceerd**, luister met Voorbeeld en vergelijk met de
    oorspronkelijke opname door het venster te annuleren.
 
@@ -1298,7 +1298,7 @@ ruisonderdrukking tijdens opnemen of afspelen is hiermee niet beschikbaar.
 ## 5d. Tijd en toonhoogte
 
 **Effecten → Tijd/toonhoogte** bevat Tijdsduur aanpassen en Toonhoogte verschuiven. Ze bewerken de selectie
-of, zonder selectie, de hele golfvorm. Voorbeeld analyseert eerst het volledige
+en vereisen daarvoor een tijdselectie. Selecteer eerst alles met **Ctrl+A** voor de hele golfvorm. Voorbeeld analyseert eerst het volledige
 bereik en speelt daarna maximaal acht seconden af. Het voorbeeld is hetzelfde
 prefix als bij toepassen. Lange opnamen hebben daardoor ook voor Voorbeeld
 analysetijd nodig. De voortgang is annuleerbaar; annuleren behoudt de opname.
@@ -1366,7 +1366,7 @@ overlap. Dit zijn nog geen realtime tempo- of toonhoogte-effecten op sporen.
 ## 5e. Vervorming en convolutie
 
 **Effecten → Speciaal** bevat Vervorming en Convolutie. Beide bewerken een
-selectie of, zonder selectie, de hele golfvorm. Voorbeeld laat de eerste acht
+selectie. Selecteer eerst alles met **Ctrl+A** voor de hele golfvorm. Voorbeeld laat de eerste acht
 seconden horen. OK bevestigt één Ongedaan maken-stap; Annuleren laat de golfvorm intact.
 Ctrl+Z draait terug, Ctrl+Shift+Z doet opnieuw en F2 herhaalt de instellingen.
 

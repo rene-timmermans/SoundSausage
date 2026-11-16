@@ -69,6 +69,7 @@ class GuiTests(unittest.TestCase):
 
     def test_failed_save_leaves_the_document_unsaved(self):
         self.window.document.path = ROOT / "build/unwritten.wav"
+        self.window.select_all()
         self.window.effect("invert")
         with patch("soundsausage.window.write_audio", side_effect=OSError("disk full")), patch.object(self.window, "error"):
             self.assertFalse(self.window.save())
@@ -80,6 +81,7 @@ class GuiTests(unittest.TestCase):
             path.write_bytes(b"original data and metadata")
             self.window.document.path = path
             self.window.document.extra_chunks = ("cue ", "LIST")
+            self.window.select_all()
             self.window.effect("invert")
             with patch("soundsausage.window.QMessageBox.question", return_value=QMessageBox.StandardButton.No):
                 self.assertFalse(self.window.save())

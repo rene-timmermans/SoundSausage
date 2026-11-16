@@ -8,7 +8,7 @@ import numpy as np
 from PySide6.QtCore import QElapsedTimer, QPoint, QSettings, Qt, QTimer
 from PySide6.QtGui import QColor, QPalette
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QToolButton
+from PySide6.QtWidgets import QApplication, QDialog, QToolButton
 
 from soundsausage.document import Document
 from soundsausage.filters_ui import ParametricEqualizerDialog
@@ -63,7 +63,7 @@ class EffectToolTests(unittest.TestCase):
                 if key is None:
                     QTest.keyClick(menu, Qt.Key.Key_Escape)
                 else:
-                    action = self.window.actions[key]
+                    action = button.choice_actions[key]
                     position = menu.actionGeometry(action).center()
                     self.assertTrue(menu.rect().contains(position))
                     # Deliver a real pointer path through QWindow. Older Qt
@@ -102,18 +102,23 @@ class EffectToolTests(unittest.TestCase):
         self.assertTrue(observations[0][0])
         self.assertGreaterEqual(observations[0][1], observations[0][2] - 4)
 
-    def test_arrow_uses_shared_menu_and_effect_choice_and_main_click_each_apply_once(self):
+    def test_arrow_only_chooses_and_main_click_applies_once_to_the_selected_channel(self):
         self.load()
         w = self.window
         group = w.toolbar_controller.effect_buttons['amplitude']
-        self.assertIs(group.menu(), w.menus['amplitude'])
+        self.assertIsNot(group.menu(), w.menus['amplitude'])
         self.assertEqual(group.popupMode(), QToolButton.ToolButtonPopupMode.MenuButtonPopup)
         self.assertGreaterEqual(group.width(), group.iconSize().width() + 14)
         w.document.select(1000, 3000)
         w.document.select_channels((1,))
+        w.selection_changed(*w.document.selection)
         before = w.document.read().copy()
         self.popup(group, 'fade_in')
         self.assertEqual(group.selected_key, 'fade_in')
+        self.assertFalse(w.document.undo_stack)
+        np.testing.assert_array_equal(w.document.read(), before)
+        self.assertTrue(group.choice_actions['fade_in'].isChecked())
+        QTest.mouseClick(group, Qt.MouseButton.LeftButton, pos=QPoint(10, group.height() // 2))
         self.assertEqual(len(w.document.undo_stack), 1)
         after = w.document.read()
         np.testing.assert_array_equal(after[:, 0], before[:, 0])
@@ -136,17 +141,90 @@ class EffectToolTests(unittest.TestCase):
         self.assertFalse(w.document.undo_stack)
         with patch.object(w, 'amplitude_dialog') as dialog:
             self.popup(group, 'parametric_eq')
-            dialog.assert_called_once_with(ParametricEqualizerDialog)
+            dialog.assert_not_called()
             self.assertEqual(group.selected_key, 'parametric_eq')
-            dialog.reset_mock()
+            w.select_all()
             QTest.mouseClick(group, Qt.MouseButton.LeftButton, pos=QPoint(10, group.height() // 2))
             dialog.assert_called_once_with(ParametricEqualizerDialog)
         np.testing.assert_array_equal(w.document.read(), before)
         self.assertFalse(w.document.undo_stack)
         for name in ('amplitude', 'filters', 'delay', 'noise', 'time_pitch', 'special'):
-            self.assertIs(w.toolbar_controller.effect_buttons[name].menu(), w.menus[name])
+            button = w.toolbar_controller.effect_buttons[name]
+            self.assertIsNot(button.menu(), w.menus[name])
+            for key, source in button.effects.items():
+                self.assertIn(source, w.menus[name].actions())
+                self.assertIsNot(button.choice_actions[key], source)
         for key in ('invert', 'reverse', 'silence'):
-            self.assertIn(w.actions[key], w.toolbar_controller.effect_buttons['wave_edits'].menu().actions())
+            self.assertIs(w.toolbar_controller.effect_buttons['wave_edits'].effects[key], w.actions[key])
+
+    def test_no_selection_blocks_menu_direct_dialog_and_repeat_until_explicit_select_all(self):
+        self.load()
+        w = self.window
+        before = w.document.read().copy()
+        with patch.object(w.document, 'apply', wraps=w.document.apply) as apply, \
+                patch.object(ParametricEqualizerDialog, 'exec', return_value=QDialog.DialogCode.Rejected) as dialog:
+            for key in w.EFFECT_ACTIONS:
+                self.assertFalse(w.actions[key].isEnabled(), key)
+                w.actions[key].trigger()
+            w.effect('invert')
+            w.amplitude_dialog(ParametricEqualizerDialog)
+            w.repeat_effect()
+            apply.assert_not_called()
+            dialog.assert_not_called()
+        np.testing.assert_array_equal(w.document.read(), before)
+        self.assertFalse(w.document.dirty)
+        self.assertFalse(w.document.undo_stack)
+        self.assertIn('Ctrl+A', w.statusBar().currentMessage())
+        group = w.toolbar_controller.effect_buttons['wave_edits']
+        self.popup(group, 'invert')
+        self.assertEqual(group.current_key, 'invert')
+        QTest.mouseClick(group, Qt.MouseButton.LeftButton, pos=QPoint(10, group.height() // 2))
+        np.testing.assert_array_equal(w.document.read(), before)
+        self.assertFalse(w.document.undo_stack)
+        w.waveform.setFocus()
+        QTest.keyClick(w.waveform, Qt.Key.Key_A, Qt.KeyboardModifier.ControlModifier)
+        self.assertEqual(w.document.selection, (0, w.document.frames))
+        w.actions['invert'].trigger()
+        np.testing.assert_array_equal(w.document.read(), -before)
+        self.assertEqual(len(w.document.undo_stack), 1)
+        w.document.select(2000, 2000)
+        w.selection_changed(*w.document.selection)
+        self.assertFalse(w.actions['repeat'].isEnabled())
+        QTest.keyClick(w.waveform, Qt.Key.Key_F2)
+        w.repeat_effect()
+        w.effect('invert')
+        self.assertEqual(len(w.document.undo_stack), 1)
+        np.testing.assert_array_equal(w.document.read(), -before)
+        QTest.keyClick(w.waveform, Qt.Key.Key_A, Qt.KeyboardModifier.ControlModifier)
+        QTest.keyClick(w.waveform, Qt.Key.Key_F2)
+        np.testing.assert_array_equal(w.document.read(), before)
+        self.assertEqual(len(w.document.undo_stack), 2)
+
+    def test_every_picker_choice_is_nonexecuting_and_top_menu_still_executes_once(self):
+        self.load()
+        w = self.window
+        w.document.select(1000, 3000)
+        w.document.select_channels((1,))
+        w.selection_changed(*w.document.selection)
+        before = w.document.read().copy()
+        executed = []
+        for key in w.EFFECT_ACTIONS:
+            w.actions[key].triggered.connect(lambda checked=False, key=key: executed.append(key))
+        with patch('soundsausage.window.QDialog.exec', return_value=QDialog.DialogCode.Rejected):
+            for group in w.toolbar_controller.effect_buttons.values():
+                for key in group.effects:
+                    self.popup(group, key)
+                    self.assertEqual(group.current_key, key)
+                    self.assertTrue(group.choice_actions[key].isChecked())
+        self.assertEqual(executed, [])
+        np.testing.assert_array_equal(w.document.read(), before)
+        self.assertFalse(w.document.undo_stack)
+        w.actions['invert'].trigger()
+        expected = before.copy()
+        expected[1000:3000, 1] *= -1
+        np.testing.assert_array_equal(w.document.read(), expected)
+        self.assertEqual(executed, ['invert'])
+        self.assertEqual(len(w.document.undo_stack), 1)
 
     def test_unavailable_choices_use_enabled_fallback_and_recording_and_modes_stay_safe(self):
         w = self.window

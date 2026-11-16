@@ -20,6 +20,7 @@ class AmplitudeGuiTests(unittest.TestCase):
     def setUp(self):
         self.data = np.array([[.5, -.25], [-.25, .75], [.125, .25], [.375, -.125]], np.float32)
         self.window = MainWindow(Document(self.data, 8000), no_audio=True)
+        self.window.select_all()
         self.window.show()
         self.app.processEvents()
         self.dialogs = []
@@ -47,6 +48,7 @@ class AmplitudeGuiTests(unittest.TestCase):
             self.assertIn(self.window.actions[key], self.window.menus["amplitude"].actions())
             self.assertTrue(self.window.actions[key].isEnabled(), key)
         self.window.document = Document(self.data[:, :1], 8000)
+        self.window.select_all()
         self.window.refresh()
         self.assertFalse(self.window.actions["channel_mix"].isEnabled())
         self.assertTrue(self.window.actions["dynamics"].isEnabled())

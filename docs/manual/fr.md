@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 1.2.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 1.2.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -109,11 +109,11 @@ Faites glisser une barre par sa poignée pointillée pour la déplacer, la réor
 
 ### Groupes d’effets déroulants
 
-La barre d’outils de gauche contient **Modifications de la forme d’onde**, **Amplitude**, **Filtres**, **Effets de retard**, **Réduction du bruit**, **Durée/hauteur** et **Spécial**. Cliquez sur la petite flèche à côté d’une icône pour afficher les effets du groupe. La liste partage les commandes, leur disponibilité et les raccourcis du menu **Effets**.
+La barre d’outils de gauche contient **Modifications de la forme d’onde**, **Amplitude**, **Filtres**, **Effets de retard**, **Réduction du bruit**, **Durée/hauteur** et **Spécial**. Ouvrez un groupe avec sa flèche et choisissez un outil. Seules l’icône et la sélection active changent : aucun effet n’est encore exécuté et aucune fenêtre de réglages ne s’ouvre.
 
-Choisissez un effet : ses réglages s’ouvrent, ou une modification directe s’applique immédiatement. L’icône principale affiche ensuite le dernier effet choisi dans ce groupe. Cliquez dessus pour rouvrir ou appliquer cet effet ; après **Amplitude → Normaliser**, elle rouvre par exemple la fenêtre de normalisation. L’infobulle indique le groupe et la commande actuelle. Chaque groupe conserve son choix après fermeture. Si cet effet est temporairement indisponible, le bouton affiche une autre commande disponible ; le choix précédent reste mémorisé jusqu’à l’utilisation d’un autre effet.
+Sélectionnez ensuite l’intervalle et les canaux à traiter. **Ctrl+A** sélectionne explicitement toute la forme d’onde. Cliquez sur l’icône principale pour appliquer l’effet choisi ou ouvrir ses réglages. Dans une fenêtre de réglages, **Écouter** permet l’écoute sans modifier l’enregistrement ; **OK** applique. Sans sélection temporelle, rien n’est traité. Les commandes du menu **Effets** et la répétition avec **F2** exigent aussi une sélection.
 
-**Remaster** possède aussi son propre bouton. En multipiste, **Effets de piste** ouvre la chaîne d’effets de la piste sélectionnée. Les effets de forme d’onde restent visibles dans les menus, mais ne traitent pas toute la session. Les boutons d’effets sont verrouillés pendant l’enregistrement. L’outil actif et le choix des canaux sont conservés ; les modifications respectent l’audio sélectionné et prennent en charge **Annuler**.
+L’infobulle indique le groupe et l’outil choisi. Chaque groupe conserve son choix après fermeture. Si un effet est temporairement indisponible, une autre commande disponible apparaît sans perdre le choix précédent. **Remaster** possède son propre bouton et exige aussi une sélection. En multipiste, **Effets de piste** ouvre la chaîne de la piste sélectionnée. Les boutons d’effets sont verrouillés pendant l’enregistrement. Les modifications respectent les canaux choisis et prennent en charge **Annuler**.
 
 <a id="ss-topic-saisir-les-temps-en-bas-a-droite"></a>
 
@@ -263,13 +263,13 @@ WAV conserve les points cue et leurs noms. L’export MP3 les convertit en chapi
 
 ## 7. Appliquer des effets
 
-Les effets de forme d'onde sous **Effets** traitent l'intervalle/canaux choisis, ou toute leur durée sans sélection temporelle. L'autre canal reste intact et audible dans l'aperçu stéréo. **Écouter** lit au maximum les huit premières secondes sans appliquer ; recliquer, changer un réglage ou fermer arrête. **OK** applique une annulation ; **Annuler** conserve l'original. **F2 / Répéter la dernière commande** répète les réglages sur la sélection/canaux actuels. Normalisation, temps/hauteur et distorsion haute qualité analysent toute la sélection avant l'aperçu.
+Les effets de forme d'onde sous **Effets** exigent une sélection temporelle et traitent l’intervalle et les canaux choisis. Pour tout traiter, sélectionnez explicitement toute la forme d’onde avec **Ctrl+A**. L'autre canal reste intact et audible dans l'aperçu stéréo. **Écouter** lit au maximum les huit premières secondes sans appliquer ; recliquer, changer un réglage ou fermer arrête. **OK** applique une annulation ; **Annuler** conserve l'original. **F2 / Répéter la dernière commande** répète les réglages sur la sélection/canaux actuels. Normalisation, temps/hauteur et distorsion haute qualité analysent toute la sélection avant l'aperçu.
 
 <a id="ss-topic-remaster"></a>
 
 ### Remaster
 
-Ouvrez **Effets → Remaster…** lorsque des voix ou instruments s’effacent brièvement derrière la batterie, ou qu’un mixage comporte de courtes coupures de volume. Remaster détecte les creux appropriés et relève localement les détails encore présents. Il traite la sélection, ou toute la forme d’onde sans sélection.
+Ouvrez **Effets → Remaster…** lorsque des voix ou instruments s’effacent brièvement derrière la batterie, ou qu’un mixage comporte de courtes coupures de volume. Remaster détecte les creux appropriés et relève localement les détails encore présents. Il traite uniquement la sélection. Sélectionnez d’abord tout avec **Ctrl+A** pour traiter l’enregistrement complet.
 
 <a id="ss-topic-choisir-un-prereglage-remaster"></a>
 
@@ -318,7 +318,7 @@ Les graves sous environ **180 Hz** ne sont pas relevés ; la transition va jusqu
 
 #### Comparer et appliquer Remaster
 
-1. Ouvrez l’original. Préférez toute la forme d’onde pour garder un niveau de sortie commun. Pour une sélection, gardez environ une seconde de contexte de chaque côté et vérifiez les transitions après application.
+1. Ouvrez l’original et sélectionnez tout avec **Ctrl+A**. Préférez toute la forme d’onde pour garder un niveau de sortie commun. Pour une sélection, gardez environ une seconde de contexte de chaque côté et vérifiez les transitions après application.
 2. Placez le curseur près d’un défaut, ouvrez Remaster et choisissez un préréglage. Utilisez **Baisses de volume brèves** si le mode fort laisse des coupures rapides.
 3. Comparez **Original** et **Aperçu** avec **Égaliser le volume d’écoute de l’original et de l’aperçu** activé. Ils jouent jusqu’à huit secondes depuis la position choisie. L’égalisation utilise le niveau moyen (RMS) de l’extrait sans modifier le traitement enregistré.
 4. Écoutez aussi un passage calme et la fin. Réduisez intensité ou réserve si les instruments deviennent trop brillants, si le bruit ressort ou si les accents naturels disparaissent.

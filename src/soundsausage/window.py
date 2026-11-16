@@ -161,6 +161,11 @@ class AmplifyDialog(EffectDialog):
 
 
 class MainWindow(RecordingActions, SessionActions, QMainWindow):
+    EFFECT_ACTIONS = ('remaster', 'amplify', 'channel_mix', 'dynamics', 'envelope', 'normalize',
+        'fade_in', 'fade_out', 'invert', 'reverse', 'silence', 'graphic_eq', 'parametric_eq',
+        'filter', 'delay', 'echo', 'reverb', 'noise_profile', 'noise_reduction', 'click_removal',
+        'stretch', 'pitch_shift', 'distortion', 'convolution')
+
     def __init__(self, document=None, no_audio=False, ui_settings=None):
         super().__init__()
         self.setWindowIcon(application_icon())
@@ -297,7 +302,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.action("exit", "E&xit", self.close, "Ctrl+Q")
         self.action("undo", "&Undo", lambda: self.edit(self.active_model().undo), "Ctrl+Z", standard.SP_ArrowBack)
         self.action("redo", "&Redo", lambda: self.edit(self.active_model().redo), "Ctrl+Shift+Z", standard.SP_ArrowForward)
-        self.action("repeat", "Repeat Last Comma&nd", lambda: self.edit(self.document.repeat), "F2")
+        self.action("repeat", "Repeat Last Comma&nd", self.repeat_effect, "F2")
         self.action("cut", "Cu&t", self.cut, "Ctrl+X")
         self.action("copy", "&Copy", self.copy, "Ctrl+C")
         self.action("paste", "&Paste", lambda: self.edit(lambda: self.document.paste(self.clipboard)), "Ctrl+V")
@@ -476,9 +481,8 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.actions['marker_add'].setEnabled(has_audio)
         for key in ('markers','marker_previous','marker_next'):self.actions[key].setEnabled(has_audio or has_markers)
         if getattr(self,'marker_dialog',None) is not None and self.marker_dialog.isVisible():self.marker_dialog.reload()
-        for key in ("remaster", "distortion", "convolution", "stretch", "pitch_shift", "noise_profile", "noise_reduction", "click_removal", "delay", "echo", "reverb", "graphic_eq", "parametric_eq", "filter", "amplify", "normalize", "dynamics", "envelope", "fade_in", "fade_out", "invert", "reverse", "silence", "frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
+        for key in ("frequency", "convert_rate", "select_all", "zoom_in", "zoom_out", "zoom_full"):
             self.actions[key].setEnabled(has_audio)
-        self.actions["channel_mix"].setEnabled(has_audio and doc.channels == 2)
         self.actions["edit_sample"].setEnabled(has_audio and self.mode == "waveform")
         self.actions["draw_waveform"].setEnabled(has_audio and self.mode == "waveform")
         self.actions["play"].setEnabled(has_audio and not self.no_audio)
@@ -486,7 +490,6 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.actions["redo"].setEnabled(bool(doc.redo_stack))
         self.actions["undo"].setText("&Undo" + (" " + doc.undo_stack[-1].label if doc.undo_stack else ""))
         self.actions["redo"].setText("&Redo" + (" " + doc.redo_stack[-1].label if doc.redo_stack else ""))
-        self.actions["repeat"].setEnabled(getattr(doc, "last_effect", None) is not None and has_audio)
         self.actions["paste"].setEnabled(self.clipboard is not None)
         self.actions["mix_paste"].setEnabled(self.clipboard is not None)
         self.actions["save"].setEnabled(doc.dirty or doc.path is None)
@@ -693,8 +696,31 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         candidates=[m for m in items if m.start>model.cursor] if direction>0 else [m for m in reversed(items) if m.start<model.cursor]
         if candidates:self.visit_marker(candidates[0].key)
 
+    def wave_effect_available(self, key=None, *, require_selection=True):
+        return (self.mode == 'waveform' and not self.recording_busy and self.document.frames > 0
+            and (not require_selection or self.document.selected)
+            and (key != 'channel_mix' or self.document.channels == 2))
+
+    def require_effect_selection(self):
+        if not self.wave_effect_available(require_selection=False):
+            return False
+        if not self.document.selected:
+            self.statusBar().showMessage('Select audio first. Use Ctrl+A to select the entire waveform.', 6000)
+            return False
+        return True
+
+    def update_effect_actions(self):
+        for key in self.EFFECT_ACTIONS:
+            self.actions[key].setEnabled(self.wave_effect_available(key))
+        self.actions['repeat'].setEnabled(self.wave_effect_available() and self.document.last_effect is not None)
+
     def effect(self, name, **settings):
-        self.edit(lambda: self.document.apply(name, **settings))
+        if self.require_effect_selection():
+            self.edit(lambda: self.document.apply(name, **settings))
+
+    def repeat_effect(self):
+        if self.require_effect_selection():
+            self.edit(self.document.repeat)
 
     def audio_hardware(self):
         if self.no_audio:
@@ -784,7 +810,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         self.amplitude_dialog(AmplifyDialog)
 
     def amplitude_dialog(self, dialog_class):
-        if self.mode != "waveform" or not self.document.frames:
+        if not self.require_effect_selection():
             return
         if dialog_class is ChannelMixerDialog and self.document.channels != 2:
             return

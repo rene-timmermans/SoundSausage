@@ -121,7 +121,7 @@ print(language(),tr('Language'))
                     self.switch(code)
                     self.assertEqual(dialog.windowTitle(),tr(original))
                     self.assertEqual(dialog.preview_button.text(),tr('Preview'))
-                    self.assertTrue(dialog.range_note.text().startswith(tr('Channels: Right (R). Applies to the selection, or the whole waveform if nothing is selected.\nPreview plays the first 8 seconds without changing the waveform.').split('\n')[0]))
+                    self.assertTrue(dialog.range_note.text().startswith(tr('Channels: Right (R). Applies to the selected audio. Select the whole waveform first with Ctrl+A to process everything.\nPreview plays the first 8 seconds without changing the waveform.').split('\n')[0]))
                     if settings is not None:self.assertEqual(dialog.settings(),settings)
                     for combo,index,data in indices:
                         self.assertEqual(combo.currentIndex(),index)
