@@ -1,11 +1,10 @@
 # Voortgang en vervolg
 
-## Compactere werkruimte — 1.2.0 in uitvoering
+## Compactere werkruimte — 1.2.0 gepubliceerd
 
-De algemene werkbalk bevat nu ook de markeringsknoppen. Golfvormgereedschappen staan samen onder Bewerken; clipgereedschappen verschijnen in multitrack. Ompolen, Achterstevoren en Stilte delen het submenu Golfvormbewerkingen met de linker effectgroep. De vaste optiebalk maakt plaats voor kanaalkeuze direct boven de golfvorm, een numerieke sampleknop tijdens tekenen en clipbediening boven de multitracktijdlijn. De twee verplaatsbare werkbalken behouden hun aan/uit-keuzes en voorkeuren. Bestaande indelingen worden overgenomen zonder de vroegere optiebalk. De vijf handleidingen beschrijven de bediening. Gerichte controles en de distributiebouw worden afgerond; de 18 uitgestelde uitbreidingen blijven uitgesteld.
+De algemene werkbalk bevat nu ook de markeringsknoppen. Golfvormgereedschappen staan samen onder Bewerken; clipgereedschappen verschijnen in multitrack. Ompolen, Achterstevoren en Stilte delen het submenu Golfvormbewerkingen met de linker effectgroep. De vaste optiebalk maakt plaats voor kanaalkeuze direct boven de golfvorm, een numerieke sampleknop tijdens tekenen en clipbediening boven de multitracktijdlijn. De twee verplaatsbare werkbalken behouden hun aan/uit-keuzes en voorkeuren. Bestaande indelingen worden overgenomen zonder de vroegere optiebalk. De vijf handleidingen beschrijven de bediening.
 
-
-Stand: 16 november 2026, visuele verfijningen voor SoundSausage 1.2.0 in uitvoering.
+Alle **664 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op elk van vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en releasepunten zijn gecontroleerd. De catalogi bevatten 1551 bronvormen zonder ontbrekende vertaling; de handleidingindexen zijn actueel. Er staan geen open punten voor deze update. De 18 uitgestelde uitbreidingen blijven uitgesteld.
 
 ## Titelruimte in voortgangsvensters — afgerond in 1.1.2
 
