@@ -1,6 +1,6 @@
 # Voortgang en vervolg
 
-## Effectbediening en nieuwe golfvormen — klaar voor de volgende versie
+## Effectbediening en nieuwe golfvormen — 1.3.0 in voorbereiding
 
 Directe bewerkingen hebben eigen knoppen; de zes uitklapgroepen bevatten alleen instellingsvensters. Een keuze opent meteen het venster, het hoofdicoon heropent de laatste keuze. Een expliciete tijdselectie blijft vereist, ook via menu’s en F2. Selecteren is standaard; D schakelt tekenen in, met een tijdelijke terugknop boven de golfvorm. Clip-, volume- en pangereedschappen staan bij de multitracktijdlijn. De balk Effecten behoudt de ingestelde plaats en zichtbaarheid. Ruisprofiel vastleggen blijft in het menu en het venster Ruisreductie bereikbaar; de losse werkbalkknop is verwijderd.
 
@@ -11,7 +11,7 @@ Nieuw biedt een duurveld en maakt bewerkbare stilte op de gekozen samplerate en 
 - [x] Bedieningsproef en beoordeling afgerond.
 - [x] Aanpassingen vastgelegd in de broncode.
 
-De laatste verfijning doorstaat 29 gerichte controles, waaronder behoud van de profielopdracht in het menu en het Ruisreductievenster. Er is nog geen nieuwe versie gepubliceerd. De 18 uitgestelde uitbreidingen blijven uitgesteld.
+De laatste verfijning doorstaat 29 gerichte controles, waaronder behoud van de profielopdracht in het menu en het Ruisreductievenster. De installatiepakketten voor 1.3.0 worden gebouwd en getest op Debian, Ubuntu, Fedora en Arch. Publicatie volgt na geslaagde controles. De 18 uitgestelde uitbreidingen blijven uitgesteld.
 
 ## Effectkeuze en expliciete selectie — 1.2.1 gepubliceerd
 

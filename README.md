@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **1.2.1**.
+De huidige versie is **1.3.0**.
 
 ## Wat het kan
 
@@ -16,7 +16,7 @@ De huidige versie is **1.2.1**.
 
 - Golfvormweergave voor één opname en multitrack voor meerdere sporen; wissel met **Tab** of de knoppen bovenaan.
 - Verplaatsbare werkbalken met kaderloze pictogrammen: algemene knoppen en markeringen bovenaan, een aparte effectenbalk en bediening direct bij de audio.
-- Uitklapbare effectgroepen op de linker werkbalk, met een pictogram voor het laatst gekozen effect.
+- Directe effectknoppen en uitklapgroepen die hun laatste keuze onthouden; kies een venstereffect om meteen de instellingen te openen.
 - Inzoomen tot afzonderlijke samples, afspelen in een lus en een frequentieanalyse van het gekozen fragment.
 - Tijdens afspelen naar een andere plek springen door op de golfvorm of tijdliniaal te klikken.
 - Transport, grote klok, selectie- en weergavetijden en een stereometer met dB-schaal en piekindicatie.
@@ -25,6 +25,7 @@ De huidige versie is **1.2.1**.
 
 **Opnemen en bewerken**
 
+- Een nieuwe mono- of stereogolfvorm maken met instelbare duur en samplerate, met stilte als begininhoud.
 - Mono of stereo opnemen via een microfoon of audio-interface, met keuze van ingang en uitgang, live golfvorm en niveaus.
 - Systeemgeluid opnemen van de standaarduitgang, bijvoorbeeld muziek uit een browser, met Systeemgeluid (wat je hoort).
 - Opnemen naar een nieuwe golfvorm, invoegen bij de cursor, een selectie vervangen of een nieuwe clip op een spoor maken.
@@ -98,6 +99,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[1.3.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.3.0)** Directe effectknoppen en uitklapgroepen die meteen de instellingen openen en hun laatste keuze onthouden. Nieuwe golfvormen met instelbare duur, clipgereedschappen bij de tijdlijn en beter passende venstertitels.
 
 **[1.2.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.2.1)** Effectkeuze op de linker werkbalk verandert alleen het pictogram; een volgende klik opent of past toe. Golfvormeffecten vereisen een selectie; Ctrl+A kiest de hele opname.
 
