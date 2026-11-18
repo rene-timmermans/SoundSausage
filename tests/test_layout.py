@@ -79,7 +79,8 @@ class LayoutTests(unittest.TestCase):
                 self.assertFalse(button.icon().isNull(), action.text())
                 self.assertTrue(button.toolTip(), action.text())
         controller = self.window.toolbar_controller
-        for button in [self.window.sample_button, *controller.clip_controls.findChildren(QToolButton)]:
+        for button in [self.window.drawing_button, self.window.sample_button,
+                       *controller.command_buttons.values(), *controller.clip_controls.findChildren(QToolButton)]:
             if button.defaultAction() is not None:
                 self.assertFalse(button.icon().isNull())
                 self.assertTrue(button.toolTip())

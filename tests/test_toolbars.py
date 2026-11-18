@@ -55,6 +55,11 @@ class ToolbarTests(unittest.TestCase):
         self.assertEqual(w.toolBarArea(c.general), Qt.ToolBarArea.TopToolBarArea)
         self.assertEqual(w.toolBarArea(c.tools), Qt.ToolBarArea.LeftToolBarArea)
         self.assertEqual(c.tools.orientation(), Qt.Orientation.Vertical)
+        self.assertEqual(c.tools.windowTitle(), 'Effects')
+        self.assertEqual(set(c.direct_buttons), set(w.DIRECT_EFFECT_ACTIONS) - {'noise_profile'})
+        self.assertIn(w.actions['noise_profile'], w.menus['noise'].actions())
+        for key in ('select_wave', 'draw_waveform', 'noise_profile'):
+            self.assertFalse(any(button.defaultAction() is w.actions[key] for button in c.tools.findChildren(QToolButton)))
         for bar in c.bars.values():
             self.assertTrue(bar.isMovable())
             self.assertTrue(bar.isFloatable())
@@ -79,8 +84,12 @@ class ToolbarTests(unittest.TestCase):
         self.load()
         before = w.document.read().copy()
         self.assertTrue(w.actions['select_wave'].isChecked())
-        QTest.mouseClick(c.tools.widgetForAction(w.actions['draw_waveform']), Qt.MouseButton.LeftButton)
+        self.assertFalse(w.drawing_button.isVisible())
+        w.waveform.setFocus()
+        QTest.keyClick(w.waveform, Qt.Key.Key_D)
         self.assertTrue(w.waveform.drawing)
+        self.assertTrue(w.drawing_button.isVisible())
+        self.assertTrue(w.drawing_button.isChecked())
         self.assertFalse(w.actions['select_wave'].isChecked())
         self.assertTrue(w.sample_button.isVisible())
         self.assertTrue(w.channel_choice.isVisible())
@@ -91,9 +100,10 @@ class ToolbarTests(unittest.TestCase):
         self.assertFalse(w.sample_button.isVisible())
         self.assertTrue(w.actions['select_wave'].isChecked())
         w.actions['draw_waveform'].trigger()
-        QTest.mouseClick(c.tools.widgetForAction(w.actions['select_wave']), Qt.MouseButton.LeftButton)
+        QTest.mouseClick(w.drawing_button, Qt.MouseButton.LeftButton)
         self.assertFalse(w.waveform.drawing)
-        QTest.mouseClick(c.tools.widgetForAction(w.actions['select_wave']), Qt.MouseButton.LeftButton)
+        self.assertFalse(w.drawing_button.isVisible())
+        w.actions['select_wave'].trigger()
         self.assertTrue(w.actions['select_wave'].isChecked())
         w.channel_choice.setCurrentIndex(2)
         self.assertEqual(w.document.selected_channels, (1,))
@@ -114,7 +124,7 @@ class ToolbarTests(unittest.TestCase):
         self.assertIs(c.clip_controls.parent(), w.multitrack)
         self.assertFalse(w.multitrack.reset_line.isVisible())
         for mode, key in (('volume', 'volume_line'), ('pan', 'pan_line'), ('move', 'move_clips')):
-            QTest.mouseClick(c.tools.widgetForAction(w.actions[key]), Qt.MouseButton.LeftButton)
+            QTest.mouseClick(c.clip_buttons[mode], Qt.MouseButton.LeftButton)
             self.assertEqual(w.multitrack.timeline.envelope_mode, mode)
             self.assertTrue(w.actions[key].isChecked())
         w.multitrack.set_envelope_mode('volume')
@@ -242,10 +252,9 @@ class ToolbarTests(unittest.TestCase):
             self.assertEqual(edit.count(w.actions[key]), 1)
             self.assertIn(w.actions[key], w.menus['wave_tools'].actions())
             self.assertNotIn(w.actions[key], w.menus['edit'].actions())
-        self.assertIsNot(c.effect_buttons['wave_edits'].menu(), w.menus['wave_edits'])
-        for key, source in c.effect_buttons['wave_edits'].effects.items():
-            self.assertIs(source, w.actions[key])
+        self.assertNotIn('wave_edits', c.effect_buttons)
         for key in ('invert', 'reverse', 'silence'):
+            self.assertIs(c.direct_buttons[key].defaultAction(), w.actions[key])
             self.assertIn(w.actions[key], w.menus['wave_edits'].actions())
             self.assertNotIn(w.actions[key], w.menus['transform'].actions())
         for key in ('marker_add', 'markers'):
@@ -259,6 +268,9 @@ class ToolbarTests(unittest.TestCase):
         w.set_mode('multitrack')
         self.assertFalse(w.menus['wave_tools'].menuAction().isVisible())
         self.assertTrue(w.menus['clip_tools'].menuAction().isVisible())
+        self.app.processEvents()
+        self.assertTrue(w.actions['invert'].isVisible())
+        self.assertFalse(c.direct_buttons['invert'].isVisible())
 
     def test_previous_three_bar_layout_migrates_without_losing_positions_or_visibility(self):
         w = self.window

@@ -96,23 +96,25 @@ Two thin horizontal lines mark the bottom edge of the left channel and the top e
 
 ### Toolbars and tool options
 
-The general toolbar at the top contains view selection, opening, saving, editing, markers and session commands. **Add Marker** and **Marker List** are together here. The separate tools bar starts on the left. Choose **Select Waveform** to select a range or place the cursor, or **Draw Waveform / D** to draw samples. These commands and **Edit Sample** are grouped under **Edit → Waveform Tools**.
+The general toolbar at the top contains view selection, opening, saving, editing, markers and session commands. **Add Marker** and **Marker List** are together here. The separate **Effects** bar starts on the left and contains effect commands rather than selection or drawing tools.
 
-Channel selection is directly above the waveform. While drawing, a button for numeric sample editing appears beside it. Selection commands remain in **Edit**; you can enter begin, end and length at the bottom right.
+Dragging on the waveform normally selects audio; clicking places the cursor. Channel selection is directly above the waveform. Enable drawing only when needed through **Edit → Waveform Tools → Draw Waveform / D**. The active drawing button and numeric sample editing button then appear above the waveform. Click the active drawing button or press **D** again to return to selection; both buttons disappear. Selection commands remain in **Edit**; begin, end and length can be entered at the bottom right.
 
-In multitrack choose **Move Clips**, **Volume Line** or **Pan Line** on the left or through **Edit → Clip Tools**. Clip properties, duplication and removal are above the timeline. For volume and pan lines, **Reset Line** is also available there for the selected clip. **+ Track / − Track** are on the general toolbar and in **Window**. Effect settings open in their own windows. The groups on the left match **Transform**, including **Waveform Edits → Invert / Reverse / Silence**. The four zoom buttons are at the bottom beside playback controls and in **View**, with the same shortcuts.
+In multitrack, **Move Clips**, **Volume Line** and **Pan Line** are directly above the timeline beside clip properties, duplication and removal. They are also available through **Edit → Clip Tools**. For volume and pan lines, **Reset Line** is available for the selected clip. **+ Track / − Track** are on the general toolbar and in **Window**. The four zoom buttons remain at the bottom beside playback controls and in **View**, with the same shortcuts.
 
-Drag a toolbar by its dotted handle to move, reorder or float it. Drag it to a window edge to dock it again. **View → Toolbars → General / Tools** shows or hides each bar separately. Layout, visibility and toolbar labels are remembered after closing. Restore any hidden bar through the same menu.
+Drag a toolbar by its dotted handle to move, reorder or float it. Drag it to a window edge to dock it again. **View → Toolbars → General / Effects** shows or hides each bar separately. Layout, visibility and toolbar labels are remembered after closing. Restore any hidden bar through the same menu.
 
 <a id="ss-topic-effect-flyout-groups"></a>
 
 ### Effect flyout groups
 
-The left tools bar contains **Waveform Edits**, **Amplitude**, **Filters**, **Delay Effects**, **Noise Reduction**, **Time/Pitch** and **Special**. Open a group with its arrow and choose a tool. Only the icon and active choice change: no effect runs and no settings window opens yet.
+First select the time range and channels to process. Use **Ctrl+A** to explicitly select the entire duration on the chosen channels. Waveform effects are unavailable without a time selection; commands in **Transform** and repeating with **F2** also require a selection.
 
-Then select the time range and channels to process. Use **Ctrl+A** to explicitly select the whole waveform. Click the main icon to apply the chosen effect or open its settings. In a settings window, **Preview** auditions without changing the recording; **OK** applies it. Nothing is processed without a time selection. Commands in **Transform** and repeating with **F2** also require a selection.
+**Invert**, **Reverse**, **Silence**, **Fade In** and **Fade Out** each have a dedicated button. Clicking applies the operation immediately to the selection. **Capture Noise Profile** remains available through **Transform → Noise Reduction → Capture Noise Profile** and through **Capture from selection** in the **Noise Reduction** window. Capturing a profile does not change the audio; it has no separate toolbar button.
 
-The tooltip names the group and chosen tool. Each group remembers its choice after closing. If an effect is temporarily unavailable, an available alternative appears without losing the earlier preference. **Remaster** has its own button and also requires a selection. In multitrack, **Track Effects** opens the selected track’s effect chain. Effect buttons are locked during recording. Edits respect the chosen channels and support **Undo**.
+The six flyout groups **Amplitude**, **Filters**, **Delay Effects**, **Noise Reduction**, **Time/Pitch** and **Special** contain only effects with settings windows. Choose an effect using the arrow: its icon becomes active and its settings window opens immediately. Click the main icon later to reopen that window. **Preview** plays without changing the recording; **OK** applies and **Cancel** leaves the audio intact. Immediate operations are not included among these settings choices. All commands remain available by effect category in **Transform**.
+
+The icon tooltip names the group and selected effect. Each group remembers its last settings window after closing. If an effect is temporarily unavailable, an available alternative appears without losing the preference. **Remaster** also opens a settings window through its own button. In multitrack, **Track Effects** opens the selected track's effect chain. Effect buttons are locked during recording. Processing follows the chosen channels and supports **Undo**.
 
 <a id="ss-topic-entering-times-at-the-bottom-right"></a>
 
@@ -128,7 +130,7 @@ Values are limited to the file bounds, or the 24-hour timeline in multitrack. In
 
 ## 3. Files, projects and recovery
 
-**New** creates an empty mono or stereo waveform at the chosen sample rate. **Open** reads WAV and MP3. **Save** updates the current file; **Save As** chooses another name/encoding; **Save Selection** writes only the chosen time and channels. WAV export supports PCM 8/16/24/32-bit and float32. PCM16 is a useful exchange format; float32 also preserves internal peaks above 0 dBFS. Extra bit depth cannot restore lost detail. Ambiguous older 32-bit WAV files ask for PCM or legacy-float interpretation; cancelling leaves the file intact.
+**New / Ctrl+N** creates a silent mono or stereo waveform at the chosen sample rate and **Duration** in seconds (10 seconds by default). **OK** creates visible, editable audio; **Cancel** keeps the current document. Save the new waveform with **Save As**. The workspace remains empty when the app starts. **Open** reads WAV and MP3. **Save** updates the current file; **Save As** chooses another name/encoding; **Save Selection** writes only the chosen time and channels. WAV export supports PCM 8/16/24/32-bit and float32. PCM16 is a useful exchange format; float32 also preserves internal peaks above 0 dBFS. Extra bit depth cannot restore lost detail. Ambiguous older 32-bit WAV files ask for PCM or legacy-float interpretation; cancelling leaves the file intact.
 
 WAV text, cues and labels are retained. Cues follow editing, pasting and selection export; the destination title is kept. Recorder-specific fields are preserved verbatim, not recalculated after effects. Extra metadata is limited to 16 MiB; oversized input is rejected and omitted output fields require confirmation. Mixdown does not merge all source markers. Large WAV exports use RF64 when necessary.
 
@@ -239,7 +241,7 @@ Each completed drag or accepted value is one Undo/Redo step. Every other sample,
 
 ### Draw Waveform
 
-Enable **Edit → Waveform Tools → Draw Waveform**, press **D**, or use the pencil button on the left tools bar. Drag the left mouse button directly on the waveform; hitting individual sample points is unnecessary. The drawn line replaces sample values within −1 to +1; it does not shift the original waveform vertically.
+Enable **Edit → Waveform Tools → Draw Waveform** or press **D**. The active drawing button appears above the waveform; click it or press **D** again to return to selection. Drag the left mouse button directly on the waveform; hitting individual sample points is unnecessary. The drawn line replaces sample values within −1 to +1; it does not shift the original waveform vertically.
 
 Zoom determines the group size: about two logical screen pixels of audio, rounded up to whole samples. Close up, one sample changes; zoomed out, multiple samples change together. Each group covers at most one second. A longer gesture can touch several groups and change more than one second in total. Straight lines join successive pointer positions; drawing over a group again replaces its previous drawing.
 

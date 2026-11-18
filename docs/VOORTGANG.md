@@ -1,5 +1,18 @@
 # Ontwikkelroute
 
+## Effectbediening en nieuwe golfvormen — klaar voor de volgende versie
+
+Directe bewerkingen hebben eigen knoppen; de zes uitklapgroepen bevatten alleen instellingsvensters. Een keuze opent meteen het venster, het hoofdicoon heropent de laatste keuze. Een expliciete tijdselectie blijft vereist, ook via menu’s en F2. Selecteren is standaard; D schakelt tekenen in, met een tijdelijke terugknop boven de golfvorm. Clip-, volume- en pangereedschappen staan bij de multitracktijdlijn. De balk Effecten behoudt de ingestelde plaats en zichtbaarheid. Ruisprofiel vastleggen blijft in het menu en het venster Ruisreductie bereikbaar; de losse werkbalkknop is verwijderd.
+
+Nieuw biedt een duurveld en maakt bewerkbare stilte op de gekozen samplerate en kanalen. Annuleren of onvoldoende opslag laat het huidige document intact. Dialoogvensters reserveren ook ruimte voor hun vertaalde titel en de titelbalkknoppen.
+
+- [x] Lokale bediening en vijf handleidingen aangepast.
+- [x] Venster-, taal- en regressiecontroles afgerond: 138 gerichte checks, de appzelftest, vijf handleidingindexen en volledige vertaalcatalogi.
+- [x] Bedieningsproef en beoordeling afgerond.
+- [x] Aanpassingen vastgelegd in de broncode.
+
+De laatste verfijning doorstaat 29 gerichte controles, waaronder behoud van de profielopdracht in het menu en het Ruisreductievenster. Er is nog geen nieuwe versie gepubliceerd. De 18 uitgestelde uitbreidingen blijven uitgesteld.
+
 ## Effectkeuze en expliciete selectie — 1.2.1 gepubliceerd
 
 De uitklaplijsten links kiezen alleen het actieve effect; een hoofdklik voert uit of opent de instellingen. De menuopdrachten en herhalen met F2 vereisen een expliciete tijdselectie. Zonder selectie wordt geen golfvormeffect toegepast; Ctrl+A kiest de volledige opname. Kanaalkeuze, instellingenvensters, Undo, opnamevergrendeling en werkbalkvoorkeuren blijven behouden. De vijf handleidingen en aanwijzingen beschrijven de bediening.

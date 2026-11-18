@@ -1,4 +1,4 @@
-"""Effect pickers choose a tool; only their main button runs its command."""
+"""Dialog-effect groups open settings on choice and remember the last dialog."""
 from .i18n import Literal, tr, install_language
 from .i18n_widgets import QAction, QMenu, QToolButton
 
@@ -12,24 +12,31 @@ class EffectToolButton(QToolButton):
         self.default_key = default
         by_action = {action: key for key, action in window.actions.items()}
         self.effects = {by_action[action]: action for action in menu.actions()
-                        if action in by_action and not action.isSeparator()}
+                        if action in by_action and not action.isSeparator()
+                        and by_action[action] not in window.DIRECT_EFFECT_ACTIONS}
         self.selected_key = default
         self.setObjectName('effect_group_' + group)
         self.setProperty('effectGroup', True)
         self.setProperty('compact', True)
         self.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
-        # The top menu executes commands. These separate choices only select
-        # a tool, retaining the source commands' translated labels and icons.
+        # Keep immediate operations out of these groups. Choosing an entry
+        # opens its dialog through the guarded source command exactly once.
         picker = QMenu(title, self)
         self.choice_actions = {}
+        separator = False
         for source in menu.actions():
             if source.isSeparator():
-                picker.addSeparator()
+                separator = True
                 continue
             key = by_action[source]
+            if key not in self.effects:
+                continue
+            if separator and self.choice_actions:
+                picker.addSeparator()
+            separator = False
             choice = QAction(picker)
             choice.setCheckable(True)
-            choice.triggered.connect(lambda checked=False, key=key: self.remember(key))
+            choice.triggered.connect(lambda checked=False, key=key: self.choose(key))
             picker.addAction(choice)
             self.choice_actions[key] = choice
         self.setMenu(picker)
@@ -44,11 +51,17 @@ class EffectToolButton(QToolButton):
         self.selected_key = key
         self.sync()
 
+    def choose(self, key):
+        if not self.window.wave_effect_available(key):
+            return
+        self.remember(key)
+        self.run()
+
     def sync(self, *_):
         # A stereo-only or selection-only choice must not block the rest of its
         # group. Display an available alternative without losing the preference.
         self.current_key = self.selected_key
-        available = lambda key: self.window.wave_effect_available(key, require_selection=False)
+        available = self.window.wave_effect_available
         if not available(self.current_key):
             self.current_key = next((key for key, action in self.effects.items()
                                      if available(key)), self.selected_key)
@@ -68,7 +81,7 @@ class EffectToolButton(QToolButton):
         self.setIcon(action.icon())
         self.setAccessibleName(Literal(title + ': ' + label))
         self.setToolTip(Literal(title + ': ' + label + '\n' + tr(
-            'Choose a tool with the arrow. Select audio, then click the icon to open or apply it.')))
+            'Choose an effect to open its settings; click the icon to reopen the last effect.')))
 
     def run(self):
         action = self.effects[self.current_key]

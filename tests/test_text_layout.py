@@ -262,6 +262,11 @@ class TextLayoutTests(unittest.TestCase):
             for dialog in self.app.topLevelWidgets():
                 if isinstance(dialog,QDialog) and dialog.isVisible():
                     self.settle();seen.append(dialog.windowTitle())
+                    from soundsausage.i18n_widgets import QDialog as FittedDialog
+                    if isinstance(dialog,FittedDialog):
+                        expected=min(dialog.screen().availableGeometry().width()-32,
+                            max(360,dialog.fontMetrics().horizontalAdvance(dialog.windowTitle())+10*dialog.fontMetrics().height()))
+                        if dialog.width()<expected:failures.append(('caption',dialog.windowTitle(),dialog.width(),expected))
                     failures.extend(visible_label_errors(dialog));dialog.reject()
         for action in (w.new_document,w.new_session,w.select_range,w.convert_sample_rate,w.generate_tone,w.generate_silence):
             w.document.mark_saved();w.session.mark_saved()

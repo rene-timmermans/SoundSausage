@@ -179,23 +179,25 @@ horen, een selectie vereisen of nog in ontwikkeling zijn.
 
 ### Werkbalken en gereedschapsopties
 
-De algemene werkbalk staat bovenaan, met weergavekeuze, openen, opslaan, bewerken, markeringen en sessieopdrachten. **Markering toevoegen** en **Markeringenlijst** staan hier bij elkaar. De aparte gereedschapsbalk staat standaard links. Kies **Golfvorm selecteren** om een tijdvak te selecteren of de cursor te plaatsen, of **Golfvorm tekenen / D** om samples te tekenen. Deze opdrachten en **Sample bewerken** staan samen onder **Bewerken → Golfvormgereedschappen**.
+De algemene werkbalk bovenaan bevat weergavekeuze, openen, bewaren, bewerken, markeringen en sessieopdrachten. **Markering toevoegen** en **Markeringslijst** staan hier bij elkaar. De aparte **Effecten**-balk begint links en bevat effectopdrachten, geen selectie- of tekengereedschappen.
 
-De kanaalkeuze staat direct boven de golfvorm. Tijdens tekenen verschijnt daarnaast de knop voor numerieke samplebewerking. Selectiecommando’s blijven onder **Bewerken** beschikbaar; begin, einde en lengte kun je rechtsonder invoeren.
+Slepen op de golfvorm selecteert standaard audio; klikken plaatst de cursor. De kanaalkeuze staat direct boven de golfvorm. Schakel **Tekenen** alleen wanneer nodig in via **Bewerken → Golfvormgereedschappen → Golfvorm tekenen / D**. Dan verschijnen boven de golfvorm de actieve tekenknop en de knop voor numerieke samplebewerking. Klik op de actieve tekenknop of druk opnieuw op **D** om terug te gaan naar selecteren; beide knoppen verdwijnen weer. Selectieopdrachten staan in **Bewerken**; begin, einde en lengte kun je rechtsonder invoeren.
 
-In multitrack kies je links **Clips verplaatsen**, **Volumelijn** of **Panlijn**, of via **Bewerken → Clipgereedschappen**. Clipeigenschappen, dupliceren en verwijderen staan boven de tijdlijn. Bij volume- en panlijnen staat daar ook **Lijn herstellen** voor de geselecteerde clip. **+ Spoor / − Spoor** staan op de algemene werkbalk en in **Venster**. Effectinstellingen openen in hun eigen vensters. De groepen links komen overeen met **Effecten**, inclusief **Golfvormbewerkingen → Ompolen / Achterstevoren / Stilte**. De vier zoomknoppen staan onderaan bij de afspeelknoppen en in **Beeld**, met dezelfde sneltoetsen.
+In multitrack staan **Clips verplaatsen**, **Volumelijn** en **Panlijn** direct boven de tijdlijn, samen met clipeigenschappen, dupliceren en verwijderen. Ze zijn ook bereikbaar via **Bewerken → Clipgereedschappen**. Bij volume- en panlijnen is **Lijn herstellen** beschikbaar voor de geselecteerde clip. **+ Spoor / − Spoor** staan op de algemene werkbalk en in **Venster**. De vier zoomknoppen blijven onderaan naast de afspeelbediening en in **Beeld**, met dezelfde sneltoetsen.
 
-Sleep een werkbalk aan de gestippelde handgreep om hem te verplaatsen, anders te ordenen of los te maken. Sleep hem naar een vensterrand om hem weer vast te zetten. **Beeld → Werkbalken → Algemeen / Gereedschappen** toont of verbergt elke balk afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na afsluiten bewaard. Een verborgen balk kun je via hetzelfde menu terughalen.
+Sleep een werkbalk aan de gestippelde handgreep om hem te verplaatsen, anders te ordenen of los te maken. Sleep hem naar een vensterrand om hem weer vast te zetten. **Beeld → Werkbalken → Algemeen / Effecten** toont of verbergt elke balk afzonderlijk. Indeling, zichtbaarheid en werkbalkteksten blijven na afsluiten bewaard. Een verborgen balk kun je via hetzelfde menu terughalen.
 
 <a id="ss-topic-uitklapbare-effectgroepen"></a>
 
 ### Uitklapbare effectgroepen
 
-De linker gereedschapsbalk bevat **Golfvormbewerkingen**, **Amplitude**, **Filters**, **Vertragingseffecten**, **Ruisreductie**, **Tijd/toonhoogte** en **Speciaal**. Open een groep via het pijltje en kies een gereedschap. Alleen het pictogram en de actieve keuze veranderen: er wordt nog geen effect uitgevoerd en er opent nog geen instellingenvenster.
+Selecteer eerst het gewenste tijdvak en de kanalen. Gebruik **Ctrl+A** om de hele tijdsduur expliciet te selecteren, op de gekozen kanalen. Zonder tijdselectie zijn golfvormeffecten niet beschikbaar; ook opdrachten uit **Effecten** en herhalen met **F2** vereisen een selectie.
 
-Selecteer daarna het gewenste tijdvak en de kanalen. Gebruik **Ctrl+A** om de hele golfvorm expliciet te selecteren. Klik op het hoofdicoon om het gekozen effect toe te passen of zijn instellingen te openen. In een instellingenvenster luistert **Voorbeeld** zonder de opname te wijzigen; **OK** past toe. Zonder tijdselectie wordt niets bewerkt. Ook opdrachten uit **Effecten** en herhalen met **F2** vereisen een selectie.
+**Ompolen**, **Achterstevoren**, **Stilte**, **Invloeien** en **Uitvloeien** hebben elk een eigen knop. Een klik past de bewerking meteen op de selectie toe. **Ruisprofiel vastleggen** blijft beschikbaar via **Effecten → Ruisreductie → Ruisprofiel vastleggen** en via **Uit selectie vastleggen** in het venster **Ruisreductie**. Een profiel vastleggen verandert de audio niet; hiervoor is geen losse werkbalkknop nodig.
 
-De aanwijzing bij het pictogram noemt de groep en het gekozen gereedschap. Elke groep onthoudt de keuze na afsluiten. Als een effect tijdelijk niet beschikbaar is, verschijnt een beschikbaar alternatief zonder de eerdere voorkeur te verliezen. **Remaster** heeft een eigen knop en vereist eveneens een selectie. In multitrack opent **Spooreffecten** de effectketen van het geselecteerde spoor. Tijdens opnemen zijn de effectknoppen vergrendeld. Bewerkingen volgen de gekozen kanalen en ondersteunen **Ongedaan maken**.
+De zes uitklapgroepen **Amplitude**, **Filters**, **Vertragingseffecten**, **Ruisreductie**, **Tijd/toonhoogte** en **Speciaal** bevatten alleen effecten met een instellingenvenster. Kies een effect via het pijltje: zijn pictogram wordt actief en het instellingenvenster opent meteen. Klik later op het hoofdicoon om dat venster opnieuw te openen. **Voorbeeld** laat luisteren zonder de opname te wijzigen; **OK** past toe en **Annuleren** laat de audio intact. Directe bewerkingen staan niet tussen deze vensterkeuzes. In het menu **Effecten** blijven alle opdrachten ook per effectgroep bereikbaar.
+
+De aanwijzing bij het pictogram noemt de groep en het gekozen effect. Elke groep onthoudt het laatste instellingenvenster na afsluiten. Als een effect tijdelijk niet beschikbaar is, verschijnt een beschikbaar alternatief zonder de eerdere voorkeur te verliezen. **Remaster** opent via zijn eigen knop eveneens een instellingenvenster. In multitrack opent **Spooreffecten** de effectketen van het geselecteerde spoor. Tijdens opnemen zijn de effectknoppen vergrendeld. Bewerkingen volgen de gekozen kanalen en ondersteunen **Ongedaan maken**.
 
 <a id="ss-topic-tijden-rechtsonder-invoeren"></a>
 
@@ -215,9 +217,7 @@ Waarden buiten het bestand worden begrensd. In multitrack geldt de tijdlijn van 
 
 ### Losse opnamen
 
-**Bestand → Nieuw** maakt een lege golfvorm. Kies **Mono** voor één kanaal en **Stereo**
-voor links/rechts. De samplerate bepaalt hoeveel audiopunten per seconde worden
-bewaard. 44.100 en 48.000 Hz zijn gangbare keuzes.
+**Bestand → Nieuw / Ctrl+N** maakt een golfvorm met stilte van de gekozen **Duur** in seconden (standaard 10 seconden). Kies **Mono** voor één kanaal en **Stereo** voor links/rechts. De samplerate bepaalt hoeveel audiopunten per seconde worden bewaard; 44.100 en 48.000 Hz zijn gangbare keuzes. **OK** maakt de golfvorm zichtbaar en bewerkbaar; **Annuleren** houdt het huidige document. Bewaar de nieuwe golfvorm via **Opslaan als**. De werkruimte blijft bij het starten van de app leeg.
 
 **Bestand → Openen** opent een WAV- of MP3-bestand. **Opslaan** bewaart de huidige opname en
 **Opslaan als** kiest een andere naam en de uitvoering WAV of MP3. **Selectie opslaan** schrijft
@@ -707,8 +707,7 @@ MP3 opnieuw opslaan comprimeert het gehele bestand opnieuw met kwaliteitsverlies
 
 ### Golfvorm tekenen
 
-Schakel **Bewerken → Golfvormgereedschappen → Golfvorm tekenen** in, druk op **D** of gebruik de
-potloodknop op de linker gereedschapsbalk. Teken met de linkermuisknop rechtstreeks op de
+Schakel **Bewerken → Golfvormgereedschappen → Golfvorm tekenen** in of druk op **D**. De actieve tekenknop verschijnt boven de golfvorm; klik erop of druk opnieuw op **D** om terug te gaan naar selecteren. Teken met de linkermuisknop rechtstreeks op de
 golfvorm; afzonderlijke samplepunten raken is niet nodig. De getekende lijn
 vervangt de samplewaarden, binnen −1 tot +1. Dit verschuift de bestaande golf
 niet: het verloop onder de lijn wordt opnieuw getekend.

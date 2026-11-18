@@ -165,6 +165,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         'fade_in', 'fade_out', 'invert', 'reverse', 'silence', 'graphic_eq', 'parametric_eq',
         'filter', 'delay', 'echo', 'reverb', 'noise_profile', 'noise_reduction', 'click_removal',
         'stretch', 'pitch_shift', 'distortion', 'convolution')
+    DIRECT_EFFECT_ACTIONS = ('invert', 'reverse', 'silence', 'fade_in', 'fade_out', 'noise_profile')
 
     def __init__(self, document=None, no_audio=False, ui_settings=None):
         super().__init__()
@@ -315,7 +316,7 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         drawing = self.action("draw_waveform", "Draw Waveform", lambda: None, "D")
         drawing.setCheckable(True)
         drawing.toggled.connect(lambda checked: self.waveform.set_drawing(checked))
-        drawing.setToolTip("Draw directly on the waveform; zoom controls the group size, up to one second per group. Shift+drag selects; Escape cancels.")
+        drawing.setToolTip("D toggles drawing. Click the active drawing button or press D again to return to selection. Zoom controls the group size, up to one second per group. Shift+drag selects; Escape cancels the stroke.")
         self.channel_actions = QActionGroup(self)
         for key, label, channel, shortcut in (("channels_both", "Both (L+R)", None, "Alt+B"),
                 ("channels_left", "Left (L)", (0,), "Alt+L"), ("channels_right", "Right (R)", (1,), "Alt+R")):
@@ -387,6 +388,11 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         wave_layout.setContentsMargins(0, 0, 0, 0)
         wave_layout.setSpacing(4)
         range_row = QHBoxLayout()
+        self.drawing_button = QToolButton()
+        self.drawing_button.setProperty('compact', True)
+        self.drawing_button.setDefaultAction(self.actions['draw_waveform'])
+        self.drawing_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+        range_row.addWidget(self.drawing_button)
         range_row.addWidget(self.scroll, 1)
         self.channel_label_widget = QLabel("Channels")
         range_row.addWidget(self.channel_label_widget)
@@ -861,14 +867,32 @@ class MainWindow(RecordingActions, SessionActions, QMainWindow):
         channels = QComboBox()
         channels.addItems(["Mono", "Stereo"])
         channels.setCurrentIndex(1)
+        duration = spin(10, 0.001, 86400, 3, " sec")
         form.addRow("Sample rate (Hz)", rate)
         form.addRow("Channels", channels)
+        form.addRow("Duration", duration)
         form.addRow(buttons(dialog))
         if dialog.exec() == QDialog.DialogCode.Accepted:
+            try:
+                document = self._blank_document(rate.value(), channels.currentIndex() + 1, duration.value())
+            except (ValueError, OSError, RuntimeError) as error:
+                self.error("New Waveform", error)
+                return
+            if document is False:  # Cancellation leaves the current document intact.
+                return
             self.player.stop()
-            self.document = Document(sample_rate=rate.value(), channels=channels.currentIndex() + 1, dsp=self.document.dsp)
+            self.document = document
             self.editing_clip_id = None
             self.refresh(fit=True)
+
+    @long_operation
+    def _blank_document(self, sample_rate, channels, duration):
+        frames = max(1, round(duration * sample_rate))
+        samples = storage.seal(storage.allocate((frames, channels), zero=True), checked=True)
+        document = Document(sample_rate=sample_rate, channels=channels, dsp=self.document.dsp)
+        document.replace(0, 0, samples, "New Waveform")
+        document.select(0, 0)
+        return document
 
     def open_dialog(self):
         if self.mode == "multitrack":

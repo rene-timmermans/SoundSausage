@@ -20,18 +20,18 @@ class WorkspaceToolbars:
             ('cut', 'copy', 'paste', 'trim'), ('undo', 'redo'), ('marker_add', 'markers'),
             ('insert_wave', 'apply_clip', 'import_audio', 'mixdown'),
         ))
-        self.tools = self.bar('Tools', 'ToolsToolbar', Qt.ToolBarArea.LeftToolBarArea)
+        # Retain the saved object name and placement while changing its role.
+        self.tools = self.bar('Effects', 'ToolsToolbar', Qt.ToolBarArea.LeftToolBarArea)
         self.multi_tools = window.multitrack_tool_actions
-        self.add_groups(self.tools, (('select_wave', 'draw_waveform', 'move_clips', 'volume_line', 'pan_line'),))
-        self.tools.addSeparator()
         self.effect_buttons = {}
         self.effect_widgets = []
-        remaster = QToolButton()
-        remaster.setDefaultAction(window.actions['remaster'])
-        self.effect_widgets.append(self.tools.addWidget(remaster))
-        self.tools.toolButtonStyleChanged.connect(remaster.setToolButtonStyle)
+        self.command_buttons = {}
+        self.direct_buttons = {}
+        for key in ('invert', 'reverse', 'silence', 'fade_in', 'fade_out'):
+            self.add_command(key)
+        self.tools.addSeparator()
+        self.add_command('remaster')
         groups = (
-            ('wave_edits', 'Waveform Edits', window.menus['wave_edits'], 'invert'),
             ('amplitude', 'Amplitude', window.menus['amplitude'], 'amplify'),
             ('filters', 'Filters', window.menus['filters'], 'graphic_eq'),
             ('delay', 'Delay Effects', window.menus['delay'], 'delay'),
@@ -49,15 +49,15 @@ class WorkspaceToolbars:
             self.effect_widgets.append(self.tools.addWidget(button))
         track_fx = QToolButton()
         track_fx.setDefaultAction(window.actions['track_fx'])
-        self.track_effects_action = self.tools.addWidget(track_fx)
+        track_fx.setIconSize(self.tools.iconSize())
+        self.tools.iconSizeChanged.connect(track_fx.setIconSize)
+        self.track_effects_action = self.button_action(track_fx)
         self.tools.toolButtonStyleChanged.connect(track_fx.setToolButtonStyle)
         editor = window.multitrack
         # These controls also work in the standalone editor. The main window
         # exposes them through shared actions and editor-local controls.
         editor.command_row.hide()
         editor.tool_row.hide()
-        editor.envelope_buttons = {mode: self.tools.widgetForAction(action)
-                                   for mode, action in self.multi_tools.items()}
         for key, label, callback in (('add_track', '+ Track', editor.add_track),
                                      ('remove_track', '− Track', editor.remove_track)):
             action = window.action(key, label, callback)
@@ -67,6 +67,15 @@ class WorkspaceToolbars:
         row = QHBoxLayout(self.clip_controls)
         row.setContentsMargins(2, 0, 2, 0)
         row.setSpacing(4)
+        self.clip_buttons = {}
+        for mode, action in self.multi_tools.items():
+            button = QToolButton()
+            button.setProperty('compact', True)
+            button.setDefaultAction(action)
+            button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+            self.clip_buttons[mode] = button
+            row.addWidget(button)
+        editor.envelope_buttons = self.clip_buttons
         for key in ('clip_properties', 'duplicate_clip', 'remove_clip'):
             button = QToolButton()
             button.setProperty('compact', True)
@@ -104,6 +113,29 @@ class WorkspaceToolbars:
             for key in keys:
                 toolbar.addAction(self.window.actions[key])
 
+    def add_command(self, key):
+        button = QToolButton()
+        button.setDefaultAction(self.window.actions[key])
+        button.setIconSize(self.tools.iconSize())
+        button.setToolButtonStyle(self.tools.toolButtonStyle())
+        self.tools.iconSizeChanged.connect(button.setIconSize)
+        self.command_buttons[key] = button
+        if key in self.window.DIRECT_EFFECT_ACTIONS:
+            self.direct_buttons[key] = button
+        self.effect_widgets.append(self.button_action(button))
+        self.tools.toolButtonStyleChanged.connect(button.setToolButtonStyle)
+        return button
+
+    def button_action(self, button):
+        # The button follows its shared menu action's visibility. Hide a parent
+        # instead, so later action updates cannot expose it in the wrong mode.
+        holder = QWidget()
+        row = QHBoxLayout(holder)
+        row.setContentsMargins(0, 0, 0, 0)
+        row.setSpacing(0)
+        row.addWidget(button)
+        return self.tools.addWidget(holder)
+
     def select_wave(self):
         self.window.actions['draw_waveform'].setChecked(False)
         self.sync()
@@ -132,7 +164,9 @@ class WorkspaceToolbars:
             window.actions[key].setVisible(multi)
             window.actions[key].setEnabled(multi and not busy)
         window.actions['remove_track'].setEnabled(multi and not busy and len(window.session.tracks) > 1)
-        window.sample_button.setVisible(not multi and drawing and window.document.frames > 0)
+        drawing_visible = not multi and drawing and window.document.frames > 0
+        window.drawing_button.setVisible(drawing_visible)
+        window.sample_button.setVisible(drawing_visible)
         window.multitrack.reset_line.setVisible(window.multitrack.timeline.envelope_mode != 'move')
         window.multitrack.update_envelope_controls()
         for button in self.effect_buttons.values():

@@ -15,7 +15,7 @@ De huidige versie is **1.2.1**.
 **Werkruimte**
 
 - Golfvormweergave voor één opname en multitrack voor meerdere sporen; wissel met **Tab** of de knoppen bovenaan.
-- Verplaatsbare werkbalken met kaderloze pictogrammen: algemene knoppen en markeringen bovenaan, gereedschappen links en passende bediening direct bij de audio.
+- Verplaatsbare werkbalken met kaderloze pictogrammen: algemene knoppen en markeringen bovenaan, een aparte effectenbalk en bediening direct bij de audio.
 - Uitklapbare effectgroepen op de linker werkbalk, met een pictogram voor het laatst gekozen effect.
 - Inzoomen tot afzonderlijke samples, afspelen in een lus en een frequentieanalyse van het gekozen fragment.
 - Tijdens afspelen naar een andere plek springen door op de golfvorm of tijdliniaal te klikken.
@@ -32,7 +32,7 @@ De huidige versie is **1.2.1**.
 - Selecteren, knippen, kopiëren, plakken, mengen en trimmen, met ongedaan maken en opnieuw.
 - Links en rechts afzonderlijk knippen, plakken, tijdrekken en opnemen; het andere kanaal blijft op zijn plaats.
 - Samplepunten verslepen of hun waarde exact invoeren om kleine tikjes plaatselijk te corrigeren.
-- Met de potloodknop rechtstreeks op de golfvorm tekenen, ook bij minder vergroting, met één stap ongedaan maken.
+- Met D rechtstreeks op de golfvorm tekenen, ook bij minder vergroting, met één stap ongedaan maken.
 
 - Markeringen toevoegen, benoemen, verplaatsen en bezoeken, met een markeringenlijst en behoud bij opslaan.
 

@@ -72,7 +72,7 @@ class QDialog(QDialog):
 
     def changeEvent(self,event):
         super().changeEvent(event)
-        if hasattr(self,'_fit_pending') and event.type() in (QEvent.Type.FontChange,QEvent.Type.StyleChange):
+        if hasattr(self,'_fit_pending') and event.type() in (QEvent.Type.FontChange,QEvent.Type.StyleChange,QEvent.Type.WindowTitleChange):
             self._queue_fit()
 
     def eventFilter(self,watched,event):
@@ -116,12 +116,17 @@ class QDialog(QDialog):
             layout.invalidate()
             minimum=layout.minimumSize()
             preferred=layout.sizeHint()
-            width=min(max_width,max(W.QWidget.width(self),self._base_minimum.width(),preferred.width(),minimum.width()))
+            # A short form can still have a long translated native caption.
+            # Reserve space for the icon and window controls as well as text.
+            title_metrics=G.QFontMetrics(G.QFontDatabase.systemFont(G.QFontDatabase.SystemFont.TitleFont))
+            title_width=max(title_metrics.horizontalAdvance(self.windowTitle()),self.fontMetrics().horizontalAdvance(self.windowTitle()))
+            caption_width=min(max_width,max(360,title_width+10*max(title_metrics.height(),self.fontMetrics().height())))
+            width=min(max_width,max(W.QWidget.width(self),self._base_minimum.width(),preferred.width(),minimum.width(),caption_width))
             needed=max(minimum.height(),layout.totalHeightForWidth(width))
             if self._content is None and (needed>max_height or minimum.width()>max_width):
                 self._make_scrollable()
             if self._content is None:
-                self.setMinimumSize(max(self._base_minimum.width(),minimum.width()),max(self._base_minimum.height(),needed))
+                self.setMinimumSize(max(self._base_minimum.width(),minimum.width(),caption_width),max(self._base_minimum.height(),needed))
                 self.resize(width,min(max_height,max(W.QWidget.height(self),needed,self.minimumHeight())))
             else:
                 self.setMinimumSize(min(max_width,self._base_minimum.width()),min(max_height,self._base_minimum.height()))
