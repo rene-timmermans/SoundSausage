@@ -1,6 +1,6 @@
 # Afgesproken ontwikkelroute
 
-## Remaster — 1.3.1 in voorbereiding
+## Remaster — 1.3.1 gepubliceerd
 
 De regeling voor korte volumedalingen controleert nu of de klank vóór en na een mogelijk gat voldoende overeenkomt. Een duidelijke noot- of klankwisseling behoudt het gewone herstel, zonder extra versterking van stille restgeluiden. Het herstel van echte korte dalingen, de bestaande instellingen en gekoppelde stereobalans blijven behouden.
 
@@ -9,7 +9,7 @@ De regeling voor korte volumedalingen controleert nu of de klank vóór en na ee
 - [x] De eerder gemelde korte extra ingreep wordt bij volledige verwerking overgeslagen; het gewone herstel blijft op die plek exact behouden.
 - [x] De vijf handleidingen beschrijven de aanvullende controle.
 
-Versie 1.3.1 wordt voorbereid met installatiepakketten voor Debian, Ubuntu, Fedora en Arch. Publicatie volgt na de volledige distributiecontroles. De 18 uitgestelde uitbreidingen blijven uitgesteld.
+Versie **1.3.1** is gepubliceerd met installatiepakketten voor Debian, Ubuntu, Fedora en Arch. Alle **672 tests** slagen zonder overslaan op Debian, Fedora en Arch. Vijf geïnstalleerde zelftests slagen op elk van vijf doelen, inclusief Ubuntu 26.04 en Rolling. De acht releasebestanden, tag, bron en korte releasepunten zijn gecontroleerd. De 18 uitgestelde uitbreidingen blijven uitgesteld.
 
 ## Effectbediening en nieuwe golfvormen — 1.3.0 gepubliceerd
 
