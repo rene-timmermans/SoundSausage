@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 1.3.0. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 1.3.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -294,7 +294,7 @@ Eine Vorgabe ändert nur die fünf Einstellungen der Tabelle. Ausgangsgrenze, Ab
 
 Die normale Korrektur schätzt anhaltende Mitten/Höhen, etwa Gesang, Gitarre oder Synthesizer. Ihr Pegel wird mit der Umgebung verglichen; kurze Defizite bei erkannten Bass-/Schlagzeugeinsätzen erhalten eine begrenzte Anhebung. Es entstehen keine getrennten Gesangs- oder Instrumentenspuren.
 
-Die Zusatzkorrektur misst Mitten/Höhen über etwa **4 ms**, mit einer Aktualisierung etwa alle **1 ms**. Sie vergleicht **20–80 ms vor und nach** einem möglichen Einbruch. Beide Seiten müssen den fehlenden Pegel stützen. Gesucht werden etwa **6–120 ms** kurze Einbrüche von mindestens **4 dB**, gekoppelt an die Schlagzeugerkennung. Lange Pausen, sehr leise Stellen und allmähliche Blenden werden so möglichst übersprungen.
+Die Zusatzkorrektur misst Mitten/Höhen über etwa **4 ms**, mit einer Aktualisierung etwa alle **1 ms**. Sie vergleicht **20–80 ms vor und nach** einem möglichen Einbruch. Beide Seiten müssen den fehlenden Pegel stützen und klanglich ausreichend übereinstimmen. Bei deutlich unterschiedlichen Tönen oder Klangfarben bleibt es an dieser Stelle bei der normalen Bearbeitung ohne zusätzliche Kurzkorrektur. Gesucht werden etwa **6–120 ms** kurze Einbrüche von mindestens **4 dB**, gekoppelt an die Schlagzeugerkennung. Lange Pausen, sehr leise Stellen und allmähliche Blenden werden so möglichst übersprungen.
 
 Bei einer geeigneten Lücke ersetzt die schnellere Korrektur örtlich die normale. Die Verstärkungen werden nicht addiert. Ein kurzer weicher Übergang und schnelles Zurückregeln begrenzen Überschwinger, wenn der Originalpegel wiederkehrt. Diese Route hat eigene schnelle Reaktionszeiten; **Erholungszeit** im Fenster bestimmt, wie lange die Schlagzeugerkennung weiterwirkt.
 

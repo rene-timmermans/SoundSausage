@@ -1,7 +1,8 @@
 """Short, drum-linked mid/high dips with two-sided support and bounded disk buffers.
 
-The source remains intact. A complementary high band replaces only confirmed
-6–120 ms dips, crossfading with the ordinary HPSS result rather than stacking gain.
+The source remains intact. Similar sound must support both sides of confirmed
+6–120 ms dips; note changes are not holes. Repair crossfades with the ordinary
+HPSS result rather than stacking gain.
 """
 import math
 import numpy as np
@@ -19,6 +20,30 @@ def _sample_curve(values,positions,size,hop,upper=False):
         return np.max(values[take,0],axis=1)
     a=np.clip(first,0,len(values)-1);b=np.clip(first+1,0,len(values)-1)
     return values[a,0]*(1-fraction)+values[b,0]*fraction
+
+def _matching_context(detail,rate,start,stop,step):
+    """Compare bounded, level-independent spectra outside a candidate dip."""
+    size=max(16,2**round(math.log2(rate*.04)))
+    window=np.hanning(size)
+    frequency=np.fft.rfftfreq(size,1/rate)
+    near=round(.020*rate);far=round(.080*rate)
+    def fingerprint(first,last):
+        part=np.asarray(detail[max(0,first):min(len(detail),last)],np.float64)
+        if len(part)<size:return None
+        view=np.lib.stride_tricks.sliding_window_view(part,size,axis=0)[::max(1,size//4)]
+        spectra=np.fft.rfft(view*window[None,None,:],axis=-1)
+        # Average channel powers, not waveforms: opposite stereo phases must
+        # not cancel. Ignore the bass and normalize away level differences.
+        power=np.mean(abs(spectra)**2,axis=(0,1))
+        power[frequency<180]=0
+        # Small pitch movements should not look like unrelated notes.
+        power=np.convolve(power,[.25,.5,.25],mode='same')
+        norm=float(np.linalg.norm(power))
+        return power/norm if norm>1e-20 else None
+    left=fingerprint(start*step-far,start*step-near)
+    right=fingerprint(stop*step+near,stop*step+far)
+    storage.release_pages(detail)
+    return left is not None and right is not None and float(left@right)>=.5
 
 def repair(source,detail,result,rate,source_gain,gain,gate,size,hop,amount,maximum,block_frames=262144):
     """Repair short dips without lifting bass, silence or an unsupported fade-out."""
@@ -44,7 +69,9 @@ def repair(source,detail,result,rate,source_gain,gain,gate,size,hop,amount,maxim
     def finish():
         nonlocal pending,too_long
         if not too_long and len(pending)>=min_run:
-            start=pending[0][0];raw[start:start+len(pending),0]=[v for _,v in pending]
+            start=pending[0][0];stop=start+len(pending)
+            if _matching_context(detail,rate,start,stop,step):
+                raw[start:stop,0]=[v for _,v in pending]
         pending=[];too_long=False
     for first in range(0,count,512):
         stop=min(count,first+512);a=max(0,first-outer);b=min(count,stop+outer)

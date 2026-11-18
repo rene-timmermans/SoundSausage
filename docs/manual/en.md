@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Version 1.3.0. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
+Version 1.3.1. An intuitive, easy-to-use audio editor with all the tools where you expect them. This manual covers the complete available workflow, effects and practical limits.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -292,7 +292,7 @@ A preset changes only the five settings in the table. Output ceiling, listening 
 
 Ordinary recovery estimates sustained mid/high content such as voices, guitar or synthesizer. It compares its level with surrounding audio and looks for brief deficits near detected bass or percussion onsets. Only the detected deficit receives bounded lift; it does not produce separate vocal or instrument tracks.
 
-Short-drop repair measures mid/high energy over about **4 ms**, updating roughly every **1 ms**. It compares the **20–80 ms before and after** a possible dip; both sides must support the missing level. It seeks approximately **6–120 ms** dips of at least **4 dB**, linked to drum detection. This helps skip long pauses, very quiet material and gradual fades.
+Short-drop repair measures mid/high energy over about **4 ms**, updating roughly every **1 ms**. It compares the **20–80 ms before and after** a possible dip; both sides must support the missing level and contain sufficiently similar sound. Clearly different notes or timbres leave ordinary recovery in place rather than activating the extra short-drop repair. It seeks approximately **6–120 ms** dips of at least **4 dB**, linked to drum detection. This helps skip long pauses, very quiet material and gradual fades.
 
 At an eligible gap, the faster route locally replaces ordinary recovery. Their gains are not added. A short smooth transition and rapid return limit overshoot when the source level recovers. This route has its own fast response times; the dialog’s **Recovery time** controls how long drum detection remains relevant.
 

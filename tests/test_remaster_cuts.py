@@ -25,7 +25,66 @@ def short_cuts(rate=16000, seconds=3, duration=.035, depth=.12, enabled=True):
 STRONG=dict(amount=90,recovery_db=6,sensitivity_db=2,release_ms=240)
 
 
+def note_transition(rate=16000, stereo=True):
+    t=np.arange(rate*3)/rate
+    left=np.clip((2.025-t)/.015,0,1)
+    right=np.clip((t-2.075)/.015,0,1)
+    drum=np.zeros(len(t));tau=t-2;active=(tau>=0)&(tau<.15)
+    drum[active]=.4*np.sin(2*np.pi*70*tau[active])*np.exp(-tau[active]/.045)
+    noise=.005*np.random.default_rng(773).standard_normal(len(t))
+    body=.16*np.sin(2*np.pi*887*t)*left+.16*np.sin(2*np.pi*1733*t)*right+noise+drum
+    return np.column_stack((body,-.8*body) if stereo else (body,)).astype(np.float32)
+
+
+def upper_level(data,rate,start,stop,minimum=600):
+    section=data[round(start*rate):round(stop*rate)].astype(np.float64)
+    spectrum=np.fft.rfft(section*np.hanning(len(section))[:,None],axis=0)
+    frequency=np.fft.rfftfreq(len(section),1/rate)
+    return float(np.sqrt(np.sum(abs(spectrum[frequency>=minimum])**2)))
+
+
 class ShortDropTests(unittest.TestCase):
+    def test_note_changes_do_not_amplify_noise_in_the_gap(self):
+        for rate,stereo in ((16000,False),(16000,True),(48000,True)):
+            with self.subTest(rate=rate,stereo=stereo):
+                source=note_transition(rate,stereo)
+                ordinary=remaster.process_blocks('remaster',source,rate,ceiling_db=0,**STRONG)
+                repaired=remaster.process_blocks('remaster',source,rate,ceiling_db=0,cut_repair_db=12,**STRONG)
+                extra=20*np.log10(upper_level(repaired,rate,2.04,2.06)/upper_level(ordinary,rate,2.04,2.06))
+                self.assertLess(abs(extra),.1)
+                np.testing.assert_array_equal(repaired,ordinary)
+
+    def test_real_dips_still_recover_vibrato_and_broadband_sound(self):
+        rate=16000;t=np.arange(rate*3)/rate
+        for kind,center in (('vibrato',887),('vibrato',400),('noise',0)):
+            with self.subTest(kind=kind,center=center):
+                if kind=='vibrato':
+                    frequency=center+10*np.sin(2*np.pi*5*t)
+                    body=.16*np.sin(2*np.pi*np.cumsum(frequency)/rate)
+                else:body=.08*np.random.default_rng(912).standard_normal(len(t))
+                envelope=np.ones(len(t));drums=np.zeros(len(t))
+                for beat in (1.,1.5,2.,2.5):
+                    tau=t-beat;active=(tau>=0)&(tau<.15)
+                    drums[active]+=.4*np.sin(2*np.pi*70*tau[active])*np.exp(-tau[active]/.045)
+                    envelope[(tau>=.012)&(tau<.047)]=.12
+                mono=body*envelope+drums
+                source=np.column_stack((mono,-.8*mono)).astype(np.float32)
+                ordinary=remaster.process_blocks('remaster',source,rate,ceiling_db=0,**STRONG)
+                repaired=remaster.process_blocks('remaster',source,rate,ceiling_db=0,cut_repair_db=12,**STRONG)
+                minimum=180 if center==400 else 600
+                extra=20*np.log10(upper_level(repaired,rate,2.018,2.040,minimum)/upper_level(ordinary,rate,2.018,2.040,minimum))
+                self.assertGreater(extra,3)
+                np.testing.assert_allclose(repaired[:,1],repaired[:,0]*-.8,atol=2e-7)
+
+    def test_transition_guard_is_independent_of_disk_blocks_and_preview_length(self):
+        source=note_transition()
+        full=remaster.process_blocks('remaster',source,16000,cut_repair_db=12,**STRONG)
+        with patch.object(storage,'MEMORY_THRESHOLD',1024):
+            small=remaster.process_blocks('remaster',source,16000,cut_repair_db=12,block_frames=127,**STRONG)
+            preview=remaster.process_blocks('remaster',source,16000,cut_repair_db=12,limit=33777,**STRONG)
+        np.testing.assert_allclose(full,small,atol=1e-6)
+        np.testing.assert_array_equal(preview,full[:33777])
+
     def test_deep_short_dip_recovers_more_than_the_existing_strong_preset(self):
         source=short_cuts();original=source.copy()
         strong=remaster.process_blocks('remaster',source,16000,ceiling_db=0,**STRONG)

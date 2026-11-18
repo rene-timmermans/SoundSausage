@@ -2,7 +2,7 @@
 
 Een intuïtieve, eenvoudig te gebruiken audio-editor met alle tools op de plek waar je ze verwacht.
 
-Deze handleiding beschrijft de beschikbare functies van versie 1.3.0. De menunamen
+Deze handleiding beschrijft de beschikbare functies van versie 1.3.1. De menunamen
 staan zoals ze in het programma worden getoond. Open de handleiding met
 **Help → Handleiding** of **F1**. Ze blijft naast de editor openstaan en werkt
 zonder internet. Met **Ctrl+F** zoek je een onderwerp; **F3** gaat naar de volgende
@@ -791,7 +791,7 @@ Een preset verandert alleen de vijf instellingen in de tabel. Uitvoerplafond, lu
 
 Het gewone herstel schat welke delen van het midden en hoog aanhoudend klinken, bijvoorbeeld zang, gitaar of een synthesizer. Het vergelijkt hun niveau met de omgeving en zoekt korte tekorten rond gedetecteerde bas- of percussieaanzetten. Alleen het gevonden tekort krijgt begrensde versterking; het vormt geen afzonderlijke zang- of instrumentensporen.
 
-De extra regeling voor korte volumedalingen meet het midden en hoog over ongeveer **4 ms**, met een nieuwe meting per circa **1 ms**. Ze vergelijkt de **20–80 ms vóór en na** een mogelijke dip. Beide kanten moeten voldoende geluid bevatten. De regeling zoekt dalingen van ongeveer **6–120 ms** en ten minste **4 dB**, gekoppeld aan drumdetectie. Zo worden lange pauzes, zeer stille passages en geleidelijke fades zo veel mogelijk overgeslagen.
+De extra regeling voor korte volumedalingen meet het midden en hoog over ongeveer **4 ms**, met een nieuwe meting per circa **1 ms**. Ze vergelijkt de **20–80 ms vóór en na** een mogelijke dip. Beide kanten moeten voldoende geluid bevatten en in klankinhoud overeenkomen. Bij duidelijk verschillende noten of klanken blijft het gewone herstel op die plek behouden; de extra korte-dipregeling grijpt daar niet in. De regeling zoekt dalingen van ongeveer **6–120 ms** en ten minste **4 dB**, gekoppeld aan drumdetectie. Zo worden lange pauzes, zeer stille passages en geleidelijke fades zo veel mogelijk overgeslagen.
 
 Bij een geschikt gat vervangt de snellere regeling plaatselijk het gewone herstel. De twee versterkingen worden niet opgeteld. Een korte, vloeiende overgang en snelle terugregeling beperken uitschieters zodra het geluid terugkomt. De extra regeling heeft eigen snelle reactietijden; **Hersteltijd** in het venster bepaalt hoe lang de drumdetectie blijft meetellen.
 

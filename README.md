@@ -8,7 +8,7 @@ Bewerk losse opnamen of combineer meerdere sporen. De interface volgt je eigen L
 
 ![SoundSausage in golfvormweergave](docs/screenshots/layout-previews/dark-waveform.png)
 
-De huidige versie is **1.3.0**.
+De huidige versie is **1.3.1**.
 
 ## Wat het kan
 
@@ -99,6 +99,8 @@ de keuze blijft bij de volgende start bewaard. De volledige handleidingen zijn o
 [Français](docs/manual/fr.md) en [Español](docs/manual/es.md).
 
 ## Wat er nieuw is
+
+**[1.3.1](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.3.1)** Remaster onderscheidt korte volumedalingen beter van noot- en klankwisselingen, zodat stille restgeluiden niet onnodig naar voren komen.
 
 **[1.3.0](https://github.com/rene-timmermans/SoundSausage/releases/tag/v1.3.0)** Directe effectknoppen en uitklapgroepen die meteen de instellingen openen en hun laatste keuze onthouden. Nieuwe golfvormen met instelbare duur, clipgereedschappen bij de tijdlijn en beter passende venstertitels.
 

@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 1.3.0. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 1.3.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -294,7 +294,7 @@ Un ajuste cambia solo los cinco valores de la tabla. Techo de salida, posición 
 
 La recuperación ordinaria estima medios/agudos sostenidos, como voz, guitarra o sintetizador. Compara su nivel con el entorno y busca déficits breves cerca de ataques detectados de graves o percusión. Solo el déficit recibe un aumento limitado; no se crean pistas separadas de voz o instrumentos.
 
-La reparación breve mide medios/agudos durante unos **4 ms**, actualizando aproximadamente cada **1 ms**. Compara los **20–80 ms anteriores y posteriores** a una caída posible; ambos lados deben apoyar el nivel que falta. Busca caídas de unos **6–120 ms** y al menos **4 dB**, vinculadas a la detección de percusión. Así se evitan en lo posible pausas largas, material muy débil y fundidos graduales.
+La reparación breve mide medios/agudos durante unos **4 ms**, actualizando aproximadamente cada **1 ms**. Compara los **20–80 ms anteriores y posteriores** a una caída posible; ambos lados deben apoyar el nivel que falta y contener un sonido suficientemente parecido. Si las notas o el timbre cambian claramente, en ese punto se conserva la recuperación ordinaria sin activar la reparación breve adicional. Busca caídas de unos **6–120 ms** y al menos **4 dB**, vinculadas a la detección de percusión. Así se evitan en lo posible pausas largas, material muy débil y fundidos graduales.
 
 En un hueco adecuado, la ruta rápida sustituye localmente la recuperación ordinaria. Las ganancias no se suman. Una transición suave y un retorno rápido limitan los excesos cuando vuelve el nivel de origen. Esta ruta tiene sus propios tiempos rápidos; el **Tiempo de recuperación** del diálogo controla cuánto sigue contando la detección de percusión.
 

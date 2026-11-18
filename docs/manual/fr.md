@@ -1,6 +1,6 @@
 # SoundSausage — manuel
 
-Version 1.3.0. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
+Version 1.3.1. Un éditeur audio intuitif et simple à utiliser, avec tous les outils là où vous les attendez. Ce manuel décrit les fonctions disponibles, les effets et leurs limites pratiques.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>
@@ -294,7 +294,7 @@ Un préréglage ne change que les cinq valeurs du tableau. Plafond de sortie, po
 
 La récupération ordinaire estime les sons soutenus médiums/aigus, par exemple voix, guitare ou synthétiseur. Elle compare leur niveau à l’environnement et recherche de brefs déficits près des attaques de graves/percussions détectées. Seul le déficit reçoit une hausse limitée ; aucune piste voix ou instrument séparée n’est créée.
 
-La correction des baisses brèves mesure les médiums/aigus sur environ **4 ms**, avec une mise à jour toutes les **1 ms** environ. Elle compare les **20–80 ms avant et après** un creux possible ; les deux côtés doivent soutenir le niveau manquant. Elle recherche des baisses d’environ **6–120 ms** et d’au moins **4 dB**, liées à la détection de percussion. Les longues pauses, passages très faibles et fondus progressifs sont ainsi évités autant que possible.
+La correction des baisses brèves mesure les médiums/aigus sur environ **4 ms**, avec une mise à jour toutes les **1 ms** environ. Elle compare les **20–80 ms avant et après** un creux possible ; les deux côtés doivent soutenir le niveau manquant et contenir un son suffisamment similaire. Si les notes ou le timbre diffèrent nettement, seule la récupération ordinaire est conservée à cet endroit. Elle recherche des baisses d’environ **6–120 ms** et d’au moins **4 dB**, liées à la détection de percussion. Les longues pauses, passages très faibles et fondus progressifs sont ainsi évités autant que possible.
 
 Sur un creux adapté, la correction rapide remplace localement la récupération ordinaire. Les deux gains ne sont pas additionnés. Une transition douce et un retour rapide limitent les dépassements lorsque le niveau d’origine revient. Cette voie possède ses propres temps rapides ; le **Temps de récupération** du dialogue règle la durée de maintien de la détection de percussion.
 

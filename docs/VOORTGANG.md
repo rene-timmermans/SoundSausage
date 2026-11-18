@@ -1,5 +1,16 @@
 # Ontwikkelroute
 
+## Remaster — 1.3.1 in voorbereiding
+
+De regeling voor korte volumedalingen controleert nu of de klank vóór en na een mogelijk gat voldoende overeenkomt. Een duidelijke noot- of klankwisseling behoudt het gewone herstel, zonder extra versterking van stille restgeluiden. Het herstel van echte korte dalingen, de bestaande instellingen en gekoppelde stereobalans blijven behouden.
+
+- [x] Regressieproeven voor nootwisselingen, vibrato en breedbandig geluid toegevoegd.
+- [x] De 29 gerichte Remaster-controles slagen, inclusief preview, blokverwerking, headroom en Undo.
+- [x] De eerder gemelde korte extra ingreep wordt bij volledige verwerking overgeslagen; het gewone herstel blijft op die plek exact behouden.
+- [x] De vijf handleidingen beschrijven de aanvullende controle.
+
+Versie 1.3.1 wordt voorbereid met installatiepakketten voor Debian, Ubuntu, Fedora en Arch. Publicatie volgt na de volledige distributiecontroles. De 18 uitgestelde uitbreidingen blijven uitgesteld.
+
 ## Effectbediening en nieuwe golfvormen — 1.3.0 gepubliceerd
 
 Directe bewerkingen hebben eigen knoppen; de zes uitklapgroepen bevatten alleen instellingsvensters. Een keuze opent meteen het venster, het hoofdicoon heropent de laatste keuze. Een expliciete tijdselectie blijft vereist, ook via menu’s en F2. Selecteren is standaard; D schakelt tekenen in, met een tijdelijke terugknop boven de golfvorm. Clip-, volume- en pangereedschappen staan bij de multitracktijdlijn. De balk Effecten behoudt de ingestelde plaats en zichtbaarheid. Ruisprofiel vastleggen blijft in het menu en het venster Ruisreductie bereikbaar; de losse werkbalkknop is verwijderd.
