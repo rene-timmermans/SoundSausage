@@ -1,6 +1,6 @@
 # SoundSausage — manual
 
-Versión 1.3.1. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
+Versión 1.3.2. Un editor de audio intuitivo y fácil de usar, con todas las herramientas donde las esperas. Este manual describe las funciones disponibles, los efectos y sus límites prácticos.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>

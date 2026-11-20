@@ -7,7 +7,8 @@ Met volume- en panlijnen verander je het volume en de stereobalans gedurende een
 Open vanuit de projectmap het voorbeeld met ingebedde audio:
 
 ```bash
-./run.sh examples/demo-envelopes.celp
+make demo
+./run.sh build/demo-envelopes.celp
 ```
 
 Druk op **Spatie** om af te spelen. De eerste zes seconden demonstreren volumeveranderingen op spoor 1. Van zes tot twaalf seconden beweegt een toon op spoor 2 van links naar rechts.

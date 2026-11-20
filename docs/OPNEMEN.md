@@ -48,7 +48,4 @@ Een complete werkwijze:
 5. Bewaar het project en heropen het om de afzonderlijke sporen verder te bewerken.
 6. Maak met Eindmix maken een WAV- of MP3-eindmix. De opgeslagen bronopnamen blijven behouden.
 
-Opname en afspelen zijn automatisch controleerbaar met een private virtuele
-audiobackend. De bevestigde praktijktest met een fysieke USB-microfoon en uitvoer staat
-ook in [voortgang](VOORTGANG.md). De volledige uitleg staat ook
-offline in **Help → Handleiding / F1**.
+De volledige uitleg staat ook offline in **Help → Handleiding / F1**.

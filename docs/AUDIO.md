@@ -68,8 +68,8 @@ de geselecteerde uitgang met een kort stil signaal; er wordt niets opgenomen.
 De pakketbouw test afspelen met een privaat virtueel audioapparaat, inclusief
 pauzeren, hervatten, afspeeltijd en lussen. Een hoorbare controle op echte
 hardware blijft een aparte stap. Lange bestanden gebruiken verwerking vanaf
-schijf; zie [werkruimte en herstel](LANGE_BESTANDEN.md). Realtime spooreffecten
-volgen later; zie [voortgang](VOORTGANG.md).
+schijf; zie [werkruimte en herstel](LANGE_BESTANDEN.md). Voor realtime spooreffecten
+en opnemen met begeleiding, zie [spooreffecten en synchronisatie](REALTIME.md).
 
 `soundsausage --input-selftest` opent de geselecteerde ingang kort, controleert
 of er frames binnenkomen en verwijdert de testopname. Alleen die expliciete

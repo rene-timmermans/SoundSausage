@@ -23,6 +23,7 @@ test: all
 
 demo: all
 	PYTHONPATH=src python3 tools/make_demo.py
+	PYTHONPATH=src python3 tools/make_envelope_demo.py
 
 clean:
 	rm -f build/libsoundsausage_dsp.so

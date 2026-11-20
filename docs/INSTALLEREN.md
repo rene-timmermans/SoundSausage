@@ -12,7 +12,7 @@ of nieuwer uit de distributie. Ubuntu 24.04 en Debian 12 worden hiermee niet
 ondersteund. Op Ubuntu moet de universe-pakketbron ingeschakeld zijn.
 
 ```bash
-sudo apt install ./soundsausage_1.3.1-1_amd64.deb
+sudo apt install ./soundsausage_1.3.2-1_amd64.deb
 ```
 
 ## Fedora
@@ -20,7 +20,7 @@ sudo apt install ./soundsausage_1.3.1-1_amd64.deb
 Gebruik het `.rpm`-pakket voor de huidige Fedora-versie:
 
 ```bash
-sudo dnf install ./soundsausage-1.3.1-1*.x86_64.rpm
+sudo dnf install ./soundsausage-1.3.2-1*.x86_64.rpm
 ```
 
 ## Arch Linux
@@ -28,7 +28,7 @@ sudo dnf install ./soundsausage-1.3.1-1*.x86_64.rpm
 Werk Arch eerst normaal bij en installeer dan het pakket:
 
 ```bash
-sudo pacman -U ./soundsausage-1.3.1-1-x86_64.pkg.tar.zst
+sudo pacman -U ./soundsausage-1.3.2-1-x86_64.pkg.tar.zst
 ```
 
 ## Starten en controleren
@@ -59,8 +59,8 @@ python3 -m pip install -r requirements.txt
 ./run.sh
 ```
 
-Het startscript bouwt de audiokern automatisch. Voorbeeldprojecten staan in
-[examples](../examples/).
+Het startscript bouwt de audiokern automatisch. Maak de voorbeeldprojecten met
+`make demo`; zie [voorbeelden](../examples/README.md) voor uitleg.
 
 De pakketdefinities staan in `packaging/`. Een nieuwe versie krijgt releasepunten
 in `docs/releases/<versie>.md`; na een versie-update op `main` bouwt GitHub Actions

@@ -18,16 +18,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=Path("build/layout-previews"))
     args = parser.parse_args()
-    args.out.mkdir(parents=True, exist_ok=True)
     root = Path(__file__).resolve().parents[1]
+    for name in ("demo.wav", "demo-envelopes.celp"):
+        if not (root / "build" / name).is_file():
+            parser.error("Run make demo first to generate the preview projects in build/.")
+    args.out.mkdir(parents=True, exist_ok=True)
     app = QApplication([])
     app.setStyle("Fusion")
     install_theme(app)
     for name, dark, accent in (("dark", True, "#36c5ac"), ("light", False, "#794bc4")):
         app.setPalette(preview_palette(app, dark, accent))
         for state, source in (("empty", None), ("waveform", root / "build/demo.wav"),
-                              ("multitrack", root / "examples/demo-envelopes.celp"),
-                              ("pan-line", root / "examples/demo-envelopes.celp")):
+                              ("multitrack", root / "build/demo-envelopes.celp"),
+                              ("pan-line", root / "build/demo-envelopes.celp")):
             window = MainWindow()
             if source and not window.load_path(source):
                 raise RuntimeError(f"Could not open {source}")

@@ -1,6 +1,6 @@
 # SoundSausage — Handbuch
 
-Version 1.3.1. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
+Version 1.3.2. Ein intuitiver, einfach zu bedienender Audioeditor mit allen Werkzeugen dort, wo man sie erwartet. Dieses Handbuch beschreibt die verfügbaren Arbeitsabläufe, Effekte und praktischen Grenzen.
 
 <!-- soundsausage-contents:start -->
 <a id="ss-contents"></a>

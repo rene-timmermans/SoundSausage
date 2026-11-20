@@ -12,6 +12,7 @@ install -Dm755 packaging/soundsausage-launcher.sh "$destination/usr/bin/soundsau
 install -Dm644 packaging/soundsausage.desktop "$destination/usr/share/applications/soundsausage.desktop"
 install -Dm644 src/soundsausage/assets/soundsausage.png "$destination/usr/share/icons/hicolor/256x256/apps/soundsausage.png"
 install -Dm644 README.md "$destination/usr/share/doc/soundsausage/README.md"
+install -Dm644 CHANGELOG.md "$destination/usr/share/doc/soundsausage/CHANGELOG.md"
 install -Dm644 docs/AMPLITUDE.md "$destination/usr/share/doc/soundsausage/AMPLITUDE.md"
 install -Dm644 docs/HANDLEIDING.md "$destination/usr/lib/soundsausage/docs/HANDLEIDING.md"
 install -Dm644 docs/HANDLEIDING.md "$destination/usr/share/doc/soundsausage/HANDLEIDING.md"
